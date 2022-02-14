@@ -31,11 +31,6 @@ public class SteamLobby : MonoBehaviour
         lobbyEntered = Callback<LobbyEnter_t>.Create(OnLobbyEnter);
     }
 
-    public void CopySteamID()
-    {
-        GUIUtility.systemCopyBuffer = SteamUser.GetSteamID().ToString();
-    }
-
     public void HostLobby()
     {
         _networkManager.SetSteamNetworkUIVisibility(false);
@@ -72,7 +67,7 @@ public class SteamLobby : MonoBehaviour
         SteamMatchmaking.SetLobbyData(lobbyID, "name", SteamFriends.GetPersonaName().ToString());
 
         GUIUtility.systemCopyBuffer = lobbyID.m_SteamID.ToString();
-        Debug.Log($"Joining lobby {lobbyID.m_SteamID}");
+        Debug.Log($"Created lobby {lobbyID.m_SteamID}");
     }
 
     private void OnGameLobbyJoinRequested(GameLobbyJoinRequested_t callback)
