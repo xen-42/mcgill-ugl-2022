@@ -15,23 +15,26 @@ public class CameraController : MonoBehaviour
     float xRotation;
     float yRotation;
 
-    private void Start(){
+    private void Start()
+    {
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
 
-    private void Update(){
+    private void Update()
+    {
         MyInput();
-        cam.transform.localRotation = Quaternion.Euler(xRotation, yRotation,0);
+        cam.transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0);
         orientation.transform.rotation = Quaternion.Euler(0, yRotation, 0);
     }
 
-    void MyInput(){
+    void MyInput()
+    {
         mouseX = Input.GetAxisRaw("Mouse X");
         mouseY = Input.GetAxisRaw("Mouse Y");
 
         yRotation += mouseX * sensX * multiplier;
-        xRotation -= mouseY * sensY *multiplier;
+        xRotation -= mouseY * sensY * multiplier;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
     }
 }
