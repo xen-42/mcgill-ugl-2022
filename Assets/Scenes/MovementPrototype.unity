@@ -988,7 +988,7 @@ MonoBehaviour:
   autoCreatePlayer: 1
   playerSpawnMethod: 0
   spawnPrefabs: []
-  transportType: 0
+  transportType: 1
   steamNetworkUI: {fileID: 1496042041}
 --- !u!4 &880166889
 Transform:
