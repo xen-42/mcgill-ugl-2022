@@ -7,7 +7,7 @@ public class Player : NetworkBehaviour
 {
     [Header("Movement")]
     [SerializeField] Transform orientation;
-    public float moveSpeed = 20f;
+    public float moveSpeed = 6f;
 
     [Header("Drag")]
     float rbDrag = 6f;
@@ -44,8 +44,7 @@ public class Player : NetworkBehaviour
     [SerializeField] float walkSpeed = 4f;
     [SerializeField] float runSpeed = 6f;
     [SerializeField] float acceleration = 10f;
-
-
+    bool isJumping;
     void ControlSpeed()
     {
         if (Input.GetKey(sprintkey) && isGrounded)
@@ -92,7 +91,7 @@ public class Player : NetworkBehaviour
     }
 
     [Client]
-    private void FixedUpdate()
+    private void Update()
     {
         // We only want to check input on the objects we have authority for
         if (!hasAuthority) return;
@@ -101,22 +100,33 @@ public class Player : NetworkBehaviour
         isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
         PlayerInput();
-        MovePlayer();
+        
         PlayerDrag();
         ControlSpeed();
 
         if (Input.GetKeyDown(jumpKey) && isGrounded)
         {
-            Jump();
+            isJumping = true;
         }
 
         slopeMoveDirection = Vector3.ProjectOnPlane(moveDirection, slopeHit.normal);
     }
 
+    [Client]
+    private void FixedUpdate(){
+        if (!hasAuthority) return;
+        MovePlayer();
+        if (isJumping){
+            Jump();
+        }
+    }
+
+
     void Jump()
     {
         rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+        isJumping = false;
     }
 
     void PlayerInput()
