@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 
 /// <summary>
-/// Use Generics of this class to support paramters
+/// Use Generics of this class to support parameters
 /// </summary>
 public class EventManager : MonoBehaviour
 {

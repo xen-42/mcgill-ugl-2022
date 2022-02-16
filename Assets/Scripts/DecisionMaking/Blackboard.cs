@@ -26,7 +26,7 @@ public class Blackboard : ScriptableObject
         [Tooltip("The name of the parameter.")]
         public string name;
 
-        [Tooltip("The Initial value of the parameter.")]
+        [Tooltip("The initial value of the parameter.")]
         public T initValue;
     }
 
@@ -104,8 +104,7 @@ public class Blackboard : ScriptableObject
 
         int id = 0;
         string newName;
-        do
-            newName = originalName + '(' + (++id).ToString() + ')';
+        do newName = originalName + '(' + (++id).ToString() + ')';
         while (table.ContainsKey(newName));
 
         //Table doesn't contain the new name

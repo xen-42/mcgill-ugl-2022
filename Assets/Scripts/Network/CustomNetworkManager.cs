@@ -19,7 +19,7 @@ public class CustomNetworkManager : NetworkManager
     public GameObject steamNetworkUI;
 
     // Start is called before the first frame update
-    void Awake()
+    new void Awake()
     {
         switch (transportType)
         {

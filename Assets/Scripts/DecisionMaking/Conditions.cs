@@ -40,6 +40,7 @@ public class IntBlackboardCondition : BaseBlackboardCondition
             IntegerComparison.NotEqual => value != valueAgainst,
             IntegerComparison.Greater => value > valueAgainst,
             IntegerComparison.Less => value < valueAgainst,
+            _ => throw new System.NotImplementedException(),
         };
     }
 }
