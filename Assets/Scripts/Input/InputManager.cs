@@ -43,7 +43,7 @@ public class InputManager : MonoBehaviour
     {
         { InputCommand.Interact, GamepadButton.West },
         { InputCommand.Jump, GamepadButton.South },
-        { InputCommand.Sprint, GamepadButton.RightStick },
+        { InputCommand.Sprint, GamepadButton.LeftStick },
     };
 
     #endregion Key bindings
@@ -77,7 +77,7 @@ public class InputManager : MonoBehaviour
         }
         if (Gamepad.current != null)
         {
-            movement += Gamepad.current.rightStick.ReadValue();
+            movement += Gamepad.current.leftStick.ReadValue();
             _instance._lastInputType = InputType.GamepadInput;
         }
 
@@ -95,7 +95,7 @@ public class InputManager : MonoBehaviour
         }
         if(Gamepad.current != null)
         {
-            movement += Gamepad.current.leftStick.ReadValue();
+            movement += Gamepad.current.rightStick.ReadValue();
             _instance._lastInputType = InputType.GamepadInput;
         }
 
