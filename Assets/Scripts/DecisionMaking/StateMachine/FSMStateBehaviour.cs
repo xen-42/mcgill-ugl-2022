@@ -6,7 +6,7 @@ using UnityEngine;
 namespace DecisionMaking.StateMachine
 {
     /// <summary>
-    /// FSMStateBehaviour can be attached to a Finite State Machine. It's the base class every StateBehaviour attached to a State Machine derived from.
+    /// FSMStateBehaviour can be attached to a Finite State Machine. It's the base class every StateMachineBehaviour attached to a State Machine derived from.
     /// </summary>
     [RequireComponent(typeof(FSM))]
     public abstract class FSMStateBehaviour : StateBehaviour

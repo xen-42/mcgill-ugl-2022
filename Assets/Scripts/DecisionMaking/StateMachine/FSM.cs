@@ -12,10 +12,17 @@ namespace DecisionMaking.StateMachine
 
         #endregion Blackboard
 
+        [Tooltip("how often the state machine executes in seconds")]
+        [SerializeField] private float m_executionTimeStep = .02f;
+
         #region Caches
 
         private List<FSMStateBehaviour> m_states;
+
+        [Tooltip("The Current State the state machine is at")]
         [SerializeField] private FSMStateBehaviour m_currentState;
+
+        [Tooltip("The Global State in the state machine. Global State will be executed and test its transitions before the current state in each executation.\n Only OnUpdate() and OnExit() will be called by the State Machine.")]
         [SerializeField] private FSMStateBehaviour m_globalState;
         private FSMStateBehaviour m_trigState;
 
@@ -32,7 +39,6 @@ namespace DecisionMaking.StateMachine
 
             //Get Singleton Blackboard
             m_blackboardManager = BlackboardManager.Instance;
-            //Assign to non-mono class
         }
 
         // Start is called before the first frame update
@@ -40,7 +46,7 @@ namespace DecisionMaking.StateMachine
         {
             //Entering the Initial State
             m_currentState.OnEnter();
-            print(m_blackboardManager);
+            //Execution Routine
         }
 
         // Update is called once per frame

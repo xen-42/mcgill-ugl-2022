@@ -6,7 +6,7 @@ using UnityEngine;
 namespace DecisionMaking
 {
     /// <summary>
-    /// StateBehaviour is the base class used by Decision Maker.
+    /// StateBehaviour is the base class from which every State Script attached to a Decision Maker derived.
     /// </summary>
     public abstract class StateBehaviour : MonoBehaviour
     {

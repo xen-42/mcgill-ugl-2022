@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using DecisionMaking.StateMachine;
 
-public class testStateBehaviour : FSMStateBehaviour
+public class TestStateBehaviour1 : FSMStateBehaviour
 {
     protected override void Enter()
     {
-        throw new System.NotImplementedException();
+        print("Entered" + nameof(TestStateBehaviour1));
     }
 
     protected override void Execute()
     {
-        throw new System.NotImplementedException();
+        print("In" + nameof(TestStateBehaviour1));
     }
 
     protected override void Exit()
     {
-        throw new System.NotImplementedException();
+        print("Exit" + nameof(TestStateBehaviour1));
     }
 }

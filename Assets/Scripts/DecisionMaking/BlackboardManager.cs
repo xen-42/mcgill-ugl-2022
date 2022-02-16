@@ -26,32 +26,59 @@ public class BlackboardManager : MonoBehaviour
     /// <summary>
     /// Singleton
     /// </summary>
-    public static BlackboardManager Instance;
+
+    private static BlackboardManager m_instance;
+
+    public static BlackboardManager Instance
+    {
+        get
+        {
+            if (!m_instance)
+            {
+                m_instance = FindObjectOfType(typeof(BlackboardManager)) as BlackboardManager;
+
+                if (!m_instance)
+                {
+                    Debug.LogError("There needs to be one active BlackboardManger script on a GameObject in your scene.");
+                }
+                else
+                {
+                    m_instance.Init();
+                }
+            }
+
+            return m_instance;
+        }
+    }
 
     private void Awake()
     {
-        if (Instance == null)
+        if (m_instance == null)
         {
-            DontDestroyOnLoad(gameObject);
-
-            m_intParameters = new Dictionary<string, int>();
-            m_floatParameters = new Dictionary<string, float>();
-            m_boolParameters = new Dictionary<string, bool>();
-            m_triggerParameters = new Dictionary<string, Trigger>();
-            blackboardInfo.LoadIntegers(m_intParameters);
-            blackboardInfo.LoadFloats(m_floatParameters);
-            blackboardInfo.LoadBools(m_boolParameters);
-            blackboardInfo.LoadTriggers(m_triggerParameters);
-
-            Instance = this;
+            Init();
+            m_instance = this;
         }
-        else if (Instance != this)
+        else if (m_instance != this)
         {
             Destroy(gameObject);
         }
     }
 
     #region Parameters Get&Set
+
+    private void Init()
+    {
+        DontDestroyOnLoad(gameObject);
+
+        m_intParameters = new Dictionary<string, int>();
+        m_floatParameters = new Dictionary<string, float>();
+        m_boolParameters = new Dictionary<string, bool>();
+        m_triggerParameters = new Dictionary<string, Trigger>();
+        blackboardInfo.LoadIntegers(m_intParameters);
+        blackboardInfo.LoadFloats(m_floatParameters);
+        blackboardInfo.LoadBools(m_boolParameters);
+        blackboardInfo.LoadTriggers(m_triggerParameters);
+    }
 
     public float GetFloat(string pName) => m_floatParameters[pName];
 
