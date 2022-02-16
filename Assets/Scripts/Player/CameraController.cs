@@ -30,11 +30,10 @@ public class CameraController : MonoBehaviour
 
     void MyInput()
     {
-        mouseX = Input.GetAxisRaw("Mouse X");
-        mouseY = Input.GetAxisRaw("Mouse Y");
+        var lookVector = InputManager.GetLookAxis();
 
-        yRotation += mouseX * sensX * multiplier;
-        xRotation -= mouseY * sensY * multiplier;
+        yRotation += lookVector.x * sensX * multiplier;
+        xRotation -= lookVector.y * sensY * multiplier;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
     }
 }
