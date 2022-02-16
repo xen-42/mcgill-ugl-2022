@@ -14,13 +14,12 @@ public class HUD : MonoBehaviour
 
     void Update()
     {
-        if(!_gamepadIndicator.activeInHierarchy && InputManager.IsGamepadEnabled())
+        var indicatorShown = _gamepadIndicator.activeInHierarchy;
+        var gamepadEnabled = InputManager.IsGamepadEnabled();
+
+        if(indicatorShown == gamepadEnabled)
         {
-            _gamepadIndicator.SetActive(false);
-        }
-        if (_gamepadIndicator.activeInHierarchy && !InputManager.IsGamepadEnabled())
-        {
-            _gamepadIndicator.SetActive(true);
+            _gamepadIndicator.SetActive(!indicatorShown);
         }
     }
 }

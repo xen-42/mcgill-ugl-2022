@@ -58,7 +58,6 @@ public class InputManager : MonoBehaviour
 
     public static bool IsGamepadEnabled()
     {
-        Debug.Log($"{Gamepad.all.Count}");
         return Gamepad.all.Count > 0;
     }
 
