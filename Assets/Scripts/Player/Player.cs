@@ -96,9 +96,11 @@ public class Player : NetworkBehaviour
         // We only want to check input on the objects we have authority for
         if (!hasAuthority) return;
 
-        //Calls the player's input
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        //isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
 
+        isGrounded = Physics.Raycast(groundCheck.position, -Vector3.up, groundDistance + 0.1f);
+
+        //Calls the player's input
         PlayerInput();
         
         PlayerDrag();
