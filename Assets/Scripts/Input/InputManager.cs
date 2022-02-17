@@ -29,7 +29,8 @@ public class InputManager : MonoBehaviour
         Any,
         Interact,
         Jump,
-        Sprint
+        Sprint,
+        PickUp
     }
 
     private Dictionary<InputCommand, Key> _keyboardMappings = new Dictionary<InputCommand, Key>() 
@@ -39,12 +40,33 @@ public class InputManager : MonoBehaviour
         { InputCommand.Sprint, Key.LeftShift },
     };
 
+    private Dictionary<InputCommand, MouseButton> _mouseMappings = new Dictionary<InputCommand, MouseButton>()
+    {
+        {InputCommand.PickUp, MouseButton.Left }
+    };
+
     private Dictionary<InputCommand, GamepadButton> _gamepadMappings = new Dictionary<InputCommand, GamepadButton>()
     {
         { InputCommand.Interact, GamepadButton.West },
         { InputCommand.Jump, GamepadButton.South },
         { InputCommand.Sprint, GamepadButton.LeftStick },
+        { InputCommand.PickUp, GamepadButton.West }
     };
+
+    public static Dictionary<InputCommand, Key> KeyboardMappings
+    {
+        get { return _instance._keyboardMappings; }
+    }
+
+    public static Dictionary<InputCommand, MouseButton> MouseMapping
+    {
+        get { return _instance._mouseMappings; }
+    }
+
+    public static Dictionary<InputCommand, GamepadButton> GamepadMapping
+    {
+        get { return _instance._gamepadMappings; }
+    }
 
     #endregion Key bindings
 
@@ -61,6 +83,11 @@ public class InputManager : MonoBehaviour
         return Gamepad.all.Count > 0;
     }
 
+    public static bool IsUsingGamepad()
+    {
+        return _instance._lastInputType == InputType.GamepadInput;
+    }
+
     public static Vector2 GetMovementAxis()
     {
         Vector2 movement = Vector2.zero;
@@ -71,14 +98,19 @@ public class InputManager : MonoBehaviour
             var up = Keyboard.current.wKey.isPressed ? 1 : 0;
             var down = Keyboard.current.sKey.isPressed ? 1 : 0;
 
-            movement += new Vector2(right - left, up - down);
+            var keyboardMovement = new Vector2(right - left, up - down);
 
-            _instance._lastInputType = InputType.KeyboardAndMouseInput;
+            if(keyboardMovement != Vector2.zero)
+                _instance._lastInputType = InputType.KeyboardAndMouseInput;
+
+            movement += keyboardMovement;
         }
         if (Gamepad.current != null)
         {
-            movement += Gamepad.current.leftStick.ReadValue();
-            _instance._lastInputType = InputType.GamepadInput;
+            var gamepadMovement = Gamepad.current.leftStick.ReadValue();
+            if (gamepadMovement != Vector2.zero)
+                _instance._lastInputType = InputType.GamepadInput;
+            movement += gamepadMovement;
         }
 
         return movement.normalized;
@@ -89,14 +121,18 @@ public class InputManager : MonoBehaviour
         Vector2 movement = Vector2.zero;
         if(Mouse.current != null)
         {
-            movement += new Vector2(Mouse.current.delta.x.ReadValue(), Mouse.current.delta.y.ReadValue());
+            var keyboardMovement = new Vector2(Mouse.current.delta.x.ReadValue(), Mouse.current.delta.y.ReadValue());
 
-            _instance._lastInputType = InputType.KeyboardAndMouseInput;
+            if(keyboardMovement != Vector2.zero)
+                _instance._lastInputType = InputType.KeyboardAndMouseInput;
+            movement += keyboardMovement;
         }
         if(Gamepad.current != null)
         {
-            movement += Gamepad.current.rightStick.ReadValue();
-            _instance._lastInputType = InputType.GamepadInput;
+            var gamepadMovement = Gamepad.current.rightStick.ReadValue();
+            if(gamepadMovement != Vector2.zero)
+                _instance._lastInputType = InputType.GamepadInput;
+            movement += gamepadMovement;
         }
 
         return movement;
@@ -104,35 +140,61 @@ public class InputManager : MonoBehaviour
 
     private bool IsGamepadAnyButtonPressed()
     {
-        if(Gamepad.current != null)
-        {
-            foreach(var control in Gamepad.current.allControls)
-            {
-                if (control.IsPressed()) return true;
-            }
-        }
+
         return false;
     }
 
-    private bool IsKeyboardAnyKeyPressed()
+    private bool IsAnyKeyPressed()
     {
-        return Keyboard.current != null && Keyboard.current.anyKey.IsPressed();
+        if (Keyboard.current != null && Keyboard.current.anyKey.IsPressed())
+            return true;
+
+        if (Gamepad.current != null)
+        {
+            foreach (var control in Gamepad.current.allControls)
+            {
+                if (control.IsPressed())
+                {
+                    return true;
+                }
+            }
+        }
+
+        if (Mouse.current != null)
+        {
+            foreach (var control in Mouse.current.allControls)
+            {
+                if (control.IsPressed())
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
     }
 
     private bool IsGamepadButtonPressed(GamepadButton button)
     {
-        return Gamepad.current != null && Gamepad.current[button].isPressed;
+        return Gamepad.current != null && Gamepad.current[button].IsPressed();
     }
 
     private bool IsKeyboardKeyPressed(Key key)
     {
-        return Keyboard.current != null && Keyboard.current[key].isPressed;
+        return Keyboard.current != null && Keyboard.current[key].IsPressed();
+    }
+
+    private bool IsMouseButtonPressed(MouseButton button)
+    {
+        return Mouse.current != null && Mouse.current[button.ToString().ToLower() + "Button"].IsPressed();
     }
 
     public static bool IsCommandPressed(InputCommand command)
     {
-        if(command == InputCommand.Any)
-            return _instance.IsKeyboardAnyKeyPressed() || _instance.IsGamepadAnyButtonPressed();
+        if (command == InputCommand.Any)
+        {
+            return _instance.IsAnyKeyPressed();
+        }
 
         if (_instance._gamepadMappings.ContainsKey(command))
         {
@@ -142,6 +204,11 @@ public class InputManager : MonoBehaviour
         if (_instance._keyboardMappings.ContainsKey(command))
         {
             if (_instance.IsKeyboardKeyPressed(_instance._keyboardMappings[command])) return true;
+        }
+
+        if(_instance._mouseMappings.ContainsKey(command))
+        {
+            if (_instance.IsMouseButtonPressed(_instance._mouseMappings[command])) return true;
         }
 
         return false;

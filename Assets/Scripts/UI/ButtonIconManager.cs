@@ -32,7 +32,11 @@ public class ButtonIconManager : MonoBehaviour
 
     public static Texture2D GetKeyTexture(Key key)
     {
-        if (_instance == null) return null;
+        if (_instance == null)
+        {
+            Debug.LogError("ButtonIconManager doesn't exist");
+            return null;
+        }
 
         if (_instance._keyboardPrompts.ContainsKey(key)) return _instance._keyboardPrompts[key];
 
@@ -42,7 +46,11 @@ public class ButtonIconManager : MonoBehaviour
 
     public static Texture2D GetGamepadButtonTexture(GamepadButton gamepadButton)
     {
-        if (_instance == null) return null;
+        if (_instance == null)
+        {
+            Debug.LogError("ButtonIconManager doesn't exist");
+            return null;
+        }
 
         if (_instance._gamepadPrompts.ContainsKey(gamepadButton)) return _instance._gamepadPrompts[gamepadButton];
 
@@ -51,11 +59,46 @@ public class ButtonIconManager : MonoBehaviour
 
     public static Texture2D GetMouseButtonTexture(MouseButton button)
     {
-        if (_instance == null) return null;
+        if (_instance == null)
+        {
+            Debug.LogError("ButtonIconManager doesn't exist");
+            return null;
+        }
 
         if (_instance._mousePrompts.ContainsKey(button)) return _instance._mousePrompts[button];
 
         return _instance._missingMouse;
+    }
+
+    public static Sprite GetPromptSprite(InputManager.InputCommand command)
+    {
+        if (_instance == null)
+        {
+            Debug.LogError("ButtonIconManager doesn't exist");
+            return null;
+        }
+
+        Texture2D texture = null;
+        if (InputManager.IsUsingGamepad() && InputManager.GamepadMapping.ContainsKey(command))
+        {
+            texture = GetGamepadButtonTexture(InputManager.GamepadMapping[command]);
+        }
+        else if(InputManager.KeyboardMappings.ContainsKey(command))
+        {
+            texture = GetKeyTexture(InputManager.KeyboardMappings[command]);
+        }
+        else if (InputManager.MouseMapping.ContainsKey(command))
+        {
+            texture = GetMouseButtonTexture(InputManager.MouseMapping[command]);
+        }
+
+        if (texture == null)
+        {
+            Debug.LogError($"Couldn't get sprite for {command}");
+            return null;
+        }
+
+        return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(texture.width / 2f, texture.height / 2f));
     }
 
     private void Init()
