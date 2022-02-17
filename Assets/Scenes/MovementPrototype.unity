@@ -478,7 +478,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh20578
+  m_Name: pb_Mesh19746
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3978,6 +3978,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1635578826}
+  - component: {fileID: 1635578827}
   m_Layer: 0
   m_Name: ButtonIconManager
   m_TagString: Untagged
@@ -3999,6 +4000,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1635578827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1635578825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 30a18599eb0e2a9448d73ad7eae92644, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1789650681
 GameObject:
   m_ObjectHideFlags: 0
@@ -4109,31 +4122,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 1844470467}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
+  m_Script: {fileID: 11500000, guid: 83392ae5c1b731446909f252fd494ae4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncMode: 0
+  syncMode: 1
   syncInterval: 0.1
+  target: {fileID: 1844470474}
   clientAuthority: 0
-  sendInterval: 0.05
-  syncPosition: 1
-  syncRotation: 1
-  syncScale: 0
-  interpolatePosition: 1
-  interpolateRotation: 1
-  interpolateScale: 0
-  bufferTimeMultiplier: 1
-  bufferSizeLimit: 64
-  catchupThreshold: 4
-  catchupMultiplier: 0.1
-  onlySyncOnChange: 1
-  bufferResetMultiplier: 5
-  positionSensitivity: 0.01
-  rotationSensitivity: 0.01
-  scaleSensitivity: 0.01
-  showGizmos: 0
-  showOverlay: 0
-  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+  syncVelocity: 1
+  clearVelocity: 0
+  velocitySensitivity: 0.1
+  syncAngularVelocity: 1
+  clearAngularVelocity: 0
+  angularVelocitySensitivity: 0.1
 --- !u!65 &1844470469
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -4141,7 +4142,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1844470467}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: 168d2a3a090adaa4ab3088820b883062, type: 2}
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
