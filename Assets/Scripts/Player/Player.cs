@@ -29,9 +29,6 @@ public class Player : NetworkBehaviour
     Rigidbody rb;
     [Header("Jumping")]
     public float jumpForce = 5f;
-    [Header("Keybind")]
-    [SerializeField] KeyCode sprintkey = KeyCode.LeftShift;
-    [SerializeField] KeyCode jumpKey = KeyCode.Space;
 
     RaycastHit slopeHit;
     [Header("Camera Adjusts")]
@@ -45,9 +42,12 @@ public class Player : NetworkBehaviour
     [SerializeField] float runSpeed = 6f;
     [SerializeField] float acceleration = 10f;
     bool isJumping;
+
+    private GameObject _interactableObject;
+
     void ControlSpeed()
     {
-        if (Input.GetKey(sprintkey) && isGrounded)
+        if (InputManager.IsCommandPressed(InputManager.InputCommand.Sprint) && isGrounded)
         {
             moveSpeed = Mathf.Lerp(moveSpeed, runSpeed, acceleration * Time.deltaTime);
             cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, fastfov, fovaccel * Time.deltaTime);
@@ -104,7 +104,7 @@ public class Player : NetworkBehaviour
         PlayerDrag();
         ControlSpeed();
 
-        if (Input.GetKeyDown(jumpKey) && isGrounded)
+        if (InputManager.IsCommandPressed(InputManager.InputCommand.Jump) && isGrounded)
         {
             isJumping = true;
         }
@@ -131,10 +131,29 @@ public class Player : NetworkBehaviour
 
     void PlayerInput()
     {
-        horizontalMovement = Input.GetAxisRaw("Horizontal");
-        verticalMovement = Input.GetAxisRaw("Vertical");
+        var movement = InputManager.GetMovementAxis();
 
-        moveDirection = orientation.forward * verticalMovement + orientation.right * horizontalMovement;
+        moveDirection = orientation.forward * movement.y + orientation.right * movement.x;
+
+        // Raycast for object interaction / pickup
+
+        if (Physics.Raycast(cam.transform.position, cam.transform.TransformDirection(Vector3.forward), out RaycastHit hit, 3f))
+        {
+            var hitObject = hit.collider.gameObject;
+            if (_interactableObject != hitObject && hitObject.GetComponent<Interactable>() != null)
+            {
+                _interactableObject = hit.collider.gameObject;
+                EventManager.Instance.TriggerEvent("InteractableObjectHit");
+            }
+        }
+        else
+        {
+            if (_interactableObject != null)
+            {
+                _interactableObject = null;
+                EventManager.Instance.TriggerEvent("InteractableObjectLost");
+            }
+        }
     }
 
     void PlayerDrag()
