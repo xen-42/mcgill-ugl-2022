@@ -43,7 +43,11 @@ public class Player : NetworkBehaviour
     [SerializeField] float acceleration = 10f;
     bool isJumping;
 
+    [Header("Interacting")]
+    [SerializeField] GameObject heldItemPosition;
+
     private GameObject _interactableObject;
+    private GameObject _heldObject;
 
     void ControlSpeed()
     {
@@ -137,8 +141,12 @@ public class Player : NetworkBehaviour
 
         moveDirection = orientation.forward * movement.y + orientation.right * movement.x;
 
-        // Raycast for object interaction / pickup
+        if (_heldObject != null && InputManager.IsCommandJustPressed(InputManager.InputCommand.PickUp))
+        {
+            CmdDrop();
+        }
 
+        // Raycast for object interaction / pickup
         if (Physics.Raycast(cam.transform.position, cam.transform.TransformDirection(Vector3.forward), out RaycastHit hit, 3f))
         {
             var hitObject = hit.collider.gameObject;
@@ -146,6 +154,15 @@ public class Player : NetworkBehaviour
             {
                 _interactableObject = hit.collider.gameObject;
                 EventManager.Instance.TriggerEvent("InteractableObjectHit");
+            }
+
+            var holdable = hitObject.GetComponent<Holdable>();
+            if (holdable != null && _heldObject != hitObject)
+            {
+                if (InputManager.IsCommandJustPressed(InputManager.InputCommand.PickUp))
+                {
+                    CmdGrab(hitObject);
+                }
             }
         }
         else
@@ -185,5 +202,22 @@ public class Player : NetworkBehaviour
         {
             rb.AddForce(moveDirection.normalized * moveSpeed * movementMultiplier * airMultiplier, ForceMode.Acceleration);
         }
+    }
+
+    [Command]
+    public void CmdGrab(GameObject target)
+    {
+        Debug.Log("Grabbing");
+        _heldObject = target;
+        _heldObject.GetComponent<NetworkIdentity>().AssignClientAuthority(connectionToClient);
+        _heldObject.GetComponent<Holdable>().Parent = gameObject;
+    }
+
+    [Command]
+    public void CmdDrop()
+    {
+        Debug.Log("Dropping");
+        _heldObject.GetComponent<Holdable>().Parent = null;
+        _heldObject = null;
     }
 }

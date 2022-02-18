@@ -138,11 +138,7 @@ public class InputManager : MonoBehaviour
         return movement;
     }
 
-    private bool IsGamepadAnyButtonPressed()
-    {
-
-        return false;
-    }
+    #region Pressed
 
     private bool IsAnyKeyPressed()
     {
@@ -174,21 +170,6 @@ public class InputManager : MonoBehaviour
         return false;
     }
 
-    private bool IsGamepadButtonPressed(GamepadButton button)
-    {
-        return Gamepad.current != null && Gamepad.current[button].IsPressed();
-    }
-
-    private bool IsKeyboardKeyPressed(Key key)
-    {
-        return Keyboard.current != null && Keyboard.current[key].IsPressed();
-    }
-
-    private bool IsMouseButtonPressed(MouseButton button)
-    {
-        return Mouse.current != null && Mouse.current[button.ToString().ToLower() + "Button"].IsPressed();
-    }
-
     public static bool IsCommandPressed(InputCommand command)
     {
         if (command == InputCommand.Any)
@@ -198,19 +179,148 @@ public class InputManager : MonoBehaviour
 
         if (_instance._gamepadMappings.ContainsKey(command))
         {
-            if (_instance.IsGamepadButtonPressed(_instance._gamepadMappings[command])) return true;
-        }
-        
-        if (_instance._keyboardMappings.ContainsKey(command))
-        {
-            if (_instance.IsKeyboardKeyPressed(_instance._keyboardMappings[command])) return true;
+            var button = _instance._gamepadMappings[command];
+            if (Gamepad.current != null && Gamepad.current[button].IsPressed()) return true;
         }
 
-        if(_instance._mouseMappings.ContainsKey(command))
+        if (_instance._keyboardMappings.ContainsKey(command))
         {
-            if (_instance.IsMouseButtonPressed(_instance._mouseMappings[command])) return true;
+            var key = _instance._keyboardMappings[command];
+            if (Keyboard.current != null && Keyboard.current[key].IsPressed()) return true;
+        }
+
+        if (_instance._mouseMappings.ContainsKey(command))
+        {
+            var button = _instance._mouseMappings[command];
+            if (Mouse.current != null && Mouse.current[button.ToString().ToLower() + "Button"].IsPressed()) return true;
         }
 
         return false;
     }
+
+    #endregion Pressed
+
+    #region Just pressed
+
+    private bool IsAnyKeyJustPressed()
+    {
+        if (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame)
+            return true;
+
+        if (Gamepad.current != null)
+        {
+            foreach (ButtonControl control in Gamepad.current.allControls)
+            {
+                if (control.wasPressedThisFrame)
+                {
+                    return true;
+                }
+            }
+        }
+
+        if (Mouse.current != null)
+        {
+            foreach (ButtonControl control in Mouse.current.allControls)
+            {
+                if (control.wasPressedThisFrame)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public static bool IsCommandJustPressed(InputCommand command)
+    {
+        if (command == InputCommand.Any)
+        {
+            return _instance.IsAnyKeyJustPressed();
+        }
+
+        if (_instance._gamepadMappings.ContainsKey(command))
+        {
+            var button = _instance._gamepadMappings[command];
+            if (Gamepad.current != null && Gamepad.current[button].wasPressedThisFrame) return true;
+        }
+
+        if (_instance._keyboardMappings.ContainsKey(command))
+        {
+            var key =_instance._keyboardMappings[command];
+            if (Keyboard.current != null && Keyboard.current[key].wasPressedThisFrame) return true;
+        }
+
+        if (_instance._mouseMappings.ContainsKey(command))
+        {
+           var button = _instance._mouseMappings[command];
+            if (Mouse.current != null && (Mouse.current[button.ToString().ToLower() + "Button"] as ButtonControl).wasPressedThisFrame) return true;
+        }
+
+        return false;
+    }
+
+    #endregion Just pressed
+
+    #region Just released
+
+    private bool IsAnyKeyJustReleased()
+    {
+        if (Keyboard.current != null && Keyboard.current.anyKey.wasReleasedThisFrame)
+            return true;
+
+        if (Gamepad.current != null)
+        {
+            foreach (ButtonControl control in Gamepad.current.allControls)
+            {
+                if (control.wasReleasedThisFrame)
+                {
+                    return true;
+                }
+            }
+        }
+
+        if (Mouse.current != null)
+        {
+            foreach (ButtonControl control in Mouse.current.allControls)
+            {
+                if (control.wasReleasedThisFrame)
+                {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
+    public static bool IsCommandJustReleased(InputCommand command)
+    {
+        if (command == InputCommand.Any)
+        {
+            return _instance.IsAnyKeyJustReleased();
+        }
+
+        if (_instance._gamepadMappings.ContainsKey(command))
+        {
+            var button = _instance._gamepadMappings[command];
+            if (Gamepad.current != null && Gamepad.current[button].wasReleasedThisFrame) return true;
+        }
+
+        if (_instance._keyboardMappings.ContainsKey(command))
+        {
+            var key = _instance._keyboardMappings[command];
+            if (Keyboard.current != null && Keyboard.current[key].wasReleasedThisFrame) return true;
+        }
+
+        if (_instance._mouseMappings.ContainsKey(command))
+        {
+            var button = _instance._mouseMappings[command];
+            if (Mouse.current != null && (Mouse.current[button.ToString().ToLower() + "Button"] as ButtonControl).wasReleasedThisFrame) return true;
+        }
+
+        return false;
+    }
+
+    #endregion Just released
 }
