@@ -6,13 +6,14 @@ using UnityEngine.Events;
 /// <summary>
 /// Use Generics of this class to support parameters
 /// </summary>
-public static class EventManager
+public static class EventManager<T>
 {
     private static Dictionary<string, EventData> m_eventDictionary = new Dictionary<string, EventData>();
 
-    public static void AddListener(string pEventName, EventCallback pListener)
+    public static void AddListener(string pEventName, EventCallback<T> pListener)
     {
-        if(m_eventDictionary.TryGetValue(pEventName, out EventData eventData)) {
+        if (m_eventDictionary.TryGetValue(pEventName, out EventData eventData))
+        {
             eventData.callbacks.Add(pListener);
         }
         else
@@ -23,7 +24,7 @@ public static class EventManager
         }
     }
 
-    public static void RemoveListener(string pEventName, EventCallback pListener)
+    public static void RemoveListener(string pEventName, EventCallback<T> pListener)
     {
         if (m_eventDictionary.TryGetValue(pEventName, out EventData eventData))
         {
@@ -31,20 +32,20 @@ public static class EventManager
         }
     }
 
-    public static void TriggerEvent(string pEventName)
+    public static void TriggerEvent(string pEventName, T arg)
     {
         if (m_eventDictionary.TryGetValue(pEventName, out EventData eventData))
         {
-            if(eventData.isInvoking)
+            if (eventData.isInvoking)
             {
                 Debug.LogError("Infinite recursion in EventManager");
             }
             else
             {
                 eventData.isInvoking = true;
-                foreach(var callback in eventData.callbacks)
+                foreach (var callback in eventData.callbacks)
                 {
-                    callback.Invoke();
+                    callback.Invoke(arg);
                 }
             }
             eventData.isInvoking = false;
@@ -53,7 +54,7 @@ public static class EventManager
 
     private class EventData
     {
-        public List<EventCallback> callbacks = new List<EventCallback>();
+        public List<EventCallback<T>> callbacks = new List<EventCallback<T>>();
         public bool isInvoking;
     }
 }

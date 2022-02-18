@@ -5,79 +5,38 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.LowLevel;
 
-public class ButtonIconManager : MonoBehaviour
+public static class ButtonIconManager
 {
-    private static ButtonIconManager _instance = null;
-    public static ButtonIconManager Instance { get { return _instance; } }
-
-    private Texture2D _missingKey = null;
-    private Texture2D _missingMouse = null;
-    private readonly Dictionary<Key, Texture2D> _keyboardPrompts = new Dictionary<Key, Texture2D>();
-    private readonly Dictionary<GamepadButton, Texture2D> _gamepadPrompts = new Dictionary<GamepadButton, Texture2D>();
-    private readonly Dictionary<MouseButton, Texture2D> _mousePrompts = new Dictionary<MouseButton, Texture2D>();
-
-    private void Awake()
-    {
-        if(_instance != null && _instance != this)
-        {
-            // Can only have one
-            Destroy(this.gameObject);
-        }
-        else
-        {
-            _instance = this;
-            Init();
-        }
-    }
+    private static Texture2D _missingKey = null;
+    private static Texture2D _missingMouse = null;
+    private static readonly Dictionary<Key, Texture2D> _keyboardPrompts = new Dictionary<Key, Texture2D>();
+    private static readonly Dictionary<GamepadButton, Texture2D> _gamepadPrompts = new Dictionary<GamepadButton, Texture2D>();
+    private static readonly Dictionary<MouseButton, Texture2D> _mousePrompts = new Dictionary<MouseButton, Texture2D>();
 
     public static Texture2D GetKeyTexture(Key key)
     {
-        if (_instance == null)
-        {
-            Debug.LogError("ButtonIconManager doesn't exist");
-            return null;
-        }
+        if (_keyboardPrompts.ContainsKey(key)) return _keyboardPrompts[key];
 
-        if (_instance._keyboardPrompts.ContainsKey(key)) return _instance._keyboardPrompts[key];
-
-        if (key.ToString().Contains("Mouse")) return _instance._missingMouse;
-        else return _instance._missingKey;
+        if (key.ToString().Contains("Mouse")) return _missingMouse;
+        else return _missingKey;
     }
 
     public static Texture2D GetGamepadButtonTexture(GamepadButton gamepadButton)
     {
-        if (_instance == null)
-        {
-            Debug.LogError("ButtonIconManager doesn't exist");
-            return null;
-        }
+        if (_gamepadPrompts.ContainsKey(gamepadButton)) return _gamepadPrompts[gamepadButton];
 
-        if (_instance._gamepadPrompts.ContainsKey(gamepadButton)) return _instance._gamepadPrompts[gamepadButton];
-
-        return _instance._missingKey;
+        return _missingKey;
     }
 
     public static Texture2D GetMouseButtonTexture(MouseButton button)
     {
-        if (_instance == null)
-        {
-            Debug.LogError("ButtonIconManager doesn't exist");
-            return null;
-        }
+        if (_mousePrompts.ContainsKey(button)) return _mousePrompts[button];
 
-        if (_instance._mousePrompts.ContainsKey(button)) return _instance._mousePrompts[button];
-
-        return _instance._missingMouse;
+        return _missingMouse;
     }
 
     public static Sprite GetPromptSprite(InputManager.InputCommand command)
     {
-        if (_instance == null)
-        {
-            Debug.LogError("ButtonIconManager doesn't exist");
-            return null;
-        }
-
         Texture2D texture = null;
         if (InputManager.IsUsingGamepad() && InputManager.GamepadMapping.ContainsKey(command))
         {
@@ -101,7 +60,7 @@ public class ButtonIconManager : MonoBehaviour
         return Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(texture.width / 2f, texture.height / 2f));
     }
 
-    private void Init()
+    static ButtonIconManager()
     {
         Debug.Log($"Loading {nameof(ButtonIconManager)}");
         _missingKey = Resources.Load<Texture2D>("UI/Prompts/Keyboard & Mouse/Blanks/Blank_Black_Normal");
@@ -148,7 +107,7 @@ public class ButtonIconManager : MonoBehaviour
         }
     }
 
-    private string KeyToFileName(Key key)
+    private static string KeyToFileName(Key key)
     {
         switch (key)
         {
@@ -209,7 +168,7 @@ public class ButtonIconManager : MonoBehaviour
         }
     }
 
-    private string GamepadButtonToFileName(GamepadButton gamepadButton)
+    private static string GamepadButtonToFileName(GamepadButton gamepadButton)
     {
         switch(gamepadButton)
         {
@@ -243,7 +202,7 @@ public class ButtonIconManager : MonoBehaviour
                 return gamepadButton.ToString();
         }
     }
-    private string MouseButtonToFileName(MouseButton button)
+    private static string MouseButtonToFileName(MouseButton button)
     {
         switch(button)
         {
