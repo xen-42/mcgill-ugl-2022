@@ -157,10 +157,14 @@ public class Player : NetworkBehaviour
             var interactable = hitObject.GetComponent<Interactable>();
             var holdable = hitObject.GetComponent<Holdable>();
 
-            if (interactable != null && _interactableObject != hitObject)
+            if (interactable != null)
             {
-                _interactableObject = hit.collider.gameObject;
-                EventManager<InputManager.InputCommand>.TriggerEvent("PromptHit", InputManager.InputCommand.Interact);
+                // Only want to do this when its the first time
+                if(_interactableObject != hitObject)
+                {
+                    _interactableObject = hit.collider.gameObject;
+                    EventManager<InputManager.InputCommand>.TriggerEvent("PromptHit", InputManager.InputCommand.Interact);
+                }
 
                 if(InputManager.IsCommandJustPressed(InputManager.InputCommand.Interact))
                 {
@@ -169,11 +173,14 @@ public class Player : NetworkBehaviour
             }
 
             // Only want to do this stuff if its a holdable object and we aren't already holding something
-            if(holdable != null && _heldObject == null && _holdableObject != hitObject)
+            if(holdable != null && _heldObject == null)
             {
                 // We're holding nothing and haven't looked at this object yet
-                EventManager<InputManager.InputCommand>.TriggerEvent("PromptHit", InputManager.InputCommand.PickUp);
-                _holdableObject = hitObject;
+                if(_holdableObject != hitObject)
+                {
+                    EventManager<InputManager.InputCommand>.TriggerEvent("PromptHit", InputManager.InputCommand.PickUp);
+                    _holdableObject = hitObject;
+                }
 
                 // Want to make sure that when pressing the button to drop we don't immediately pick it back up
                 if (!droppingObjectFlag && InputManager.IsCommandJustPressed(InputManager.InputCommand.PickUp))
@@ -250,7 +257,7 @@ public class Player : NetworkBehaviour
         Debug.Log("Dropping");
         _heldObject.GetComponent<Holdable>().Parent = null;
         _heldObject.GetComponent<Collider>().enabled = true;
-        _heldObject.GetComponent<NetworkIdentity>().AssignClientAuthority(connectionToServer);
+        _heldObject.GetComponent<NetworkIdentity>().RemoveClientAuthority();
         _heldObject = null;
     }
 }
