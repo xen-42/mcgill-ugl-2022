@@ -2,7 +2,7 @@
 
 Team A!
 
-Controller input fix (do this or the controller won't work):
+### Controller input fix (do this or the controller won't work):
 
 Start the game (either from a build or in the Unity editor). 
 
@@ -11,6 +11,6 @@ Right click on "Spacewar" in Steam, then go Properties -> Controller, and select
 You'll have to restart the game (if you're running it from the editor you might have to restart that too).
 
 
-Notes:
+### Notes:
 
 In Visual Studio you can select all text in a file, then alt-k and alt-f to format it
