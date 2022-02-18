@@ -20,9 +20,13 @@ public class Holdable : NetworkBehaviour
     {
         if(Parent != null)
         {
-            _rb.isKinematic = true;
+            if(!_rb.isKinematic) _rb.isKinematic = true;
             transform.position = Parent.transform.position;
             transform.rotation = Parent.transform.rotation;
         }    
+        else
+        {
+            if (_rb.isKinematic) _rb.isKinematic = false;
+        }
     }
 }
