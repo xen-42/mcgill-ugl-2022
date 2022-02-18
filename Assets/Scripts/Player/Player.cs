@@ -14,8 +14,6 @@ public class Player : NetworkBehaviour
     float airDrag = 2f;
     float horizontalMovement;
     float verticalMovement;
-    Vector3 moveDirection;
-    Vector3 slopeMoveDirection;
     float movementMultiplier = 10f;
     [SerializeField] float airMultiplier = 0.4f;
     float playerHeight = 2f;
@@ -41,7 +39,6 @@ public class Player : NetworkBehaviour
     [SerializeField] float walkSpeed = 4f;
     [SerializeField] float runSpeed = 6f;
     [SerializeField] float acceleration = 10f;
-    bool isJumping;
 
     [Header("Interacting")]
     [SerializeField] GameObject heldItemPosition;
@@ -50,41 +47,17 @@ public class Player : NetworkBehaviour
     private Holdable _holdableObject;
     private Holdable _heldObject;
 
-    void ControlSpeed()
-    {
-        if (InputManager.IsCommandPressed(InputManager.InputCommand.Sprint) && isGrounded)
-        {
-            moveSpeed = Mathf.Lerp(moveSpeed, runSpeed, acceleration * Time.deltaTime);
-            cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, fastfov, fovaccel * Time.deltaTime);
-        }
-        else
-        {
-            moveSpeed = Mathf.Lerp(moveSpeed, walkSpeed, acceleration * Time.deltaTime);
-            cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, fov, fovaccel * Time.deltaTime);
-        }
-    }
-    private bool OnSlope()
-    {
-        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight / 2 + 0.5f))
-        {
-            if (slopeHit.normal != Vector3.up)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-        return false;
-    }
+    // Synced network stuff
+    [SyncVar] private Vector3 _movement;
+    [SyncVar] private bool _jump;
+    [SyncVar] private bool _sprint;
 
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
 
-        if(hasAuthority)
+        if (hasAuthority)
         {
             // This is the clients player so they will use it's camera
             cam.tag = "MainCamera";
@@ -95,53 +68,22 @@ public class Player : NetworkBehaviour
         }
     }
 
-    [Client]
     private void Update()
     {
         // We only want to check input on the objects we have authority for
         if (!hasAuthority) return;
 
-        //isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        // Physics stuff
+        var inputMovement = InputManager.GetMovementAxis();
+        var movement = orientation.forward* inputMovement.y + orientation.right * inputMovement.x;
 
-        isGrounded = Physics.Raycast(groundCheck.position, -Vector3.up, groundDistance + 0.1f);
+        var jump = InputManager.IsCommandPressed(InputManager.InputCommand.Jump);
 
-        //Calls the player's input
-        PlayerInput();
-        
-        PlayerDrag();
-        ControlSpeed();
+        var sprint = InputManager.IsCommandPressed(InputManager.InputCommand.Sprint);
 
-        if (InputManager.IsCommandPressed(InputManager.InputCommand.Jump) && isGrounded)
-        {
-            isJumping = true;
-        }
+        CmdSendInputs(movement, jump, sprint);
 
-        slopeMoveDirection = Vector3.ProjectOnPlane(moveDirection, slopeHit.normal);
-    }
-
-    [Client]
-    private void FixedUpdate(){
-        if (!hasAuthority) return;
-        MovePlayer();
-        if (isJumping){
-            Jump();
-        }
-    }
-
-
-    private void Jump()
-    {
-        rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
-        rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
-        isJumping = false;
-    }
-
-    private void PlayerInput()
-    {
-        var movement = InputManager.GetMovementAxis();
-
-        moveDirection = orientation.forward * movement.y + orientation.right * movement.x;
-
+        // Interaction stuff
         var droppingObjectFlag = false;
 
         if (_heldObject != null && InputManager.IsCommandJustPressed(InputManager.InputCommand.PickUp))
@@ -161,23 +103,23 @@ public class Player : NetworkBehaviour
             if (interactable != null)
             {
                 // Only want to do this when its the first time
-                if(_interactableObject != hitObject)
+                if (_interactableObject != hitObject)
                 {
                     _interactableObject = interactable;
                     EventManager<InputManager.InputCommand>.TriggerEvent("PromptHit", InputManager.InputCommand.Interact);
                 }
 
-                if(InputManager.IsCommandJustPressed(InputManager.InputCommand.Interact))
+                if (InputManager.IsCommandJustPressed(InputManager.InputCommand.Interact))
                 {
                     Debug.Log("Interact!");
                 }
             }
 
             // Only want to do this stuff if its a holdable object and we aren't already holding something
-            if(holdable != null && _heldObject == null)
+            if (holdable != null && _heldObject == null)
             {
                 // We're holding nothing and haven't looked at this object yet
-                if(_holdableObject != hitObject)
+                if (_holdableObject != hitObject)
                 {
                     EventManager<InputManager.InputCommand>.TriggerEvent("PromptHit", InputManager.InputCommand.PickUp);
                     _holdableObject = holdable;
@@ -214,6 +156,71 @@ public class Player : NetworkBehaviour
         }
     }
 
+    private void FixedUpdate()
+    {
+        if (!isServer) return;
+
+        isGrounded = Physics.Raycast(groundCheck.position, -Vector3.up, groundDistance + 0.1f);
+        PlayerDrag();
+        ControlSpeed();
+
+        if (_jump && isGrounded)
+        {
+            rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
+            rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
+            _jump = false;
+        }
+
+        var slopeMoveDirection = Vector3.ProjectOnPlane(_movement, slopeHit.normal);
+
+        if (isGrounded && !OnSlope())
+        {
+            rb.AddForce(_movement.normalized * moveSpeed * movementMultiplier, ForceMode.Acceleration);
+        }
+        else if (isGrounded && OnSlope())
+        {
+            rb.AddForce(slopeMoveDirection.normalized * moveSpeed * movementMultiplier, ForceMode.Acceleration);
+
+        }
+        else if (!isGrounded)
+        {
+            rb.AddForce(_movement.normalized * moveSpeed * movementMultiplier * airMultiplier, ForceMode.Acceleration);
+        }
+    }
+
+    [Server]
+    void ControlSpeed()
+    {
+        if (_sprint && isGrounded)
+        {
+            moveSpeed = Mathf.Lerp(moveSpeed, runSpeed, acceleration * Time.deltaTime);
+            cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, fastfov, fovaccel * Time.deltaTime);
+        }
+        else
+        {
+            moveSpeed = Mathf.Lerp(moveSpeed, walkSpeed, acceleration * Time.deltaTime);
+            cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, fov, fovaccel * Time.deltaTime);
+        }
+    }
+
+    [Server]
+    private bool OnSlope()
+    {
+        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight / 2 + 0.5f))
+        {
+            if (slopeHit.normal != Vector3.up)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        return false;
+    }
+
+    [Server]
     void PlayerDrag()
     {
         if (isGrounded)
@@ -226,21 +233,18 @@ public class Player : NetworkBehaviour
         }
     }
 
-    void MovePlayer()
+    [Command]
+    public void CmdSendInputs(Vector3 movement, bool jump, bool sprint)
     {
-        if (isGrounded && !OnSlope())
-        {
-            rb.AddForce(moveDirection.normalized * moveSpeed * movementMultiplier, ForceMode.Acceleration);
-        }
-        else if (isGrounded && OnSlope())
-        {
-            rb.AddForce(slopeMoveDirection.normalized * moveSpeed * movementMultiplier, ForceMode.Acceleration);
+        RpcSendInputs(movement, jump, sprint);
+    }
 
-        }
-        else if (!isGrounded)
-        {
-            rb.AddForce(moveDirection.normalized * moveSpeed * movementMultiplier * airMultiplier, ForceMode.Acceleration);
-        }
+    [ClientRpc]
+    private void RpcSendInputs(Vector3 movement, bool jump, bool sprint)
+    {
+        _movement = movement;
+        _jump = jump;
+        _sprint = sprint;
     }
 
     [Command]

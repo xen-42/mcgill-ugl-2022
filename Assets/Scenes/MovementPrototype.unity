@@ -435,7 +435,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh19746
+  m_Name: pb_Mesh38420
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1145,9 +1145,9 @@ GameObject:
   - component: {fileID: 879343046}
   - component: {fileID: 879343045}
   - component: {fileID: 879343044}
-  - component: {fileID: 879343043}
   - component: {fileID: 879343042}
   - component: {fileID: 879343041}
+  - component: {fileID: 879343043}
   m_Layer: 0
   m_Name: Cube (1)
   m_TagString: Untagged
@@ -1184,7 +1184,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   clientAuthority: 0
-  sendInterval: 0.05
+  sendInterval: 0.01
   syncPosition: 1
   syncRotation: 1
   syncScale: 0
@@ -1215,8 +1215,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83392ae5c1b731446909f252fd494ae4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncMode: 1
-  syncInterval: 0
+  syncMode: 0
+  syncInterval: 0.1
   target: {fileID: 879343045}
   clientAuthority: 0
   syncVelocity: 1
@@ -1391,7 +1391,7 @@ MonoBehaviour:
   autoCreatePlayer: 1
   playerSpawnMethod: 0
   spawnPrefabs: []
-  transportType: 1
+  transportType: 0
   steamNetworkUI: {fileID: 1496042041}
 --- !u!4 &880166889
 Transform:
@@ -4179,8 +4179,8 @@ GameObject:
   - component: {fileID: 1844470469}
   - component: {fileID: 1844470474}
   - component: {fileID: 1844470473}
-  - component: {fileID: 1844470468}
   - component: {fileID: 1844470475}
+  - component: {fileID: 1844470468}
   - component: {fileID: 1844470476}
   - component: {fileID: 1844470477}
   m_Layer: 0
@@ -4202,7 +4202,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83392ae5c1b731446909f252fd494ae4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncMode: 1
+  syncMode: 0
   syncInterval: 0
   target: {fileID: 1844470474}
   clientAuthority: 0
@@ -4336,7 +4336,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   clientAuthority: 0
-  sendInterval: 0.05
+  sendInterval: 0.01
   syncPosition: 1
   syncRotation: 1
   syncScale: 0
@@ -4368,7 +4368,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
-  syncInterval: 0.1
+  syncInterval: 0
 --- !u!114 &1844470477
 MonoBehaviour:
   m_ObjectHideFlags: 0

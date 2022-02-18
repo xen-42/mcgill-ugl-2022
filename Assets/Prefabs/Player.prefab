@@ -243,6 +243,7 @@ GameObject:
   - component: {fileID: 4481484670218387115}
   - component: {fileID: 1162329230330941299}
   - component: {fileID: 205656535896415437}
+  - component: {fileID: 6594114755448853076}
   - component: {fileID: 4481484670218387114}
   - component: {fileID: 4481484670218387117}
   m_Layer: 0
@@ -317,8 +318,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  clientAuthority: 1
-  sendInterval: 0.05
+  clientAuthority: 0
+  sendInterval: 0.01
   syncPosition: 1
   syncRotation: 1
   syncScale: 0
@@ -331,12 +332,34 @@ MonoBehaviour:
   catchupMultiplier: 0.1
   onlySyncOnChange: 1
   bufferResetMultiplier: 5
-  positionSensitivity: 0.01
-  rotationSensitivity: 0.01
-  scaleSensitivity: 0.01
+  positionSensitivity: 0.001
+  rotationSensitivity: 0.001
+  scaleSensitivity: 0.001
   showGizmos: 0
   showOverlay: 0
   overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+--- !u!114 &6594114755448853076
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4481484670218387116}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 83392ae5c1b731446909f252fd494ae4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  target: {fileID: 4481484670218387115}
+  clientAuthority: 0
+  syncVelocity: 1
+  clearVelocity: 0
+  velocitySensitivity: 0.1
+  syncAngularVelocity: 1
+  clearAngularVelocity: 0
+  angularVelocitySensitivity: 0.1
 --- !u!114 &4481484670218387114
 MonoBehaviour:
   m_ObjectHideFlags: 0
