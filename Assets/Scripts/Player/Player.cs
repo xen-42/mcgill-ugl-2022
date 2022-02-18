@@ -46,9 +46,9 @@ public class Player : NetworkBehaviour
     [Header("Interacting")]
     [SerializeField] GameObject heldItemPosition;
 
-    private GameObject _interactableObject;
-    private GameObject _holdableObject;
-    private GameObject _heldObject;
+    private Interactable _interactableObject;
+    private Holdable _holdableObject;
+    private Holdable _heldObject;
 
     void ControlSpeed()
     {
@@ -129,14 +129,14 @@ public class Player : NetworkBehaviour
     }
 
 
-    void Jump()
+    private void Jump()
     {
         rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
         rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
         isJumping = false;
     }
 
-    void PlayerInput()
+    private void PlayerInput()
     {
         var movement = InputManager.GetMovementAxis();
 
@@ -147,6 +147,7 @@ public class Player : NetworkBehaviour
         if (_heldObject != null && InputManager.IsCommandJustPressed(InputManager.InputCommand.PickUp))
         {
             droppingObjectFlag = true;
+            Debug.Log("Dropping");
             CmdDrop();
         }
 
@@ -162,7 +163,7 @@ public class Player : NetworkBehaviour
                 // Only want to do this when its the first time
                 if(_interactableObject != hitObject)
                 {
-                    _interactableObject = hit.collider.gameObject;
+                    _interactableObject = interactable;
                     EventManager<InputManager.InputCommand>.TriggerEvent("PromptHit", InputManager.InputCommand.Interact);
                 }
 
@@ -179,13 +180,14 @@ public class Player : NetworkBehaviour
                 if(_holdableObject != hitObject)
                 {
                     EventManager<InputManager.InputCommand>.TriggerEvent("PromptHit", InputManager.InputCommand.PickUp);
-                    _holdableObject = hitObject;
+                    _holdableObject = holdable;
                 }
 
                 // Want to make sure that when pressing the button to drop we don't immediately pick it back up
                 if (!droppingObjectFlag && InputManager.IsCommandJustPressed(InputManager.InputCommand.PickUp))
                 {
-                    CmdGrab(hitObject);
+                    Debug.Log("Grabbing");
+                    CmdGrab(holdable);
 
                     // Stop tracking that we could hold it since we are holding it
                     _holdableObject = null;
@@ -242,22 +244,28 @@ public class Player : NetworkBehaviour
     }
 
     [Command]
-    public void CmdGrab(GameObject target)
+    public void CmdGrab(Holdable target)
     {
-        Debug.Log("Grabbing");
+        RpcGrab(target);
+    }
+
+    [ClientRpc]
+    private void RpcGrab(Holdable target)
+    {
+        target.Grab(this);
         _heldObject = target;
-        _heldObject.GetComponent<NetworkIdentity>().AssignClientAuthority(connectionToClient);
-        _heldObject.GetComponent<Holdable>().Parent = gameObject;
-        _heldObject.GetComponent<Collider>().enabled = false;
     }
 
     [Command]
     public void CmdDrop()
     {
-        Debug.Log("Dropping");
-        _heldObject.GetComponent<Holdable>().Parent = null;
-        _heldObject.GetComponent<Collider>().enabled = true;
-        _heldObject.GetComponent<NetworkIdentity>().RemoveClientAuthority();
+        RpcDrop();
+    }
+
+    [ClientRpc]
+    private void RpcDrop()
+    {
+        _heldObject.Drop();
         _heldObject = null;
     }
 }
