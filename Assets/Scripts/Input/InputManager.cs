@@ -71,7 +71,10 @@ public static class InputManager
 
     public static bool IsUsingGamepad()
     {
-        return _lastInputType == InputType.GamepadInput;
+        var gamepad = IsAnyGamepadButtonPressed();
+        //var keyboard = Keyboard.current != null && Keyboard.current.anyKey.isPressed;
+        
+        return gamepad || _lastInputType == InputType.GamepadInput;
     }
 
     public static Vector2 GetMovementAxis()
@@ -120,13 +123,21 @@ public static class InputManager
         return movement;
     }
 
-    #region Pressed
-
-    private static bool IsAnyKeyPressed()
+    public static Vector2 GetCursorPosition()
     {
-        if (Keyboard.current != null && Keyboard.current.anyKey.IsPressed())
-            return true;
+        if(IsUsingGamepad() && GamepadCursor.Instance != null)
+        {
+            return GamepadCursor.Instance.Position;
+        }
+        else
+        {
+            return Mouse.current.position.ReadValue();
+        }
+    }
 
+    #region Pressed
+    private static bool IsAnyGamepadButtonPressed()
+    {
         if (Gamepad.current != null)
         {
             foreach (var control in Gamepad.current.allControls)
@@ -137,6 +148,15 @@ public static class InputManager
                 }
             }
         }
+        return false;
+    }
+
+    private static bool IsAnyKeyPressed()
+    {
+        if (Keyboard.current != null && Keyboard.current.anyKey.IsPressed())
+            return true;
+
+        if (IsAnyGamepadButtonPressed()) return true;
 
         if (Mouse.current != null)
         {
