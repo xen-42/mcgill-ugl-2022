@@ -5,6 +5,8 @@ using UnityEngine.Audio;
 using UnityEngine.UI;
 
 public class OptionsMenu : MonoBehaviour{
+    public static bool GamePaused = false;
+    public GameObject pauseMenuUI;
     public AudioMixer audioMixer;
     public Dropdown resolutionDropdown;
     Resolution[] resolutions;
@@ -44,5 +46,27 @@ public class OptionsMenu : MonoBehaviour{
     public void SetResolution(int resolutionIndex){
         Resolution resolution = resolutions[resolutionIndex];
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
+    }
+
+     void Update() {
+        //Checks if the game is paused or not
+        if (Input.GetKeyDown(KeyCode.Escape)){
+            if (GamePaused){
+                Resume();
+            
+            }else{
+                Pause();
+            }
+        }
+    }
+
+    void Resume(){
+        pauseMenuUI.SetActive(false);
+        GamePaused = false;
+    }
+
+    void Pause(){
+        pauseMenuUI.SetActive(true);
+        GamePaused = true;
     }
 }
