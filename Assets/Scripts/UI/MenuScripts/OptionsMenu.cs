@@ -60,7 +60,7 @@ public class OptionsMenu : MonoBehaviour{
         }
     }
 
-    void Resume(){
+    public void Resume(){
         pauseMenuUI.SetActive(false);
         GamePaused = false;
     }
@@ -68,5 +68,13 @@ public class OptionsMenu : MonoBehaviour{
     void Pause(){
         pauseMenuUI.SetActive(true);
         GamePaused = true;
+    }
+
+    public void LoadMenu(){
+        
+    }
+
+    public void QuitGame(){
+
     }
 }
