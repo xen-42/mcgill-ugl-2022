@@ -9,20 +9,14 @@ public class Hoverable2D : MonoBehaviour
 
     public bool IsCursorHovering()
     {
-        PointerEventData eventData = new PointerEventData(EventSystem.current);
-        eventData.position = Input.mousePosition;
-        List<RaycastResult> raysastResults = new List<RaycastResult>();
-        EventSystem.current.RaycastAll(eventData, raysastResults);
+        Ray ray = Camera.main.ScreenPointToRay(InputManager.GetCursorPosition());
+        RaycastHit2D hit = Physics2D.GetRayIntersection(ray, Mathf.Infinity);
 
-        for (int index = 0; index < raysastResults.Count; index++)
+        if (hit.collider?.transform == transform)
         {
-            RaycastResult curRaysastResult = raysastResults[index];
-            if (curRaysastResult.gameObject == gameObject)
-            {
-                if (!_hovering) OnStartHover();
-                _hovering = true;
-                return true;
-            }
+            if(_hovering == false) OnStartHover();
+            _hovering = true;
+            return true;
         }
 
         if (_hovering) OnStopHover();

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,16 +6,15 @@ using UnityEngine.InputSystem;
 
 public class Holdable2D : Hoverable2D
 {
-    private RectTransform _rt;
     private bool _isHeld;
+    public bool IsHeld { get { return _isHeld; } }
+    private Plane _plane;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Awake()
     {
-        _rt = GetComponent<RectTransform>();
+        _plane = new Plane(transform.forward, transform.position);      
     }
 
-    // Update is called once per frame
     void Update()
     {
         var isHovering = IsCursorHovering();
@@ -31,7 +31,11 @@ public class Holdable2D : Hoverable2D
                 _isHeld = false;
             }
 
-            _rt.position = InputManager.GetCursorPosition();
+            var mousePos = InputManager.GetCursorPosition();
+            var zDistance = Math.Abs(_plane.GetDistanceToPoint(Camera.main.transform.position));
+            var screenPos = new Vector3(mousePos.x, mousePos.y, zDistance);
+
+            transform.localPosition = Camera.main.ScreenToWorldPoint(screenPos);
         }
     }
 
