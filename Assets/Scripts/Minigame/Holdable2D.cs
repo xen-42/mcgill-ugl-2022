@@ -10,11 +10,6 @@ public class Holdable2D : Hoverable2D
     public bool IsHeld { get { return _isHeld; } }
     private Plane _plane;
 
-    private void Awake()
-    {
-
-    }
-
     void Update()
     {
         var isHovering = IsCursorHovering();
@@ -36,12 +31,7 @@ public class Holdable2D : Hoverable2D
             _plane = new Plane(Camera.main.transform.forward, transform.parent.position);
             _plane.Raycast(ray, out float dist);
 
-            Debug.Log(dist);
-
             var pos = ray.GetPoint(dist);
-
-            //var localPos = transform.parent.transform.InverseTransformPoint(pos);
-            //localPos.z = 0;
 
             transform.position = pos;
         }

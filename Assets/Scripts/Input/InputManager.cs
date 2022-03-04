@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -38,7 +39,7 @@ public static class InputManager
         { InputCommand.Interact, GamepadButton.West },
         { InputCommand.Jump, GamepadButton.South },
         { InputCommand.Sprint, GamepadButton.LeftStick },
-        { InputCommand.PickUp, GamepadButton.West },
+        { InputCommand.PickUp, GamepadButton.North },
         { InputCommand.Back, GamepadButton.East }
     };
 
@@ -79,30 +80,37 @@ public static class InputManager
             {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
+                if(GamepadCursor.Instance != null) GamepadCursor.Instance.Position = new Vector2(Screen.width / 2, Screen.height / 2);
             }
         }
     }
     private static InputMode _currentInputMode = InputMode.UI;
-
-    // Could extend this later to include other gamepad types
-    private enum InputType
-    {
-        KeyboardAndMouseInput,
-        GamepadInput
-    }
-    private static InputType _lastInputType = InputType.KeyboardAndMouseInput;
 
     public static bool IsGamepadEnabled()
     {
         return Gamepad.all.Count > 0;
     }
 
+    private static bool _isUsingGamepad = false;
     public static bool IsUsingGamepad()
     {
-        var gamepad = IsAnyGamepadButtonPressed();
-        //var keyboard = Keyboard.current != null && Keyboard.current.anyKey.isPressed;
-        
-        return gamepad || _lastInputType == InputType.GamepadInput;
+        // This is probably like, really slow
+        if (IsAnyGamepadButtonPressed())
+        {
+            _isUsingGamepad = true;
+            return true;
+        }
+        if (IsAnyKeyPressed())
+        {
+            _isUsingGamepad = false;
+            return false;
+        }
+
+        // Double check with these
+        GetMovementAxis();
+        GetLookAxis();
+
+        return _isUsingGamepad;
     }
 
     public static Vector2 GetMovementAxis()
@@ -117,14 +125,14 @@ public static class InputManager
 
             var keyboardMovement = new Vector2(right - left, up - down);
 
-            if(keyboardMovement != Vector2.zero) _lastInputType = InputType.KeyboardAndMouseInput;
+            if (keyboardMovement != Vector2.zero) _isUsingGamepad = false;
 
             movement += keyboardMovement;
         }
         if (Gamepad.current != null)
         {
             var gamepadMovement = Gamepad.current.leftStick.ReadValue();
-            if (gamepadMovement != Vector2.zero) _lastInputType = InputType.GamepadInput;
+            if (gamepadMovement != Vector2.zero) _isUsingGamepad = true;
             movement += gamepadMovement;
         }
 
@@ -138,13 +146,13 @@ public static class InputManager
         {
             var keyboardMovement = new Vector2(Mouse.current.delta.x.ReadValue(), Mouse.current.delta.y.ReadValue());
 
-            if(keyboardMovement != Vector2.zero) _lastInputType = InputType.KeyboardAndMouseInput;
+            if(keyboardMovement != Vector2.zero) _isUsingGamepad = false;
             movement += keyboardMovement;
         }
         if(Gamepad.current != null)
         {
             var gamepadMovement = Gamepad.current.rightStick.ReadValue();
-            if(gamepadMovement != Vector2.zero) _lastInputType = InputType.GamepadInput;
+            if(gamepadMovement != Vector2.zero) _isUsingGamepad = true;
             movement += gamepadMovement;
         }
 
@@ -153,7 +161,7 @@ public static class InputManager
 
     public static Vector2 GetCursorPosition()
     {
-        if(IsUsingGamepad() && GamepadCursor.Instance != null)
+        if(GamepadCursor.Instance != null)
         {
             return GamepadCursor.Instance.Position;
         }
@@ -182,15 +190,15 @@ public static class InputManager
     private static bool IsAnyKeyPressed()
     {
         if (Keyboard.current != null && Keyboard.current.anyKey.IsPressed())
+        {
             return true;
-
-        if (IsAnyGamepadButtonPressed()) return true;
+        }
 
         if (Mouse.current != null)
         {
-            foreach (var control in Mouse.current.allControls)
+            foreach (var button in Enum.GetValues(typeof(MouseButton)))
             {
-                if (control.IsPressed())
+                if ((Mouse.current[button.ToString().ToLower() + "Button"] as ButtonControl).wasPressedThisFrame)
                 {
                     return true;
                 }
@@ -204,7 +212,7 @@ public static class InputManager
     {
         if (command == InputCommand.Any)
         {
-            return IsAnyKeyPressed();
+            return IsAnyKeyPressed() || IsAnyGamepadButtonPressed();
         }
 
         if (_gamepadMappings.ContainsKey(command))
@@ -235,7 +243,9 @@ public static class InputManager
     private static bool IsAnyKeyJustPressed()
     {
         if (Keyboard.current != null && Keyboard.current.anyKey.wasPressedThisFrame)
+        {
             return true;
+        }
 
         if (Gamepad.current != null)
         {

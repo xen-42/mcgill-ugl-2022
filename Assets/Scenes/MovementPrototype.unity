@@ -4155,14 +4155,24 @@ MonoBehaviour:
   m_GameObject: {fileID: 1844470467}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e4a42c299be32a4a8be72f65ad8d3fa, type: 3}
+  m_Script: {fileID: 11500000, guid: 149ad4d7b6b25334cba1a9a859ac1ac3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onInteract:
+  OnInteract:
     m_PersistentCalls:
-      m_Calls: []
-  ID: 0
-  interactIcon: {fileID: 0}
+      m_Calls:
+      - m_Target: {fileID: 1692160699}
+        m_TargetAssemblyTypeName: MinigameManager, Assembly-CSharp
+        m_MethodName: StartMinigame
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 796745773547017806, guid: 862c3368c3a09a8419c7ccc571bd3ee1, type: 3}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &1924095855
 GameObject:
   m_ObjectHideFlags: 0
@@ -4331,10 +4341,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 2049106210}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5e4a42c299be32a4a8be72f65ad8d3fa, type: 3}
+  m_Script: {fileID: 11500000, guid: f410bb3b6283fea4eaf52f3aae1d66c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  onInteract:
+  MinigamePrefab: {fileID: 796745773547017806, guid: 862c3368c3a09a8419c7ccc571bd3ee1, type: 3}
+  OnCompleteMinigame:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1692160699}
@@ -4349,8 +4360,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  ID: 0
-  interactIcon: {fileID: 0}
 --- !u!65 &2049106213
 BoxCollider:
   m_ObjectHideFlags: 0
