@@ -61,6 +61,7 @@ public class Player : NetworkBehaviour
         {
             // This is the clients player so they will use it's camera
             cam.tag = "MainCamera";
+            InputManager.CurrentInputMode = InputManager.InputMode.Player;
         }
         else
         {
@@ -70,8 +71,16 @@ public class Player : NetworkBehaviour
 
     private void Update()
     {
+        // We only check for inputs in here
+
         // We only want to check input on the objects we have authority for
         if (!hasAuthority) return;
+
+        // If we're paused or in a minigame we cant control the player
+        if (InputManager.CurrentInputMode != InputManager.InputMode.Player)
+        {
+            return;
+        }
 
         // Physics stuff
         var inputMovement = InputManager.GetMovementAxis();
@@ -111,7 +120,8 @@ public class Player : NetworkBehaviour
 
                 if (InputManager.IsCommandJustPressed(InputManager.InputCommand.Interact))
                 {
-                    Debug.Log("Interact!");
+                    interactable.Interact();
+                    EventManager<InputManager.InputCommand>.TriggerEvent("PromptLost", InputManager.InputCommand.Interact);
                 }
             }
 

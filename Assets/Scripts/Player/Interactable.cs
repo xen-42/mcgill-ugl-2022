@@ -13,9 +13,8 @@ public class Interactable : MonoBehaviour
         ID = Random.Range(0,999999);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Interact()
     {
-        
+        onInteract.Invoke();
     }
 }

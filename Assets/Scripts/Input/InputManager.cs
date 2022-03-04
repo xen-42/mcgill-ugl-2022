@@ -16,7 +16,8 @@ public static class InputManager
         Interact,
         Jump,
         Sprint,
-        PickUp
+        PickUp,
+        Back
     }
 
     private static Dictionary<InputCommand, Key> _keyboardMappings = new Dictionary<InputCommand, Key>() 
@@ -24,6 +25,7 @@ public static class InputManager
         { InputCommand.Interact, Key.E },
         { InputCommand.Jump, Key.Space },
         { InputCommand.Sprint, Key.LeftShift },
+        { InputCommand.Back, Key.Tab }
     };
 
     private static Dictionary<InputCommand, MouseButton> _mouseMappings = new Dictionary<InputCommand, MouseButton>()
@@ -36,7 +38,8 @@ public static class InputManager
         { InputCommand.Interact, GamepadButton.West },
         { InputCommand.Jump, GamepadButton.South },
         { InputCommand.Sprint, GamepadButton.LeftStick },
-        { InputCommand.PickUp, GamepadButton.West }
+        { InputCommand.PickUp, GamepadButton.West },
+        { InputCommand.Back, GamepadButton.East }
     };
 
     public static Dictionary<InputCommand, Key> KeyboardMappings
@@ -56,6 +59,31 @@ public static class InputManager
 
     #endregion Key bindings
 
+    public enum InputMode
+    {
+        Player,
+        Minigame,
+        UI
+    }
+
+    // Should be careful when changing this
+    public static InputMode CurrentInputMode
+    {
+        get { return _currentInputMode; }
+        set
+        {
+            Debug.Log($"Changing InputMode to {value}");
+            _currentInputMode = value;
+            if (_currentInputMode == InputMode.Player) Cursor.lockState = CursorLockMode.Locked;
+            else
+            {
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+        }
+    }
+    private static InputMode _currentInputMode = InputMode.UI;
+
     // Could extend this later to include other gamepad types
     private enum InputType
     {
@@ -71,7 +99,10 @@ public static class InputManager
 
     public static bool IsUsingGamepad()
     {
-        return _lastInputType == InputType.GamepadInput;
+        var gamepad = IsAnyGamepadButtonPressed();
+        //var keyboard = Keyboard.current != null && Keyboard.current.anyKey.isPressed;
+        
+        return gamepad || _lastInputType == InputType.GamepadInput;
     }
 
     public static Vector2 GetMovementAxis()
@@ -120,13 +151,21 @@ public static class InputManager
         return movement;
     }
 
-    #region Pressed
-
-    private static bool IsAnyKeyPressed()
+    public static Vector2 GetCursorPosition()
     {
-        if (Keyboard.current != null && Keyboard.current.anyKey.IsPressed())
-            return true;
+        if(IsUsingGamepad() && GamepadCursor.Instance != null)
+        {
+            return GamepadCursor.Instance.Position;
+        }
+        else
+        {
+            return Mouse.current.position.ReadValue();
+        }
+    }
 
+    #region Pressed
+    private static bool IsAnyGamepadButtonPressed()
+    {
         if (Gamepad.current != null)
         {
             foreach (var control in Gamepad.current.allControls)
@@ -137,6 +176,15 @@ public static class InputManager
                 }
             }
         }
+        return false;
+    }
+
+    private static bool IsAnyKeyPressed()
+    {
+        if (Keyboard.current != null && Keyboard.current.anyKey.IsPressed())
+            return true;
+
+        if (IsAnyGamepadButtonPressed()) return true;
 
         if (Mouse.current != null)
         {
