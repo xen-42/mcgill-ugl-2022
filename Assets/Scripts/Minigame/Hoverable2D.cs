@@ -7,16 +7,23 @@ public class Hoverable2D : MonoBehaviour
 {
     private bool _hovering = false;
 
+    private void OnDestroy()
+    {
+        if (_hovering) OnStopHover();
+    }
+
     public bool IsCursorHovering()
     {
         Ray ray = Camera.main.ScreenPointToRay(InputManager.GetCursorPosition());
-        RaycastHit2D hit = Physics2D.GetRayIntersection(ray, Mathf.Infinity);
 
-        if (hit.collider?.transform == transform)
+        if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, 1 << (LayerMask.NameToLayer("Minigame"))))
         {
-            if(_hovering == false) OnStartHover();
-            _hovering = true;
-            return true;
+            if(hit.collider.transform == transform)
+            {
+                if (_hovering == false) OnStartHover();
+                _hovering = true;
+                return true;
+            }
         }
 
         if (_hovering) OnStopHover();

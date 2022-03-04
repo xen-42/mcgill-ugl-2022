@@ -12,7 +12,7 @@ public class Holdable2D : Hoverable2D
 
     private void Awake()
     {
-        _plane = new Plane(transform.forward, transform.position);      
+
     }
 
     void Update()
@@ -31,11 +31,19 @@ public class Holdable2D : Hoverable2D
                 _isHeld = false;
             }
 
-            var mousePos = InputManager.GetCursorPosition();
-            var zDistance = Math.Abs(_plane.GetDistanceToPoint(Camera.main.transform.position));
-            var screenPos = new Vector3(mousePos.x, mousePos.y, zDistance);
+            Ray ray = Camera.main.ScreenPointToRay(InputManager.GetCursorPosition());
 
-            transform.localPosition = Camera.main.ScreenToWorldPoint(screenPos);
+            _plane = new Plane(Camera.main.transform.forward, transform.parent.position);
+            _plane.Raycast(ray, out float dist);
+
+            Debug.Log(dist);
+
+            var pos = ray.GetPoint(dist);
+
+            //var localPos = transform.parent.transform.InverseTransformPoint(pos);
+            //localPos.z = 0;
+
+            transform.position = pos;
         }
     }
 

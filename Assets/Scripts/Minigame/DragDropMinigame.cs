@@ -8,18 +8,18 @@ public class DragDropMinigame : Minigame
     public Holdable2D holdableObject;
 
     [SerializeField]
-    public Collider2D dropCollider;
-    private Collider2D _heldCollider;
+    public Collider dropCollider;
+    private Collider _heldCollider;
 
     private void Awake()
     {
-        _heldCollider = holdableObject.GetComponent<Collider2D>();    
+        _heldCollider = holdableObject.GetComponent<Collider>();    
     }
 
     void Update()
     {
         // Check for completion
-        if(!holdableObject.IsHeld && Physics2D.IsTouching(dropCollider, _heldCollider))
+        if(!holdableObject.IsHeld && dropCollider.bounds.Intersects(_heldCollider.bounds))
         {
             CompleteMinigame();
         }
