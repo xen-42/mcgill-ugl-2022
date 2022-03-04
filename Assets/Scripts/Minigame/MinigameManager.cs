@@ -4,9 +4,16 @@ using UnityEngine;
 
 public class MinigameManager : MonoBehaviour
 {
+    public static MinigameManager Instance { get; private set; }
+
     private Minigame _currentMinigame;
 
-    public void StartMinigame(GameObject minigame)
+    private void Awake()
+    {
+        Instance = this;   
+    }
+
+    public void StartMinigame(GameObject minigame, out Minigame returnMinigame)
     {
         var newMinigame = Instantiate(minigame, Camera.main.transform);
 
@@ -16,6 +23,12 @@ public class MinigameManager : MonoBehaviour
         newMinigame.transform.localScale = Vector3.one * z / 10f;
 
         _currentMinigame = newMinigame.GetComponent<Minigame>();
+        returnMinigame = _currentMinigame;
+    }
+
+    public void StartMinigame(GameObject minigame)
+    {
+        StartMinigame(minigame, out var _);
     }
 
     public void StopMinigame()

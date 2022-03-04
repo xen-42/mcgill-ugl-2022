@@ -15,6 +15,7 @@ public class GamepadCursor : MonoBehaviour
     public Vector2 Position
     {
         get { return _position; }
+        set { _position = value; Mouse.current.WarpCursorPosition(_position); }
     }
 
     private void Awake()
