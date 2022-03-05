@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private float sensX;
-    [SerializeField] private float sensY;
+    [SerializeField] public float sensX;
+    [SerializeField] public float sensY;
 
     [SerializeField] Transform cam;
     [SerializeField] Transform orientation;

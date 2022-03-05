@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class OptionsMenu : MonoBehaviour{
     public static bool GamePaused = false;
@@ -11,7 +12,9 @@ public class OptionsMenu : MonoBehaviour{
     public Dropdown resolutionDropdown;
     Resolution[] resolutions;
     int currentResolutionIndex = 0;
+    public GameObject playercharacter;
     void Start(){
+
         //Get array of resolutions
         resolutions = Screen.resolutions;
         resolutionDropdown.ClearOptions();
@@ -33,6 +36,11 @@ public class OptionsMenu : MonoBehaviour{
         //Used in the slider
         audioMixer.SetFloat("volume", volume);
     }
+    public void SetMouseSensitiity(float sens){
+        GameObject.Find("Player [connId=0]").GetComponent<CameraController>().sensX = sens;
+        GameObject.Find("Player [connId=0]").GetComponent<CameraController>().sensY = sens;
+
+    }  
 
     public void SetQuality(int qualityIndex){
         //Pass in int that corresponds to a qualtiy level in Unity
@@ -62,11 +70,13 @@ public class OptionsMenu : MonoBehaviour{
 
     public void Resume(){
         pauseMenuUI.SetActive(false);
+        Cursor.lockState = CursorLockMode.Locked;
         GamePaused = false;
     }
 
     void Pause(){
         pauseMenuUI.SetActive(true);
+        Cursor.lockState = CursorLockMode.None;
         GamePaused = true;
     }
 
@@ -74,7 +84,8 @@ public class OptionsMenu : MonoBehaviour{
         
     }
 
-    public void QuitGame(){
+    public void ReturnToMainMenu(){
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
 
     }
 }
