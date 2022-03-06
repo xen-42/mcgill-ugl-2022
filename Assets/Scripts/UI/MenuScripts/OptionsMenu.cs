@@ -13,6 +13,9 @@ public class OptionsMenu : MonoBehaviour{
     Resolution[] resolutions;
     int currentResolutionIndex = 0;
     public GameObject playercharacter;
+
+    private InputManager.InputMode _lastInputMode = InputManager.InputMode.Player;
+
     void Start(){
 
         //Get array of resolutions
@@ -70,13 +73,14 @@ public class OptionsMenu : MonoBehaviour{
 
     public void Resume(){
         pauseMenuUI.SetActive(false);
-        Cursor.lockState = CursorLockMode.Locked;
+        InputManager.CurrentInputMode = _lastInputMode;
         GamePaused = false;
     }
 
     void Pause(){
         pauseMenuUI.SetActive(true);
-        Cursor.lockState = CursorLockMode.None;
+        _lastInputMode = InputManager.CurrentInputMode;
+        InputManager.CurrentInputMode = InputManager.InputMode.UI;
         GamePaused = true;
     }
 
