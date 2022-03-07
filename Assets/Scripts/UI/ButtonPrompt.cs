@@ -11,6 +11,25 @@ public class ButtonPrompt : MonoBehaviour
 
     public PromptInfo Info { get; private set; }
 
+    private void Awake()
+    {
+        EventManager.AddListener("ChangedController", OnChangedController);
+    }
+
+    private void OnDestroy()
+    {
+        EventManager.RemoveListener("ChangedController", OnChangedController);
+    }
+
+    private void OnChangedController()
+    {
+        // Refresh the sprites
+        if(_image?.sprite != null)
+        {
+            _image.sprite = ButtonIconManager.GetPromptSprite(Info.Command);
+        }
+    }
+
     public void Init(PromptInfo info)
     {
         Info = info;

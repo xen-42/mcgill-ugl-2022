@@ -15,6 +15,7 @@ public class MinigameInteractable : Interactable
     {
         // When the player interacts with this object it'll start the minigame
         _event.AddListener(() => {
+            IsInteractable = false;
             MinigameManager.Instance.StartMinigame(MinigamePrefab, out var minigame);
             minigame.OnCompleteMinigame.AddListener(() => OnCompleteMinigame.Invoke());
         });

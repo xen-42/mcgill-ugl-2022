@@ -94,21 +94,32 @@ public static class InputManager
     private static bool _isUsingGamepad = false;
     public static bool IsUsingGamepad()
     {
+        var wasUsingGamepad = _isUsingGamepad;
+        var flag = false;
+
         // This is probably like, really slow
         if (IsAnyGamepadButtonPressed())
         {
             _isUsingGamepad = true;
-            return true;
+            flag = true;
         }
-        if (IsAnyKeyPressed())
+        if (!flag && IsAnyKeyPressed())
         {
             _isUsingGamepad = false;
-            return false;
+            flag = true;
         }
 
-        // Double check with these
-        GetMovementAxis();
-        GetLookAxis();
+        if(!flag)
+        {
+            // Double check with these
+            GetMovementAxis();
+            GetLookAxis();
+        }
+
+        if(wasUsingGamepad != _isUsingGamepad)
+        {
+            EventManager.TriggerEvent("ChangedController");
+        }
 
         return _isUsingGamepad;
     }
@@ -258,7 +269,6 @@ public static class InputManager
             }
         }
 
-        /*
         if (Mouse.current != null)
         {
             foreach (ButtonControl control in Mouse.current.allControls)
@@ -269,7 +279,6 @@ public static class InputManager
                 }
             }
         }
-        */
 
         return false;
     }
