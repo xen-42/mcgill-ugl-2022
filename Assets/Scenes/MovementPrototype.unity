@@ -229,7 +229,6 @@ GameObject:
   - component: {fileID: 49593163}
   - component: {fileID: 49593166}
   - component: {fileID: 49593165}
-  - component: {fileID: 49593164}
   m_Layer: 6
   m_Name: WateredState
   m_TagString: Untagged
@@ -251,19 +250,6 @@ Transform:
   m_Father: {fileID: 682651367}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &49593164
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 49593162}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &49593165
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -889,7 +875,6 @@ GameObject:
   - component: {fileID: 559320013}
   - component: {fileID: 559320016}
   - component: {fileID: 559320015}
-  - component: {fileID: 559320014}
   m_Layer: 6
   m_Name: DryState
   m_TagString: Untagged
@@ -911,19 +896,6 @@ Transform:
   m_Father: {fileID: 682651367}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!65 &559320014
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 559320012}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &559320015
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -1063,6 +1035,7 @@ GameObject:
   - component: {fileID: 682651367}
   - component: {fileID: 682651366}
   - component: {fileID: 682651365}
+  - component: {fileID: 682651368}
   m_Layer: 6
   m_Name: FlowerPot
   m_TagString: Untagged
@@ -1082,10 +1055,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f410bb3b6283fea4eaf52f3aae1d66c8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MinigamePrefab: {fileID: 0}
+  MinigamePrefab: {fileID: 796745773547017806, guid: 7d5d4b7cee72a6f4b8d1d5c1d85ed314, type: 3}
   OnCompleteMinigame:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 682651366}
+        m_TargetAssemblyTypeName: StateSwapper, Assembly-CSharp
+        m_MethodName: SwitchState
+        m_Mode: 2
+        m_Arguments:
+          m_ObjectArgument: {fileID: 49593162}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &682651366
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1114,6 +1099,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 10
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &682651368
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 682651364}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &730177576
 GameObject:
   m_ObjectHideFlags: 0
