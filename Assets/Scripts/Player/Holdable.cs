@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Holdable : NetworkBehaviour
+public class Holdable : Interactable
 {
     [SyncVar]
     private GameObject _parent;
@@ -12,46 +12,58 @@ public class Holdable : NetworkBehaviour
     private Collider _collider;
     private bool _isSetup = false;
 
-    private void Awake()
+    void Start()
     {
         _rb = GetComponent<Rigidbody>();
         _collider = GetComponent<Collider>();
+
+        // When a holdable item is interacting with, pick it up
+        _event.AddListener(OnInteract);
+    }
+
+    private void OnInteract()
+    {
+        Debug.Log("Pick up!!!!");
+        var player = Player.Instance;
+        if (HasFocus && player.heldObject == null)
+        {
+            player.CmdGrab(this);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(_parent != null)
+        base.Update();
+        var player = Player.Instance;
+
+        if(InputManager.IsCommandJustPressed(PromptInfo.Command) && player.heldObject == this)
         {
-            if(!_isSetup)
-            {
-                _isSetup = true;
-                _collider.enabled = false;
-                _rb.isKinematic = true;
-            }
+            player.CmdDrop();
+        }
+
+        if (_parent != null)
+        {
             transform.position = _parent.transform.position;
             transform.rotation = _parent.transform.rotation;
         }    
-        else
-        {
-            if (_isSetup)
-            {
-                _isSetup = false;
-                _rb.isKinematic = false;
-                _collider.enabled = true;
-            }
-        }
     }
 
     public void Grab(NetworkBehaviour grabber)
     {
         _parent = grabber.gameObject;
         if(isServer) gameObject.GetComponent<NetworkIdentity>().AssignClientAuthority(grabber.connectionToClient);
+        IsInteractable = false;
+        _collider.enabled = false;
+        _rb.isKinematic = true;
     }
 
     public void Drop()
     {
         _parent = null;
         if(isServer) gameObject.GetComponent<NetworkIdentity>().RemoveClientAuthority();
+        IsInteractable = true;
+        _rb.isKinematic = false;
+        _collider.enabled = true;
     }
 }

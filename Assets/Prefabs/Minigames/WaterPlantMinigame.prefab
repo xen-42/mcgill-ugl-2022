@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 796745772766427530}
   - component: {fileID: 3736945913109127071}
   - component: {fileID: 4410860282709914424}
+  - component: {fileID: 4483484614783886734}
   m_Layer: 3
   m_Name: File
   m_TagString: Untagged
@@ -46,6 +47,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8a6c571ad5de7604e87d790fe890af7d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  _inputCommand: 4
+  _promptText: Grab watering can
+  _promptPriority: 0
+  _promptHoldTime: 0
 --- !u!54 &3736945913109127071
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -75,6 +82,23 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 3.0986288, y: 2.1130428, z: 1}
   m_Center: {x: 0.75523484, y: -0.030736208, z: 0}
+--- !u!114 &4483484614783886734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 796745772766427532}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  serverOnly: 0
+  visible: 0
+  m_AssetId: 7d5d4b7cee72a6f4b8d1d5c1d85ed314
+  hasSpawned: 0
 --- !u!1 &796745772977074010
 GameObject:
   m_ObjectHideFlags: 0

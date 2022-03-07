@@ -258,6 +258,7 @@ public static class InputManager
             }
         }
 
+        /*
         if (Mouse.current != null)
         {
             foreach (ButtonControl control in Mouse.current.allControls)
@@ -268,6 +269,7 @@ public static class InputManager
                 }
             }
         }
+        */
 
         return false;
     }
