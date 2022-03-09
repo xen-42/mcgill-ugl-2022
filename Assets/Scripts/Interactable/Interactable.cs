@@ -38,6 +38,13 @@ public abstract class Interactable : NetworkBehaviour
     private void Interact()
     {
         Debug.Log("Interact");
+
+        if(_requiredObject != Holdable.Type.NONE)
+        {
+            // Try consuming the required object after use
+            Player.Instance.heldObject.Consume();
+        }
+
         if(_event != null) _event.Invoke();
     }
 

@@ -10,14 +10,14 @@ public class Holdable : Interactable
 
     private Rigidbody _rb;
     private Collider _collider;
-    private bool _isSetup = false;
 
     public Type type;
 
     public enum Type
     {
         NONE,
-        WATERING_CAN
+        WATERING_CAN,
+        ASSIGNMENT
     }
 
     void Start()
@@ -40,10 +40,9 @@ public class Holdable : Interactable
     }
 
     // Update is called once per frame
-    void Update()
+    new void Update()
     {
         base.Update();
-
 
         if (_parent != null)
         {
@@ -77,5 +76,24 @@ public class Holdable : Interactable
         IsInteractable = true;
         _rb.isKinematic = false;
         _collider.enabled = true;
+    }
+
+    /* Get rid of certain holdable items after using them for a minigame */
+    public void Consume()
+    {
+        // Check if its a consumable type
+        var isConsumable = false;
+        switch(type)
+        {
+            case Type.ASSIGNMENT:
+                isConsumable = true;
+                break;
+        }
+
+        if(isConsumable)
+        {
+            Drop();
+            Destroy(gameObject);
+        }
     }
 }
