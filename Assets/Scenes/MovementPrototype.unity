@@ -1063,6 +1063,7 @@ MonoBehaviour:
   _promptText: Water plant
   _promptPriority: 0
   _promptHoldTime: 0
+  _requiredObject: 1
   MinigamePrefab: {fileID: 796745773547017806, guid: 7d5d4b7cee72a6f4b8d1d5c1d85ed314, type: 3}
   OnCompleteMinigame:
     m_PersistentCalls:
@@ -1329,7 +1330,7 @@ GameObject:
   - component: {fileID: 879343041}
   - component: {fileID: 879343043}
   m_Layer: 0
-  m_Name: HoldableCube
+  m_Name: WateringCan
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1350,9 +1351,11 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   _inputCommand: 4
-  _promptText: Grab red cube
+  _promptText: Grab watering can
   _promptPriority: 0
   _promptHoldTime: 0
+  _requiredObject: 0
+  type: 1
 --- !u!114 &879343042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4525,6 +4528,8 @@ MonoBehaviour:
   _promptText: Grab cube
   _promptPriority: 0
   _promptHoldTime: 0
+  _requiredObject: 0
+  type: 0
 --- !u!114 &1844470477
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4543,6 +4548,7 @@ MonoBehaviour:
   _promptText: Interact
   _promptPriority: 0
   _promptHoldTime: 0
+  _requiredObject: 0
   OnInteract:
     m_PersistentCalls:
       m_Calls: []
@@ -4724,6 +4730,7 @@ MonoBehaviour:
   _promptText: Submit assignment
   _promptPriority: 0
   _promptHoldTime: 0
+  _requiredObject: 0
   MinigamePrefab: {fileID: 796745773547017806, guid: 862c3368c3a09a8419c7ccc571bd3ee1, type: 3}
   OnCompleteMinigame:
     m_PersistentCalls:

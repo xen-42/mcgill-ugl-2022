@@ -12,6 +12,14 @@ public class Holdable : Interactable
     private Collider _collider;
     private bool _isSetup = false;
 
+    public Type type;
+
+    public enum Type
+    {
+        NONE,
+        WATERING_CAN
+    }
+
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
@@ -35,18 +43,22 @@ public class Holdable : Interactable
     void Update()
     {
         base.Update();
-        var player = Player.Instance;
 
-        if(InputManager.IsCommandJustPressed(PromptInfo.Command) && player.heldObject == this)
-        {
-            player.CmdDrop();
-        }
 
         if (_parent != null)
         {
             transform.position = _parent.transform.position;
             transform.rotation = _parent.transform.rotation;
-        }    
+        }
+
+        // Input
+        if (InputManager.CurrentInputMode != InputManager.InputMode.Player) return;
+
+        var player = Player.Instance;
+        if (InputManager.IsCommandJustPressed(PromptInfo.Command) && player.heldObject == this)
+        {
+            player.CmdDrop();
+        }
     }
 
     public void Grab(NetworkBehaviour grabber)
