@@ -3,20 +3,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using DecisionMaking.StateMachine;
 
-public class TestStateBehaviour2 : FSMStateBehaviour
+public class Walking : FSMStateBehaviour
 {
+    private CatAgent cat;
     protected override void Enter()
     {
-        print("Entered" + nameof(TestStateBehaviour2));
+        print("Entered: Walking");
+        cat = GameObject.Find("Cat").GetComponent<CatAgent>();
+        cat.EnterWalk();
     }
 
     protected override void Execute()
     {
-        print("In" + nameof(TestStateBehaviour2));
+        cat.Walk();
     }
 
     protected override void Exit()
     {
-        print("Exit" + nameof(TestStateBehaviour2));
     }
 }
