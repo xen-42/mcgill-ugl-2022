@@ -65,6 +65,11 @@ public class Holdable : Interactable
         if(isServer) gameObject.GetComponent<NetworkIdentity>().AssignClientAuthority(grabber.connectionToClient);
         IsInteractable = false;
         _collider.enabled = false;
+        foreach(var collider in GetComponentsInChildren<Collider>())
+        {
+            collider.enabled = false;
+        }
+
         _rb.isKinematic = true;
     }
 
@@ -75,6 +80,11 @@ public class Holdable : Interactable
         IsInteractable = true;
         _rb.isKinematic = false;
         _collider.enabled = true;
+
+        foreach (var collider in GetComponentsInChildren<Collider>())
+        {
+            collider.enabled = true;
+        }
     }
 
     /* Get rid of certain holdable items after using them for a minigame */

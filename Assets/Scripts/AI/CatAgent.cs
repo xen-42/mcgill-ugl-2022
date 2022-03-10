@@ -53,7 +53,6 @@ public class CatAgent : NetworkBehaviour
     private void FixedUpdate()
     {
         m_manager.SetInteger("Energy", energy);
-        print("Energy: " + energy);
     }
 
     // Called when we first enter the 'Walking' state
@@ -88,7 +87,7 @@ public class CatAgent : NetworkBehaviour
     }
 
     public void Sit(){
-        energy += 1;
+        energy += 10;
 
         //NMAgent.speed = 0;
     }

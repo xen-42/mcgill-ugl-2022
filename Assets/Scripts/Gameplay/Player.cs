@@ -242,6 +242,10 @@ public class Player : NetworkBehaviour
     [Command]
     public void CmdGiveAuthority(NetworkIdentity identity)
     {
-        if(!identity.hasAuthority) identity.AssignClientAuthority(connectionToClient);
+        if (!identity.hasAuthority)
+        {
+            identity.RemoveClientAuthority();
+            identity.AssignClientAuthority(connectionToClient);
+        }
     }
 }
