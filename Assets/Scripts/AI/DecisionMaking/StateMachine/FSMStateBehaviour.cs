@@ -93,18 +93,10 @@ namespace DecisionMaking.StateMachine
         }
 
         public FSMStateBehaviour TriggeredState()
-        {
-            Transition triggered;
-            triggered = m_transitions.FirstOrDefault(transition => transition.IsValid());
-
-            return (triggered == null) ? null : triggered.ToState;
-        }
+            => m_transitions.FirstOrDefault(transition => transition.IsValid())?.ToState;
 
         protected abstract void Enter();
 
         protected abstract void Exit();
-
-        //    public void AddTransition(Transition pTrans) => m_transitions.Add(pTrans);
-        //    public void RemoveTransition(Transition pTrans) => m_transitions.Remove(pTrans);
     }
 }
