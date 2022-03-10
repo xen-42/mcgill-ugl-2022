@@ -29,7 +29,7 @@ public class Holdable : Interactable
         _event.AddListener(OnInteract);
     }
 
-    private void OnInteract()
+    public void OnInteract()
     {
         Debug.Log("Pick up!!!!");
         var player = Player.Instance;

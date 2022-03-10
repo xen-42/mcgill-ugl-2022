@@ -220,7 +220,7 @@ public class Player : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void RpcGrab(Holdable target)
+    public void RpcGrab(Holdable target)
     {
         target.Grab(this);
         heldObject = target;
@@ -237,5 +237,11 @@ public class Player : NetworkBehaviour
     {
         heldObject.Drop();
         heldObject = null;
+    }
+
+    [Command]
+    public void CmdGiveAuthority(NetworkIdentity identity)
+    {
+        if(!identity.hasAuthority) identity.AssignClientAuthority(connectionToClient);
     }
 }

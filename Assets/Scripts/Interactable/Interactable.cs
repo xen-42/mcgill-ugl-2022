@@ -82,20 +82,40 @@ public abstract class Interactable : NetworkBehaviour
     public bool IsInteractable
     {
         get { return _isInteractable; }
-        set
+        set {
+            if (!isServer)
+            {
+                // Need authority before we can give commands
+                Player.Instance.CmdGiveAuthority(netIdentity);
+                ActionManager.RunWhen(() => netIdentity.hasAuthority, () => CmdSetInteractable(value));
+            }
+            else
+            {
+                RpcSetInteractable(value);
+            }
+        }
+    }
+
+
+    [Command]
+    private void CmdSetInteractable(bool value)
+    {
+        RpcSetInteractable(value);
+    }
+
+    [ClientRpc]
+    private void RpcSetInteractable(bool value)
+    {
+        if (_isInteractable == value) return;
+        _isInteractable = value;
+
+        if (!_isInteractable && HasFocus)
         {
-            if (_isInteractable == value) return;
-
-            _isInteractable = value;
-
-            if (!_isInteractable && HasFocus)
-            {
-                EventManager<ButtonPrompt.PromptInfo>.TriggerEvent("PromptLost", PromptInfo);
-            }
-            else if (_isInteractable && HasFocus)
-            {
-                EventManager<ButtonPrompt.PromptInfo>.TriggerEvent("PromptHit", PromptInfo);
-            }
+            EventManager<ButtonPrompt.PromptInfo>.TriggerEvent("PromptLost", PromptInfo);
+        }
+        else if (_isInteractable && HasFocus)
+        {
+            EventManager<ButtonPrompt.PromptInfo>.TriggerEvent("PromptHit", PromptInfo);
         }
     }
 }
