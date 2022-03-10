@@ -17,7 +17,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4481151090162320166
 Transform:
   m_ObjectHideFlags: 0
@@ -171,9 +171,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4481151090819568738}
-  - component: {fileID: 4481151090819568734}
   - component: {fileID: 4481151090819568737}
   - component: {fileID: 4481151090819568736}
+  - component: {fileID: 4481151090819568734}
   - component: {fileID: 4481151090819568739}
   m_Layer: 6
   m_Name: AirConditioning
@@ -198,18 +198,6 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
---- !u!114 &4481151090819568734
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4481151090819568741}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f8634fbf9b9d32c47b192e096ffe3390, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!65 &4481151090819568737
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -238,8 +226,24 @@ MonoBehaviour:
   sceneId: 0
   serverOnly: 0
   visible: 0
-  m_AssetId: 
+  m_AssetId: caa60d3dbfca13249a03865df6ceb0a6
   hasSpawned: 0
+--- !u!114 &4481151090819568734
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4481151090819568741}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f8634fbf9b9d32c47b192e096ffe3390, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  fixedState: {fileID: 4481151090162320169}
+  brokenState: {fileID: 4481151090470028637}
 --- !u!114 &4481151090819568739
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -258,17 +262,17 @@ MonoBehaviour:
   _promptText: Fix
   _promptPriority: 0
   _promptHoldTime: 0
-  _requiredObject: 0
+  requiredObject: 0
   OnInteract:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 4481151090819568734}
-        m_TargetAssemblyTypeName: StateSwapper, Assembly-CSharp
-        m_MethodName: SwitchState
-        m_Mode: 2
+        m_TargetAssemblyTypeName: Fixable, Assembly-CSharp
+        m_MethodName: Fix
+        m_Mode: 1
         m_Arguments:
-          m_ObjectArgument: {fileID: 4481151090162320169}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
           m_StringArgument: 

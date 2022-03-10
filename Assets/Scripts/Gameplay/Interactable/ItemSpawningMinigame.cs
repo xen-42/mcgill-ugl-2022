@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
-public class ItemGivingMinigame : Interactable
+public class ItemSpawningMinigame : Interactable
 {
     [SerializeField]
     public GameObject MinigamePrefab;
@@ -17,7 +17,7 @@ public class ItemGivingMinigame : Interactable
         NetworkClient.RegisterPrefab(HoldableItemPrefab);
 
         // When the player interacts with this object it'll start the minigame
-        _event.AddListener(() => {
+        _unityEvent.AddListener(() => {
             IsInteractable = false;
             MinigameManager.Instance.StartMinigame(MinigamePrefab, out var minigame);
             minigame.OnCompleteMinigame.AddListener(OnCompleteMinigame);
@@ -41,6 +41,8 @@ public class ItemGivingMinigame : Interactable
         {
             Spawn();
         }
+
+        IsInteractable = true;
     }
 
     [Command]
