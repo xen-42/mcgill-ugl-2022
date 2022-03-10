@@ -37,7 +37,7 @@ namespace DecisionMaking
 
         protected abstract void Execute();
 
-        public T GetStateBehaviour<T>() where T : StateBehaviour => GetComponents<StateBehaviour>().First(state => state is T) as T;
+        public T GetStateBehaviour<T>() where T : StateBehaviour => GetComponent<T>();
 
         public T[] GetStateBehaviours<T>() where T : StateBehaviour => GetComponents<T>();
     }
@@ -45,7 +45,7 @@ namespace DecisionMaking
     /// <summary>
     /// Compound Form of the StateBehaviour
     /// </summary>
-    public class CompoundStateBehaviour : StateBehaviour
+    public abstract class CompoundStateBehaviour : StateBehaviour
     {
         protected LinkedList<StateBehaviour> m_states;
 
@@ -77,7 +77,7 @@ namespace DecisionMaking
     /// <summary>
     /// Sequence Form of the State Behaviour
     /// </summary>
-    public class SequenceStateBehaviour : StateBehaviour
+    public abstract class SequenceStateBehaviour : StateBehaviour
     {
         protected LinkedList<StateBehaviour> m_states;
         protected LinkedListNode<StateBehaviour> m_curStateNode = null;
