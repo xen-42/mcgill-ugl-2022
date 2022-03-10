@@ -3,43 +3,60 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Holdable : NetworkBehaviour
+public class Holdable : Interactable
 {
     [SyncVar]
     private GameObject _parent;
 
     private Rigidbody _rb;
     private Collider _collider;
-    private bool _isSetup = false;
 
-    private void Awake()
+    public Type type;
+
+    public enum Type
+    {
+        NONE,
+        WATERING_CAN,
+        ASSIGNMENT
+    }
+
+    void Start()
     {
         _rb = GetComponent<Rigidbody>();
         _collider = GetComponent<Collider>();
+
+        // When a holdable item is interacting with, pick it up
+        _event.AddListener(OnInteract);
+    }
+
+    public void OnInteract()
+    {
+        Debug.Log("Pick up!!!!");
+        var player = Player.Instance;
+        if (HasFocus && player.heldObject == null)
+        {
+            player.CmdGrab(this);
+        }
     }
 
     // Update is called once per frame
-    void Update()
+    new void Update()
     {
-        if(_parent != null)
+        base.Update();
+
+        if (_parent != null)
         {
-            if(!_isSetup)
-            {
-                _isSetup = true;
-                _collider.enabled = false;
-                _rb.isKinematic = true;
-            }
             transform.position = _parent.transform.position;
             transform.rotation = _parent.transform.rotation;
-        }    
-        else
+        }
+
+        // Input
+        if (InputManager.CurrentInputMode != InputManager.InputMode.Player) return;
+
+        var player = Player.Instance;
+        if (InputManager.IsCommandJustPressed(PromptInfo.Command) && player.heldObject == this)
         {
-            if (_isSetup)
-            {
-                _isSetup = false;
-                _rb.isKinematic = false;
-                _collider.enabled = true;
-            }
+            player.CmdDrop();
         }
     }
 
@@ -47,11 +64,36 @@ public class Holdable : NetworkBehaviour
     {
         _parent = grabber.gameObject;
         if(isServer) gameObject.GetComponent<NetworkIdentity>().AssignClientAuthority(grabber.connectionToClient);
+        IsInteractable = false;
+        _collider.enabled = false;
+        _rb.isKinematic = true;
     }
 
     public void Drop()
     {
         _parent = null;
         if(isServer) gameObject.GetComponent<NetworkIdentity>().RemoveClientAuthority();
+        IsInteractable = true;
+        _rb.isKinematic = false;
+        _collider.enabled = true;
+    }
+
+    /* Get rid of certain holdable items after using them for a minigame */
+    public void Consume()
+    {
+        // Check if its a consumable type
+        var isConsumable = false;
+        switch(type)
+        {
+            case Type.ASSIGNMENT:
+                isConsumable = true;
+                break;
+        }
+
+        if(isConsumable)
+        {
+            Drop();
+            Destroy(gameObject);
+        }
     }
 }

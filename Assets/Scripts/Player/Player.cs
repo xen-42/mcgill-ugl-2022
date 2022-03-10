@@ -43,14 +43,15 @@ public class Player : NetworkBehaviour
     [Header("Interacting")]
     [SerializeField] GameObject heldItemPosition;
 
-    private Interactable _interactableObject;
-    private Holdable _holdableObject;
-    private Holdable _heldObject;
+    private GameObject _focusedObject;
+    public Holdable heldObject;
 
     // Synced network stuff
     [SyncVar] private Vector3 _movement;
     [SyncVar] private bool _jump;
     [SyncVar] private bool _sprint;
+
+    public static Player Instance { get; private set; }
 
     private void Start()
     {
@@ -62,6 +63,7 @@ public class Player : NetworkBehaviour
             // This is the clients player so they will use it's camera
             cam.tag = "MainCamera";
             InputManager.CurrentInputMode = InputManager.InputMode.Player;
+            Instance = this;
         }
         else
         {
@@ -92,76 +94,30 @@ public class Player : NetworkBehaviour
 
         CmdSendInputs(movement, jump, sprint);
 
-        // Interaction stuff
-        var droppingObjectFlag = false;
-
-        if (_heldObject != null && InputManager.IsCommandJustPressed(InputManager.InputCommand.PickUp))
-        {
-            droppingObjectFlag = true;
-            Debug.Log("Dropping");
-            CmdDrop();
-        }
-
         // Raycast for object interaction / pickup
+
+        GameObject hitObject = null;
         if (Physics.Raycast(cam.transform.position, cam.transform.TransformDirection(Vector3.forward), out RaycastHit hit, 3f))
         {
-            var hitObject = hit.collider.gameObject;
-            var interactable = hitObject.GetComponent<Interactable>();
-            var holdable = hitObject.GetComponent<Holdable>();
+            hitObject = hit.collider.gameObject;
+        }
 
-            if (interactable != null)
+        // We were looking at an interactable object but now we aren't
+        if (_focusedObject != null && hitObject != _focusedObject)
+        {
+            foreach (var interactable in _focusedObject.GetComponents<Interactable>())
             {
-                // Only want to do this when its the first time
-                if (_interactableObject != hitObject)
-                {
-                    _interactableObject = interactable;
-                    EventManager<InputManager.InputCommand>.TriggerEvent("PromptHit", InputManager.InputCommand.Interact);
-                }
-
-                if (InputManager.IsCommandJustPressed(InputManager.InputCommand.Interact))
-                {
-                    interactable.Interact();
-                    EventManager<InputManager.InputCommand>.TriggerEvent("PromptLost", InputManager.InputCommand.Interact);
-                }
-            }
-
-            // Only want to do this stuff if its a holdable object and we aren't already holding something
-            if (holdable != null && _heldObject == null)
-            {
-                // We're holding nothing and haven't looked at this object yet
-                if (_holdableObject != hitObject)
-                {
-                    EventManager<InputManager.InputCommand>.TriggerEvent("PromptHit", InputManager.InputCommand.PickUp);
-                    _holdableObject = holdable;
-                }
-
-                // Want to make sure that when pressing the button to drop we don't immediately pick it back up
-                if (!droppingObjectFlag && InputManager.IsCommandJustPressed(InputManager.InputCommand.PickUp))
-                {
-                    Debug.Log("Grabbing");
-                    CmdGrab(holdable);
-
-                    // Stop tracking that we could hold it since we are holding it
-                    _holdableObject = null;
-                    // Get rid of the button prompt to hold it
-                    EventManager<InputManager.InputCommand>.TriggerEvent("PromptLost", InputManager.InputCommand.PickUp);
-                }
+                interactable.LoseFocus();
             }
         }
-        else
-        {
-            // We were looking at an interactable object but now we aren't
-            if (_interactableObject != null)
-            {
-                _interactableObject = null;
-                EventManager<InputManager.InputCommand>.TriggerEvent("PromptLost", InputManager.InputCommand.Interact);
-            }
 
-            // We were looking at a holdable object but now we aren't
-            if (_holdableObject != null)
+        // If we just started looking at it
+        if (hitObject != null && hitObject != _focusedObject)
+        {
+            _focusedObject = hitObject;
+            foreach(var interactable in hitObject.GetComponents<Interactable>())
             {
-                _holdableObject = null;
-                EventManager<InputManager.InputCommand>.TriggerEvent("PromptLost", InputManager.InputCommand.PickUp);
+                interactable.GainFocus();
             }
         }
     }
@@ -264,10 +220,10 @@ public class Player : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void RpcGrab(Holdable target)
+    public void RpcGrab(Holdable target)
     {
         target.Grab(this);
-        _heldObject = target;
+        heldObject = target;
     }
 
     [Command]
@@ -279,7 +235,13 @@ public class Player : NetworkBehaviour
     [ClientRpc]
     private void RpcDrop()
     {
-        _heldObject.Drop();
-        _heldObject = null;
+        heldObject.Drop();
+        heldObject = null;
+    }
+
+    [Command]
+    public void CmdGiveAuthority(NetworkIdentity identity)
+    {
+        if(!identity.hasAuthority) identity.AssignClientAuthority(connectionToClient);
     }
 }

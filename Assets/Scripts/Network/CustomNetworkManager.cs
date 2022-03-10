@@ -8,6 +8,8 @@ using UnityEngine;
 
 public class CustomNetworkManager : NetworkManager
 {
+    public static CustomNetworkManager Instance;
+
     public enum TransportType
     {
         KCP,
@@ -21,6 +23,8 @@ public class CustomNetworkManager : NetworkManager
     // Start is called before the first frame update
     new void Awake()
     {
+        Instance = this;
+
         switch (transportType)
         {
             case (TransportType.KCP):

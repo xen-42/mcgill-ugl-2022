@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class Hoverable2D : MonoBehaviour
+public class Hoverable2D : Interactable
 {
     private bool _hovering = false;
 
@@ -20,13 +20,21 @@ public class Hoverable2D : MonoBehaviour
         {
             if(hit.collider.transform == transform)
             {
-                if (_hovering == false) OnStartHover();
+                if (_hovering == false)
+                {
+                    OnStartHover();
+                    GainFocus();
+                }
                 _hovering = true;
                 return true;
             }
         }
 
-        if (_hovering) OnStopHover();
+        if (_hovering)
+        {
+            OnStopHover();
+            LoseFocus();
+        }
         _hovering = false;
         return false;
     }

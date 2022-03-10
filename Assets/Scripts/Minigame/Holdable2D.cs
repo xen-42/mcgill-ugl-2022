@@ -39,11 +39,11 @@ public class Holdable2D : Hoverable2D
 
     public override void OnStartHover()
     {
-        EventManager<InputManager.InputCommand>.TriggerEvent("PromptHit", InputManager.InputCommand.PickUp);
+        EventManager<ButtonPrompt.PromptInfo>.TriggerEvent("PromptHit", PromptInfo);
     }
 
     public override void OnStopHover()
     {
-        EventManager<InputManager.InputCommand>.TriggerEvent("PromptLost", InputManager.InputCommand.PickUp);
+        EventManager<ButtonPrompt.PromptInfo>.TriggerEvent("PromptLost", PromptInfo);
     }
 }
