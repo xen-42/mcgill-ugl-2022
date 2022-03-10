@@ -5,24 +5,23 @@ using UnityEngine;
 using UnityEngine.Events;
 public abstract class Interactable : NetworkBehaviour
 {
-    protected UnityEvent _event = new UnityEvent();
+    protected UnityEvent _unityEvent = new UnityEvent();
 
     [SerializeField] private InputManager.InputCommand _inputCommand;
     [SerializeField] private string _promptText;
     [SerializeField] private int _promptPriority;
     [SerializeField] private float _promptHoldTime;
 
-    [SerializeField] private Holdable.Type _requiredObject = Holdable.Type.NONE;
+    [SerializeField] public Holdable.Type requiredObject = Holdable.Type.NONE;
 
-    public ButtonPrompt.PromptInfo PromptInfo { get; private set; }
+    public ButtonPrompt.PromptInfo PromptInfo { get; set; }
 
-    [SyncVar] private bool _isInteractable;
+    [SyncVar] private bool _isInteractable = true;
 
     public bool HasFocus { get; private set; }
 
     private void Awake()
     {
-        _isInteractable = true;
         PromptInfo = new ButtonPrompt.PromptInfo(_inputCommand, _promptText, _promptPriority, _promptHoldTime);
     }
 
@@ -39,13 +38,7 @@ public abstract class Interactable : NetworkBehaviour
     {
         Debug.Log("Interact");
 
-        if(_requiredObject != Holdable.Type.NONE)
-        {
-            // Try consuming the required object after use
-            Player.Instance.heldObject.Consume();
-        }
-
-        if(_event != null) _event.Invoke();
+        if(_unityEvent != null) _unityEvent.Invoke();
     }
 
     public void GainFocus()
@@ -53,9 +46,9 @@ public abstract class Interactable : NetworkBehaviour
         if (HasFocus) return;
 
         // Never gain focus if it requires an object that isn't held
-        if(_requiredObject != Holdable.Type.NONE)
+        if(requiredObject != Holdable.Type.NONE)
         {
-            if(Player.Instance.heldObject == null || Player.Instance.heldObject.type != _requiredObject)
+            if(Player.Instance.heldObject == null || Player.Instance.heldObject.type != requiredObject)
             {
                 return;
             }
@@ -81,8 +74,12 @@ public abstract class Interactable : NetworkBehaviour
 
     public bool IsInteractable
     {
-        get { return _isInteractable; }
-        set {
+        get 
+        {
+            return _isInteractable; 
+        }
+        set 
+        {
             if (!isServer)
             {
                 // Need authority before we can give commands

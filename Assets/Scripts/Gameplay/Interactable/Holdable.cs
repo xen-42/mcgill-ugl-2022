@@ -26,12 +26,11 @@ public class Holdable : Interactable
         _collider = GetComponent<Collider>();
 
         // When a holdable item is interacting with, pick it up
-        _event.AddListener(OnInteract);
+        _unityEvent.AddListener(OnInteract);
     }
 
     public void OnInteract()
     {
-        Debug.Log("Pick up!!!!");
         var player = Player.Instance;
         if (HasFocus && player.heldObject == null)
         {
@@ -66,6 +65,11 @@ public class Holdable : Interactable
         if(isServer) gameObject.GetComponent<NetworkIdentity>().AssignClientAuthority(grabber.connectionToClient);
         IsInteractable = false;
         _collider.enabled = false;
+        foreach(var collider in GetComponentsInChildren<Collider>())
+        {
+            collider.enabled = false;
+        }
+
         _rb.isKinematic = true;
     }
 
@@ -76,6 +80,11 @@ public class Holdable : Interactable
         IsInteractable = true;
         _rb.isKinematic = false;
         _collider.enabled = true;
+
+        foreach (var collider in GetComponentsInChildren<Collider>())
+        {
+            collider.enabled = true;
+        }
     }
 
     /* Get rid of certain holdable items after using them for a minigame */
@@ -92,8 +101,8 @@ public class Holdable : Interactable
 
         if(isConsumable)
         {
-            Drop();
-            Destroy(gameObject);
+            Player.Instance.CmdDrop();
+            ActionManager.RunWhen(() => Player.Instance.heldObject == null, () => Destroy(gameObject));
         }
     }
 }

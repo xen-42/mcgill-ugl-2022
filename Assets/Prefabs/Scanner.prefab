@@ -115,7 +115,7 @@ MonoBehaviour:
   _promptText: Scan assignment
   _promptPriority: 0
   _promptHoldTime: 0
-  _requiredObject: 0
+  requiredObject: 2
   MinigamePrefab: {fileID: 796745773547017806, guid: 6cdf3a0e4bf57ac44bf6e9341c591e1a, type: 3}
   OnCompleteMinigame:
     m_PersistentCalls:
@@ -135,5 +135,5 @@ MonoBehaviour:
   sceneId: 0
   serverOnly: 0
   visible: 0
-  m_AssetId: 
+  m_AssetId: f51d6069b5defb64db6e94f5093323dd
   hasSpawned: 0
