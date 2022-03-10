@@ -4,13 +4,11 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    [SerializeField] private float sensX;
-    [SerializeField] private float sensY;
+    [SerializeField] public float sensX;
+    [SerializeField] public float sensY;
 
     [SerializeField] Transform cam;
     [SerializeField] Transform orientation;
-    float mouseX;
-    float mouseY;
     float multiplier = 0.01f;
     float xRotation;
     float yRotation;
@@ -23,6 +21,8 @@ public class CameraController : MonoBehaviour
 
     private void Update()
     {
+        if (InputManager.CurrentInputMode != InputManager.InputMode.Player) return;
+
         MyInput();
         cam.transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0);
         orientation.transform.rotation = Quaternion.Euler(0, yRotation, 0);

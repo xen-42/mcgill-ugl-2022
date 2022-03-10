@@ -13,6 +13,9 @@ public static class ButtonIconManager
     private static readonly Dictionary<GamepadButton, Texture2D> _gamepadPrompts = new Dictionary<GamepadButton, Texture2D>();
     private static readonly Dictionary<MouseButton, Texture2D> _mousePrompts = new Dictionary<MouseButton, Texture2D>();
 
+    // Does nothing but trying to call it will trigger the constructor
+    public static void Init() { }
+
     public static Texture2D GetKeyTexture(Key key)
     {
         if (_keyboardPrompts.ContainsKey(key)) return _keyboardPrompts[key];
