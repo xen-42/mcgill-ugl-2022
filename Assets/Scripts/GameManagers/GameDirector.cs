@@ -12,7 +12,8 @@ public class GameDirector : NetworkBehaviour
 
     [SerializeField] public int timeLimit;
 
-    public float Countdown { get; private set; }
+    // Host controls the timer
+    [SyncVar] private float _countdown;
 
     private float _nextDistraction;
 
@@ -26,8 +27,6 @@ public class GameDirector : NetworkBehaviour
     void Start()
     {
         Instance = this;
-
-        if (!isServer) return;
 
         _distractions = FindObjectsOfType<Fixable>().ToList();
         Random.InitState((int)System.DateTime.Now.Ticks);
@@ -53,29 +52,31 @@ public class GameDirector : NetworkBehaviour
         _assignments += 1;
     }
 
-    [Server]
     private void Update()
     {
-        if (!isServer) return;
 
-        Countdown += Time.deltaTime;
-        _nextDistraction -= Time.deltaTime;
 
         var available = _distractions.Where(x => !x.IsBroken()).ToList();
         _numDistractions = _distractions.Count - available.Count;
 
-        if (_nextDistraction < 0)
+        if(isServer)
         {
-            Debug.Log("Distraction!");
+            _countdown += Time.deltaTime;
 
-            var selection = GetRandomFromList(available);
-            if(selection != null) selection.Break();
-            _nextDistraction = Random.Range(5, 10);
+            _nextDistraction -= Time.deltaTime;
+            if (_nextDistraction < 0)
+            {
+                Debug.Log("Distraction!");
+
+                var selection = GetRandomFromList(available);
+                if (selection != null) selection.Break();
+                _nextDistraction = Random.Range(5, 10);
+            }
         }
 
         _stress += _numDistractions * _numDistractions * Time.deltaTime;
 
-        HUD.Instance.SetGameState(timeLimit - (int)Countdown, (int)_stress, _assignments);
+        HUD.Instance.SetGameState(timeLimit - (int)_countdown, (int)_stress, _assignments);
     }
 
     private T GetRandomFromList<T>(List<T> list)

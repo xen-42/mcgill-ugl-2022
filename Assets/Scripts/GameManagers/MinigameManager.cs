@@ -20,6 +20,7 @@ public class MinigameManager : MonoBehaviour
         // Weird z stuff to try to get it on top of the background
         var z = Camera.main.nearClipPlane + 0.05f;
         newMinigame.transform.localPosition = new Vector3(0, 0, z);
+        // Dividing by 10 because when testing minigames the camera defaults to being at that distance
         newMinigame.transform.localScale = Vector3.one * z / 10f;
 
         _currentMinigame = newMinigame.GetComponent<Minigame>();

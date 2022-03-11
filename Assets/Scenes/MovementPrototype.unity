@@ -4380,6 +4380,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2306999768646974311, guid: ae27721622fdff047921602c89f330b2, type: 3}
+      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2306999768646974311, guid: ae27721622fdff047921602c89f330b2, type: 3}
+      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2306999768646974311, guid: ae27721622fdff047921602c89f330b2, type: 3}
+      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1692160701}
+    - target: {fileID: 2306999768646974311, guid: ae27721622fdff047921602c89f330b2, type: 3}
+      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2306999768646974311, guid: ae27721622fdff047921602c89f330b2, type: 3}
+      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DoAssignment
+      objectReference: {fileID: 0}
+    - target: {fileID: 2306999768646974311, guid: ae27721622fdff047921602c89f330b2, type: 3}
+      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GameDirector, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2306999768646974311, guid: ae27721622fdff047921602c89f330b2, type: 3}
+      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2306999768646974314, guid: ae27721622fdff047921602c89f330b2, type: 3}
       propertyPath: m_Name
       value: Computer
