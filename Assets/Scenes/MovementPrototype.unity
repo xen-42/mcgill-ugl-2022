@@ -1099,7 +1099,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5759356492989072666, guid: 521d3bb51373a4e4fa63847a30adea5c, type: 3}
       propertyPath: m_Name
-      value: Chair (1)
+      value: Chair
       objectReference: {fileID: 0}
     - target: {fileID: 5759356492989072670, guid: 521d3bb51373a4e4fa63847a30adea5c, type: 3}
       propertyPath: sceneId
@@ -1455,7 +1455,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5759356492989072666, guid: 521d3bb51373a4e4fa63847a30adea5c, type: 3}
       propertyPath: m_Name
-      value: Chair (2)
+      value: Chair
       objectReference: {fileID: 0}
     - target: {fileID: 5759356492989072670, guid: 521d3bb51373a4e4fa63847a30adea5c, type: 3}
       propertyPath: sceneId

@@ -34,6 +34,11 @@ public class Player : NetworkBehaviour
     [SerializeField] private float fastfov;
     [SerializeField] private float fov;
     [SerializeField] private float fovaccel;
+    [SerializeField] public float sensX;
+    [SerializeField] public float sensY;
+    float multiplier = 0.01f;
+    float xRotation;
+    float yRotation;
 
     [Header("Sprinting")]
     [SerializeField] float walkSpeed = 4f;
@@ -92,7 +97,14 @@ public class Player : NetworkBehaviour
 
         var sprint = InputManager.IsCommandPressed(InputManager.InputCommand.Sprint);
 
-        CmdSendInputs(movement, jump, sprint);
+        // Camera
+        var lookVector = InputManager.GetLookAxis();
+
+        yRotation += lookVector.x * sensX * multiplier;
+        xRotation -= lookVector.y * sensY * multiplier;
+        xRotation = Mathf.Clamp(xRotation, -90f, 90f);
+
+        CmdSendInputs(movement, jump, sprint, xRotation, yRotation);
 
         // Raycast for object interaction / pickup
 
@@ -206,17 +218,20 @@ public class Player : NetworkBehaviour
     }
 
     [Command]
-    public void CmdSendInputs(Vector3 movement, bool jump, bool sprint)
+    public void CmdSendInputs(Vector3 movement, bool jump, bool sprint, float xRot, float yRot)
     {
-        RpcSendInputs(movement, jump, sprint);
+        RpcSendInputs(movement, jump, sprint, xRot, yRot);
     }
 
     [ClientRpc]
-    private void RpcSendInputs(Vector3 movement, bool jump, bool sprint)
+    private void RpcSendInputs(Vector3 movement, bool jump, bool sprint, float xRot, float yRot)
     {
         _movement = movement;
         _jump = jump;
         _sprint = sprint;
+
+        cam.transform.localRotation = Quaternion.Euler(xRot, yRot, 0);
+        orientation.transform.rotation = Quaternion.Euler(0, yRot, 0);
     }
 
     [Command]

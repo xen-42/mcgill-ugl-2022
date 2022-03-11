@@ -72,6 +72,7 @@ public class Holdable : Interactable
     {
         _parent = null;
         if(isServer) gameObject.GetComponent<NetworkIdentity>().RemoveClientAuthority();
+        
         IsInteractable = true;
         _rb.isKinematic = false;
         _collider.enabled = true;
@@ -96,8 +97,32 @@ public class Holdable : Interactable
 
         if(isConsumable)
         {
-            Player.Instance.CmdDrop();
-            ActionManager.RunWhen(() => Player.Instance.heldObject == null, () => Destroy(gameObject));
+            NetworkDestroy(gameObject);
+            Player.Instance.heldObject = null;
         }
+    }
+
+    private void NetworkDestroy(GameObject obj)
+    {
+        if(isServer)
+        {
+            RpcNetworkDestroy(obj);
+        }
+        else
+        {
+            CmdNetworkDestroy(obj);
+        }
+    }
+
+    [Command]
+    private void CmdNetworkDestroy(GameObject obj)
+    {
+        RpcNetworkDestroy(obj);
+    }
+
+    [ClientRpc]
+    private void RpcNetworkDestroy(GameObject obj)
+    {
+        GameObject.Destroy(obj);
     }
 }
