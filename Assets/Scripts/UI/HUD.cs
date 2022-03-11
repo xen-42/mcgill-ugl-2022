@@ -11,10 +11,18 @@ public class HUD : MonoBehaviour
 
     [SerializeField] private GameObject _buttonPrompt;
 
+    [SerializeField] private Text _timer; 
+    [SerializeField] private Text _stress; 
+    [SerializeField] private Text _submitted; 
+
     private Dictionary<ButtonPrompt.PromptInfo, ButtonPrompt> _buttonPromptDict;
+
+    public static HUD Instance;
 
     void Start()
     {
+        Instance = this;
+
         EventManager<ButtonPrompt.PromptInfo>.AddListener("PromptHit", OnPromptHit);
         EventManager<ButtonPrompt.PromptInfo>.AddListener("PromptLost", OnPromptLost);
 
@@ -81,5 +89,12 @@ public class HUD : MonoBehaviour
             pos.y = i++ * -rect.sizeDelta.y;
             rect.localPosition = pos;
         }
+    }
+
+    public void SetGameState(int time, int stress, int submitted)
+    {
+        _timer.text = $"Time: {time}";
+        _stress.text = $"Stress: {stress}";
+        _submitted.text = $"Submitted: {submitted}";
     }
 }
