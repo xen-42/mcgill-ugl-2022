@@ -121,6 +121,7 @@ public class Player : NetworkBehaviour
             {
                 interactable.LoseFocus();
             }
+            _focusedObject = null;
         }
 
         // If we just started looking at it
