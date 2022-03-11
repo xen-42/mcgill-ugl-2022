@@ -13,7 +13,9 @@ public class HUD : MonoBehaviour
 
     [SerializeField] private Text _timer; 
     [SerializeField] private Text _stress; 
-    [SerializeField] private Text _submitted; 
+    [SerializeField] private Text _submitted;
+
+    [SerializeField] private Text _gameOverText;
 
     private Dictionary<ButtonPrompt.PromptInfo, ButtonPrompt> _buttonPromptDict;
 
@@ -93,6 +95,12 @@ public class HUD : MonoBehaviour
 
     public void SetGameState(int time, int stress, int submitted)
     {
+        if(time < 0)
+        {
+            _gameOverText.text = $"The semester is over!\n You finished {submitted} assignments.";
+            return;
+        }
+
         var minutes = (int)Math.Floor(time / 60f);
         var seconds = (int)(time % 60);
 

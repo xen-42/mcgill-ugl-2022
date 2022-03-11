@@ -21,7 +21,10 @@ public class GameDirector : NetworkBehaviour
 
     private float _stress;
 
-    private int _assignments;
+    public int NumAssignmentsDone { get; private set; }
+    public int NumAssignmentsScanned { get; private set; }
+
+    private bool _gameOver;
 
     // Start is called before the first frame update
     void Start()
@@ -49,12 +52,17 @@ public class GameDirector : NetworkBehaviour
 
     public void DoAssignment()
     {
-        _assignments += 1;
+        NumAssignmentsDone += 1;
+    }
+
+    public void ScanAssignment()
+    {
+        NumAssignmentsScanned += 1;
     }
 
     private void Update()
     {
-
+        if (_gameOver) return;
 
         var available = _distractions.Where(x => !x.IsBroken()).ToList();
         _numDistractions = _distractions.Count - available.Count;
@@ -76,7 +84,14 @@ public class GameDirector : NetworkBehaviour
 
         _stress += _numDistractions * _numDistractions * Time.deltaTime;
 
-        HUD.Instance.SetGameState(timeLimit - (int)_countdown, (int)_stress, _assignments);
+        HUD.Instance.SetGameState(timeLimit - (int)_countdown, (int)_stress, NumAssignmentsDone);
+
+        // Game Over       
+        if(!_gameOver && timeLimit == _countdown)
+        {
+            _gameOver = true;
+            InputManager.CurrentInputMode = InputManager.InputMode.UI;
+        }
     }
 
     private T GetRandomFromList<T>(List<T> list)
