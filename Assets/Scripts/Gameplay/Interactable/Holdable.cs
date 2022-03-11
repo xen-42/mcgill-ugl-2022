@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class Holdable : Interactable
 {
-    [SyncVar]
-    private GameObject _parent;
+    [SyncVar] private GameObject _parent;
+    [SyncVar] private GameObject _offsetPosition;
 
     private Rigidbody _rb;
     private Collider _collider;
@@ -43,12 +43,6 @@ public class Holdable : Interactable
     {
         base.Update();
 
-        if (_parent != null)
-        {
-            transform.position = _parent.transform.position;
-            transform.rotation = _parent.transform.rotation;
-        }
-
         // Input
         if (InputManager.CurrentInputMode != InputManager.InputMode.Player) return;
 
@@ -62,6 +56,7 @@ public class Holdable : Interactable
     public void Grab(NetworkBehaviour grabber)
     {
         _parent = grabber.gameObject;
+
         if(isServer) gameObject.GetComponent<NetworkIdentity>().AssignClientAuthority(grabber.connectionToClient);
         IsInteractable = false;
         _collider.enabled = false;
@@ -77,6 +72,7 @@ public class Holdable : Interactable
     {
         _parent = null;
         if(isServer) gameObject.GetComponent<NetworkIdentity>().RemoveClientAuthority();
+        
         IsInteractable = true;
         _rb.isKinematic = false;
         _collider.enabled = true;
@@ -101,8 +97,32 @@ public class Holdable : Interactable
 
         if(isConsumable)
         {
-            Player.Instance.CmdDrop();
-            ActionManager.RunWhen(() => Player.Instance.heldObject == null, () => Destroy(gameObject));
+            NetworkDestroy(gameObject);
+            Player.Instance.heldObject = null;
         }
+    }
+
+    private void NetworkDestroy(GameObject obj)
+    {
+        if(isServer)
+        {
+            RpcNetworkDestroy(obj);
+        }
+        else
+        {
+            CmdNetworkDestroy(obj);
+        }
+    }
+
+    [Command]
+    private void CmdNetworkDestroy(GameObject obj)
+    {
+        RpcNetworkDestroy(obj);
+    }
+
+    [ClientRpc]
+    private void RpcNetworkDestroy(GameObject obj)
+    {
+        GameObject.Destroy(obj);
     }
 }
