@@ -1,8 +1,6 @@
 name: Build Game 🎮
 
-on: 
-  push:
-    branches: [main]
+on: workflow_dispatch
 
 jobs:
   buildForAllSupportedPlatforms:
