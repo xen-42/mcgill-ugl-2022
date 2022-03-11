@@ -165,7 +165,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 6
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &122662524
 PrefabInstance:
@@ -670,7 +670,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 7
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &463558206
 PrefabInstance:
@@ -727,6 +727,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2306999768646974311, guid: ae27721622fdff047921602c89f330b2, type: 3}
+      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2306999768646974311, guid: ae27721622fdff047921602c89f330b2, type: 3}
+      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2306999768646974311, guid: ae27721622fdff047921602c89f330b2, type: 3}
+      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1692160701}
+    - target: {fileID: 2306999768646974311, guid: ae27721622fdff047921602c89f330b2, type: 3}
+      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2306999768646974311, guid: ae27721622fdff047921602c89f330b2, type: 3}
+      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DoAssignment
+      objectReference: {fileID: 0}
+    - target: {fileID: 2306999768646974311, guid: ae27721622fdff047921602c89f330b2, type: 3}
+      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GameDirector, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2306999768646974311, guid: ae27721622fdff047921602c89f330b2, type: 3}
+      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2306999768646974314, guid: ae27721622fdff047921602c89f330b2, type: 3}
       propertyPath: m_Name
       value: Computer
@@ -779,7 +807,7 @@ Transform:
   - {fileID: 140836828}
   - {fileID: 1187548190}
   m_Father: {fileID: 0}
-  m_RootOrder: 10
+  m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &597412764
 GameObject:
@@ -1016,7 +1044,7 @@ Transform:
   m_Children:
   - {fileID: 1496042042}
   m_Father: {fileID: 0}
-  m_RootOrder: 4
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &923964210
 PrefabInstance:
@@ -1027,7 +1055,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5759356492989072659, guid: 521d3bb51373a4e4fa63847a30adea5c, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 14
       objectReference: {fileID: 0}
     - target: {fileID: 5759356492989072659, guid: 521d3bb51373a4e4fa63847a30adea5c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1071,7 +1099,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5759356492989072666, guid: 521d3bb51373a4e4fa63847a30adea5c, type: 3}
       propertyPath: m_Name
-      value: Chair (1)
+      value: Chair
       objectReference: {fileID: 0}
     - target: {fileID: 5759356492989072670, guid: 521d3bb51373a4e4fa63847a30adea5c, type: 3}
       propertyPath: sceneId
@@ -1170,7 +1198,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 9
+  m_RootOrder: 7
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1 &967604429
 GameObject:
@@ -1383,7 +1411,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5759356492989072659, guid: 521d3bb51373a4e4fa63847a30adea5c, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 5759356492989072659, guid: 521d3bb51373a4e4fa63847a30adea5c, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1427,7 +1455,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5759356492989072666, guid: 521d3bb51373a4e4fa63847a30adea5c, type: 3}
       propertyPath: m_Name
-      value: Chair (2)
+      value: Chair
       objectReference: {fileID: 0}
     - target: {fileID: 5759356492989072670, guid: 521d3bb51373a4e4fa63847a30adea5c, type: 3}
       propertyPath: sceneId
@@ -3663,13 +3691,45 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4207629397879842587, guid: 179c14c7d094f45438965a4b6e805b7a, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4207629397879842587, guid: 179c14c7d094f45438965a4b6e805b7a, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4207629397879842587, guid: 179c14c7d094f45438965a4b6e805b7a, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1692160701}
+    - target: {fileID: 4207629397879842587, guid: 179c14c7d094f45438965a4b6e805b7a, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4207629397879842587, guid: 179c14c7d094f45438965a4b6e805b7a, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: LowerStress
+      objectReference: {fileID: 0}
+    - target: {fileID: 4207629397879842587, guid: 179c14c7d094f45438965a4b6e805b7a, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GameDirector, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4207629397879842587, guid: 179c14c7d094f45438965a4b6e805b7a, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 4207629397879842587, guid: 179c14c7d094f45438965a4b6e805b7a, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 4946464366587674599, guid: 179c14c7d094f45438965a4b6e805b7a, type: 3}
       propertyPath: m_Name
       value: Cat
       objectReference: {fileID: 0}
     - target: {fileID: 4946464366587674618, guid: 179c14c7d094f45438965a4b6e805b7a, type: 3}
       propertyPath: m_RootOrder
-      value: 14
+      value: 12
       objectReference: {fileID: 0}
     - target: {fileID: 4946464366587674618, guid: 179c14c7d094f45438965a4b6e805b7a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -3758,7 +3818,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1692160698
 GameObject:
@@ -3769,11 +3829,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1692160700}
-  - component: {fileID: 1692160699}
   - component: {fileID: 1692160702}
+  - component: {fileID: 1692160699}
   - component: {fileID: 1692160701}
   m_Layer: 0
-  m_Name: MinigameManager
+  m_Name: GameManagers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3803,7 +3863,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1692160701
 MonoBehaviour:
@@ -3819,7 +3879,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  _distractions: []
+  timeLimit: 60
 --- !u!114 &1692160702
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4072,7 +4132,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 8
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2058977852
 GameObject:
@@ -4128,7 +4188,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 378899682150959663, guid: 44c80433b690313429cc2750fc07ab3e, type: 3}
       propertyPath: m_RootOrder
-      value: 12
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 378899682150959663, guid: 44c80433b690313429cc2750fc07ab3e, type: 3}
       propertyPath: m_AnchorMax.x
@@ -4221,7 +4281,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1371549147706381725, guid: 8f60b467328527f49af19bbef7de376e, type: 3}
       propertyPath: m_RootOrder
-      value: 13
+      value: 11
       objectReference: {fileID: 0}
     - target: {fileID: 1371549147706381725, guid: 8f60b467328527f49af19bbef7de376e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -4320,6 +4380,34 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2306999768646974311, guid: ae27721622fdff047921602c89f330b2, type: 3}
+      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2306999768646974311, guid: ae27721622fdff047921602c89f330b2, type: 3}
+      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2306999768646974311, guid: ae27721622fdff047921602c89f330b2, type: 3}
+      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1692160701}
+    - target: {fileID: 2306999768646974311, guid: ae27721622fdff047921602c89f330b2, type: 3}
+      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2306999768646974311, guid: ae27721622fdff047921602c89f330b2, type: 3}
+      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: DoAssignment
+      objectReference: {fileID: 0}
+    - target: {fileID: 2306999768646974311, guid: ae27721622fdff047921602c89f330b2, type: 3}
+      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GameDirector, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2306999768646974311, guid: ae27721622fdff047921602c89f330b2, type: 3}
+      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2306999768646974314, guid: ae27721622fdff047921602c89f330b2, type: 3}
       propertyPath: m_Name
       value: Computer
@@ -4336,6 +4424,34 @@ PrefabInstance:
     - target: {fileID: 2571412278434311945, guid: f51d6069b5defb64db6e94f5093323dd, type: 3}
       propertyPath: _requiredObject
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2571412278434311945, guid: f51d6069b5defb64db6e94f5093323dd, type: 3}
+      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2571412278434311945, guid: f51d6069b5defb64db6e94f5093323dd, type: 3}
+      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2571412278434311945, guid: f51d6069b5defb64db6e94f5093323dd, type: 3}
+      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1692160701}
+    - target: {fileID: 2571412278434311945, guid: f51d6069b5defb64db6e94f5093323dd, type: 3}
+      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2571412278434311945, guid: f51d6069b5defb64db6e94f5093323dd, type: 3}
+      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: ScanAssignment
+      objectReference: {fileID: 0}
+    - target: {fileID: 2571412278434311945, guid: f51d6069b5defb64db6e94f5093323dd, type: 3}
+      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: GameDirector, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 2571412278434311945, guid: f51d6069b5defb64db6e94f5093323dd, type: 3}
+      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 2571412278434311988, guid: f51d6069b5defb64db6e94f5093323dd, type: 3}
       propertyPath: m_Name
@@ -4595,7 +4711,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7296359565138852693, guid: 85780d7075e3acd4396bd69d81987e7c, type: 3}
       propertyPath: m_RootOrder
-      value: 11
+      value: 9
       objectReference: {fileID: 0}
     - target: {fileID: 7296359565138852693, guid: 85780d7075e3acd4396bd69d81987e7c, type: 3}
       propertyPath: m_AnchorMax.x
