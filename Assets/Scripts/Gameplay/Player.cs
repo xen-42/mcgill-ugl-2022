@@ -2,6 +2,7 @@ using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Player : NetworkBehaviour
 {
@@ -119,6 +120,12 @@ public class Player : NetworkBehaviour
             {
                 interactable.GainFocus();
             }
+        }
+
+        // Debug
+        if(Keyboard.current[Key.F11].wasPressedThisFrame)
+        {
+            Screen.fullScreen = !Screen.fullScreen;
         }
     }
 
