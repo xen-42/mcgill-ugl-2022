@@ -41,7 +41,7 @@ public class Player : NetworkBehaviour
     [SerializeField] float acceleration = 10f;
 
     [Header("Interacting")]
-    [SerializeField] GameObject heldItemPosition;
+    [SerializeField] Transform heldItemPosition;
 
     private GameObject _focusedObject;
     public Holdable heldObject;
@@ -151,6 +151,12 @@ public class Player : NetworkBehaviour
         else if (!isGrounded)
         {
             rb.AddForce(_movement.normalized * moveSpeed * movementMultiplier * airMultiplier, ForceMode.Acceleration);
+        }
+
+        if (heldObject != null)
+        {
+            heldObject.transform.position = heldItemPosition.transform.position;
+            heldObject.transform.rotation = heldItemPosition.transform.rotation;
         }
     }
 

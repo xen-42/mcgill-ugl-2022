@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class Holdable : Interactable
 {
-    [SyncVar]
-    private GameObject _parent;
+    [SyncVar] private GameObject _parent;
+    [SyncVar] private GameObject _offsetPosition;
 
     private Rigidbody _rb;
     private Collider _collider;
@@ -43,12 +43,6 @@ public class Holdable : Interactable
     {
         base.Update();
 
-        if (_parent != null)
-        {
-            transform.position = _parent.transform.position;
-            transform.rotation = _parent.transform.rotation;
-        }
-
         // Input
         if (InputManager.CurrentInputMode != InputManager.InputMode.Player) return;
 
@@ -62,6 +56,7 @@ public class Holdable : Interactable
     public void Grab(NetworkBehaviour grabber)
     {
         _parent = grabber.gameObject;
+
         if(isServer) gameObject.GetComponent<NetworkIdentity>().AssignClientAuthority(grabber.connectionToClient);
         IsInteractable = false;
         _collider.enabled = false;
