@@ -3829,11 +3829,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1692160700}
-  - component: {fileID: 1692160699}
   - component: {fileID: 1692160702}
+  - component: {fileID: 1692160699}
   - component: {fileID: 1692160701}
   m_Layer: 0
-  m_Name: MinigameManager
+  m_Name: GameManagers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -3879,7 +3879,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  _distractions: []
+  timeLimit: 60
 --- !u!114 &1692160702
 MonoBehaviour:
   m_ObjectHideFlags: 0

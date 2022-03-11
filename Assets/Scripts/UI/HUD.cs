@@ -93,8 +93,16 @@ public class HUD : MonoBehaviour
 
     public void SetGameState(int time, int stress, int submitted)
     {
-        _timer.text = $"Time: {time}";
+        var minutes = (int)Math.Floor(time / 60f);
+        var seconds = (int)(time % 60);
+
+        var minutesString = minutes > 0 ? $"{minutes}:" : "";
+
+        // If there are minutes on the clock we want the seconds to be like 0x if x < 10.
+        var secondsString = (minutes > 0 && seconds < 10) ? $"0{seconds}" : $"{seconds}";
+
+        _timer.text = $"Time: {minutesString}{secondsString}";
         _stress.text = $"Stress: {stress}";
-        _submitted.text = $"Submitted: {submitted}";
+        _submitted.text = $"Assignments submitted: {submitted}";
     }
 }

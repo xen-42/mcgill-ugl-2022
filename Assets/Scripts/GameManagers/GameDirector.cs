@@ -8,8 +8,9 @@ public class GameDirector : NetworkBehaviour
 {
     public static GameDirector Instance;
 
-    [SerializeField]
     private List<Fixable> _distractions;
+
+    [SerializeField] public int timeLimit;
 
     public float Countdown { get; private set; }
 
@@ -74,7 +75,7 @@ public class GameDirector : NetworkBehaviour
 
         _stress += _numDistractions * _numDistractions * Time.deltaTime;
 
-        HUD.Instance.SetGameState((int)Countdown, (int)_stress, _assignments);
+        HUD.Instance.SetGameState(timeLimit - (int)Countdown, (int)_stress, _assignments);
     }
 
     private T GetRandomFromList<T>(List<T> list)
