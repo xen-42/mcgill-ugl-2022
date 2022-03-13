@@ -14,29 +14,40 @@ public class OptionsMenu : MonoBehaviour
     Resolution[] resolutions;
     int currentResolutionIndex = 0;
     public GameObject playercharacter;
-
+    public Slider sensSlider;
     private InputManager.InputMode _lastInputMode = InputManager.InputMode.Player;
 
     void Start()
     {
+        // QualitySettings.SetQualityLevel(3);
+
 
         //Get array of resolutions
-        resolutions = Screen.resolutions;
-        resolutionDropdown.ClearOptions();
-        List<string> options = new List<string>();
-        for (int i = 0; i < resolutions.Length; i++)
+        if (resolutionDropdown != null)
         {
-            string option = resolutions[i].width + " x " + resolutions[i].height;
-            options.Add(option);
-
-            if (resolutions[i].width == Screen.currentResolution.width && resolutions[i].height == Screen.currentResolution.height)
+            resolutions = Screen.resolutions;
+            resolutionDropdown.ClearOptions();
+            List<string> options = new List<string>();
+            for (int i = 0; i < resolutions.Length; i++)
             {
-                currentResolutionIndex = i;
+                string option = resolutions[i].width + " x " + resolutions[i].height;
+                options.Add(option);
+
+                if (resolutions[i].width == Screen.currentResolution.width && resolutions[i].height == Screen.currentResolution.height)
+                {
+                    currentResolutionIndex = i;
+                }
+            }
+            resolutionDropdown.AddOptions(options);
+            resolutionDropdown.value = currentResolutionIndex;
+            resolutionDropdown.RefreshShownValue();
+
+            if (sensSlider != null)
+            {
+                sensSlider.value = (float)(Player.Instance.sensX);
             }
         }
-        resolutionDropdown.AddOptions(options);
-        resolutionDropdown.value = currentResolutionIndex;
-        resolutionDropdown.RefreshShownValue();
+
     }
     public void SetVolume(float volume)
     {
