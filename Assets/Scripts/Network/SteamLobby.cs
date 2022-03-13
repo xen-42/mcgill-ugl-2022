@@ -4,6 +4,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 [RequireComponent(typeof(CustomNetworkManager))]
@@ -17,8 +18,7 @@ public class SteamLobby : MonoBehaviour
 
     private CustomNetworkManager _networkManager;
 
-    [SerializeField]
-    private InputField steamIDField;
+    public string LobbyID { get; private set; }
 
     private void Start()
     {
@@ -33,17 +33,15 @@ public class SteamLobby : MonoBehaviour
 
     public void HostLobby()
     {
-        _networkManager.SetSteamNetworkUIVisibility(false);
-
         SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, _networkManager.maxConnections);
     }
 
-    public void JoinLobby()
+    public void JoinLobby(string code)
     {
         try
         {
-            Debug.Log($"Trying to join {Convert.ToUInt64(steamIDField.text)}");
-            SteamMatchmaking.JoinLobby(new CSteamID(Convert.ToUInt64(steamIDField.text)));
+            Debug.Log($"Trying to join {Convert.ToUInt64(code)}");
+            SteamMatchmaking.JoinLobby(new CSteamID(Convert.ToUInt64(code)));
         }
         catch (Exception e)
         {
@@ -56,7 +54,6 @@ public class SteamLobby : MonoBehaviour
     {
         if (callback.m_eResult != EResult.k_EResultOK)
         {
-            _networkManager.SetSteamNetworkUIVisibility(true);
             return;
         }
 
@@ -66,7 +63,8 @@ public class SteamLobby : MonoBehaviour
         SteamMatchmaking.SetLobbyData(lobbyID, HostAddressKey, SteamUser.GetSteamID().ToString());
         SteamMatchmaking.SetLobbyData(lobbyID, "name", SteamFriends.GetPersonaName().ToString());
 
-        GUIUtility.systemCopyBuffer = lobbyID.m_SteamID.ToString();
+        LobbyID = lobbyID.ToString();
+
         Debug.Log($"Created lobby {lobbyID.m_SteamID}");
     }
 
@@ -90,8 +88,6 @@ public class SteamLobby : MonoBehaviour
             );
 
             _networkManager.StartClient();
-
-            _networkManager.SetSteamNetworkUIVisibility(false);
         }
     }
 }
