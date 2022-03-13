@@ -5,18 +5,18 @@ using UnityEngine.Events;
 
 public class ComputerInteractable : Interactable
 {
-    [SerializeField]
-    public GameObject MinigamePrefab;
+    public GameObject minigamePrefab;
 
-    void Start()
+    private void Start()
     {
         // When the player interacts with this object it'll start the minigame
-        _unityEvent.AddListener(() => {
+        _unityEvent.AddListener(() =>
+        {
             // Shouldn't work if not enough assignments are scanned
             if (GameDirector.Instance.NumAssignmentsScanned <= GameDirector.Instance.NumAssignmentsDone) return;
 
             IsInteractable = false;
-            MinigameManager.Instance.StartMinigame(MinigamePrefab, out var minigame);
+            MinigameManager.Instance.StartMinigame(minigamePrefab, out var minigame);
 
             // Tell the minigame to run this method when the player finishes
             minigame.OnCompleteMinigame.AddListener(OnCompleteMinigame);

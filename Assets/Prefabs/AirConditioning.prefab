@@ -189,7 +189,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4481151090819568741}
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: -0.00000078976143}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 9.46, y: 2.37, z: -9.74}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -262,6 +262,11 @@ MonoBehaviour:
   _promptText: Fix
   _promptPriority: 0
   _promptHoldTime: 0
+  _promptInfo:
+    _command: 1
+    _text: Fix
+    _priority: 0
+    _holdTime: 0
   requiredObject: 0
   OnInteract:
     m_PersistentCalls:

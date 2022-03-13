@@ -1,7 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
+using static InputManager;
 
 public class ButtonPrompt : MonoBehaviour
 {
@@ -24,38 +24,47 @@ public class ButtonPrompt : MonoBehaviour
     private void OnChangedController()
     {
         // Refresh the sprites
-        if(_image?.sprite != null)
+        if (_image?.sprite != null)
         {
             _image.sprite = ButtonIconManager.GetPromptSprite(Info.Command);
         }
     }
 
-    public void Init(PromptInfo info)
+    public void OnInit(PromptInfo info)
     {
         Info = info;
 
-        if(Info.HoldTime == 0f)
+        if (Info.HoldTime == 0f)
         {
             // The prompt just needs to be clicked
             _radialMeterUI.gameObject.SetActive(false);
         }
+
         _image.sprite = ButtonIconManager.GetPromptSprite(Info.Command);
         _textUI.text = Info.Text;
     }
 
+    /// <summary>
+    /// Which command, what text, priority, hold Time
+    /// </summary>
+    [Serializable]
     public struct PromptInfo
     {
-        public InputManager.InputCommand Command { get; private set; }
-        public string Text { get; private set; }
-        public int Priority { get; private set; }
-        public float HoldTime { get; private set; }
+        [SerializeField] private InputCommand _command;
+        [SerializeField] private string _text;
+        [SerializeField] private int _priority;
+        [SerializeField] private float _holdTime;
+        public InputCommand Command => _command;
+        public string Text => _text;
+        public int Priority => _priority;
+        public float HoldTime => _holdTime;
 
-        public PromptInfo(InputManager.InputCommand cmd, string text, int priority, float holdTime)
+        public PromptInfo(InputCommand cmd, string text, int priority, float holdTime)
         {
-            Command = cmd;
-            Text = text;
-            Priority = priority;
-            HoldTime = holdTime;
+            _command = cmd;
+            _text = text;
+            _priority = priority;
+            _holdTime = holdTime;
         }
     }
 }

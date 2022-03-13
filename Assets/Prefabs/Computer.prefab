@@ -132,5 +132,10 @@ MonoBehaviour:
   _promptText: Submit Assignment
   _promptPriority: 0
   _promptHoldTime: 0
+  _promptInfo:
+    _command: 1
+    _text: Submit Assignment
+    _priority: 0
+    _holdTime: 0
   requiredObject: 0
-  MinigamePrefab: {fileID: 796745773547017806, guid: 862c3368c3a09a8419c7ccc571bd3ee1, type: 3}
+  minigamePrefab: {fileID: 0}

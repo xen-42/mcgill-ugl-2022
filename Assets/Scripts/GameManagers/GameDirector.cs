@@ -27,7 +27,7 @@ public class GameDirector : NetworkBehaviour
     private bool _gameOver;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         Instance = this;
 
@@ -64,10 +64,10 @@ public class GameDirector : NetworkBehaviour
     {
         if (_gameOver) return;
 
-        var available = _distractions.Where(x => !x.IsBroken()).ToList();
+        var available = _distractions.Where(x => !x.IsBroken).ToList();
         _numDistractions = _distractions.Count - available.Count;
 
-        if(isServer)
+        if (isServer)
         {
             _countdown += Time.deltaTime;
 
@@ -86,8 +86,8 @@ public class GameDirector : NetworkBehaviour
 
         HUD.Instance.SetGameState(timeLimit - (int)_countdown, (int)_stress, NumAssignmentsDone);
 
-        // Game Over       
-        if(!_gameOver && timeLimit == _countdown)
+        // Game Over
+        if (!_gameOver && timeLimit == _countdown)
         {
             _gameOver = true;
             InputManager.CurrentInputMode = InputManager.InputMode.UI;

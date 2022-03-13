@@ -11,8 +11,8 @@ public class HUD : MonoBehaviour
 
     [SerializeField] private GameObject _buttonPrompt;
 
-    [SerializeField] private Text _timer; 
-    [SerializeField] private Text _stress; 
+    [SerializeField] private Text _timer;
+    [SerializeField] private Text _stress;
     [SerializeField] private Text _submitted;
 
     [SerializeField] private Text _gameOverText;
@@ -21,7 +21,7 @@ public class HUD : MonoBehaviour
 
     public static HUD Instance;
 
-    void Start()
+    private void Start()
     {
         Instance = this;
 
@@ -39,12 +39,12 @@ public class HUD : MonoBehaviour
         EventManager<ButtonPrompt.PromptInfo>.RemoveListener("PromptLost", OnPromptLost);
     }
 
-    void Update()
+    private void Update()
     {
         var indicatorShown = _gamepadIndicator.activeInHierarchy;
         var gamepadEnabled = InputManager.IsGamepadEnabled();
 
-        if(indicatorShown == gamepadEnabled)
+        if (indicatorShown == gamepadEnabled)
         {
             _gamepadIndicator.SetActive(!indicatorShown);
         }
@@ -52,20 +52,20 @@ public class HUD : MonoBehaviour
 
     private void OnPromptHit(ButtonPrompt.PromptInfo promptInfo)
     {
-        if(_buttonPromptDict.TryGetValue(promptInfo, out ButtonPrompt buttonPrompt))
+        if (_buttonPromptDict.TryGetValue(promptInfo, out ButtonPrompt buttonPrompt))
         {
             buttonPrompt.gameObject.SetActive(true);
         }
         else
         {
             var newPrompt = GameObject.Instantiate(_buttonPrompt, _buttonPrompt.transform.parent);
-            newPrompt.GetComponent<ButtonPrompt>().Init(promptInfo);
+            newPrompt.GetComponent<ButtonPrompt>().OnInit(promptInfo);
 
             _buttonPromptDict.Add(promptInfo, newPrompt.GetComponent<ButtonPrompt>());
             newPrompt.SetActive(true);
 
             SortPrompts();
-        }        
+        }
     }
 
     private void OnPromptLost(ButtonPrompt.PromptInfo promptInfo)
@@ -95,7 +95,7 @@ public class HUD : MonoBehaviour
 
     public void SetGameState(int time, int stress, int submitted)
     {
-        if(time < 0)
+        if (time < 0)
         {
             _gameOverText.text = $"The semester is over!\n You finished {submitted} assignments.";
             return;

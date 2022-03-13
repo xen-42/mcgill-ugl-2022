@@ -28,7 +28,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3156009205868462530}
-  m_LocalRotation: {x: -0, y: 0.00000044703478, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -1.1900005, y: 0.515, z: 0.0000003874302}
   m_LocalScale: {x: 1, y: 0.11531, z: 1}
   m_Children: []
@@ -132,6 +132,11 @@ MonoBehaviour:
   _promptText: Write assignment
   _promptPriority: 0
   _promptHoldTime: 0
-  _requiredObject: 0
+  _promptInfo:
+    _command: 1
+    _text: Write assignment
+    _priority: 0
+    _holdTime: 0
+  requiredObject: 0
   MinigamePrefab: {fileID: 796745773547017806, guid: 2d835bfe1a0764840b91c5c9a073e735, type: 3}
   HoldableItemPrefab: {fileID: 3873952053484179079, guid: 7f32fa99d866c944bb2668effd5e8bba, type: 3}
