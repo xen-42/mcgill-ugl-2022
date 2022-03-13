@@ -87,6 +87,16 @@ public class Player : NetworkBehaviour
         // If we're paused or in a minigame we cant control the player
         if (InputManager.CurrentInputMode != InputManager.InputMode.Player)
         {
+            // If we were looking at something make sure its lost focus
+            if(_focusedObject != null)
+            {
+                foreach (var interactable in _focusedObject.GetComponents<Interactable>())
+                {
+                    interactable.LoseFocus();
+                }
+                _focusedObject = null;
+            }
+
             return;
         }
 

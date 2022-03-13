@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using static InputManager;
 
 public class MinigameInteractable : Interactable
 {
@@ -10,6 +11,8 @@ public class MinigameInteractable : Interactable
 
     [SerializeField]
     public UnityEvent OnCompleteMinigame;
+
+    protected override InputCommand InputCommand { get => InputCommand.Interact; }
 
     void Start()
     {

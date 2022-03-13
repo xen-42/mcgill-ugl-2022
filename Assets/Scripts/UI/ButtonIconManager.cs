@@ -40,6 +40,8 @@ public static class ButtonIconManager
 
     public static Sprite GetPromptSprite(InputManager.InputCommand command)
     {
+        if (command == InputManager.InputCommand.None) return null;
+
         Texture2D texture = null;
         if (InputManager.IsUsingGamepad() && InputManager.GamepadMapping.ContainsKey(command))
         {

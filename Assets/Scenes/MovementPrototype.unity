@@ -226,6 +226,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WritingArea
       objectReference: {fileID: 0}
+    - target: {fileID: 7938198273298787690, guid: 0555d8e4ea5f2874dab048b207f68fdd, type: 3}
+      propertyPath: _promptTextNotInteractable
+      value: This is in use!
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0555d8e4ea5f2874dab048b207f68fdd, type: 3}
 --- !u!4 &122662525 stripped
@@ -727,37 +731,17 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2306999768646974311, guid: ae27721622fdff047921602c89f330b2, type: 3}
-      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2306999768646974311, guid: ae27721622fdff047921602c89f330b2, type: 3}
-      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 2306999768646974311, guid: ae27721622fdff047921602c89f330b2, type: 3}
-      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1692160701}
-    - target: {fileID: 2306999768646974311, guid: ae27721622fdff047921602c89f330b2, type: 3}
-      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 2306999768646974311, guid: ae27721622fdff047921602c89f330b2, type: 3}
-      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: DoAssignment
-      objectReference: {fileID: 0}
-    - target: {fileID: 2306999768646974311, guid: ae27721622fdff047921602c89f330b2, type: 3}
-      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: GameDirector, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 2306999768646974311, guid: ae27721622fdff047921602c89f330b2, type: 3}
-      propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 2306999768646974314, guid: ae27721622fdff047921602c89f330b2, type: 3}
       propertyPath: m_Name
       value: Computer
+      objectReference: {fileID: 0}
+    - target: {fileID: 6632838328107554884, guid: ae27721622fdff047921602c89f330b2, type: 3}
+      propertyPath: _promptTextMissingItem
+      value: Scan something first
+      objectReference: {fileID: 0}
+    - target: {fileID: 6632838328107554884, guid: ae27721622fdff047921602c89f330b2, type: 3}
+      propertyPath: _promptTextNotInteractable
+      value: This is in use!
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: ae27721622fdff047921602c89f330b2, type: 3}
@@ -4430,6 +4414,14 @@ PrefabInstance:
     - target: {fileID: 2571412278434311945, guid: f51d6069b5defb64db6e94f5093323dd, type: 3}
       propertyPath: _requiredObject
       value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2571412278434311945, guid: f51d6069b5defb64db6e94f5093323dd, type: 3}
+      propertyPath: _promptTextMissingItem
+      value: You need something to scan!
+      objectReference: {fileID: 0}
+    - target: {fileID: 2571412278434311945, guid: f51d6069b5defb64db6e94f5093323dd, type: 3}
+      propertyPath: _promptTextNotInteractable
+      value: Scanner is in use!
       objectReference: {fileID: 0}
     - target: {fileID: 2571412278434311945, guid: f51d6069b5defb64db6e94f5093323dd, type: 3}
       propertyPath: OnCompleteMinigame.m_PersistentCalls.m_Calls.Array.size

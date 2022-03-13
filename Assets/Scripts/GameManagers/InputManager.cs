@@ -13,6 +13,7 @@ public static class InputManager
     #region Key bindings
     public enum InputCommand
     {
+        None,
         Any,
         Interact,
         Jump,
@@ -221,6 +222,8 @@ public static class InputManager
 
     public static bool IsCommandPressed(InputCommand command)
     {
+        if (command == InputCommand.None) return false;
+
         if (command == InputCommand.Any)
         {
             return IsAnyKeyPressed() || IsAnyGamepadButtonPressed();
@@ -271,9 +274,10 @@ public static class InputManager
 
         if (Mouse.current != null)
         {
-            foreach (ButtonControl control in Mouse.current.allControls)
+            foreach (InputControl control in Mouse.current.allControls)
             {
-                if (control.wasPressedThisFrame)
+                if (!(control is ButtonControl)) continue;
+                if ((control as ButtonControl).wasPressedThisFrame)
                 {
                     return true;
                 }
@@ -285,6 +289,8 @@ public static class InputManager
 
     public static bool IsCommandJustPressed(InputCommand command)
     {
+        if (command == InputCommand.None) return false;
+
         if (command == InputCommand.Any)
         {
             return IsAnyKeyJustPressed();
@@ -333,9 +339,10 @@ public static class InputManager
 
         if (Mouse.current != null)
         {
-            foreach (ButtonControl control in Mouse.current.allControls)
+            foreach (InputControl control in Mouse.current.allControls)
             {
-                if (control.wasReleasedThisFrame)
+                if (!(control is ButtonControl)) continue;
+                if ((control as ButtonControl).wasPressedThisFrame)
                 {
                     return true;
                 }
@@ -347,6 +354,8 @@ public static class InputManager
 
     public static bool IsCommandJustReleased(InputCommand command)
     {
+        if (command == InputCommand.None) return false;
+
         if (command == InputCommand.Any)
         {
             return IsAnyKeyJustReleased();
