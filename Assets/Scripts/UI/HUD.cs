@@ -111,6 +111,6 @@ public class HUD : MonoBehaviour
 
         _timer.text = $"Time: {minutesString}{secondsString}";
         _stress.text = $"Stress: {stress}";
-        _submitted.text = $"Assignments submitted: {submitted}";
+        _submitted.text = $"Assignments submitted: {submitted} / {GameDirector.Instance.assignmentsGoal}";
     }
 }
