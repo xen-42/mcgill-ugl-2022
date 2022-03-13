@@ -38,7 +38,7 @@ public abstract class Interactable : NetworkBehaviour
     {
         Debug.Log("Interact");
 
-        if(_unityEvent != null) _unityEvent.Invoke();
+        if (_unityEvent != null) _unityEvent.Invoke();
     }
 
     public void GainFocus()
@@ -46,15 +46,15 @@ public abstract class Interactable : NetworkBehaviour
         if (HasFocus) return;
 
         // Never gain focus if it requires an object that isn't held
-        if(requiredObject != Holdable.Type.NONE)
+        if (requiredObject != Holdable.Type.NONE)
         {
-            if(Player.Instance.heldObject == null || Player.Instance.heldObject.type != requiredObject)
+            if (Player.Instance.heldObject == null || Player.Instance.heldObject.type != requiredObject)
             {
                 return;
             }
         }
 
-        if(_isInteractable)
+        if (_isInteractable)
         {
             EventManager<ButtonPrompt.PromptInfo>.TriggerEvent("PromptHit", PromptInfo);
         }
@@ -74,11 +74,11 @@ public abstract class Interactable : NetworkBehaviour
 
     public bool IsInteractable
     {
-        get 
+        get
         {
-            return _isInteractable; 
+            return _isInteractable;
         }
-        set 
+        set
         {
             if (!isServer)
             {

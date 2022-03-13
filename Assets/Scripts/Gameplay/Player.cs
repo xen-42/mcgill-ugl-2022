@@ -92,7 +92,7 @@ public class Player : NetworkBehaviour
 
         // Physics stuff
         var inputMovement = InputManager.GetMovementAxis();
-        var movement = orientation.forward* inputMovement.y + orientation.right * inputMovement.x;
+        var movement = orientation.forward * inputMovement.y + orientation.right * inputMovement.x;
 
         var jump = InputManager.IsCommandPressed(InputManager.InputCommand.Jump);
 
@@ -129,14 +129,14 @@ public class Player : NetworkBehaviour
         if (hitObject != null && hitObject != _focusedObject)
         {
             _focusedObject = hitObject;
-            foreach(var interactable in hitObject.GetComponents<Interactable>())
+            foreach (var interactable in hitObject.GetComponents<Interactable>())
             {
                 interactable.GainFocus();
             }
         }
 
         // Debug
-        if(Keyboard.current[Key.F11].wasPressedThisFrame)
+        if (Keyboard.current[Key.F11].wasPressedThisFrame)
         {
             Screen.fullScreen = !Screen.fullScreen;
         }

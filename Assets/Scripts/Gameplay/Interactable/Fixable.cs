@@ -20,9 +20,9 @@ public class Fixable : NetworkBehaviour
     private void Start()
     {
         // Since its synced you could join late and its already changed
-        if(_currentState != null) _currentState = fixedState;
+        if (_currentState != null) _currentState = fixedState;
 
-        foreach(Transform t in transform)
+        foreach (Transform t in transform)
         {
             if (t.gameObject.name == fixedState.name)
             {
@@ -51,7 +51,7 @@ public class Fixable : NetworkBehaviour
 
     private void SwitchState(GameObject state)
     {
-        if(!isServer)
+        if (!isServer)
         {
             Player.Instance.CmdGiveAuthority(netIdentity);
             ActionManager.RunWhen(() => netIdentity.hasAuthority, () => CmdSwapState(state.name));
@@ -76,7 +76,7 @@ public class Fixable : NetworkBehaviour
 
     private void _SwitchState(string stateID)
     {
-        foreach(Transform t in transform)
+        foreach (Transform t in transform)
         {
             if (t.gameObject.name != stateID)
             {

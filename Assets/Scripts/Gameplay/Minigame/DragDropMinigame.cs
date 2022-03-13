@@ -13,13 +13,13 @@ public class DragDropMinigame : Minigame
 
     private void Awake()
     {
-        _heldCollider = holdableObject.GetComponent<Collider>();    
+        _heldCollider = holdableObject.GetComponent<Collider>();
     }
 
     void Update()
     {
         // Check for completion
-        if(!holdableObject.IsHeld && dropCollider.bounds.Intersects(_heldCollider.bounds))
+        if (!holdableObject.IsHeld && dropCollider.bounds.Intersects(_heldCollider.bounds))
         {
             CompleteMinigame();
         }

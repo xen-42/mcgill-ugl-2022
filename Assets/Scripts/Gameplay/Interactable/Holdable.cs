@@ -57,10 +57,10 @@ public class Holdable : Interactable
     {
         _parent = grabber.gameObject;
 
-        if(isServer) gameObject.GetComponent<NetworkIdentity>().AssignClientAuthority(grabber.connectionToClient);
+        if (isServer) gameObject.GetComponent<NetworkIdentity>().AssignClientAuthority(grabber.connectionToClient);
         IsInteractable = false;
         _collider.enabled = false;
-        foreach(var collider in GetComponentsInChildren<Collider>())
+        foreach (var collider in GetComponentsInChildren<Collider>())
         {
             collider.enabled = false;
         }
@@ -71,8 +71,8 @@ public class Holdable : Interactable
     public void Drop()
     {
         _parent = null;
-        if(isServer) gameObject.GetComponent<NetworkIdentity>().RemoveClientAuthority();
-        
+        if (isServer) gameObject.GetComponent<NetworkIdentity>().RemoveClientAuthority();
+
         IsInteractable = true;
         _rb.isKinematic = false;
         _collider.enabled = true;
@@ -88,14 +88,14 @@ public class Holdable : Interactable
     {
         // Check if its a consumable type
         var isConsumable = false;
-        switch(type)
+        switch (type)
         {
             case Type.ASSIGNMENT:
                 isConsumable = true;
                 break;
         }
 
-        if(isConsumable)
+        if (isConsumable)
         {
             NetworkDestroy(gameObject);
             Player.Instance.heldObject = null;
@@ -104,7 +104,7 @@ public class Holdable : Interactable
 
     private void NetworkDestroy(GameObject obj)
     {
-        if(isServer)
+        if (isServer)
         {
             RpcNetworkDestroy(obj);
         }

@@ -67,7 +67,7 @@ public class GameDirector : NetworkBehaviour
         var available = _distractions.Where(x => !x.IsBroken()).ToList();
         _numDistractions = _distractions.Count - available.Count;
 
-        if(isServer)
+        if (isServer)
         {
             _countdown += Time.deltaTime;
 
@@ -87,7 +87,7 @@ public class GameDirector : NetworkBehaviour
         HUD.Instance.SetGameState(timeLimit - (int)_countdown, (int)_stress, NumAssignmentsDone);
 
         // Game Over       
-        if(!_gameOver && timeLimit == _countdown)
+        if (!_gameOver && timeLimit == _countdown)
         {
             _gameOver = true;
             InputManager.CurrentInputMode = InputManager.InputMode.UI;

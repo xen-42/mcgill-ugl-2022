@@ -14,7 +14,8 @@ public class MinigameInteractable : Interactable
     void Start()
     {
         // When the player interacts with this object it'll start the minigame
-        _unityEvent.AddListener(() => {
+        _unityEvent.AddListener(() =>
+        {
             IsInteractable = false;
             MinigameManager.Instance.StartMinigame(MinigamePrefab, out var minigame);
             minigame.OnCompleteMinigame.AddListener(() => OnCompleteMinigame.Invoke());
@@ -22,7 +23,7 @@ public class MinigameInteractable : Interactable
             if (requiredObject != Holdable.Type.NONE)
             {
                 // Should never be null but could be a bug and it'll hang the player
-                if(Player.Instance.heldObject != null)
+                if (Player.Instance.heldObject != null)
                 {
                     // Try consuming the required object after use
                     minigame.OnCompleteMinigame.AddListener(() => Player.Instance.heldObject.Consume());

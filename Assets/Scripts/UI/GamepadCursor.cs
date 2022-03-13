@@ -20,7 +20,7 @@ public class GamepadCursor : MonoBehaviour
 
     private void Awake()
     {
-        if(_instance != null)
+        if (_instance != null)
         {
             Debug.LogError("There is more than one GamepadCursor");
             GameObject.Destroy(this);
@@ -37,10 +37,10 @@ public class GamepadCursor : MonoBehaviour
         {
             _position += InputManager.GetMovementAxis();
             Mouse.current.WarpCursorPosition(_position);
-        } 
+        }
         else
         {
             _position = Mouse.current.position.ReadValue();
-        } 
+        }
     }
 }

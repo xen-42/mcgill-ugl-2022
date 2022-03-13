@@ -11,7 +11,8 @@ public class ComputerInteractable : Interactable
     void Start()
     {
         // When the player interacts with this object it'll start the minigame
-        _unityEvent.AddListener(() => {
+        _unityEvent.AddListener(() =>
+        {
             // Shouldn't work if not enough assignments are scanned
             if (GameDirector.Instance.NumAssignmentsScanned <= GameDirector.Instance.NumAssignmentsDone) return;
 

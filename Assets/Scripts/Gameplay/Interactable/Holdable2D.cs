@@ -14,14 +14,14 @@ public class Holdable2D : Hoverable2D
     {
         var isHovering = IsCursorHovering();
 
-        if(InputManager.IsCommandJustPressed(InputManager.InputCommand.PickUp) && isHovering)
+        if (InputManager.IsCommandJustPressed(InputManager.InputCommand.PickUp) && isHovering)
         {
             _isHeld = true;
         }
 
-        if(_isHeld)
+        if (_isHeld)
         {
-            if(InputManager.IsCommandJustReleased(InputManager.InputCommand.PickUp))
+            if (InputManager.IsCommandJustReleased(InputManager.InputCommand.PickUp))
             {
                 _isHeld = false;
             }

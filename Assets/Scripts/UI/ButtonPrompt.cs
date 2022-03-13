@@ -24,7 +24,7 @@ public class ButtonPrompt : MonoBehaviour
     private void OnChangedController()
     {
         // Refresh the sprites
-        if(_image?.sprite != null)
+        if (_image?.sprite != null)
         {
             _image.sprite = ButtonIconManager.GetPromptSprite(Info.Command);
         }
@@ -34,7 +34,7 @@ public class ButtonPrompt : MonoBehaviour
     {
         Info = info;
 
-        if(Info.HoldTime == 0f)
+        if (Info.HoldTime == 0f)
         {
             // The prompt just needs to be clicked
             _radialMeterUI.gameObject.SetActive(false);

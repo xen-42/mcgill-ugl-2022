@@ -45,7 +45,7 @@ public static class ButtonIconManager
         {
             texture = GetGamepadButtonTexture(InputManager.GamepadMapping[command]);
         }
-        else if(InputManager.KeyboardMappings.ContainsKey(command))
+        else if (InputManager.KeyboardMappings.ContainsKey(command))
         {
             texture = GetKeyTexture(InputManager.KeyboardMappings[command]);
         }
@@ -83,9 +83,9 @@ public static class ButtonIconManager
             if (texture == null) continue;
 
             _keyboardPrompts.Add(key, texture);
-        } 
-        
-        foreach(GamepadButton gamepadButton in Enum.GetValues(typeof(GamepadButton))) 
+        }
+
+        foreach (GamepadButton gamepadButton in Enum.GetValues(typeof(GamepadButton)))
         {
             if (_gamepadPrompts.ContainsKey(gamepadButton)) continue;
 
@@ -97,7 +97,7 @@ public static class ButtonIconManager
             _gamepadPrompts.Add(gamepadButton, texture);
         }
 
-        foreach(MouseButton mouseButton in Enum.GetValues(typeof(MouseButton)))
+        foreach (MouseButton mouseButton in Enum.GetValues(typeof(MouseButton)))
         {
             if (_mousePrompts.ContainsKey(mouseButton)) continue;
 
@@ -173,7 +173,7 @@ public static class ButtonIconManager
 
     private static string GamepadButtonToFileName(GamepadButton gamepadButton)
     {
-        switch(gamepadButton)
+        switch (gamepadButton)
         {
             case GamepadButton.DpadDown:
                 return "Dpad_Down";
@@ -207,7 +207,7 @@ public static class ButtonIconManager
     }
     private static string MouseButtonToFileName(MouseButton button)
     {
-        switch(button)
+        switch (button)
         {
             case MouseButton.Left:
                 return "Mouse_Left";

@@ -18,7 +18,7 @@ public class Hoverable2D : Interactable
 
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, 1 << (LayerMask.NameToLayer("Minigame"))))
         {
-            if(hit.collider.transform == transform)
+            if (hit.collider.transform == transform)
             {
                 if (_hovering == false)
                 {
