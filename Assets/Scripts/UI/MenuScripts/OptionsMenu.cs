@@ -49,9 +49,8 @@ public class OptionsMenu : MonoBehaviour{
         audioMixer.SetFloat("volume", volume);
     }
     public void SetMouseSensitiity(float sens){
-        GameObject.Find("Player [connId=0]").GetComponent<CameraController>().sensX = sens;
-        GameObject.Find("Player [connId=0]").GetComponent<CameraController>().sensY = sens;
-
+        Player.Instance.sensX = sens;
+        Player.Instance.sensY = sens;
     }  
 
     public void SetQuality(int qualityIndex){
