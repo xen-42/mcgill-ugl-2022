@@ -13,12 +13,15 @@ public class OptionsMenu : MonoBehaviour{
     Resolution[] resolutions;
     int currentResolutionIndex = 0;
     public GameObject playercharacter;
-
+    public Slider sensSlider;
     private InputManager.InputMode _lastInputMode = InputManager.InputMode.Player;
 
     void Start(){
-
+       // QualitySettings.SetQualityLevel(3);
+     
+      
         //Get array of resolutions
+        if (resolutionDropdown != null){
         resolutions = Screen.resolutions;
         resolutionDropdown.ClearOptions();
         List<string> options = new List<string>();
@@ -33,6 +36,12 @@ public class OptionsMenu : MonoBehaviour{
         resolutionDropdown.AddOptions(options);
         resolutionDropdown.value = currentResolutionIndex;
         resolutionDropdown.RefreshShownValue();
+
+          if (sensSlider != null){
+            sensSlider.value = (float) (playercharacter.GetComponent<CameraController>().sensX);
+       }
+        }
+
     }
     public void SetVolume(float volume){
         //Sets the game volume
@@ -60,6 +69,7 @@ public class OptionsMenu : MonoBehaviour{
     }
 
      void Update() {
+         
         //Checks if the game is paused or not
         if (Input.GetKeyDown(KeyCode.Escape)){
             if (GamePaused){
