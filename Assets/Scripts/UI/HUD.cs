@@ -11,8 +11,8 @@ public class HUD : MonoBehaviour
 
     [SerializeField] private GameObject _buttonPrompt;
 
-    [SerializeField] private Text _timer; 
-    [SerializeField] private Text _stress; 
+    [SerializeField] private Text _timer;
+    [SerializeField] private Text _stress;
     [SerializeField] private Text _submitted;
 
     [SerializeField] private Text _gameOverText;
@@ -44,7 +44,7 @@ public class HUD : MonoBehaviour
         var indicatorShown = _gamepadIndicator.activeInHierarchy;
         var gamepadEnabled = InputManager.IsGamepadEnabled();
 
-        if(indicatorShown == gamepadEnabled)
+        if (indicatorShown == gamepadEnabled)
         {
             _gamepadIndicator.SetActive(!indicatorShown);
         }
@@ -52,7 +52,7 @@ public class HUD : MonoBehaviour
 
     private void OnPromptHit(ButtonPrompt.PromptInfo promptInfo)
     {
-        if(_buttonPromptDict.TryGetValue(promptInfo, out ButtonPrompt buttonPrompt))
+        if (_buttonPromptDict.TryGetValue(promptInfo, out ButtonPrompt buttonPrompt))
         {
             buttonPrompt.gameObject.SetActive(true);
         }
@@ -65,7 +65,7 @@ public class HUD : MonoBehaviour
             newPrompt.SetActive(true);
 
             SortPrompts();
-        }        
+        }
     }
 
     private void OnPromptLost(ButtonPrompt.PromptInfo promptInfo)
@@ -95,7 +95,7 @@ public class HUD : MonoBehaviour
 
     public void SetGameState(int time, int stress, int submitted)
     {
-        if(time < 0)
+        if (time < 0)
         {
             _gameOverText.text = $"The semester is over!\n You finished {submitted} assignments.";
             return;
@@ -111,6 +111,6 @@ public class HUD : MonoBehaviour
 
         _timer.text = $"Time: {minutesString}{secondsString}";
         _stress.text = $"Stress: {stress}";
-        _submitted.text = $"Assignments submitted: {submitted}";
+        _submitted.text = $"Assignments submitted: {submitted} / {GameDirector.Instance.assignmentsGoal}";
     }
 }

@@ -5,29 +5,26 @@ using UnityEngine;
 
 public class Fixable : NetworkBehaviour
 {
-    [SerializeField]
-    public GameObject fixedState;
+    [SerializeField] public GameObject fixedState;
 
-    [SerializeField]
-    public GameObject brokenState;
+    [SerializeField] public GameObject brokenState;
 
     [SyncVar] private bool _isBroken;
 
-    [SyncVar] private GameObject _currentState = null;
+    [SyncVar] private string _currentState = null;
 
     private Interactable _interactable;
 
     private void Start()
     {
         // Since its synced you could join late and its already changed
-        if(_currentState != null) _currentState = fixedState;
+        if (_currentState == null) _currentState = fixedState.name;
 
-        foreach(Transform t in transform)
+        foreach (Transform t in transform)
         {
-            if (t.gameObject.name == fixedState.name)
+            if (t.gameObject.name == _currentState)
             {
                 t.gameObject.SetActive(true);
-                _currentState = t.gameObject;
             }
             else
             {
@@ -35,30 +32,32 @@ public class Fixable : NetworkBehaviour
             }
         }
 
+        _isBroken = _currentState != fixedState.name;
+
         _interactable = gameObject.GetComponent<Interactable>();
-        //if (_interactable != null) ActionManager.FireOnNextUpdate(() => _interactable.IsInteractable = false);
+        _interactable.Init(_isBroken);
     }
 
     public void Break()
     {
-        SwitchState(brokenState);
+        SwitchState(brokenState.name);
     }
 
     public void Fix()
     {
-        SwitchState(fixedState);
+        SwitchState(fixedState.name);
     }
 
-    private void SwitchState(GameObject state)
+    private void SwitchState(string stateID)
     {
-        if(!isServer)
+        if (!isServer)
         {
             Player.Instance.CmdGiveAuthority(netIdentity);
-            ActionManager.RunWhen(() => netIdentity.hasAuthority, () => CmdSwapState(state.name));
+            ActionManager.RunWhen(() => netIdentity.hasAuthority, () => CmdSwapState(stateID));
         }
         else
         {
-            RpcSwapState(state.name);
+            RpcSwapState(stateID);
         }
     }
 
@@ -76,7 +75,9 @@ public class Fixable : NetworkBehaviour
 
     private void _SwitchState(string stateID)
     {
-        foreach(Transform t in transform)
+        _currentState = stateID;
+
+        foreach (Transform t in transform)
         {
             if (t.gameObject.name != stateID)
             {
@@ -84,7 +85,6 @@ public class Fixable : NetworkBehaviour
             }
             else
             {
-                _currentState = t.gameObject;
                 t.gameObject.SetActive(true);
             }
         }

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using static InputManager;
 
 public class ItemSpawningMinigame : Interactable
 {
@@ -12,12 +13,15 @@ public class ItemSpawningMinigame : Interactable
     [SerializeField]
     public GameObject HoldableItemPrefab;
 
+    protected override InputCommand InputCommand { get => InputCommand.Interact; }
+
     void Start()
     {
         NetworkClient.RegisterPrefab(HoldableItemPrefab);
 
         // When the player interacts with this object it'll start the minigame
-        _unityEvent.AddListener(() => {
+        _unityEvent.AddListener(() =>
+        {
             IsInteractable = false;
             MinigameManager.Instance.StartMinigame(MinigamePrefab, out var minigame);
             minigame.OnCompleteMinigame.AddListener(OnCompleteMinigame);

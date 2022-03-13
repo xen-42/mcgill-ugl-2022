@@ -10,7 +10,7 @@ public class MinigameManager : MonoBehaviour
 
     private void Awake()
     {
-        Instance = this;   
+        Instance = this;
     }
 
     public void StartMinigame(GameObject minigame, out Minigame returnMinigame)
@@ -43,7 +43,7 @@ public class MinigameManager : MonoBehaviour
     {
         if (InputManager.CurrentInputMode == InputManager.InputMode.Minigame)
         {
-            if(InputManager.IsCommandJustPressed(InputManager.InputCommand.Back))
+            if (InputManager.IsCommandJustPressed(InputManager.InputCommand.Back))
             {
                 if (_currentMinigame != null) StopMinigame();
                 InputManager.CurrentInputMode = InputManager.InputMode.Player;

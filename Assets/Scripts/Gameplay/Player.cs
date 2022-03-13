@@ -87,12 +87,22 @@ public class Player : NetworkBehaviour
         // If we're paused or in a minigame we cant control the player
         if (InputManager.CurrentInputMode != InputManager.InputMode.Player)
         {
+            // If we were looking at something make sure its lost focus
+            if(_focusedObject != null)
+            {
+                foreach (var interactable in _focusedObject.GetComponents<Interactable>())
+                {
+                    interactable.LoseFocus();
+                }
+                _focusedObject = null;
+            }
+
             return;
         }
 
         // Physics stuff
         var inputMovement = InputManager.GetMovementAxis();
-        var movement = orientation.forward* inputMovement.y + orientation.right * inputMovement.x;
+        var movement = orientation.forward * inputMovement.y + orientation.right * inputMovement.x;
 
         var jump = InputManager.IsCommandPressed(InputManager.InputCommand.Jump);
 
@@ -129,14 +139,14 @@ public class Player : NetworkBehaviour
         if (hitObject != null && hitObject != _focusedObject)
         {
             _focusedObject = hitObject;
-            foreach(var interactable in hitObject.GetComponents<Interactable>())
+            foreach (var interactable in hitObject.GetComponents<Interactable>())
             {
                 interactable.GainFocus();
             }
         }
 
         // Debug
-        if(Keyboard.current[Key.F11].wasPressedThisFrame)
+        if (Keyboard.current[Key.F11].wasPressedThisFrame)
         {
             Screen.fullScreen = !Screen.fullScreen;
         }

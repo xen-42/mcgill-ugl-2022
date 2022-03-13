@@ -128,8 +128,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  _inputCommand: 1
   _promptText: Submit Assignment
+  _promptTextNotInteractable: This is in use!
+  _promptTextMissingItem: Scan something first
   _promptPriority: 0
   _promptHoldTime: 0
   requiredObject: 0

@@ -45,7 +45,7 @@ public class SteamLobby : MonoBehaviour
             Debug.Log($"Trying to join {Convert.ToUInt64(steamIDField.text)}");
             SteamMatchmaking.JoinLobby(new CSteamID(Convert.ToUInt64(steamIDField.text)));
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             Debug.LogError(e.Message);
             return;
@@ -54,7 +54,7 @@ public class SteamLobby : MonoBehaviour
 
     private void OnLobbyCreated(LobbyCreated_t callback)
     {
-        if(callback.m_eResult != EResult.k_EResultOK)
+        if (callback.m_eResult != EResult.k_EResultOK)
         {
             _networkManager.SetSteamNetworkUIVisibility(true);
             return;
@@ -74,7 +74,7 @@ public class SteamLobby : MonoBehaviour
     {
         Debug.Log("Request to join lobby");
 
-        SteamMatchmaking.JoinLobby(callback.m_steamIDLobby);       
+        SteamMatchmaking.JoinLobby(callback.m_steamIDLobby);
     }
 
     private void OnLobbyEnter(LobbyEnter_t callback)

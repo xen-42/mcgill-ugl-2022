@@ -12,7 +12,8 @@ public static class EventManager
 
     public static void AddListener(string pEventName, EventCallback pListener)
     {
-        if(m_eventDictionary.TryGetValue(pEventName, out EventData eventData)) {
+        if (m_eventDictionary.TryGetValue(pEventName, out EventData eventData))
+        {
             eventData.callbacks.Add(pListener);
         }
         else
@@ -35,14 +36,14 @@ public static class EventManager
     {
         if (m_eventDictionary.TryGetValue(pEventName, out EventData eventData))
         {
-            if(eventData.isInvoking)
+            if (eventData.isInvoking)
             {
                 Debug.LogError("Infinite recursion in EventManager");
             }
             else
             {
                 eventData.isInvoking = true;
-                foreach(var callback in eventData.callbacks)
+                foreach (var callback in eventData.callbacks)
                 {
                     callback.Invoke();
                 }

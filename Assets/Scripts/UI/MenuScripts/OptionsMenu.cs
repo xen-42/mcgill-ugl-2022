@@ -80,7 +80,6 @@ public class OptionsMenu : MonoBehaviour
 
     void Update()
     {
-
         //Checks if the game is paused or not
         if (Input.GetKeyDown(KeyCode.Escape))
         {

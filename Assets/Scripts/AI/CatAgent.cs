@@ -15,8 +15,8 @@ public class CatAgent : NetworkBehaviour
 
     // Movement
     //private float speed = 1f;
-    private float[] x_limits = new float[]{18f, 2f};
-    private float[] z_limits = new float[]{-18f, -3.5f};
+    private float[] x_limits = new float[] { 18f, 2f };
+    private float[] z_limits = new float[] { -18f, -3.5f };
 
     private Vector3 destination;
     private UnityEngine.AI.NavMeshAgent NMAgent;
@@ -56,9 +56,10 @@ public class CatAgent : NetworkBehaviour
     }
 
     // Called when we first enter the 'Walking' state
-    public void EnterWalk(){
+    public void EnterWalk()
+    {
         //transform.position += new Vector3(0,0,0.5f) * Time.deltaTime * speed;
-    
+
         NMAgent.enabled = true;
         NMAgent.speed = 2;
 
@@ -74,25 +75,30 @@ public class CatAgent : NetworkBehaviour
         }*/
     }
 
-    public void Walk(){
+    public void Walk()
+    {
         energy -= 2;
 
         // Reached destination, needs to find new one
-        if (NMAgent.remainingDistance <= NMAgent.stoppingDistance){
-            if (!NMAgent.hasPath || NMAgent.velocity.sqrMagnitude == 0f){
+        if (NMAgent.remainingDistance <= NMAgent.stoppingDistance)
+        {
+            if (!NMAgent.hasPath || NMAgent.velocity.sqrMagnitude == 0f)
+            {
                 PickRandomPos();
             }
         }
 
     }
 
-    public void Sit(){
+    public void Sit()
+    {
         energy += 10;
 
         //NMAgent.speed = 0;
     }
 
-    public void PickRandomPos(){
+    public void PickRandomPos()
+    {
         int walk_radius = 20;
         Vector3 random_dir = Random.insideUnitSphere * walk_radius;
         random_dir += this.transform.position;

@@ -31,21 +31,21 @@ public class ActionManager : MonoBehaviour
         var toRemove = new List<Tuple<Func<bool>, Action>>();
 
         /* We just check every predicate on update */
-        foreach(var pair in _pairs)
+        foreach (var pair in _pairs)
         {
-            if(pair.Item1.Invoke())
+            if (pair.Item1.Invoke())
             {
                 pair.Item2.Invoke();
                 toRemove.Add(pair);
             }
         }
 
-        foreach(var pair in toRemove)
+        foreach (var pair in toRemove)
         {
             _pairs.Remove(pair);
         }
 
-        foreach(var action in _nextTick)
+        foreach (var action in _nextTick)
         {
             action.Invoke();
         }

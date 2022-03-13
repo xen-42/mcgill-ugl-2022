@@ -2,10 +2,13 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static InputManager;
 
 public class Hoverable2D : Interactable
 {
     private bool _hovering = false;
+
+    protected override InputCommand InputCommand { get => InputCommand.None; }
 
     private void OnDestroy()
     {
@@ -18,7 +21,7 @@ public class Hoverable2D : Interactable
 
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, 1 << (LayerMask.NameToLayer("Minigame"))))
         {
-            if(hit.collider.transform == transform)
+            if (hit.collider.transform == transform)
             {
                 if (_hovering == false)
                 {

@@ -2,6 +2,7 @@ using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static InputManager;
 
 public class Holdable : Interactable
 {
@@ -10,6 +11,8 @@ public class Holdable : Interactable
 
     private Rigidbody _rb;
     private Collider _collider;
+
+    protected override InputCommand InputCommand { get => InputCommand.PickUp; }
 
     public Type type;
 
@@ -47,7 +50,7 @@ public class Holdable : Interactable
         if (InputManager.CurrentInputMode != InputManager.InputMode.Player) return;
 
         var player = Player.Instance;
-        if (InputManager.IsCommandJustPressed(PromptInfo.Command) && player.heldObject == this)
+        if (InputManager.IsCommandJustPressed(InputCommand) && player.heldObject == this)
         {
             player.CmdDrop();
         }
@@ -57,10 +60,10 @@ public class Holdable : Interactable
     {
         _parent = grabber.gameObject;
 
-        if(isServer) gameObject.GetComponent<NetworkIdentity>().AssignClientAuthority(grabber.connectionToClient);
+        if (isServer) gameObject.GetComponent<NetworkIdentity>().AssignClientAuthority(grabber.connectionToClient);
         IsInteractable = false;
         _collider.enabled = false;
-        foreach(var collider in GetComponentsInChildren<Collider>())
+        foreach (var collider in GetComponentsInChildren<Collider>())
         {
             collider.enabled = false;
         }
@@ -71,8 +74,8 @@ public class Holdable : Interactable
     public void Drop()
     {
         _parent = null;
-        if(isServer) gameObject.GetComponent<NetworkIdentity>().RemoveClientAuthority();
-        
+        if (isServer) gameObject.GetComponent<NetworkIdentity>().RemoveClientAuthority();
+
         IsInteractable = true;
         _rb.isKinematic = false;
         _collider.enabled = true;
@@ -88,14 +91,14 @@ public class Holdable : Interactable
     {
         // Check if its a consumable type
         var isConsumable = false;
-        switch(type)
+        switch (type)
         {
             case Type.ASSIGNMENT:
                 isConsumable = true;
                 break;
         }
 
-        if(isConsumable)
+        if (isConsumable)
         {
             NetworkDestroy(gameObject);
             Player.Instance.heldObject = null;
@@ -104,7 +107,7 @@ public class Holdable : Interactable
 
     private void NetworkDestroy(GameObject obj)
     {
-        if(isServer)
+        if (isServer)
         {
             RpcNetworkDestroy(obj);
         }
