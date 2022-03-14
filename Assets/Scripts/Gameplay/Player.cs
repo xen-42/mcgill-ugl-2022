@@ -49,6 +49,8 @@ public class Player : NetworkBehaviour
 
     [Header("Interacting")]
     [SerializeField] Transform heldItemPosition;
+    [SerializeField] float heldItemTranslationResponsiveness = 20f;
+    [SerializeField] float heldItemRotationResponsiveness = 10f;
 
     private GameObject _focusedObject;
     public Holdable heldObject;
@@ -96,8 +98,22 @@ public class Player : NetworkBehaviour
 
     private void Update()
     {
-        // We only check for inputs in here
+        if(hasAuthority)
+        {
+            CheckInputs();
+        }
 
+        // Move held items here so they go smoothly (since we disable their collisions its fine that it isnt on server)
+        if (heldObject != null)
+        {
+            heldObject.transform.position = Vector3.Lerp(heldObject.transform.position, heldItemPosition.position, Time.deltaTime * heldItemTranslationResponsiveness);
+            heldObject.transform.rotation = Quaternion.Lerp(heldObject.transform.rotation, heldItemPosition.rotation, Time.deltaTime * heldItemRotationResponsiveness);
+        }
+    }
+
+    [Client]
+    private void CheckInputs()
+    {
         // We only want to check input on the objects we have authority for
         if (!hasAuthority) return;
 
@@ -198,12 +214,6 @@ public class Player : NetworkBehaviour
         else if (!isGrounded)
         {
             rb.AddForce(_movement.normalized * moveSpeed * movementMultiplier * airMultiplier, ForceMode.Acceleration);
-        }
-
-        if (heldObject != null)
-        {
-            heldObject.transform.position = heldItemPosition.transform.position;
-            heldObject.transform.rotation = heldItemPosition.transform.rotation;
         }
     }
 
