@@ -19,7 +19,7 @@ GameObject:
   - component: {fileID: 4946464366587674621}
   - component: {fileID: 4946464366587674622}
   - component: {fileID: 4946464366587674620}
-  - component: {fileID: 4207629397879842587}
+  - component: {fileID: 2105525903}
   m_Layer: 0
   m_Name: Cat
   m_TagString: Untagged
@@ -255,7 +255,7 @@ NavMeshAgent:
   m_BaseOffset: 0.5
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
---- !u!114 &4207629397879842587
+--- !u!114 &2105525903
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -264,16 +264,16 @@ MonoBehaviour:
   m_GameObject: {fileID: 4946464366587674599}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 149ad4d7b6b25334cba1a9a859ac1ac3, type: 3}
+  m_Script: {fileID: 11500000, guid: 0c687752fa5ece040932477cec03a329, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  _inputCommand: 1
-  _promptText: Pet
+  _promptText: Pet Garfield
+  _promptTextNotInteractable: Garfield doesn't want pets
+  _promptTextMissingItem: 
   _promptPriority: 0
   _promptHoldTime: 0
   requiredObject: 0
-  OnInteract:
-    m_PersistentCalls:
-      m_Calls: []
+  Cooldown: 10
+  StressReduction: 20
