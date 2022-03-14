@@ -6,8 +6,7 @@ using static InputManager;
 
 public class ComputerInteractable : Interactable
 {
-    [SerializeField]
-    public GameObject MinigamePrefab;
+    public GameObject minigamePrefab;
 
     protected override InputCommand InputCommand { get => InputCommand.Interact; }
 
@@ -17,7 +16,7 @@ public class ComputerInteractable : Interactable
         _unityEvent.AddListener(() =>
         {
             IsInteractable = false;
-            MinigameManager.Instance.StartMinigame(MinigamePrefab, out var minigame);
+            MinigameManager.Instance.StartMinigame(minigamePrefab, out var minigame);
 
             // Tell the minigame to run this method when the player finishes
             minigame.OnCompleteMinigame.AddListener(OnCompleteMinigame);

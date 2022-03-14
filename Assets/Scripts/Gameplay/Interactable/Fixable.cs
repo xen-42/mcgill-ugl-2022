@@ -1,13 +1,10 @@
 using Mirror;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Fixable : NetworkBehaviour
 {
-    [SerializeField] public GameObject fixedState;
-
-    [SerializeField] public GameObject brokenState;
+    public GameObject fixedState;
+    public GameObject brokenState;
 
     [SyncVar] private bool _isBroken;
 
@@ -15,7 +12,9 @@ public class Fixable : NetworkBehaviour
 
     private Interactable _interactable;
 
-    private void Start()
+    public bool IsBroken => _isBroken;
+
+    private void Awake()
     {
         // Since its synced you could join late and its already changed
         if (_currentState == null) _currentState = fixedState.name;
@@ -38,10 +37,14 @@ public class Fixable : NetworkBehaviour
         _interactable.Init(_isBroken);
     }
 
-    public void Break()
+    private void Start()
     {
+        UpdateInteractState();
         SwitchState(brokenState.name);
     }
+
+    public void Break()
+    => SwitchState(brokenState.name);
 
     public void Fix()
     {
@@ -61,6 +64,8 @@ public class Fixable : NetworkBehaviour
         }
     }
 
+    #region network
+
     [Command]
     private void CmdSwapState(string stateID)
     {
@@ -70,10 +75,32 @@ public class Fixable : NetworkBehaviour
     [ClientRpc]
     private void RpcSwapState(string stateID)
     {
-        _SwitchState(stateID);
+        SwitchStateGameObject(stateID);
+        UpdateInteractState();
     }
 
-    private void _SwitchState(string stateID)
+    #endregion network
+
+    //private void SwitchState(string stateID)
+    //{
+    //    foreach (Transform t in transform)
+    //    {
+    //        if (t.gameObject.name != stateID)
+    //        {
+    //            t.gameObject.SetActive(false);
+    //        }
+    //        else
+    //        {
+    //            _currentState = t.gameObject;
+    //            t.gameObject.SetActive(true);
+    //        }
+    //    }
+    //    _isBroken = stateID != fixedState.name;
+
+    //    if (_interactable != null) _interactable.IsInteractable = _isBroken;
+    //}
+
+    private void SwitchStateGameObject(string stateID)
     {
         _currentState = stateID;
 
@@ -88,13 +115,9 @@ public class Fixable : NetworkBehaviour
                 t.gameObject.SetActive(true);
             }
         }
-        _isBroken = (stateID != fixedState.name);
-
-        if (_interactable != null) _interactable.IsInteractable = _isBroken;
+        _isBroken = stateID != fixedState.name;
     }
 
-    public bool IsBroken()
-    {
-        return _isBroken;
-    }
+    private void UpdateInteractState()
+    { if (_interactable != null) _interactable.IsInteractable = _isBroken; }
 }

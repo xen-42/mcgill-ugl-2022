@@ -23,11 +23,12 @@ public class Hoverable2D : Interactable
         {
             if (hit.collider.transform == transform)
             {
-                if (_hovering == false)
+                if (!_hovering)
                 {
                     OnStartHover();
                     GainFocus();
                 }
+
                 _hovering = true;
                 return true;
             }
@@ -38,11 +39,14 @@ public class Hoverable2D : Interactable
             OnStopHover();
             LoseFocus();
         }
+
         _hovering = false;
         return false;
     }
 
-    public virtual void OnStartHover() { }
+    public virtual void OnStartHover()
+    { }
 
-    public virtual void OnStopHover() { }
+    public virtual void OnStopHover()
+    { }
 }
