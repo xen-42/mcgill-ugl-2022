@@ -36,16 +36,19 @@ public class CustomNetworkManager : NetworkManager
     private static CustomNetworkManager _instance;
 
     [Scene] [SerializeField] private string lobbyMenu = string.Empty;
+    [Scene] [SerializeField] private string gameScene = string.Empty;
 
     [Header("Room")]
-    [SerializeField] private StudentXPLobbyPlayer roomPlayerPrefab = null;
+    [SerializeField] private LobbyPlayer lobbyPlayerPrefab = null;
+    [SerializeField] private Player gamePlayerPrefab = null;
 
     public static event Action OnClientConnected;
     public static event Action OnClientDisconnected;
 
     public SteamLobby steamLobby = null;
 
-    public List<StudentXPLobbyPlayer> players = new List<StudentXPLobbyPlayer>();
+    public List<LobbyPlayer> lobbyPlayers = new List<LobbyPlayer>();
+    public List<Player> players = new List<Player>();
 
     public enum TransportType
     {
@@ -73,12 +76,11 @@ public class CustomNetworkManager : NetworkManager
     public override void OnStartServer()
     {
         base.OnStartServer();
-        //Resources.LoadAll<GameObject>("SpawnablePrefabs").ToList();
     }
 
     public override void OnStopServer()
     {
-        players.Clear();
+        lobbyPlayers.Clear();
 
         base.OnStopServer();
     }
@@ -86,23 +88,15 @@ public class CustomNetworkManager : NetworkManager
     public override void OnStartClient()
     {
         base.OnStartClient();
-        /*
-        var spawnablePrefabs = Resources.LoadAll<GameObject>("SpawnablePrefabs");
-
-        foreach (var prefab in spawnablePrefabs)
-        {
-            NetworkClient.RegisterPrefab(prefab);
-        }
-        */
     }
 
     public override void OnServerDisconnect(NetworkConnection conn)
     {
         if(conn.identity != null)
         {
-            var player = conn.identity.GetComponent<StudentXPLobbyPlayer>();
+            var player = conn.identity.GetComponent<LobbyPlayer>();
 
-            players.Remove(player);
+            lobbyPlayers.Remove(player);
 
             NotifyPlayersOfReadyState();
         }
@@ -129,27 +123,15 @@ public class CustomNetworkManager : NetworkManager
             conn.Disconnect();
             return;
         }
-
-        /*
-        if (conn?.identity?.GetComponent<StudentXPLobbyPlayer>() != null)
-        {
-            players.Add(conn.identity.GetComponent<StudentXPLobbyPlayer>());
-        }
-        else
-        {
-            Debug.LogError($"Couldn't find StudentXPLobbyPlayer for {conn}");
-        }
-        */
-
     }
 
     public override void OnServerAddPlayer(NetworkConnection conn)
     {
         if (SceneManager.GetActiveScene().path == lobbyMenu)
         {
-            bool isLeader = players.Count == 0;
+            bool isLeader = lobbyPlayers.Count == 0;
 
-            StudentXPLobbyPlayer lobbyPlayerInstance = Instantiate(roomPlayerPrefab);
+            LobbyPlayer lobbyPlayerInstance = Instantiate(lobbyPlayerPrefab);
 
             lobbyPlayerInstance.IsLeader = isLeader;
 
@@ -161,14 +143,22 @@ public class CustomNetworkManager : NetworkManager
     // Start is called before the first frame update
     new void Awake()
     {
-        Instance = this;
+        if(_instance != null)
+        {
+            GameObject.Destroy(this.gameObject);
+        }
+        else
+        {
+            _instance = this;
 
-        NetworkClient.RegisterPrefab(roomPlayerPrefab.gameObject);
+            NetworkClient.RegisterPrefab(lobbyPlayerPrefab.gameObject);
+            NetworkClient.RegisterPrefab(gamePlayerPrefab.gameObject);
 
-        _kcpTransport = gameObject.GetComponent<KcpTransport>();
-        _steamTransport = gameObject.AddComponent<FizzySteamworks>();
-        gameObject.AddComponent<SteamManager>();
-        steamLobby = gameObject.AddComponent<SteamLobby>();
+            _kcpTransport = gameObject.GetComponent<KcpTransport>();
+            _steamTransport = gameObject.AddComponent<FizzySteamworks>();
+            gameObject.AddComponent<SteamManager>();
+            steamLobby = gameObject.AddComponent<SteamLobby>();
+        }
     }
 
     public void Stop()
@@ -191,7 +181,7 @@ public class CustomNetworkManager : NetworkManager
 
     public void NotifyPlayersOfReadyState()
     {
-        foreach(var player in players)
+        foreach(var player in lobbyPlayers)
         {
             player.HandleReadyToStart(IsReadyToStart());
         }
@@ -199,12 +189,13 @@ public class CustomNetworkManager : NetworkManager
 
     public bool IsReadyToStart()
     {
-        if(players.Count < 2)
+        // TODO: in release probably make this 2
+        if(lobbyPlayers.Count < 1)
         {
             return false;
         }
 
-        foreach(var player in players)
+        foreach(var player in lobbyPlayers)
         {
             if(!player.IsReady)
             {
@@ -213,5 +204,32 @@ public class CustomNetworkManager : NetworkManager
         }
 
         return true;
+    }
+
+    public void StartGame()
+    {
+        if (SceneManager.GetActiveScene().path == lobbyMenu)
+        {
+            if (!IsReadyToStart()) return;
+
+            ServerChangeScene(gameScene);
+        }
+    }
+
+    public override void ServerChangeScene(string newScene)
+    {
+        if (SceneManager.GetActiveScene().path == lobbyMenu && newScene == gameScene) 
+        {
+            for(int i = lobbyPlayers.Count - 1; i >= 0; i--)
+            {
+                var conn = lobbyPlayers[i].connectionToClient;
+                var player = Instantiate(gamePlayerPrefab);
+
+                NetworkServer.Destroy(conn.identity.gameObject);
+                NetworkServer.ReplacePlayerForConnection(conn, player.gameObject);
+            }
+        }
+
+        base.ServerChangeScene(newScene);
     }
 }

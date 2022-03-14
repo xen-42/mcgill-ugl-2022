@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class StudentXPLobbyPlayer : NetworkBehaviour
+public class LobbyPlayer : NetworkBehaviour
 {
     [Header("UI")]
     [SerializeField] private GameObject lobbyUI = null;
@@ -60,7 +60,7 @@ public class StudentXPLobbyPlayer : NetworkBehaviour
 
     public override void OnStartClient()
     {
-        CustomNetworkManager.Instance.players.Add(this);
+        CustomNetworkManager.Instance.lobbyPlayers.Add(this);
 
         UpdateDisplay();
 
@@ -69,7 +69,7 @@ public class StudentXPLobbyPlayer : NetworkBehaviour
 
     public override void OnStopClient()
     {
-        CustomNetworkManager.Instance.players.Remove(this);
+        CustomNetworkManager.Instance.lobbyPlayers.Remove(this);
 
         UpdateDisplay();
 
@@ -84,7 +84,7 @@ public class StudentXPLobbyPlayer : NetworkBehaviour
     {
         if(!hasAuthority)
         {
-            foreach(var player in CustomNetworkManager.Instance.players)
+            foreach(var player in CustomNetworkManager.Instance.lobbyPlayers)
             {
                 if(player.hasAuthority)
                 {
@@ -96,15 +96,13 @@ public class StudentXPLobbyPlayer : NetworkBehaviour
             return;
         }
 
-        var playerCount = CustomNetworkManager.Instance.players.Count;
-
-        Debug.Log($"There are {playerCount} players");
+        var playerCount = CustomNetworkManager.Instance.lobbyPlayers.Count;
 
         for(int i = 0; i < playerNameTexts.Length; i++)
         {
             if(i < playerCount)
             {
-                var player = CustomNetworkManager.Instance.players[i];
+                var player = CustomNetworkManager.Instance.lobbyPlayers[i];
                 playerNameTexts[i].text = player.DisplayName;
                 playerReadyTexts[i].text = player.IsReady ? "<color=green>Ready</color>" : "<color=red>Not Ready</color>";
             }
@@ -146,12 +144,12 @@ public class StudentXPLobbyPlayer : NetworkBehaviour
     public void CmdStartGame()
     {
         // Verify that its the first person in the list i.e. the leader
-        if(CustomNetworkManager.Instance.players[0].connectionToClient != connectionToClient)
+        if(CustomNetworkManager.Instance.lobbyPlayers[0].connectionToClient != connectionToClient)
         {
             return;
         }
 
-        // TODO: start game
+        CustomNetworkManager.Instance.StartGame();
     }
 
     #endregion Commands

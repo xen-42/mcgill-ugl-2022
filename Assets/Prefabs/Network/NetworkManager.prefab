@@ -59,8 +59,11 @@ MonoBehaviour:
   playerSpawnMethod: 0
   spawnPrefabs: []
   lobbyMenu: Assets/Scenes/LobbyMenu.unity
-  roomPlayerPrefab: {fileID: 1295106115173067421, guid: 75f51dd8a43083145b74e07e8fd19f2f, type: 3}
+  gameScene: Assets/Scenes/MovementPrototype.unity
+  lobbyPlayerPrefab: {fileID: 1295106115173067421, guid: 75f51dd8a43083145b74e07e8fd19f2f, type: 3}
+  gamePlayerPrefab: {fileID: 4481484670218387114, guid: 67f9b724cbd9bee41949f2126a2bd403, type: 3}
   steamLobby: {fileID: 0}
+  lobbyPlayers: []
   players: []
   transportType: 0
 --- !u!114 &1906388637003974525
