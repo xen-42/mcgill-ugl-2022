@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class Player : NetworkBehaviour
 {
@@ -61,6 +62,11 @@ public class Player : NetworkBehaviour
 
     private void Start()
     {
+        // We do this because we create the player in the lobby scene then put them in the play scene
+        DontDestroyOnLoad(this);
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
 
@@ -75,6 +81,17 @@ public class Player : NetworkBehaviour
         {
             cam.enabled = false;
         }
+    }
+
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Just changed scenes so we go back to being destroyed on load
+        SceneManager.MoveGameObjectToScene(gameObject, SceneManager.GetActiveScene());
     }
 
     private void Update()
@@ -190,6 +207,7 @@ public class Player : NetworkBehaviour
         }
     }
 
+    #region Server
     [Server]
     void ControlSpeed()
     {
@@ -235,6 +253,9 @@ public class Player : NetworkBehaviour
         }
     }
 
+    #endregion Server
+
+    #region Commands and RPC
     [Command]
     public void CmdSendInputs(Vector3 movement, bool jump, bool sprint, float xRot, float yRot)
     {
@@ -287,4 +308,23 @@ public class Player : NetworkBehaviour
             identity.AssignClientAuthority(connectionToClient);
         }
     }
+    #endregion Commands and RPC
+
+    #region Override
+
+    public override void OnStartClient()
+    {
+        CustomNetworkManager.Instance.players.Add(this);
+
+        base.OnStartClient();
+    }
+
+    public override void OnStopClient()
+    {
+        CustomNetworkManager.Instance.players.Remove(this);
+
+        base.OnStopClient();
+    }
+
+    #endregion Override
 }
