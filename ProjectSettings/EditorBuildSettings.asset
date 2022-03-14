@@ -15,6 +15,6 @@ EditorBuildSettings:
     path: Assets/Scenes/MovementPrototype.unity
     guid: 51911d47da566a9469f02f2739351b29
   - enabled: 0
-    path: Assets/Scenes/FSMPrototype.unity
-    guid: 3c361d021947345b0b36dd4de54bbb2c
+    path: 
+    guid: 00000000000000000000000000000000
   m_configObjects: {}

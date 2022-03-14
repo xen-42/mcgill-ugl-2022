@@ -30,7 +30,7 @@ public class GameDirector : NetworkBehaviour
     #region Stress-Related Variables
 
     private float _stress;
-    [SerializeField] private float _maxStress;
+    [SyncVar] [SerializeField] private float _maxStress;
     private bool _isStressDecreasing;
     [SerializeField] private float _stressDecreasingTime = .5f;
 
@@ -52,10 +52,15 @@ public class GameDirector : NetworkBehaviour
 
     #endregion Game State Variables
 
+    private void Awake()
+    {
+        Instance = this;
+    }
+
     // Start is called before the first frame update
     private void Start()
     {
-        Instance = this;
+        // Instance = this;
 
         _distractions = FindObjectsOfType<Fixable>().ToList();
         Random.InitState((int)System.DateTime.Now.Ticks);
@@ -131,6 +136,7 @@ public class GameDirector : NetworkBehaviour
         if (!_isStressDecreasing)
             _stress += _numDistractions * _numDistractions * Time.deltaTime;
 
+        _stress = Mathf.Clamp(_stress, 0f, 100f);
         HUD.Instance.SetGameState(timeLimit - (int)_countdown, _stress, NumAssignmentsDone);
 
         // Game Over

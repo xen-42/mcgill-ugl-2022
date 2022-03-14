@@ -25,7 +25,7 @@ public class HUD : MonoBehaviour
     private Dictionary<ButtonPrompt.PromptInfo, ButtonPrompt> _buttonPromptDict;
 
     public static HUD Instance;
-    private GameDirector _director;
+    private static GameDirector _director;
 
     private void Start()
     {
@@ -125,15 +125,16 @@ public class HUD : MonoBehaviour
 
         _timer.text = $"Time: {minutesString}{secondsString}";
 
-        _stress.text = $"Stress: {stress}";
-        _stressBarFillImage.fillAmount = stress / _director.MaxStress;
+        //_stress.text = $"Stress: {stress}";
+        //_stressBarFillImage.fillAmount = stress / _director.MaxStress;
+        SetStressValue(stress);
         _submitted.text = $"Assignments submitted: {submitted}";
     }
 
     public void SetStressValue(float stress)
     {
-        _stress.text = $"Stress: {stress}";
-        float pct = stress / _director.MaxStress;
+        _stress.text = $"Stress: {(int)stress}";
+        float pct = stress / 100f;
         _stressBarFillImage.fillAmount = pct;
         _stressBarFillImage.color = Color.Lerp(Color.green, Color.red, pct);
     }
