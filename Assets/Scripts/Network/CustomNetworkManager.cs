@@ -66,6 +66,16 @@ public class CustomNetworkManager : NetworkManager
     {
         lobbyPlayers.Clear();
 
+        base.OnStopServer();
+    }
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+    }
+
+    public override void OnClientDisconnect()
+    {
         if (SceneManager.GetActiveScene().path == gameScene)
         {
             // Back to main menu
@@ -73,12 +83,7 @@ public class CustomNetworkManager : NetworkManager
             SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
         }
 
-        base.OnStopServer();
-    }
-
-    public override void OnStartClient()
-    {
-        base.OnStartClient();
+        base.OnClientDisconnect();
     }
 
     public override void OnServerDisconnect(NetworkConnection conn)
@@ -141,16 +146,16 @@ public class CustomNetworkManager : NetworkManager
     // Start is called before the first frame update
     new void Awake()
     {
-        if(_instance != null)
+        NetworkClient.RegisterPrefab(lobbyPlayerPrefab.gameObject);
+        NetworkClient.RegisterPrefab(gamePlayerPrefab.gameObject);
+
+        if (_instance != null)
         {
             GameObject.Destroy(this.gameObject);
         }
         else
         {
             _instance = this;
-
-            NetworkClient.RegisterPrefab(lobbyPlayerPrefab.gameObject);
-            NetworkClient.RegisterPrefab(gamePlayerPrefab.gameObject);
 
             _kcpTransport = gameObject.GetComponent<KcpTransport>();
             _steamTransport = gameObject.AddComponent<FizzySteamworks>();
