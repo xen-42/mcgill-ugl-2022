@@ -33,13 +33,11 @@ public class GameDirector : NetworkBehaviour
     private float _nextDistraction;
     private int _numDistractions;
 
-
+    // Stress is out of 100
     private float _stress;
-    [SyncVar] [SerializeField] private float _maxStress;
     private bool _isStressDecreasing;
     [SerializeField] private float _stressDecreasingTime = .5f;
 
-    public float MaxStress => _maxStress;
     public float CurrentStress => _stress;
 
     public int NumAssignmentsDone { get; private set; }
