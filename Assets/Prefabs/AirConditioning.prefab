@@ -263,6 +263,11 @@ MonoBehaviour:
   _promptTextMissingItem: 
   _promptPriority: 0
   _promptHoldTime: 0
+  _promptInfo:
+    _command: 1
+    _text: Fix
+    _priority: 0
+    _holdTime: 0
   requiredObject: 0
   OnInteract:
     m_PersistentCalls:

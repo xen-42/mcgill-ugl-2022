@@ -152,6 +152,11 @@ MonoBehaviour:
   _promptTextMissingItem: You need a watering can
   _promptPriority: 0
   _promptHoldTime: 0
+  _promptInfo:
+    _command: 1
+    _text: Water plant
+    _priority: 0
+    _holdTime: 0
   requiredObject: 1
   MinigamePrefab: {fileID: 796745773547017806, guid: 7d5d4b7cee72a6f4b8d1d5c1d85ed314, type: 3}
   OnCompleteMinigame:

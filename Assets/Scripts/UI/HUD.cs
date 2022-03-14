@@ -11,20 +11,25 @@ public class HUD : MonoBehaviour
 
     [SerializeField] private GameObject _buttonPrompt;
 
+    #region UI Variable Values
     [SerializeField] private Text _timer;
     [SerializeField] private Text _stress;
     [SerializeField] private Text _submitted;
+    [SerializeField] private Image _stressBarFillImage;
+
+    #endregion UI Variable Values
 
     [SerializeField] private Text _gameOverText;
 
     private Dictionary<ButtonPrompt.PromptInfo, ButtonPrompt> _buttonPromptDict;
 
     public static HUD Instance;
+    private static GameDirector _director;
 
-    void Start()
+    private void Start()
     {
         Instance = this;
-
+        _director = GameDirector.Instance;
         EventManager<ButtonPrompt.PromptInfo>.AddListener("PromptHit", OnPromptHit);
         EventManager<ButtonPrompt.PromptInfo>.AddListener("PromptLost", OnPromptLost);
 
@@ -39,7 +44,7 @@ public class HUD : MonoBehaviour
         EventManager<ButtonPrompt.PromptInfo>.RemoveListener("PromptLost", OnPromptLost);
     }
 
-    void Update()
+    private void Update()
     {
         var indicatorShown = _gamepadIndicator.activeInHierarchy;
         var gamepadEnabled = InputManager.IsGamepadEnabled();
@@ -59,7 +64,7 @@ public class HUD : MonoBehaviour
         else
         {
             var newPrompt = GameObject.Instantiate(_buttonPrompt, _buttonPrompt.transform.parent);
-            newPrompt.GetComponent<ButtonPrompt>().Init(promptInfo);
+            newPrompt.GetComponent<ButtonPrompt>().OnInit(promptInfo);
 
             _buttonPromptDict.Add(promptInfo, newPrompt.GetComponent<ButtonPrompt>());
             newPrompt.SetActive(true);
@@ -93,7 +98,15 @@ public class HUD : MonoBehaviour
         }
     }
 
-    public void SetGameState(int time, int stress, int submitted)
+    #region Variable Values Update Callbacks
+
+    /// <summary>
+    /// Update Time Remaining, the stress level of the player, and how many assignments player has submitted
+    /// </summary>
+    /// <param name="time"></param>
+    /// <param name="stress"></param>
+    /// <param name="submitted"></param>
+    public void SetGameState(int time, float stress, int submitted)
     {
         if (time < 0)
         {
@@ -110,7 +123,17 @@ public class HUD : MonoBehaviour
         var secondsString = (minutes > 0 && seconds < 10) ? $"0{seconds}" : $"{seconds}";
 
         _timer.text = $"Time: {minutesString}{secondsString}";
-        _stress.text = $"Stress: {stress}";
-        _submitted.text = $"Assignments submitted: {submitted} / {GameDirector.Instance.assignmentsGoal}";
+        SetStressValue(stress);
+        _submitted.text = $"Assignments submitted: {submitted}";
     }
+
+    public void SetStressValue(float stress)
+    {
+        _stress.text = $"Stress: {(int)stress}";
+        float pct = stress / 100f;
+        _stressBarFillImage.fillAmount = pct;
+        _stressBarFillImage.color = Color.Lerp(Color.green, Color.red, pct);
+    }
+
+    #endregion Variable Values Update Callbacks
 }

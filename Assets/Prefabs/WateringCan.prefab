@@ -185,6 +185,11 @@ MonoBehaviour:
   _promptText: Grab watering can
   _promptPriority: 0
   _promptHoldTime: 0
+  _promptInfo:
+    _command: 4
+    _text: Grab watering can
+    _priority: 0
+    _holdTime: 0
   requiredObject: 0
   type: 1
 --- !u!114 &1371549147706381719
