@@ -1,18 +1,33 @@
 using Mirror;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class GameDirector : NetworkBehaviour
 {
+    // Exposed modifiers for game balancing
+    [SerializeField] public int timeLimit;
+    [SerializeField] public float minTimeBetweenDistractions;
+    [SerializeField] public float maxTimeBetweenDistractions;
+    [SerializeField] public float timeUntilFirstDistraction;
+
+    // How much stress is gained per second for one distraction
+    [SerializeField] public float stressPerSecond;
+
+    // Stress gain is proportional to the number of distractions to this power
+    [SerializeField] public float stressExponent;
+
+    [SerializeField] public int assignmentsGoal;
+
+    // This is a singleton class
     public static GameDirector Instance;
 
     private List<Fixable> _distractions;
 
     #region Time Countdown-Related Variables
-
-    [SerializeField] public int timeLimit;
 
     // Host controls the timer
     [SyncVar] private float _countdown;
@@ -63,9 +78,9 @@ public class GameDirector : NetworkBehaviour
         // Instance = this;
 
         _distractions = FindObjectsOfType<Fixable>().ToList();
-        Random.InitState((int)System.DateTime.Now.Ticks);
+        Random.InitState((int)DateTime.Now.Ticks);
 
-        _nextDistraction = 10f;
+        _nextDistraction = timeUntilFirstDistraction;
 
         EventManager<float>.AddListener("LowerStress", LowerStress);
     }
@@ -75,7 +90,7 @@ public class GameDirector : NetworkBehaviour
         EventManager<float>.RemoveListener("LowerStress", LowerStress);
     }
 
-    private void LowerStress(float change)
+    public void LowerStress(float change)
     {
         //_stress -= change;
         //if (_stress < 0) _stress = 0;
@@ -125,16 +140,14 @@ public class GameDirector : NetworkBehaviour
             _nextDistraction -= Time.deltaTime;
             if (_nextDistraction < 0)
             {
-                Debug.Log("Distraction!");
-
                 var selection = GetRandomFromList(available);
                 if (selection != null) selection.Break();
-                _nextDistraction = Random.Range(5, 10);
+                _nextDistraction = Random.Range(minTimeBetweenDistractions, maxTimeBetweenDistractions);
             }
         }
 
         if (!_isStressDecreasing)
-            _stress += _numDistractions * _numDistractions * Time.deltaTime;
+            _stress += stressPerSecond * Mathf.Pow(_numDistractions, stressExponent) * Time.deltaTime;
 
         _stress = Mathf.Clamp(_stress, 0f, 100f);
         HUD.Instance.SetGameState(timeLimit - (int)_countdown, _stress, NumAssignmentsDone);

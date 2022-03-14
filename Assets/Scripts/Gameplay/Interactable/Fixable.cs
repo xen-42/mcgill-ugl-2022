@@ -8,7 +8,7 @@ public class Fixable : NetworkBehaviour
 
     [SyncVar] private bool _isBroken;
 
-    [SyncVar] private GameObject _currentState = null;
+    [SyncVar] private string _currentState = null;
 
     private Interactable _interactable;
 
@@ -16,51 +16,51 @@ public class Fixable : NetworkBehaviour
 
     private void Awake()
     {
-        _interactable = gameObject.GetComponent<Interactable>();
-
         // Since its synced you could join late and its already changed
-        if (_currentState != null) _currentState = fixedState;
+        if (_currentState == null) _currentState = fixedState.name;
 
-        //Disable BrokenState, Enable and Cache the FixedState,
-        SwitchStateGameObject(fixedState.name);
+        foreach (Transform t in transform)
+        {
+            if (t.gameObject.name == _currentState)
+            {
+                t.gameObject.SetActive(true);
+            }
+            else
+            {
+                t.gameObject.SetActive(false);
+            }
+        }
 
-        //foreach (Transform t in transform)
-        //{
-        //    if (t.gameObject.name == fixedState.name)
-        //    {
-        //        t.gameObject.SetActive(true);
-        //        _currentState = t.gameObject;
-        //    }
-        //    else
-        //    {
-        //        t.gameObject.SetActive(false);
-        //    }
-        //}
+        _isBroken = _currentState != fixedState.name;
 
-        //if (_interactable != null) ActionManager.FireOnNextUpdate(() => _interactable.IsInteractable = false);
+        _interactable = gameObject.GetComponent<Interactable>();
+        _interactable.Init(_isBroken);
     }
 
     private void Start()
     {
         UpdateInteractState();
+        SwitchState(brokenState.name);
     }
 
     public void Break()
-    => SwitchState(brokenState);
+    => SwitchState(brokenState.name);
 
     public void Fix()
-    => SwitchState(fixedState);
+    {
+        SwitchState(fixedState.name);
+    }
 
-    private void SwitchState(GameObject state)
+    private void SwitchState(string stateID)
     {
         if (!isServer)
         {
             Player.Instance.CmdGiveAuthority(netIdentity);
-            ActionManager.RunWhen(() => netIdentity.hasAuthority, () => CmdSwapState(state.name));
+            ActionManager.RunWhen(() => netIdentity.hasAuthority, () => CmdSwapState(stateID));
         }
         else
         {
-            RpcSwapState(state.name);
+            RpcSwapState(stateID);
         }
     }
 
@@ -100,21 +100,22 @@ public class Fixable : NetworkBehaviour
     //    if (_interactable != null) _interactable.IsInteractable = _isBroken;
     //}
 
-    private void SwitchStateGameObject(string pStateID)
+    private void SwitchStateGameObject(string stateID)
     {
+        _currentState = stateID;
+
         foreach (Transform t in transform)
         {
-            if (t.gameObject.name != pStateID)
+            if (t.gameObject.name != stateID)
             {
                 t.gameObject.SetActive(false);
             }
             else
             {
-                _currentState = t.gameObject;
                 t.gameObject.SetActive(true);
             }
         }
-        _isBroken = pStateID != fixedState.name;
+        _isBroken = stateID != fixedState.name;
     }
 
     private void UpdateInteractState()

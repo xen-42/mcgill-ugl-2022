@@ -2,6 +2,7 @@ using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static InputManager;
 
 public class Holdable : Interactable
 {
@@ -14,6 +15,7 @@ public class Holdable : Interactable
     private Collider _collider;
 
     #endregion Caches
+    protected override InputCommand InputCommand { get => InputCommand.PickUp; }
 
     public Type type;
 
@@ -54,7 +56,7 @@ public class Holdable : Interactable
         if (InputManager.CurrentInputMode != InputManager.InputMode.Player) return;
 
         var player = Player.Instance;
-        if (InputManager.IsCommandJustPressed(PromptInfo.Command) && player.heldObject == this)
+        if (InputManager.IsCommandJustPressed(InputCommand) && player.heldObject == this)
         {
             player.CmdDrop();
         }

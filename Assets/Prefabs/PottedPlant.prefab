@@ -147,8 +147,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  _inputCommand: 1
   _promptText: Water plant
+  _promptTextNotInteractable: The plant is fine!
+  _promptTextMissingItem: You need a watering can
   _promptPriority: 0
   _promptHoldTime: 0
   _promptInfo:

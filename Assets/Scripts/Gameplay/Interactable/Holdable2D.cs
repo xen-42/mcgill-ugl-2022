@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static InputManager;
 
 public class Holdable2D : Hoverable2D
 {
@@ -10,23 +11,25 @@ public class Holdable2D : Hoverable2D
     public bool IsHeld { get { return _isHeld; } }
     private Plane _plane;
 
+    protected override InputCommand InputCommand { get => InputCommand.PickUp; }
+
     void Update()
     {
         var isHovering = IsCursorHovering();
 
-        if(InputManager.IsCommandJustPressed(InputManager.InputCommand.PickUp) && isHovering)
+        if (InputManager.IsCommandJustPressed(InputCommand.PickUp) && isHovering)
         {
             _isHeld = true;
         }
 
-        if(_isHeld)
+        if (_isHeld)
         {
-            if(InputManager.IsCommandJustReleased(InputManager.InputCommand.PickUp))
+            if (InputManager.IsCommandJustReleased(InputCommand.PickUp))
             {
                 _isHeld = false;
             }
 
-            Ray ray = Camera.main.ScreenPointToRay(InputManager.GetCursorPosition());
+            Ray ray = Camera.main.ScreenPointToRay(GetCursorPosition());
 
             _plane = new Plane(Camera.main.transform.forward, transform.parent.position);
             _plane.Raycast(ray, out float dist);
@@ -39,11 +42,11 @@ public class Holdable2D : Hoverable2D
 
     public override void OnStartHover()
     {
-        EventManager<ButtonPrompt.PromptInfo>.TriggerEvent("PromptHit", PromptInfo);
+        EventManager<ButtonPrompt.PromptInfo>.TriggerEvent("PromptHit", InteractablePrompt);
     }
 
     public override void OnStopHover()
     {
-        EventManager<ButtonPrompt.PromptInfo>.TriggerEvent("PromptLost", PromptInfo);
+        EventManager<ButtonPrompt.PromptInfo>.TriggerEvent("PromptLost", InteractablePrompt);
     }
 }

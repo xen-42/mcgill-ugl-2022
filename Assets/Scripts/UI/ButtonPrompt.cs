@@ -2,6 +2,8 @@ using System;
 using UnityEngine;
 using UnityEngine.UI;
 using static InputManager;
+using static ButtonIconManager;
+using UnityEngine.Events;
 
 public class ButtonPrompt : MonoBehaviour
 {
@@ -13,35 +15,35 @@ public class ButtonPrompt : MonoBehaviour
 
     private void Awake()
     {
-        EventManager.AddListener("ChangedController", OnChangedController);
+        EventManager.AddListener("ChangedController", RefreshSprite);
     }
 
     private void OnDestroy()
     {
-        EventManager.RemoveListener("ChangedController", OnChangedController);
+        EventManager.RemoveListener("ChangedController", RefreshSprite);
     }
 
-    private void OnChangedController()
+    public void OnInit(PromptInfo Info)
     {
-        // Refresh the sprites
-        if (_image?.sprite != null)
-        {
-            _image.sprite = ButtonIconManager.GetPromptSprite(Info.Command);
-        }
-    }
-
-    public void OnInit(PromptInfo info)
-    {
-        Info = info;
+        this.Info = Info;
 
         if (Info.HoldTime == 0f)
         {
             // The prompt just needs to be clicked
             _radialMeterUI.gameObject.SetActive(false);
         }
-
-        _image.sprite = ButtonIconManager.GetPromptSprite(Info.Command);
         _textUI.text = Info.Text;
+
+        RefreshSprite();
+    }
+
+    private void RefreshSprite()
+    {
+        if (_image != null)
+        {
+            _image.sprite = GetPromptSprite(Info.Command);
+            _image.gameObject.SetActive(_image.sprite != null);
+        }
     }
 
     /// <summary>

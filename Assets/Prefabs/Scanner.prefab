@@ -111,8 +111,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  _inputCommand: 1
   _promptText: Scan assignment
+  _promptTextNotInteractable: Scanner is in use!
+  _promptTextMissingItem: You need something to scan!
   _promptPriority: 0
   _promptHoldTime: 0
   _promptInfo:

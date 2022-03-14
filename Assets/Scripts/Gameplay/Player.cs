@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class Player : NetworkBehaviour
 {
@@ -61,6 +62,11 @@ public class Player : NetworkBehaviour
 
     private void Start()
     {
+        // We do this because we create the player in the lobby scene then put them in the play scene
+        DontDestroyOnLoad(this);
+
+        SceneManager.sceneLoaded += OnSceneLoaded;
+
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
 
@@ -77,6 +83,17 @@ public class Player : NetworkBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        // Just changed scenes so we go back to being destroyed on load
+        SceneManager.MoveGameObjectToScene(gameObject, SceneManager.GetActiveScene());
+    }
+
     private void Update()
     {
         // We only check for inputs in here
@@ -87,12 +104,22 @@ public class Player : NetworkBehaviour
         // If we're paused or in a minigame we cant control the player
         if (InputManager.CurrentInputMode != InputManager.InputMode.Player)
         {
+            // If we were looking at something make sure its lost focus
+            if(_focusedObject != null)
+            {
+                foreach (var interactable in _focusedObject.GetComponents<Interactable>())
+                {
+                    interactable.LoseFocus();
+                }
+                _focusedObject = null;
+            }
+
             return;
         }
 
         // Physics stuff
         var inputMovement = InputManager.GetMovementAxis();
-        var movement = orientation.forward* inputMovement.y + orientation.right * inputMovement.x;
+        var movement = orientation.forward * inputMovement.y + orientation.right * inputMovement.x;
 
         var jump = InputManager.IsCommandPressed(InputManager.InputCommand.Jump);
 
@@ -129,14 +156,14 @@ public class Player : NetworkBehaviour
         if (hitObject != null && hitObject != _focusedObject)
         {
             _focusedObject = hitObject;
-            foreach(var interactable in hitObject.GetComponents<Interactable>())
+            foreach (var interactable in hitObject.GetComponents<Interactable>())
             {
                 interactable.GainFocus();
             }
         }
 
         // Debug
-        if(Keyboard.current[Key.F11].wasPressedThisFrame)
+        if (Keyboard.current[Key.F11].wasPressedThisFrame)
         {
             Screen.fullScreen = !Screen.fullScreen;
         }
@@ -180,6 +207,7 @@ public class Player : NetworkBehaviour
         }
     }
 
+    #region Server
     [Server]
     void ControlSpeed()
     {
@@ -225,6 +253,9 @@ public class Player : NetworkBehaviour
         }
     }
 
+    #endregion Server
+
+    #region Commands and RPC
     [Command]
     public void CmdSendInputs(Vector3 movement, bool jump, bool sprint, float xRot, float yRot)
     {
@@ -277,4 +308,23 @@ public class Player : NetworkBehaviour
             identity.AssignClientAuthority(connectionToClient);
         }
     }
+    #endregion Commands and RPC
+
+    #region Override
+
+    public override void OnStartClient()
+    {
+        CustomNetworkManager.Instance.players.Add(this);
+
+        base.OnStartClient();
+    }
+
+    public override void OnStopClient()
+    {
+        CustomNetworkManager.Instance.players.Remove(this);
+
+        base.OnStopClient();
+    }
+
+    #endregion Override
 }

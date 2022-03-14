@@ -128,7 +128,7 @@ public class HUD : MonoBehaviour
         //_stress.text = $"Stress: {stress}";
         //_stressBarFillImage.fillAmount = stress / _director.MaxStress;
         SetStressValue(stress);
-        _submitted.text = $"Assignments submitted: {submitted}";
+        _submitted.text = $"Assignments submitted: {submitted} / {GameDirector.Instance.assignmentsGoal}";
     }
 
     public void SetStressValue(float stress)

@@ -128,15 +128,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  _inputCommand: 1
   _promptText: Write assignment
+  _promptTextNotInteractable: This is in use!
+  _promptTextMissingItem: 
   _promptPriority: 0
   _promptHoldTime: 0
-  _promptInfo:
-    _command: 1
-    _text: Write assignment
-    _priority: 0
-    _holdTime: 0
   requiredObject: 0
   MinigamePrefab: {fileID: 796745773547017806, guid: 2d835bfe1a0764840b91c5c9a073e735, type: 3}
   HoldableItemPrefab: {fileID: 3873952053484179079, guid: 7f32fa99d866c944bb2668effd5e8bba, type: 3}
