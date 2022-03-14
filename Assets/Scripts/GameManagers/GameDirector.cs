@@ -55,43 +55,38 @@ public class GameDirector : NetworkBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        // Instance = this;
-
         _distractions = FindObjectsOfType<Fixable>().ToList();
         Random.InitState((int)DateTime.Now.Ticks);
 
         _nextDistraction = timeUntilFirstDistraction;
-
-        EventManager<float>.AddListener("LowerStress", LowerStress);
     }
 
-    private void OnDestroy()
+    public void LowerStressImmediate(float change)
     {
-        EventManager<float>.RemoveListener("LowerStress", LowerStress);
+        _stress -= change;
+        if (_stress < 0) _stress = 0;
     }
 
-    private void LowerStress(float change)
+    public void LowerStressGradually(float change)
     {
-        //_stress -= change;
-        //if (_stress < 0) _stress = 0;
         StartCoroutine(nameof(StressDecreasing), change);
     }
 
     private IEnumerable StressDecreasing(float change)
     {
         float timeElapsed = 0f;
-        float tgtStressVal = Mathf.Max(_stress - change, 0f);
+        float targetStressValue = Mathf.Max(_stress - change, 0f);
         _isStressDecreasing = true;
 
         while (timeElapsed < _stressDecreasingTime)
         {
             timeElapsed += Time.deltaTime;
-            _stress = Mathf.Lerp(_stress, tgtStressVal, timeElapsed / _stressDecreasingTime);
+            _stress = Mathf.Lerp(_stress, targetStressValue, timeElapsed / _stressDecreasingTime);
             HUD.Instance.SetStressValue(_stress);
             yield return null;
         }
 
-        _stress = tgtStressVal;
+        _stress = targetStressValue;
         _isStressDecreasing = false;
         yield return null;
     }
@@ -127,7 +122,9 @@ public class GameDirector : NetworkBehaviour
         }
 
         if (!_isStressDecreasing)
-			_stress += stressPerSecond * Mathf.Pow(_numDistractions, stressExponent) * Time.deltaTime;
+        {
+            _stress += stressPerSecond * Mathf.Pow(_numDistractions, stressExponent) * Time.deltaTime;
+        }
 
         _stress = Mathf.Clamp(_stress, 0f, 100f);
         HUD.Instance.SetGameState(timeLimit - (int)_countdown, _stress, NumAssignmentsDone);

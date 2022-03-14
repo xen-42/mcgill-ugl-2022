@@ -64,7 +64,7 @@ public class HUD : MonoBehaviour
         else
         {
             var newPrompt = GameObject.Instantiate(_buttonPrompt, _buttonPrompt.transform.parent);
-            newPrompt.GetComponent<ButtonPrompt>().OnInit(promptInfo);
+            newPrompt.GetComponent<ButtonPrompt>().Init(promptInfo);
 
             _buttonPromptDict.Add(promptInfo, newPrompt.GetComponent<ButtonPrompt>());
             newPrompt.SetActive(true);

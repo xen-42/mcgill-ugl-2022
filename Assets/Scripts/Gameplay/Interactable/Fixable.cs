@@ -11,6 +11,8 @@ public class Fixable : NetworkBehaviour
 
     [SyncVar] private bool _isBroken;
 
+    public bool IsBroken { get => _isBroken; }
+
     [SyncVar] private string _currentState = null;
 
     private Interactable _interactable;
@@ -91,10 +93,5 @@ public class Fixable : NetworkBehaviour
         _isBroken = (stateID != fixedState.name);
 
         if (_interactable != null) _interactable.IsInteractable = _isBroken;
-    }
-
-    public bool IsBroken()
-    {
-        return _isBroken;
     }
 }

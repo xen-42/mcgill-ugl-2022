@@ -40,7 +40,7 @@ public class ButtonPrompt : MonoBehaviour
 
     private void RefreshSprite()
     {
-        if(_image != null)
+        if (_image != null)
         {
             _image.sprite = GetPromptSprite(Info.Command);
             _image.gameObject.SetActive(_image.sprite != null);

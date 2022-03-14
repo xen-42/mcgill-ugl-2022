@@ -105,7 +105,7 @@ public class Player : NetworkBehaviour
         if (InputManager.CurrentInputMode != InputManager.InputMode.Player)
         {
             // If we were looking at something make sure its lost focus
-            if(_focusedObject != null)
+            if (_focusedObject != null)
             {
                 foreach (var interactable in _focusedObject.GetComponents<Interactable>())
                 {

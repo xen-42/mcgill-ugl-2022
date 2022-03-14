@@ -21,9 +21,9 @@ public class CatInteractable : Interactable
 
     public void OnPet()
     {
-        GameDirector.Instance.LowerStress(20);
+        GameDirector.Instance.LowerStressImmediate(StressReduction);
         IsInteractable = false;
-        if(isServer)
+        if (isServer)
         {
             _cooldown = Cooldown;
         }
@@ -37,19 +37,19 @@ public class CatInteractable : Interactable
     {
         base.Update();
 
-        if(!isServer)
+        if (!isServer)
         {
             return;
         }
 
-        if(!IsInteractable)
+        if (!IsInteractable)
         {
             _cooldown -= Time.deltaTime;
-            if(_cooldown <= 0)
+            if (_cooldown <= 0)
             {
                 IsInteractable = true;
             }
-        }    
+        }
     }
 
     [Command]
