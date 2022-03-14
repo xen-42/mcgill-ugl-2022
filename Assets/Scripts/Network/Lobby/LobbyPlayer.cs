@@ -21,6 +21,8 @@ public class LobbyPlayer : NetworkBehaviour
 
     private void Awake()
     {
+        InputManager.CurrentInputMode = InputManager.InputMode.UI;
+
         lobbyUI.SetActive(false);
 
         if (CustomNetworkManager.Instance.transportType == CustomNetworkManager.TransportType.STEAM)

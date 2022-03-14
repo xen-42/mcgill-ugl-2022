@@ -11,6 +11,11 @@ public class MainMenu : MonoBehaviour
     [Header("UI")]
     [SerializeField] private GameObject landingPagePanel = null;
 
+    private void Start()
+    {
+        InputManager.CurrentInputMode = InputManager.InputMode.UI;
+    }
+
     public void HostLobby()
     {
         CustomNetworkManager.Instance.StartHost();

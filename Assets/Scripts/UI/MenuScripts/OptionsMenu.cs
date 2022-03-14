@@ -48,6 +48,7 @@ public class OptionsMenu : MonoBehaviour
             }
         }
 
+        pauseMenuUI.SetActive(false);
     }
     public void SetVolume(float volume)
     {
@@ -117,7 +118,7 @@ public class OptionsMenu : MonoBehaviour
 
     public void ReturnToMainMenu()
     {
+        CustomNetworkManager.Instance.Stop();
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
-
     }
 }

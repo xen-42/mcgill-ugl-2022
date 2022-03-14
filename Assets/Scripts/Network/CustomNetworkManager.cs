@@ -14,23 +14,7 @@ public class CustomNetworkManager : NetworkManager
     {
         get
         {
-            if (_instance == null)
-            {
-                var obj = new GameObject("NetworkManager");
-                _instance = obj.AddComponent<CustomNetworkManager>();
-            }
             return _instance;
-        }
-        set
-        {
-            if (_instance == null)
-            {
-                _instance = value;
-            }
-            else
-            {
-                Destroy(value.gameObject);
-            }
         }
     }
     private static CustomNetworkManager _instance;
@@ -82,6 +66,13 @@ public class CustomNetworkManager : NetworkManager
     {
         lobbyPlayers.Clear();
 
+        if (SceneManager.GetActiveScene().path == gameScene)
+        {
+            // Back to main menu
+            Stop();
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        }
+
         base.OnStopServer();
     }
 
@@ -102,6 +93,13 @@ public class CustomNetworkManager : NetworkManager
         }
 
         OnClientDisconnected?.Invoke();
+
+        if(SceneManager.GetActiveScene().path == gameScene)
+        {
+            // Back to main menu
+            Stop();
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        }
 
         base.OnServerDisconnect(conn);
     }
@@ -163,6 +161,8 @@ public class CustomNetworkManager : NetworkManager
 
     public void Stop()
     {
+        // Kick everyone back to the main menu
+
         if (NetworkClient.isHostClient)
         {
             StopHost();
