@@ -2810,38 +2810,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 4207629397879842587, guid: 179c14c7d094f45438965a4b6e805b7a, type: 3}
-      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4207629397879842587, guid: 179c14c7d094f45438965a4b6e805b7a, type: 3}
-      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4207629397879842587, guid: 179c14c7d094f45438965a4b6e805b7a, type: 3}
-      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 1692160701}
-    - target: {fileID: 4207629397879842587, guid: 179c14c7d094f45438965a4b6e805b7a, type: 3}
-      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4207629397879842587, guid: 179c14c7d094f45438965a4b6e805b7a, type: 3}
-      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: LowerStress
-      objectReference: {fileID: 0}
-    - target: {fileID: 4207629397879842587, guid: 179c14c7d094f45438965a4b6e805b7a, type: 3}
-      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
-      value: GameDirector, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 4207629397879842587, guid: 179c14c7d094f45438965a4b6e805b7a, type: 3}
-      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_IntArgument
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 4207629397879842587, guid: 179c14c7d094f45438965a4b6e805b7a, type: 3}
-      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
-      value: UnityEngine.Object, UnityEngine
-      objectReference: {fileID: 0}
     - target: {fileID: 4946464366587674599, guid: 179c14c7d094f45438965a4b6e805b7a, type: 3}
       propertyPath: m_Name
       value: Cat
@@ -3220,6 +3188,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 378899680764039735, guid: 44c80433b690313429cc2750fc07ab3e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 378899681098671927, guid: 44c80433b690313429cc2750fc07ab3e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 378899681098671927, guid: 44c80433b690313429cc2750fc07ab3e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 378899681098671927, guid: 44c80433b690313429cc2750fc07ab3e, type: 3}
+      propertyPath: m_AnchorMin.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 378899681343898729, guid: 44c80433b690313429cc2750fc07ab3e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 378899682150959659, guid: 44c80433b690313429cc2750fc07ab3e, type: 3}
       propertyPath: m_Name
       value: PauseMenu
@@ -3307,6 +3295,18 @@ PrefabInstance:
     - target: {fileID: 378899682150959663, guid: 44c80433b690313429cc2750fc07ab3e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 378899682275074048, guid: 44c80433b690313429cc2750fc07ab3e, type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 378899682275074048, guid: 44c80433b690313429cc2750fc07ab3e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 378899682394653571, guid: 44c80433b690313429cc2750fc07ab3e, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 44c80433b690313429cc2750fc07ab3e, type: 3}

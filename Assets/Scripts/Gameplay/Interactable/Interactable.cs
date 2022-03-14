@@ -130,8 +130,6 @@ public abstract class Interactable : NetworkBehaviour
         if (_isInteractable == value) return;
         _isInteractable = value;
 
-        Debug.Log($"Interactable? {value}");
-
         if(HasFocus)
         {
             // Remove old prompt

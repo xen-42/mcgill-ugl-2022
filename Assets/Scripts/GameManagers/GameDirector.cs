@@ -89,8 +89,6 @@ public class GameDirector : NetworkBehaviour
             _nextDistraction -= Time.deltaTime;
             if (_nextDistraction < 0)
             {
-                Debug.Log("Distraction!");
-
                 var selection = GetRandomFromList(available);
                 if (selection != null) selection.Break();
                 _nextDistraction = Random.Range(minTimeBetweenDistractions, maxTimeBetweenDistractions);
