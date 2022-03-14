@@ -58,6 +58,7 @@ MonoBehaviour:
   autoCreatePlayer: 1
   playerSpawnMethod: 0
   spawnPrefabs: []
+  simulateLatency: 1
   lobbyMenu: Assets/Scenes/LobbyMenu.unity
   gameScene: Assets/Scenes/MovementPrototype.unity
   lobbyPlayerPrefab: {fileID: 1295106115173067421, guid: 75f51dd8a43083145b74e07e8fd19f2f, type: 3}

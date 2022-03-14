@@ -19,6 +19,9 @@ public class CustomNetworkManager : NetworkManager
     }
     private static CustomNetworkManager _instance;
 
+    [SerializeField] private bool simulateLatency = false;
+    private LatencySimulation lagTransport = null;
+
     [Scene] [SerializeField] private string lobbyMenu = string.Empty;
     [Scene] [SerializeField] private string gameScene = string.Empty;
 
@@ -55,6 +58,13 @@ public class CustomNetworkManager : NetworkManager
                 transport = _steamTransport;
                 break;
         }
+
+        if(simulateLatency && lagTransport != null)
+        {
+            lagTransport.wrap = transport;
+            transport = lagTransport;
+        }
+
         transportType = type;
     }
 
@@ -157,6 +167,11 @@ public class CustomNetworkManager : NetworkManager
         else
         {
             _instance = this;
+
+            if(simulateLatency)
+            {
+                lagTransport = gameObject.AddComponent<LatencySimulation>();
+            }
 
             _kcpTransport = gameObject.GetComponent<KcpTransport>();
             _steamTransport = gameObject.AddComponent<FizzySteamworks>();
