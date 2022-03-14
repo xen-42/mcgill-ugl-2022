@@ -36,7 +36,7 @@ public class GameDirector : NetworkBehaviour
     // Stress is out of 100
     private float _stress;
     private bool _isStressDecreasing;
-    [SerializeField] private float _stressDecreasingTime = .5f;
+    [SerializeField] private float _stressDecreasingTime = 2f;
 
     public float CurrentStress => _stress;
 
@@ -70,16 +70,17 @@ public class GameDirector : NetworkBehaviour
         StartCoroutine(nameof(StressDecreasing), change);
     }
 
-    private IEnumerable StressDecreasing(float change)
+    private IEnumerator StressDecreasing(float change)
     {
         float timeElapsed = 0f;
+        float startStressValue = _stress;
         float targetStressValue = Mathf.Max(_stress - change, 0f);
         _isStressDecreasing = true;
 
         while (timeElapsed < _stressDecreasingTime)
         {
             timeElapsed += Time.deltaTime;
-            _stress = Mathf.Lerp(_stress, targetStressValue, timeElapsed / _stressDecreasingTime);
+            _stress = Mathf.Lerp(startStressValue, targetStressValue, timeElapsed / _stressDecreasingTime);
             HUD.Instance.SetStressValue(_stress);
             yield return null;
         }
@@ -127,7 +128,7 @@ public class GameDirector : NetworkBehaviour
         _stress = Mathf.Clamp(_stress, 0f, 100f);
         HUD.Instance.SetGameState(timeLimit - (int)_countdown, _stress, NumAssignmentsDone);
 
-        // Game Over       
+        // Game Over
         if (!_gameOver && timeLimit == _countdown)
         {
             _gameOver = true;
