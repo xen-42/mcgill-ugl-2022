@@ -12,7 +12,6 @@ public class HUD : MonoBehaviour
     [SerializeField] private GameObject _buttonPrompt;
 
     #region UI Variable Values
-
     [SerializeField] private Text _timer;
     [SerializeField] private Text _stress;
     [SerializeField] private Text _submitted;
@@ -65,7 +64,7 @@ public class HUD : MonoBehaviour
         else
         {
             var newPrompt = GameObject.Instantiate(_buttonPrompt, _buttonPrompt.transform.parent);
-            newPrompt.GetComponent<ButtonPrompt>().OnInit(promptInfo);
+            newPrompt.GetComponent<ButtonPrompt>().Init(promptInfo);
 
             _buttonPromptDict.Add(promptInfo, newPrompt.GetComponent<ButtonPrompt>());
             newPrompt.SetActive(true);
@@ -124,11 +123,8 @@ public class HUD : MonoBehaviour
         var secondsString = (minutes > 0 && seconds < 10) ? $"0{seconds}" : $"{seconds}";
 
         _timer.text = $"Time: {minutesString}{secondsString}";
-
-        //_stress.text = $"Stress: {stress}";
-        //_stressBarFillImage.fillAmount = stress / _director.MaxStress;
         SetStressValue(stress);
-        _submitted.text = $"Assignments submitted: {submitted} / {GameDirector.Instance.assignmentsGoal}";
+        _submitted.text = $"Assignments submitted: {submitted}";
     }
 
     public void SetStressValue(float stress)

@@ -9,19 +9,13 @@ public class Holdable : Interactable
     [SyncVar] private GameObject _parent;
     [SyncVar] private GameObject _offsetPosition;
 
-    #region Caches
-
     private Rigidbody _rb;
     private Collider _collider;
 
-    #endregion Caches
     protected override InputCommand InputCommand { get => InputCommand.PickUp; }
 
     public Type type;
 
-    /// <summary>
-    /// Type of Holdable
-    /// </summary>
     public enum Type
     {
         NONE,
@@ -29,7 +23,7 @@ public class Holdable : Interactable
         ASSIGNMENT
     }
 
-    private void Awake()
+    void Start()
     {
         _rb = GetComponent<Rigidbody>();
         _collider = GetComponent<Collider>();
@@ -38,7 +32,7 @@ public class Holdable : Interactable
         _unityEvent.AddListener(OnInteract);
     }
 
-    private void OnInteract()
+    public void OnInteract()
     {
         var player = Player.Instance;
         if (HasFocus && player.heldObject == null)
@@ -48,7 +42,7 @@ public class Holdable : Interactable
     }
 
     // Update is called once per frame
-    protected override void Update()
+    new void Update()
     {
         base.Update();
 
@@ -61,8 +55,6 @@ public class Holdable : Interactable
             player.CmdDrop();
         }
     }
-
-    #region Actions Called by Player
 
     public void Grab(NetworkBehaviour grabber)
     {
@@ -94,11 +86,7 @@ public class Holdable : Interactable
         }
     }
 
-    #endregion Actions Called by Player
-
-    /// <summary>
-    /// Get rid of certain holdable items after using them for a minigame
-    /// </summary>
+    /* Get rid of certain holdable items after using them for a minigame */
     public void Consume()
     {
         // Check if its a consumable type
@@ -116,8 +104,6 @@ public class Holdable : Interactable
             Player.Instance.heldObject = null;
         }
     }
-
-    #region Network
 
     private void NetworkDestroy(GameObject obj)
     {
@@ -140,8 +126,6 @@ public class Holdable : Interactable
     [ClientRpc]
     private void RpcNetworkDestroy(GameObject obj)
     {
-        Destroy(obj);
+        GameObject.Destroy(obj);
     }
-
-    #endregion Network
 }

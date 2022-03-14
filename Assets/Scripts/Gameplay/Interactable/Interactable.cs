@@ -1,10 +1,10 @@
 using Mirror;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-
 using static InputManager;
 using static ButtonPrompt;
-using static Holdable;
 
 public abstract class Interactable : NetworkBehaviour
 {
@@ -25,9 +25,76 @@ public abstract class Interactable : NetworkBehaviour
     public PromptInfo NonInteractablePrompt { get; set; }
     private PromptInfo _lastPrompt;
 
+
     [SyncVar] private bool _isInteractable = true;
 
     public bool HasFocus { get; private set; }
+
+    private void Awake()
+    {
+        InteractablePrompt = new PromptInfo(InputCommand, _promptText, _promptPriority, _promptHoldTime);
+        MissingItemPrompt = new PromptInfo(InputCommand.None, _promptTextMissingItem, _promptPriority, _promptHoldTime);
+        NonInteractablePrompt = new PromptInfo(InputCommand.None, _promptTextNotInteractable, _promptPriority, _promptHoldTime);
+    }
+
+    public void Init(bool initialStatus)
+    {
+        _isInteractable = initialStatus;
+    }
+
+    protected void Update()
+    {
+        if (!HasFocus || !IsInteractable) return;
+
+        if (CurrentInputMode != InputMode.Player) return;
+
+        if (IsCommandJustPressed(InputCommand)) Interact();
+    }
+
+    protected virtual bool HasItem()
+    {
+        return requiredObject == Holdable.Type.NONE || (Player.Instance.heldObject != null && Player.Instance.heldObject.type == requiredObject);
+    }
+
+    private void Interact()
+    {
+        // Do nothing if we don't meet the requirements
+        if (!IsInteractable || !HasItem()) return;
+
+        if (_unityEvent != null) _unityEvent.Invoke();
+    }
+
+    public void GainFocus()
+    {
+        if (HasFocus) return;
+
+        if(!_isInteractable) 
+        {
+            EventManager<PromptInfo>.TriggerEvent("PromptHit", NonInteractablePrompt);
+            _lastPrompt = NonInteractablePrompt;
+        }
+        else if (!HasItem())
+        {
+            EventManager<PromptInfo>.TriggerEvent("PromptHit", MissingItemPrompt);
+            _lastPrompt = MissingItemPrompt;
+        }
+        else
+        {
+            EventManager<PromptInfo>.TriggerEvent("PromptHit", InteractablePrompt);
+            _lastPrompt = InteractablePrompt;
+        }              
+
+        HasFocus = true;
+    }
+
+    public void LoseFocus()
+    {
+        if (!HasFocus) return;
+
+        EventManager<PromptInfo>.TriggerEvent("PromptLost", _lastPrompt);
+
+        HasFocus = false;
+    }
 
     public bool IsInteractable
     {
@@ -50,74 +117,6 @@ public abstract class Interactable : NetworkBehaviour
         }
     }
 
-    private void Awake()
-    {
-        InteractablePrompt = new PromptInfo(InputCommand, _promptText, _promptPriority, _promptHoldTime);
-        MissingItemPrompt = new PromptInfo(InputCommand.None, _promptTextMissingItem, _promptPriority, _promptHoldTime);
-        NonInteractablePrompt = new PromptInfo(InputCommand.None, _promptTextNotInteractable, _promptPriority, _promptHoldTime);
-    }
-
-    public void Init(bool initialStatus)
-    {
-        _isInteractable = initialStatus;
-    }
-
-    protected virtual void Update()
-    {
-        //Must in focus mode and is interactable
-        if (!HasFocus || !IsInteractable) return;
-
-        if (CurrentInputMode != InputMode.Player) return;
-
-        if (IsCommandJustPressed(InputCommand)) Interact();
-    }
-
-    protected virtual bool HasItem()
-    {
-        return requiredObject == Holdable.Type.NONE || (Player.Instance.heldObject != null && Player.Instance.heldObject.type == requiredObject);
-    }
-
-    private void Interact()
-    {
-        // Do nothing if we don't meet the requirements
-        if (!IsInteractable || !HasItem()) return;
-
-        _unityEvent?.Invoke();
-    }
-
-    public void GainFocus()
-    {
-        if (HasFocus) return;
-
-        if (!_isInteractable)
-        {
-            EventManager<PromptInfo>.TriggerEvent("PromptHit", NonInteractablePrompt);
-            _lastPrompt = NonInteractablePrompt;
-        }
-        else if (!HasItem())
-        {
-            EventManager<PromptInfo>.TriggerEvent("PromptHit", MissingItemPrompt);
-            _lastPrompt = MissingItemPrompt;
-        }
-        else
-        {
-            EventManager<PromptInfo>.TriggerEvent("PromptHit", InteractablePrompt);
-            _lastPrompt = InteractablePrompt;
-        }
-
-        HasFocus = true;
-    }
-
-    public void LoseFocus()
-    {
-        if (!HasFocus) return;
-
-        EventManager<PromptInfo>.TriggerEvent("PromptLost", _lastPrompt);
-
-        HasFocus = false;
-    }
-
-    #region network
 
     [Command]
     private void CmdSetInteractable(bool value)
@@ -131,7 +130,7 @@ public abstract class Interactable : NetworkBehaviour
         if (_isInteractable == value) return;
         _isInteractable = value;
 
-        if (HasFocus)
+        if(HasFocus)
         {
             // Remove old prompt
             EventManager<PromptInfo>.TriggerEvent("PromptLost", _lastPrompt);
@@ -150,6 +149,4 @@ public abstract class Interactable : NetworkBehaviour
             }
         }
     }
-
-    #endregion network
 }
