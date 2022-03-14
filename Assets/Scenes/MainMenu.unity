@@ -3669,10 +3669,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 1906388637003974524, guid: 903f5e364b9911d46974b32c9601ea2f, type: 3}
-      propertyPath: simulateLatency
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1906388637003974527, guid: 903f5e364b9911d46974b32c9601ea2f, type: 3}
       propertyPath: m_Name
       value: NetworkManager
