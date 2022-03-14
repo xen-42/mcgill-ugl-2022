@@ -640,6 +640,7 @@ MonoBehaviour:
   _timer: {fileID: 2208655525550479128}
   _stress: {fileID: 5334185034736831223}
   _submitted: {fileID: 7334449127538603039}
+  _stressBarFillImage: {fileID: 0}
   _gameOverText: {fileID: 3712348927326950845}
 --- !u!1 &7296359565618407194
 GameObject:

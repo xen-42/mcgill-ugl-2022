@@ -10,21 +10,47 @@ public class GameDirector : NetworkBehaviour
 
     private List<Fixable> _distractions;
 
+    #region Time Countdown-Related Variables
+
     [SerializeField] public int timeLimit;
 
     // Host controls the timer
     [SyncVar] private float _countdown;
 
+    #endregion Time Countdown-Related Variables
+
+    #region Distraction-Related Variables
+
     private float _nextDistraction;
 
     private int _numDistractions;
 
+    #endregion Distraction-Related Variables
+
+    #region Stress-Related Variables
+
     private float _stress;
+    [SerializeField] private float _maxStress;
+    private bool _isStressDecreasing;
+    [SerializeField] private float _stressDecreasingTime = .5f;
+
+    public float MaxStress => _maxStress;
+    public float CurrentStress => _stress;
+
+    #endregion Stress-Related Variables
+
+    #region Assignment-Related Variables
 
     public int NumAssignmentsDone { get; private set; }
     public int NumAssignmentsScanned { get; private set; }
 
+    #endregion Assignment-Related Variables
+
+    #region Game State Variables
+
     private bool _gameOver;
+
+    #endregion Game State Variables
 
     // Start is called before the first frame update
     private void Start()
@@ -36,18 +62,38 @@ public class GameDirector : NetworkBehaviour
 
         _nextDistraction = 10f;
 
-        EventManager<int>.AddListener("LowerStress", LowerStress);
+        EventManager<float>.AddListener("LowerStress", LowerStress);
     }
 
     private void OnDestroy()
     {
-        EventManager<int>.RemoveListener("LowerStress", LowerStress);
+        EventManager<float>.RemoveListener("LowerStress", LowerStress);
     }
 
-    public void LowerStress(int change)
+    private void LowerStress(float change)
     {
-        _stress -= change;
-        if (_stress < 0) _stress = 0;
+        //_stress -= change;
+        //if (_stress < 0) _stress = 0;
+        StartCoroutine(nameof(StressDecreasing), change);
+    }
+
+    private IEnumerable StressDecreasing(float change)
+    {
+        float timeElapsed = 0f;
+        float tgtStressVal = Mathf.Max(_stress - change, 0f);
+        _isStressDecreasing = true;
+
+        while (timeElapsed < _stressDecreasingTime)
+        {
+            timeElapsed += Time.deltaTime;
+            _stress = Mathf.Lerp(_stress, tgtStressVal, timeElapsed / _stressDecreasingTime);
+            HUD.Instance.SetStressValue(_stress);
+            yield return null;
+        }
+
+        _stress = tgtStressVal;
+        _isStressDecreasing = false;
+        yield return null;
     }
 
     public void DoAssignment()
@@ -82,9 +128,10 @@ public class GameDirector : NetworkBehaviour
             }
         }
 
-        _stress += _numDistractions * _numDistractions * Time.deltaTime;
+        if (!_isStressDecreasing)
+            _stress += _numDistractions * _numDistractions * Time.deltaTime;
 
-        HUD.Instance.SetGameState(timeLimit - (int)_countdown, (int)_stress, NumAssignmentsDone);
+        HUD.Instance.SetGameState(timeLimit - (int)_countdown, _stress, NumAssignmentsDone);
 
         // Game Over
         if (!_gameOver && timeLimit == _countdown)
