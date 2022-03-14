@@ -25,7 +25,7 @@ namespace Assets.Scripts.UI.MenuScripts
 
         private void OnEnable()
         {
-            CustomNetworkManager.OnClientConnected += HandleClientConnected;   
+            CustomNetworkManager.OnClientConnected += HandleClientConnected;
             CustomNetworkManager.OnClientDisconnected += HandleClientDisconnected;
         }
 

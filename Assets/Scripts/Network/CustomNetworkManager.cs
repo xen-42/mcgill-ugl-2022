@@ -55,6 +55,7 @@ public class CustomNetworkManager : NetworkManager
                 transport = _steamTransport;
                 break;
         }
+        transportType = type;
     }
 
     public override void OnStartServer()
@@ -88,7 +89,7 @@ public class CustomNetworkManager : NetworkManager
 
     public override void OnServerDisconnect(NetworkConnection conn)
     {
-        if(conn.identity != null)
+        if (conn.identity != null)
         {
             var player = conn.identity.GetComponent<LobbyPlayer>();
 
@@ -99,7 +100,7 @@ public class CustomNetworkManager : NetworkManager
 
         OnClientDisconnected?.Invoke();
 
-        if(SceneManager.GetActiveScene().path == gameScene)
+        if (SceneManager.GetActiveScene().path == gameScene)
         {
             // Back to main menu
             Stop();
@@ -186,7 +187,7 @@ public class CustomNetworkManager : NetworkManager
 
     public void NotifyPlayersOfReadyState()
     {
-        foreach(var player in lobbyPlayers)
+        foreach (var player in lobbyPlayers)
         {
             player.HandleReadyToStart(IsReadyToStart());
         }
@@ -195,14 +196,14 @@ public class CustomNetworkManager : NetworkManager
     public bool IsReadyToStart()
     {
         // TODO: in release probably make this 2
-        if(lobbyPlayers.Count < 1)
+        if (lobbyPlayers.Count < 1)
         {
             return false;
         }
 
-        foreach(var player in lobbyPlayers)
+        foreach (var player in lobbyPlayers)
         {
-            if(!player.IsReady)
+            if (!player.IsReady)
             {
                 return false;
             }
@@ -223,9 +224,9 @@ public class CustomNetworkManager : NetworkManager
 
     public override void ServerChangeScene(string newScene)
     {
-        if (SceneManager.GetActiveScene().path == lobbyMenu && newScene == gameScene) 
+        if (SceneManager.GetActiveScene().path == lobbyMenu && newScene == gameScene)
         {
-            for(int i = lobbyPlayers.Count - 1; i >= 0; i--)
+            for (int i = lobbyPlayers.Count - 1; i >= 0; i--)
             {
                 var conn = lobbyPlayers[i].connectionToClient;
                 var player = Instantiate(gamePlayerPrefab);

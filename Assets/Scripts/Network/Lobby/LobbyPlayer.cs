@@ -27,12 +27,18 @@ public class LobbyPlayer : NetworkBehaviour
 
         if (CustomNetworkManager.Instance.transportType == CustomNetworkManager.TransportType.STEAM)
         {
-            steamLobbyCode.SetText(CustomNetworkManager.Instance.steamLobby.LobbyID);
+            Debug.Log("Steam transport");
 
+            steamLobbyCode.SetText(CustomNetworkManager.Instance.steamLobby.LobbyID);
             copySteamCodeButton.interactable = true;
+
+            steamLobbyCode.gameObject.SetActive(true);
+            copySteamCodeButton.gameObject.SetActive(true);
         }
         else
         {
+            Debug.Log("Kcp transport");
+
             steamLobbyCode.gameObject.SetActive(false);
             copySteamCodeButton.gameObject.SetActive(false);
         }
@@ -84,11 +90,11 @@ public class LobbyPlayer : NetworkBehaviour
 
     public void UpdateDisplay()
     {
-        if(!hasAuthority)
+        if (!hasAuthority)
         {
-            foreach(var player in CustomNetworkManager.Instance.lobbyPlayers)
+            foreach (var player in CustomNetworkManager.Instance.lobbyPlayers)
             {
-                if(player.hasAuthority)
+                if (player.hasAuthority)
                 {
                     player.UpdateDisplay();
                     break;
@@ -100,9 +106,9 @@ public class LobbyPlayer : NetworkBehaviour
 
         var playerCount = CustomNetworkManager.Instance.lobbyPlayers.Count;
 
-        for(int i = 0; i < playerNameTexts.Length; i++)
+        for (int i = 0; i < playerNameTexts.Length; i++)
         {
-            if(i < playerCount)
+            if (i < playerCount)
             {
                 var player = CustomNetworkManager.Instance.lobbyPlayers[i];
                 playerNameTexts[i].text = player.DisplayName;
@@ -118,7 +124,7 @@ public class LobbyPlayer : NetworkBehaviour
 
     public void HandleReadyToStart(bool readyToStart)
     {
-        if(!isLeader)
+        if (!isLeader)
         {
             return;
         }
@@ -146,7 +152,7 @@ public class LobbyPlayer : NetworkBehaviour
     public void CmdStartGame()
     {
         // Verify that its the first person in the list i.e. the leader
-        if(CustomNetworkManager.Instance.lobbyPlayers[0].connectionToClient != connectionToClient)
+        if (CustomNetworkManager.Instance.lobbyPlayers[0].connectionToClient != connectionToClient)
         {
             return;
         }
