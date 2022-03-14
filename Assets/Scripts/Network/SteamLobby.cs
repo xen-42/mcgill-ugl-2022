@@ -36,17 +36,18 @@ public class SteamLobby : MonoBehaviour
         SteamMatchmaking.CreateLobby(ELobbyType.k_ELobbyTypeFriendsOnly, _networkManager.maxConnections);
     }
 
-    public void JoinLobby(string code)
+    public bool JoinLobby(string code)
     {
         try
         {
             Debug.Log($"Trying to join {Convert.ToUInt64(code)}");
             SteamMatchmaking.JoinLobby(new CSteamID(Convert.ToUInt64(code)));
+            return true;
         }
         catch (Exception e)
         {
             Debug.LogError(e.Message);
-            return;
+            return false;
         }
     }
 

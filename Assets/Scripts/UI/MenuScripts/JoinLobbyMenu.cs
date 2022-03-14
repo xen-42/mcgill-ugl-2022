@@ -41,7 +41,11 @@ namespace Assets.Scripts.UI.MenuScripts
 
             CustomNetworkManager.Instance.SetTransport(CustomNetworkManager.TransportType.STEAM);
 
-            CustomNetworkManager.Instance.steamLobby.JoinLobby(steamLobbyCode);
+            if(!CustomNetworkManager.Instance.steamLobby.JoinLobby(steamLobbyCode))
+            {
+                HandleClientDisconnected();
+                return;
+            }
 
             joinLocalButton.interactable = false;
             joinSteamButton.interactable = false;
@@ -49,9 +53,9 @@ namespace Assets.Scripts.UI.MenuScripts
             hostSteamButton.interactable = false;
         }
 
-        public void SetSteamCode(string code)
+        public void OnSetSteamCode()
         {
-            joinSteamButton.interactable = !string.IsNullOrEmpty(code);
+            joinSteamButton.interactable = !string.IsNullOrEmpty(steamLobbyInputField.text);
         }
 
         public void JoinLocalLobby()
