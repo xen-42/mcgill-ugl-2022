@@ -73,7 +73,7 @@ public class CustomNetworkManager : NetworkManager
     public override void OnStartServer()
     {
         base.OnStartServer();
-        Resources.LoadAll<GameObject>("Prefabs").ToList();
+        //Resources.LoadAll<GameObject>("SpawnablePrefabs").ToList();
     }
 
     public override void OnStopServer()
@@ -86,12 +86,14 @@ public class CustomNetworkManager : NetworkManager
     public override void OnStartClient()
     {
         base.OnStartClient();
-        var spawnablePrefabs = Resources.LoadAll<GameObject>("Prefabs");
+        /*
+        var spawnablePrefabs = Resources.LoadAll<GameObject>("SpawnablePrefabs");
 
         foreach (var prefab in spawnablePrefabs)
         {
             NetworkClient.RegisterPrefab(prefab);
         }
+        */
     }
 
     public override void OnServerDisconnect(NetworkConnection conn)
@@ -128,6 +130,7 @@ public class CustomNetworkManager : NetworkManager
             return;
         }
 
+        /*
         if (conn?.identity?.GetComponent<StudentXPLobbyPlayer>() != null)
         {
             players.Add(conn.identity.GetComponent<StudentXPLobbyPlayer>());
@@ -136,6 +139,7 @@ public class CustomNetworkManager : NetworkManager
         {
             Debug.LogError($"Couldn't find StudentXPLobbyPlayer for {conn}");
         }
+        */
 
     }
 
@@ -158,6 +162,8 @@ public class CustomNetworkManager : NetworkManager
     new void Awake()
     {
         Instance = this;
+
+        NetworkClient.RegisterPrefab(roomPlayerPrefab.gameObject);
 
         _kcpTransport = gameObject.GetComponent<KcpTransport>();
         _steamTransport = gameObject.AddComponent<FizzySteamworks>();

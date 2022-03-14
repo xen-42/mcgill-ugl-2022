@@ -54,12 +54,12 @@ MonoBehaviour:
   networkAddress: localhost
   maxConnections: 100
   authenticator: {fileID: 0}
-  playerPrefab: {fileID: 7057505644252707195, guid: 75f51dd8a43083145b74e07e8fd19f2f, type: 3}
+  playerPrefab: {fileID: 8811788179824141644, guid: 871abd19d3fa48d4d8f8bcbd33a5cbac, type: 3}
   autoCreatePlayer: 1
   playerSpawnMethod: 0
   spawnPrefabs: []
   lobbyMenu: Assets/Scenes/LobbyMenu.unity
-  roomPlayerPrefab: {fileID: 7057505644252707173, guid: 75f51dd8a43083145b74e07e8fd19f2f, type: 3}
+  roomPlayerPrefab: {fileID: 1295106115173067421, guid: 75f51dd8a43083145b74e07e8fd19f2f, type: 3}
   steamLobby: {fileID: 0}
   players: []
   transportType: 0

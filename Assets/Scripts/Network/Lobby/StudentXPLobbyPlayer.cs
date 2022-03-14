@@ -21,7 +21,9 @@ public class StudentXPLobbyPlayer : NetworkBehaviour
 
     private void Awake()
     {
-        if(CustomNetworkManager.Instance.transportType == CustomNetworkManager.TransportType.STEAM)
+        lobbyUI.SetActive(false);
+
+        if (CustomNetworkManager.Instance.transportType == CustomNetworkManager.TransportType.STEAM)
         {
             steamLobbyCode.SetText(CustomNetworkManager.Instance.steamLobby.LobbyID);
 
@@ -92,11 +94,15 @@ public class StudentXPLobbyPlayer : NetworkBehaviour
             }
 
             return;
-        }   
+        }
+
+        var playerCount = CustomNetworkManager.Instance.players.Count;
+
+        Debug.Log($"There are {playerCount} players");
 
         for(int i = 0; i < playerNameTexts.Length; i++)
         {
-            if(i < CustomNetworkManager.Instance.players.Count)
+            if(i < playerCount)
             {
                 var player = CustomNetworkManager.Instance.players[i];
                 playerNameTexts[i].text = player.DisplayName;

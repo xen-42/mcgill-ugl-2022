@@ -1205,7 +1205,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   landingPagePanel: {fileID: 986871375}
-  lobbyPage: {fileID: 0}
   steamLobbyInputField: {fileID: 1716383060}
   joinSteamButton: {fileID: 1176486445}
   hostSteamButton: {fileID: 1468812328}
