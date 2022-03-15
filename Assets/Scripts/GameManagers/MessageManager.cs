@@ -30,28 +30,28 @@ public class DelayedMessageInfo<MessageCategory, Info>
     }
 }
 
-public class MessageManager<MessageCatogary, Info>
+public class MessageManager<MessageCategory, Info>
     : MonoBehaviour
-    where MessageCatogary : MessageEnum
+    where MessageCategory : MessageEnum
     where Info : struct
 {
     public float delayedTimestep = .02f;
 
-    private List<DelayedMessageInfo<MessageCatogary, Info>> delayedInfoList;
+    private List<DelayedMessageInfo<MessageCategory, Info>> delayedInfoList;
 
-    private MinPQ<DelayedMessageInfo<MessageCatogary, Info>> pq;
-    private static MessageManager<MessageCatogary, Info> m_manager;
+    private MinPQ<DelayedMessageInfo<MessageCategory, Info>> pq;
+    private static MessageManager<MessageCategory, Info> m_manager;
 
-    public static MessageManager<MessageCatogary, Info> Instance
+    public static MessageManager<MessageCategory, Info> Instance
     {
         get
         {
             if (!m_manager)
             {
-                m_manager = FindObjectOfType<MessageManager<MessageCatogary, Info>>();
+                m_manager = FindObjectOfType<MessageManager<MessageCategory, Info>>();
                 if (!m_manager)
                 {
-                    Debug.LogError("There needs to be one active" + nameof(MessageCatogary) + " Manager script on a GameObject in your scene.");
+                    Debug.LogError("There needs to be one active" + nameof(MessageCategory) + " Manager script on a GameObject in your scene.");
                 }
                 else
                 {
@@ -66,8 +66,8 @@ public class MessageManager<MessageCatogary, Info>
     private void Init()
     {
         //Init
-        delayedInfoList = new List<DelayedMessageInfo<MessageCatogary, Info>>();
-        pq = new MinPQ<DelayedMessageInfo<MessageCatogary, Info>>(delayedInfoList.ToArray(), DelayedTimeComparison);
+        delayedInfoList = new List<DelayedMessageInfo<MessageCategory, Info>>();
+        pq = new MinPQ<DelayedMessageInfo<MessageCategory, Info>>(delayedInfoList.ToArray(), DelayedTimeComparison);
     }
 
     private void Start()
@@ -75,23 +75,22 @@ public class MessageManager<MessageCatogary, Info>
         StartCoroutine(nameof(DelayedMessageRoutine));
     }
 
-    private static void Shout(IMessageHandler<MessageCatogary, Info> receiver, int messageLayer, Info info = default)
+    private static void Shout(IMessageHandler<MessageCategory, Info> receiver, int messageLayer, Info info = default)
     => receiver.OnReceivingMessage(messageLayer, info);
 
-    public static void Shout(int messageLayer, Info info, params IMessageHandler<MessageCatogary, Info>[] pReceivers)
+    public static void Shout(int messageLayer, Info info, params IMessageHandler<MessageCategory, Info>[] pReceivers)
     {
         foreach (var rc in pReceivers)
             Shout(rc, messageLayer, info);
     }
 
-    public void DelayedShout(int messageLayer, float delayedTime, IMessageHandler<MessageCatogary, Info> receiver, Info info = default)
+    public void DelayedShout(int messageLayer, float delayedTime, IMessageHandler<MessageCategory, Info> receiver, Info info = default)
     {
-        //Construct new CombatMessageInfo
-        DelayedMessageInfo<MessageCatogary, Info> delayedInfo = new(receiver, messageLayer, info, delayedTime);
+        DelayedMessageInfo<MessageCategory, Info> delayedInfo = new DelayedMessageInfo<MessageCategory, Info>(receiver, messageLayer, info, delayedTime);
         pq.Insert(delayedInfo);
     }
 
-    public static void DelayedShout(CombatMessage msgCombatMessageype, float delayedTime, params IMessageHandler<MessageCatogary, Info>[] pReceivers)
+    public static void DelayedShout(CombatMessage msgCombatMessageype, float delayedTime, params IMessageHandler<MessageCategory, Info>[] pReceivers)
     {
         foreach (var rc in pReceivers)
             DelayedShout(msgCombatMessageype, delayedTime, rc);
@@ -117,7 +116,7 @@ public class MessageManager<MessageCatogary, Info>
         }
     }
 
-    private int DelayedTimeComparison(DelayedMessageInfo<MessageCatogary, Info> x, DelayedMessageInfo<MessageCatogary, Info> y)
+    private int DelayedTimeComparison(DelayedMessageInfo<MessageCategory, Info> x, DelayedMessageInfo<MessageCategory, Info> y)
     {
         return x.delayedTime.CompareTo(y);
     }

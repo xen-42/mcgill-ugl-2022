@@ -1,63 +1,60 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
 /// <summary>
-/// Use Generics of this class to support paramters
+/// Use Generics of this class to support parameters
 /// </summary>
-public class EventManager : MonoBehaviour
+public static class EventManager
 {
-    private Dictionary<string, UnityEvent> m_eventDictionary;
-    private static EventManager m_manager;
+    private static Dictionary<string, EventData> m_eventDictionary = new Dictionary<string, EventData>();
 
-    public static EventManager Instance
+    public static void AddListener(string pEventName, EventCallback pListener)
     {
-        get
+        if (m_eventDictionary.TryGetValue(pEventName, out EventData eventData))
         {
-            if (!m_manager)
-            {
-                m_manager = FindObjectOfType<EventManager>();
-                if (!m_manager)
-                {
-                    Debug.LogError("There needs to be one active Event Manager script on a GameObject in your scene.");
-                }
-                else
-                {
-                    m_manager.Init();
-                }
-            }
-
-            return m_manager;
+            eventData.callbacks.Add(pListener);
         }
-    }
-
-    private void Init()
-    {
-        //Init Dictionary
-        m_eventDictionary = new Dictionary<string, UnityEvent>();
-    }
-
-    public void AddListener(string pEventName, UnityAction pListener)
-    {
-        if (m_eventDictionary.TryGetValue(pEventName, out UnityEvent eve))
-            eve.AddListener(pListener);
         else
         {
             //Add new Event
-            m_eventDictionary.Add(pEventName, (eve = new UnityEvent()));
-            eve.AddListener(pListener);
+            m_eventDictionary.Add(pEventName, eventData = new EventData());
+            eventData.callbacks.Add(pListener);
         }
     }
 
-    public void RemoveListener(string pEventName, UnityAction pListener)
+    public static void RemoveListener(string pEventName, EventCallback pListener)
     {
-        if (m_eventDictionary.TryGetValue(pEventName, out UnityEvent eve))
-            eve.RemoveListener(pListener);
+        if (m_eventDictionary.TryGetValue(pEventName, out EventData eventData))
+        {
+            eventData.callbacks.Remove(pListener);
+        }
     }
 
-    public void TriggerEvent(string pEventName)
+    public static void TriggerEvent(string pEventName)
     {
-        if (m_eventDictionary.TryGetValue(pEventName, out UnityEvent eve))
-            eve.Invoke();
+        if (m_eventDictionary.TryGetValue(pEventName, out EventData eventData))
+        {
+            if (eventData.isInvoking)
+            {
+                Debug.LogError("Infinite recursion in EventManager");
+            }
+            else
+            {
+                eventData.isInvoking = true;
+                foreach (var callback in eventData.callbacks)
+                {
+                    callback.Invoke();
+                }
+            }
+            eventData.isInvoking = false;
+        }
+    }
+
+    private class EventData
+    {
+        public List<EventCallback> callbacks = new List<EventCallback>();
+        public bool isInvoking;
     }
 }
