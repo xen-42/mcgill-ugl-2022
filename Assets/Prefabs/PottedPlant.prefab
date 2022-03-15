@@ -26,8 +26,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3121370866228587373}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 2, z: 1}
+  m_LocalPosition: {x: 0, y: 1.25, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3121370866660294336}
   m_RootOrder: 1
@@ -114,6 +114,7 @@ Transform:
   m_Children:
   - {fileID: 3121370866775809002}
   - {fileID: 3121370866228587372}
+  - {fileID: 775000319755306405}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 45, z: 0}
@@ -152,11 +153,6 @@ MonoBehaviour:
   _promptTextMissingItem: You need a watering can
   _promptPriority: 0
   _promptHoldTime: 0
-  _promptInfo:
-    _command: 1
-    _text: Water plant
-    _priority: 0
-    _holdTime: 0
   requiredObject: 1
   MinigamePrefab: {fileID: 796745773547017806, guid: 7d5d4b7cee72a6f4b8d1d5c1d85ed314, type: 3}
   OnCompleteMinigame:
@@ -230,8 +226,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3121370866775809003}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 2, z: 1}
+  m_LocalPosition: {x: 0, y: 1.25, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 3121370866660294336}
   m_RootOrder: 0
@@ -285,3 +281,65 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1001 &613064989401791137
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 3121370866660294336}
+    m_Modifications:
+    - target: {fileID: 163064117015478020, guid: d6aea0eafaf1b0a4fa12db321e2eaed9, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 163064117015478020, guid: d6aea0eafaf1b0a4fa12db321e2eaed9, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 163064117015478020, guid: d6aea0eafaf1b0a4fa12db321e2eaed9, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 163064117015478020, guid: d6aea0eafaf1b0a4fa12db321e2eaed9, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 163064117015478020, guid: d6aea0eafaf1b0a4fa12db321e2eaed9, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.92387956
+      objectReference: {fileID: 0}
+    - target: {fileID: 163064117015478020, guid: d6aea0eafaf1b0a4fa12db321e2eaed9, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 163064117015478020, guid: d6aea0eafaf1b0a4fa12db321e2eaed9, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.38268343
+      objectReference: {fileID: 0}
+    - target: {fileID: 163064117015478020, guid: d6aea0eafaf1b0a4fa12db321e2eaed9, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 163064117015478020, guid: d6aea0eafaf1b0a4fa12db321e2eaed9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 163064117015478020, guid: d6aea0eafaf1b0a4fa12db321e2eaed9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 163064117015478020, guid: d6aea0eafaf1b0a4fa12db321e2eaed9, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 650912394547144126, guid: d6aea0eafaf1b0a4fa12db321e2eaed9, type: 3}
+      propertyPath: m_Name
+      value: flowerpot
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: d6aea0eafaf1b0a4fa12db321e2eaed9, type: 3}
+--- !u!4 &775000319755306405 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 163064117015478020, guid: d6aea0eafaf1b0a4fa12db321e2eaed9, type: 3}
+  m_PrefabInstance: {fileID: 613064989401791137}
+  m_PrefabAsset: {fileID: 0}

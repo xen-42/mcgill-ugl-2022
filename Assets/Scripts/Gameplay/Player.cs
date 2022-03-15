@@ -43,9 +43,9 @@ public class Player : NetworkBehaviour
     float yRotation;
 
     [Header("Sprinting")]
-    [SerializeField] float walkSpeed = 4f;
-    [SerializeField] float runSpeed = 6f;
-    [SerializeField] float acceleration = 10f;
+    [SerializeField] public float walkSpeed = 4f;
+    [SerializeField] public float runSpeed = 6f;
+    [SerializeField] public float acceleration = 10f;
 
     [Header("Interacting")]
     [SerializeField] Transform heldItemPosition;
