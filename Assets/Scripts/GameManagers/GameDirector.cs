@@ -39,7 +39,6 @@ public class GameDirector : NetworkBehaviour
     [SerializeField] private float _stressDecreasingTime = .5f;
     private bool _stressed_out;
     private PostProcessingController _postProcessingController;
-
     public float CurrentStress => _stress;
 
     public int NumAssignmentsDone { get; private set; }
@@ -164,9 +163,15 @@ public class GameDirector : NetworkBehaviour
 
     private void ApplyStressVision(){
         _postProcessingController.EnableAllOverrides();
+        Player.Instance.walkSpeed = 1f;
+        Player.Instance.runSpeed = 1f;
+        Player.Instance.acceleration = 0f;
     }
 
     private void DisableStressVision(){
         _postProcessingController.DisableAllOverrides();
+        Player.Instance.walkSpeed = 6f;
+        Player.Instance.runSpeed = 6f;
+        Player.Instance.acceleration = 10f;
     }
 }
