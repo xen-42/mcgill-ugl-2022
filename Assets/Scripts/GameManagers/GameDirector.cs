@@ -37,6 +37,8 @@ public class GameDirector : NetworkBehaviour
     private float _stress;
     private bool _isStressDecreasing;
     [SerializeField] private float _stressDecreasingTime = .5f;
+    private bool _stressed_out;
+    private PostProcessingController _postProcessingController;
 
     public float CurrentStress => _stress;
 
@@ -57,6 +59,11 @@ public class GameDirector : NetworkBehaviour
         Random.InitState((int)DateTime.Now.Ticks);
 
         _nextDistraction = timeUntilFirstDistraction;
+
+        _stressed_out = false;
+        _postProcessingController = GameObject.Find("GlobalVolume").GetComponent<PostProcessingController>();
+        
+        _postProcessingController.DisableAllOverrides();
     }
 
     public void LowerStressImmediate(float change)
@@ -127,6 +134,20 @@ public class GameDirector : NetworkBehaviour
         _stress = Mathf.Clamp(_stress, 0f, 100f);
         HUD.Instance.SetGameState(timeLimit - (int)_countdown, _stress, NumAssignmentsDone);
 
+        // Apply stress vision
+        if (_stress > 99 && !_stressed_out){
+            Debug.Log("Maximum level of stress reached!");
+            _stressed_out = true;
+            ApplyStressVision();
+            
+        }
+
+        // Disable stress vision
+        if (_stress < 100 && _stressed_out){
+            _stressed_out = false;
+            DisableStressVision();
+        }
+
         // Game Over       
         if (!_gameOver && timeLimit == _countdown)
         {
@@ -139,5 +160,13 @@ public class GameDirector : NetworkBehaviour
     {
         if (list.Count == 0) return default;
         return list[(int)Random.Range(0, list.Count)];
+    }
+
+    private void ApplyStressVision(){
+        _postProcessingController.EnableAllOverrides();
+    }
+
+    private void DisableStressVision(){
+        _postProcessingController.DisableAllOverrides();
     }
 }
