@@ -165,7 +165,7 @@ public class GameDirector : NetworkBehaviour
         _postProcessingController.EnableAllOverrides();
         Player.Instance.walkSpeed = 1f;
         Player.Instance.runSpeed = 1f;
-        Player.Instance.acceleration = 0f;
+        Player.Instance.acceleration = 1f;
     }
 
     private void DisableStressVision(){
