@@ -470,7 +470,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   groundCheck: {fileID: 4481484669680942855}
-  jumpForce: 15
+  jumpForce: 5
   cam: {fileID: 3559687938595580754}
   fastfov: 110
   fov: 90
