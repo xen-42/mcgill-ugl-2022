@@ -9,20 +9,30 @@ public class ActionManager : MonoBehaviour
     private static List<Tuple<Func<bool>, Action>> _pairs;
     private static List<Action> _nextTick;
 
+    private static bool initialized = false;
+
     private void Start()
+    {
+        if (!initialized) Init();
+    }
+
+    static void Init()
     {
         _pairs = new List<Tuple<Func<bool>, Action>>();
         _nextTick = new List<Action>();
+        initialized = true;
     }
 
     /* Runs the given Action when the predicate is true */
     public static void RunWhen(Func<bool> predicate, Action action)
     {
+        if (!initialized) Init();
         _pairs.Add(new Tuple<Func<bool>, Action>(predicate, action));
     }
 
     public static void FireOnNextUpdate(Action action)
     {
+        if (!initialized) Init();
         _nextTick.Add(action);
     }
 

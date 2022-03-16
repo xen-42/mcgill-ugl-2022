@@ -1,4 +1,5 @@
 using Mirror;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -302,11 +303,19 @@ public class Player : NetworkBehaviour
     [Command]
     public void CmdGiveAuthority(NetworkIdentity identity)
     {
-        if (!identity.hasAuthority)
+        try
         {
-            identity.RemoveClientAuthority();
-            identity.AssignClientAuthority(connectionToClient);
+            if (!identity.hasAuthority)
+            {
+                identity.RemoveClientAuthority();
+                identity.AssignClientAuthority(connectionToClient);
+            }
         }
+        catch(Exception e)
+        {
+            Debug.LogError($"{e.Message}: {e.StackTrace}");
+        }
+
     }
     #endregion Commands and RPC
 
