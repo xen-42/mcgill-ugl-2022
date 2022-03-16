@@ -46,9 +46,9 @@ public class Player : NetworkBehaviour
     public Camera Cam => cam;
 
     [Header("Sprinting")]
-    [SerializeField] private float walkSpeed = 4f;
-    [SerializeField] private float runSpeed = 6f;
-    [SerializeField] private float acceleration = 10f;
+    [SerializeField] public float walkSpeed = 4f;
+    [SerializeField] public float runSpeed = 6f;
+    [SerializeField] public float acceleration = 10f;
 
     [Header("Interacting")]
     [SerializeField] private Transform heldItemPosition;
