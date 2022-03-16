@@ -62,6 +62,7 @@ MonoBehaviour:
   gameScene: Assets/Scenes/MovementPrototype.unity
   lobbyPlayerPrefab: {fileID: 1295106115173067421, guid: 75f51dd8a43083145b74e07e8fd19f2f, type: 3}
   gamePlayerPrefab: {fileID: 4481484670218387114, guid: 67f9b724cbd9bee41949f2126a2bd403, type: 3}
+  playerSpawnerPrefab: {fileID: 6317237962863358191, guid: e44ffd5946f15c740b6a0f75aaacd4ef, type: 3}
   steamLobby: {fileID: 0}
   lobbyPlayers: []
   players: []
