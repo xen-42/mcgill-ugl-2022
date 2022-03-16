@@ -6,8 +6,10 @@ using UnityEngine;
 public class Fixable : NetworkBehaviour
 {
     [SerializeField] public GameObject fixedState;
-
     [SerializeField] public GameObject brokenState;
+
+    private string _fixedName;
+    private string _brokenName;
 
     [SyncVar] private bool _isBroken;
 
@@ -17,27 +19,17 @@ public class Fixable : NetworkBehaviour
 
     private Interactable _interactable;
 
-    private void Start()
+    private void Awake()
     {
+        _fixedName = fixedState.name;
+        _brokenName = brokenState.name;
+
         // Since its synced you could join late and its already changed
-        if (_currentState == null) _currentState = fixedState.name;
+        if (_currentState == null) _currentState = _fixedName;
 
-        foreach (Transform t in transform)
-        {
-            if (t.gameObject.name == _currentState)
-            {
-                t.gameObject.SetActive(true);
-            }
-            else
-            {
-                t.gameObject.SetActive(false);
-            }
-        }
+        _interactable = GetComponent<Interactable>();
 
-        _isBroken = _currentState != fixedState.name;
-
-        _interactable = gameObject.GetComponent<Interactable>();
-        _interactable.Init(_isBroken);
+        _SwitchState(_currentState);
     }
 
     public void Break()
@@ -81,13 +73,9 @@ public class Fixable : NetworkBehaviour
 
         foreach (Transform t in transform)
         {
-            if (t.gameObject.name != stateID)
+            if (t.gameObject.name == fixedState.name || t.gameObject.name == brokenState.name)
             {
-                t.gameObject.SetActive(false);
-            }
-            else
-            {
-                t.gameObject.SetActive(true);
+                t.gameObject.SetActive(t.gameObject.name == _currentState);
             }
         }
         _isBroken = (stateID != fixedState.name);
