@@ -8,31 +8,29 @@ using UnityEngine.SceneManagement;
 public class Player : NetworkBehaviour
 {
     [Header("Movement")]
-    [SerializeField] private Transform orientation;
+    [SerializeField] Transform orientation;
     public float moveSpeed = 6f;
 
     [Header("Drag")]
-    private float rbDrag = 6f;
-    private float airDrag = 2f;
-    private float horizontalMovement;
-    private float verticalMovement;
-    private float movementMultiplier = 10f;
-    [SerializeField] private float airMultiplier = 0.4f;
-    private float playerHeight = 2f;
+    float rbDrag = 6f;
+    float airDrag = 2f;
+    float horizontalMovement;
+    float verticalMovement;
+    float movementMultiplier = 10f;
+    [SerializeField] float airMultiplier = 0.4f;
+    float playerHeight = 2f;
 
     [Header("Ground Detection")]
-    [SerializeField] private LayerMask groundMask;
-    [SerializeField] private Transform groundCheck;
-    private float groundDistance = 0.4f;
-    private bool isGrounded;
+    [SerializeField] LayerMask groundMask;
+    [SerializeField] Transform groundCheck;
+    float groundDistance = 0.4f;
+    bool isGrounded;
 
-    private Rigidbody rb;
-
+    Rigidbody rb;
     [Header("Jumping")]
     public float jumpForce = 5f;
 
-    private RaycastHit slopeHit;
-
+    RaycastHit slopeHit;
     [Header("Camera Adjusts")]
     [SerializeField] private Camera cam;
     [SerializeField] private float fastfov;
@@ -40,10 +38,9 @@ public class Player : NetworkBehaviour
     [SerializeField] private float fovaccel;
     [SerializeField] public float sensX;
     [SerializeField] public float sensY;
-    private float multiplier = 0.01f;
-    private float xRotation;
-    private float yRotation;
-    public Camera Cam => cam;
+    float multiplier = 0.01f;
+    float xRotation;
+    float yRotation;
 
     [Header("Sprinting")]
     [SerializeField] public float walkSpeed = 4f;
@@ -51,7 +48,7 @@ public class Player : NetworkBehaviour
     [SerializeField] public float acceleration = 10f;
 
     [Header("Interacting")]
-    [SerializeField] private Transform heldItemPosition;
+    [SerializeField] Transform heldItemPosition;
 
     private GameObject _focusedObject;
     public Holdable heldObject;
@@ -196,6 +193,7 @@ public class Player : NetworkBehaviour
         else if (isGrounded && OnSlope())
         {
             rb.AddForce(slopeMoveDirection.normalized * moveSpeed * movementMultiplier, ForceMode.Acceleration);
+
         }
         else if (!isGrounded)
         {
@@ -210,9 +208,8 @@ public class Player : NetworkBehaviour
     }
 
     #region Server
-
     [Server]
-    private void ControlSpeed()
+    void ControlSpeed()
     {
         if (_sprint && isGrounded)
         {
@@ -244,7 +241,7 @@ public class Player : NetworkBehaviour
     }
 
     [Server]
-    private void PlayerDrag()
+    void PlayerDrag()
     {
         if (isGrounded)
         {
@@ -259,7 +256,6 @@ public class Player : NetworkBehaviour
     #endregion Server
 
     #region Commands and RPC
-
     [Command]
     public void CmdSendInputs(Vector3 movement, bool jump, bool sprint, float xRot, float yRot)
     {
@@ -312,7 +308,6 @@ public class Player : NetworkBehaviour
             identity.AssignClientAuthority(connectionToClient);
         }
     }
-
     #endregion Commands and RPC
 
     #region Override

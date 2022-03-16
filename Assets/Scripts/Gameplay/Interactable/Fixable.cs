@@ -1,15 +1,10 @@
 using Mirror;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Fixable : NetworkBehaviour
 {
-    public event Action OnObjectFix = delegate { };
-
-    public event Action OnObjectBreak = delegate { };
-
     [SerializeField] public GameObject fixedState;
     [SerializeField] public GameObject brokenState;
 
@@ -40,13 +35,11 @@ public class Fixable : NetworkBehaviour
     public void Break()
     {
         SwitchState(brokenState.name);
-        OnObjectBreak.Invoke();
     }
 
     public void Fix()
     {
         SwitchState(fixedState.name);
-        OnObjectFix.Invoke();
     }
 
     private void SwitchState(string stateID)

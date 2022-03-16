@@ -14,15 +14,14 @@ public class CatInteractable : Interactable
 
     protected override InputCommand InputCommand { get => InputCommand.Interact; }
 
-    private void Start()
+    void Start()
     {
         _unityEvent.AddListener(OnPet);
     }
 
     public void OnPet()
     {
-        //GameDirector.Instance.LowerStressImmediate(StressReduction);
-        GameDirector.Instance.LowerStressGradually(StressReduction);
+        GameDirector.Instance.LowerStressImmediate(StressReduction);
         IsInteractable = false;
         if (isServer)
         {
@@ -34,7 +33,7 @@ public class CatInteractable : Interactable
         }
     }
 
-    protected override void Update()
+    private void Update()
     {
         base.Update();
 
