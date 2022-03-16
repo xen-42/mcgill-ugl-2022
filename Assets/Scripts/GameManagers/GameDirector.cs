@@ -76,16 +76,17 @@ public class GameDirector : NetworkBehaviour
         StartCoroutine(nameof(StressDecreasing), change);
     }
 
-    private IEnumerable StressDecreasing(float change)
+    private IEnumerator StressDecreasing(float change)
     {
         float timeElapsed = 0f;
+        float startStressValue = _stress;
         float targetStressValue = Mathf.Max(_stress - change, 0f);
         _isStressDecreasing = true;
 
         while (timeElapsed < _stressDecreasingTime)
         {
             timeElapsed += Time.deltaTime;
-            _stress = Mathf.Lerp(_stress, targetStressValue, timeElapsed / _stressDecreasingTime);
+            _stress = Mathf.Lerp(startStressValue, targetStressValue, timeElapsed / _stressDecreasingTime);
             HUD.Instance.SetStressValue(_stress);
             yield return null;
         }
