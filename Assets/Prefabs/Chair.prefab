@@ -336,8 +336,9 @@ GameObject:
   - component: {fileID: 4000887969854341695}
   - component: {fileID: 4000887969854341691}
   - component: {fileID: 4000887969854341690}
-  - component: {fileID: 4000887969854341694}
   - component: {fileID: 4000887969854341693}
+  - component: {fileID: 4000887969854341694}
+  - component: {fileID: 6071107588884333120}
   - component: {fileID: 4000887969854341692}
   m_Layer: 0
   m_Name: Chair
@@ -414,6 +415,27 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 1.9865265, y: 1.9431317, z: 2.0322785}
   m_Center: {x: -0.009227768, y: 0.983125, z: 0.018126294}
+--- !u!114 &4000887969854341693
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4271501211981122193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf0b1ddf3cab83f4b8ac84c617e33e4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  _promptText: Grab Chair
+  _promptTextNotInteractable: 
+  _promptTextMissingItem: 
+  _promptPriority: 0
+  _promptHoldTime: 0
+  requiredObject: 0
+  type: 0
 --- !u!114 &4000887969854341694
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -436,7 +458,7 @@ MonoBehaviour:
   syncAngularVelocity: 1
   clearAngularVelocity: 0
   angularVelocitySensitivity: 0.1
---- !u!114 &4000887969854341693
+--- !u!114 &6071107588884333120
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -445,18 +467,31 @@ MonoBehaviour:
   m_GameObject: {fileID: 4271501211981122193}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf0b1ddf3cab83f4b8ac84c617e33e4c, type: 3}
+  m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  _promptText: Grab Chair
-  _promptTextNotInteractable: 
-  _promptTextMissingItem: 
-  _promptPriority: 0
-  _promptHoldTime: 0
-  requiredObject: 0
-  type: 0
+  clientAuthority: 0
+  sendInterval: 0.05
+  syncPosition: 1
+  syncRotation: 1
+  syncScale: 0
+  interpolatePosition: 1
+  interpolateRotation: 1
+  interpolateScale: 0
+  bufferTimeMultiplier: 1
+  bufferSizeLimit: 64
+  catchupThreshold: 4
+  catchupMultiplier: 0.1
+  onlySyncOnChange: 1
+  bufferResetMultiplier: 5
+  positionSensitivity: 0.01
+  rotationSensitivity: 0.01
+  scaleSensitivity: 0.01
+  showGizmos: 0
+  showOverlay: 0
+  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
 --- !u!114 &4000887969854341692
 MonoBehaviour:
   m_ObjectHideFlags: 0

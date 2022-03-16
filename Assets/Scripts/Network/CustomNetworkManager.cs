@@ -22,12 +22,16 @@ public class CustomNetworkManager : NetworkManager
     [Scene] [SerializeField] private string lobbyMenu = string.Empty;
     [Scene] [SerializeField] private string gameScene = string.Empty;
 
-    [Header("Room")]
+    [Header("Lobby")]
     [SerializeField] private LobbyPlayer lobbyPlayerPrefab = null;
+
+    [Header("Game")]
     [SerializeField] private Player gamePlayerPrefab = null;
+    [SerializeField] private GameObject playerSpawnerPrefab = null;
 
     public static event Action OnClientConnected;
     public static event Action OnClientDisconnected;
+    public static event Action<NetworkConnection> OnServerReadied;
 
     public SteamLobby steamLobby = null;
 
@@ -237,5 +241,24 @@ public class CustomNetworkManager : NetworkManager
         }
 
         base.ServerChangeScene(newScene);
+    }
+
+    public override void OnServerSceneChanged(string sceneName)
+    {
+        base.OnServerSceneChanged(sceneName);
+
+        if(sceneName == gameScene)
+        {
+            GameObject playerSpawnerInstance = Instantiate(playerSpawnerPrefab);
+            NetworkServer.Spawn(playerSpawnerInstance);
+        }
+    }
+
+
+    public override void OnServerReady(NetworkConnection conn)
+    {
+        base.OnServerReady(conn);
+
+        OnServerReadied?.Invoke(conn);
     }
 }
