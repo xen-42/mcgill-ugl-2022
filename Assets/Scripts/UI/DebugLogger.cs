@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class DebugLogger : MonoBehaviour
 {
@@ -9,19 +10,15 @@ public class DebugLogger : MonoBehaviour
     bool showOnScreen = false;
     int kChars = 700;
 
-    private DebugLogger Instance;
-
-    private void Awake()
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    static void RuntimeInit()
     {
-        if(Instance != null)
-        {
-            Instance = this;
-            DontDestroyOnLoad(this.gameObject);
-        }
-        else
-        {
-            Destroy(this.gameObject);
-        }
+        if (FindObjectOfType<DebugLogger>() != null)
+            return;
+
+        var go = new GameObject { name = "[Debug Logger]" };
+        go.AddComponent<DebugLogger>();
+        DontDestroyOnLoad(go);
     }
 
     void OnEnable() 
@@ -35,7 +32,14 @@ public class DebugLogger : MonoBehaviour
         Application.logMessageReceived -= Log; 
     }
 
-    void Update() { if (Input.GetKeyDown(KeyCode.F10)) { showOnScreen = !showOnScreen; } }
+    void Update() 
+    { 
+        if (Keyboard.current[Key.F10].wasPressedThisFrame) 
+        { 
+            showOnScreen = !showOnScreen; 
+        } 
+    }
+
     public void Log(string logString, string stackTrace, LogType type)
     {
         // On screen
