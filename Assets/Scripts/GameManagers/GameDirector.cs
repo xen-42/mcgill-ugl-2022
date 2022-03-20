@@ -36,10 +36,11 @@ public class GameDirector : NetworkBehaviour
     // Stress is out of 100
     private float _stress;
     private bool _isStressDecreasing;
-    [SerializeField] private float _stressDecreasingTime = .5f;
+    [SerializeField] private float _stressDecreasingTime = 0.5f;
     private bool _stressed_out;
     private PostProcessingController _postProcessingController;
     public float CurrentStress => _stress;
+    private bool apply_stress;
 
     public int NumAssignmentsDone { get; private set; }
     public int NumAssignmentsScanned { get; private set; }
@@ -63,6 +64,7 @@ public class GameDirector : NetworkBehaviour
         _postProcessingController = GameObject.Find("GlobalVolume").GetComponent<PostProcessingController>();
         
         _postProcessingController.DisableAllOverrides();
+        apply_stress = false;
     }
 
     public void LowerStressImmediate(float change)
@@ -73,7 +75,7 @@ public class GameDirector : NetworkBehaviour
 
     public void LowerStressGradually(float change)
     {
-        StartCoroutine(nameof(StressDecreasing), change);
+        //StartCoroutine(nameof(StressDecreasing), change);
     }
 
     private IEnumerable StressDecreasing(float change)
@@ -87,6 +89,11 @@ public class GameDirector : NetworkBehaviour
             timeElapsed += Time.deltaTime;
             _stress = Mathf.Lerp(_stress, targetStressValue, timeElapsed / _stressDecreasingTime);
             HUD.Instance.SetStressValue(_stress);
+
+            if (_stress > 49){
+                _postProcessingController.UpdateStressVision(_stress - 50);
+            }
+
             yield return null;
         }
 
@@ -127,24 +134,28 @@ public class GameDirector : NetworkBehaviour
 
         if (!_isStressDecreasing)
         {
-            _stress += stressPerSecond * Mathf.Pow(_numDistractions, stressExponent) * Time.deltaTime;
+            if (_stress > 10){
+                _stress += stressPerSecond * Mathf.Pow(_numDistractions, stressExponent) * Time.deltaTime * 0.5f;
+            }
+            else {
+                _stress += stressPerSecond * Mathf.Pow(_numDistractions, stressExponent) * Time.deltaTime;
+            }
         }
 
         _stress = Mathf.Clamp(_stress, 0f, 100f);
         HUD.Instance.SetGameState(timeLimit - (int)_countdown, _stress, NumAssignmentsDone);
 
-        // Apply stress vision
-        if (_stress > 99 && !_stressed_out){
-            Debug.Log("Maximum level of stress reached!");
-            _stressed_out = true;
-            ApplyStressVision();
-            
+        // Stress vision
+        if (_stress > 49 && _stress < 101 && !apply_stress){
+            apply_stress = true;
+            _postProcessingController.EnableAllOverrides();
         }
-
-        // Disable stress vision
-        if (_stress < 100 && _stressed_out){
-            _stressed_out = false;
-            DisableStressVision();
+        if (_stress <= 49 && apply_stress && apply_stress){
+            apply_stress = false;
+            _postProcessingController.DisableAllOverrides();
+        }
+        if (apply_stress){
+            _postProcessingController.UpdateStressVision(_stress - 50);
         }
 
         // Game Over       
@@ -161,17 +172,21 @@ public class GameDirector : NetworkBehaviour
         return list[(int)Random.Range(0, list.Count)];
     }
 
-    private void ApplyStressVision(){
-        _postProcessingController.EnableAllOverrides();
+
+    /*
+    private void GraduallyApplyStressVision(){
+        _postProcessingController.GraduallyIncrease(_stress);
+        // Need modify speed
         Player.Instance.walkSpeed = 1f;
         Player.Instance.runSpeed = 1f;
         Player.Instance.acceleration = 1f;
     }
 
-    private void DisableStressVision(){
-        _postProcessingController.DisableAllOverrides();
+    private void GraduallyDisableStressVision(){
+        _postProcessingController.DisableAllOverridesGradually();
         Player.Instance.walkSpeed = 6f;
         Player.Instance.runSpeed = 6f;
         Player.Instance.acceleration = 10f;
     }
+    */
 }
