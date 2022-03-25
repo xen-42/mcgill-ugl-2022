@@ -46,6 +46,7 @@ public class SteamLobby : MonoBehaviour
         }
         catch (Exception e)
         {
+            EventManager<string>.TriggerEvent("ConnectionFailed", e.Message);
             Debug.LogError(e.Message);
             return false;
         }
@@ -55,7 +56,9 @@ public class SteamLobby : MonoBehaviour
     {
         if (callback.m_eResult != EResult.k_EResultOK)
         {
-            Debug.Log($"Failed to create lobby [{callback.m_ulSteamIDLobby}] reason: [{callback.m_eResult}]");
+            var errorMsg = $"Failed to create lobby [{callback.m_ulSteamIDLobby}] reason: [{callback.m_eResult}]";
+            EventManager<string>.TriggerEvent("ConnectionFailed", errorMsg);
+            Debug.Log(errorMsg);
             return;
         }
 
@@ -88,6 +91,14 @@ public class SteamLobby : MonoBehaviour
                 new CSteamID(callback.m_ulSteamIDLobby),
                 HostAddressKey
             );
+
+            if(string.IsNullOrWhiteSpace(_networkManager.networkAddress))
+            {
+                var errorMsg = $"Couldn't connect to [{callback.m_ulSteamIDLobby}]";
+                Debug.Log(errorMsg);
+                EventManager<string>.TriggerEvent("ConnectionFailed", errorMsg);
+                return;
+            }
 
             _networkManager.StartClient();
         }

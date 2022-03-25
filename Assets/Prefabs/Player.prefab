@@ -188,8 +188,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4481484669556140802}
-  - component: {fileID: 3559687938595580754}
-  - component: {fileID: 5716448233291446830}
+  - component: {fileID: 2931020107092680412}
+  - component: {fileID: 4377236395824360433}
   m_Layer: 0
   m_Name: PlayerCamera
   m_TagString: Untagged
@@ -214,7 +214,7 @@ Transform:
   m_Father: {fileID: 4481484670218387112}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!20 &3559687938595580754
+--- !u!20 &2931020107092680412
 Camera:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -237,7 +237,7 @@ Camera:
     y: 0
     width: 1
     height: 1
-  near clip plane: 0.1
+  near clip plane: 0.3
   far clip plane: 1000
   field of view: 60
   orthographic: 0
@@ -257,7 +257,7 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!114 &5716448233291446830
+--- !u!114 &4377236395824360433
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -277,7 +277,7 @@ MonoBehaviour:
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
-    m_Bits: 1
+    m_Bits: 255
   m_VolumeTrigger: {fileID: 0}
   m_VolumeFrameworkUpdateModeOption: 2
   m_RenderPostProcessing: 1
@@ -350,7 +350,7 @@ Transform:
   m_GameObject: {fileID: 4481484670218387116}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 13.8, y: 9.29, z: -7.86}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.5, y: 1.5, z: 1.5}
   m_Children:
   - {fileID: 4481484669479351751}
   - {fileID: 4481484669556140802}
@@ -466,12 +466,9 @@ MonoBehaviour:
   orientation: {fileID: 4481484670693502594}
   moveSpeed: 10
   airMultiplier: 0.4
-  groundMask:
-    serializedVersion: 2
-    m_Bits: 64
   groundCheck: {fileID: 4481484669680942855}
   jumpForce: 5
-  cam: {fileID: 3559687938595580754}
+  cam: {fileID: 2931020107092680412}
   fastfov: 110
   fov: 90
   fovaccel: 5
@@ -484,6 +481,7 @@ MonoBehaviour:
   heldItemTranslationResponsiveness: 20
   heldItemRotationResponsiveness: 10
   heldObject: {fileID: 0}
+  stressModifier: 0
 --- !u!1 &4481484670693502597
 GameObject:
   m_ObjectHideFlags: 0

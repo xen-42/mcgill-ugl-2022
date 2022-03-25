@@ -132,6 +132,20 @@ public class LobbyPlayer : NetworkBehaviour
         startGameButton.interactable = readyToStart;
     }
 
+    public void OnBackButtonPressed()
+    {
+        if(isLeader)
+        {
+            CustomNetworkManager.Instance.StopHost();
+        }
+        else
+        {
+            CustomNetworkManager.Instance.StopClient();
+        }
+        EventManager<string>.TriggerEvent("ConnectionFailed", "Disconnected");
+        Destroy(gameObject);
+    }
+
     #region Commands
 
     [Command]

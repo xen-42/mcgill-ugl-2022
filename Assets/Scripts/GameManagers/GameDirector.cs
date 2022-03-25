@@ -62,7 +62,7 @@ public class GameDirector : NetworkBehaviour
 
         _stressed_out = false;
         _postProcessingController = GameObject.Find("GlobalVolume").GetComponent<PostProcessingController>();
-        
+
         _postProcessingController.DisableAllOverrides();
         apply_stress = false;
     }
@@ -90,7 +90,8 @@ public class GameDirector : NetworkBehaviour
             _stress = Mathf.Lerp(_stress, targetStressValue, timeElapsed / _stressDecreasingTime);
             HUD.Instance.SetStressValue(_stress);
 
-            if (_stress > 49){
+            if (_stress > 49)
+            {
                 _postProcessingController.UpdateStressVision(_stress - 50);
             }
 
@@ -134,10 +135,12 @@ public class GameDirector : NetworkBehaviour
 
         if (!_isStressDecreasing)
         {
-            if (_stress > 10){
+            if (_stress > 10)
+            {
                 _stress += stressPerSecond * Mathf.Pow(_numDistractions, stressExponent) * Time.deltaTime * 0.5f;
             }
-            else {
+            else
+            {
                 _stress += stressPerSecond * Mathf.Pow(_numDistractions, stressExponent) * Time.deltaTime;
             }
         }
@@ -147,12 +150,14 @@ public class GameDirector : NetworkBehaviour
 
         // Stress vision -----------------------------------
         // Enable stress vision
-        if (_stress > 49 && _stress < 101 && !apply_stress){
+        if (_stress > 49 && _stress < 101 && !apply_stress)
+		{
             apply_stress = true;
             _postProcessingController.EnableAllOverrides();
         }
         // Disable stress vision
-        if (_stress <= 49 && apply_stress){
+        if (_stress <= 49 && apply_stress)
+        {
             apply_stress = false;
             _postProcessingController.DisableAllOverrides();
             Player.Instance.moveSpeed = 6f;
@@ -161,18 +166,14 @@ public class GameDirector : NetworkBehaviour
             Player.Instance.acceleration = 10f;
         }
         // Apply modifications
-        if (apply_stress){
+        if (apply_stress)
+        {
             float temp_stress = _stress - 50;
             _postProcessingController.UpdateStressVision(temp_stress);
-            if (_stress != 100){
-                Player.Instance.moveSpeed = 6f - 0.1f * temp_stress;
-                Player.Instance.walkSpeed = 4f - 0.06f * temp_stress;
-                Player.Instance.runSpeed = 6f - 0.1f * temp_stress;
-                Player.Instance.acceleration = 10f - 0.18f * temp_stress;
-            }
-            //Debug.Log("Player.Instance.walkSpeed: " + Player.Instance.walkSpeed);
         }
         
+
+        Player.Instance.stressModifier = Mathf.Clamp((_stress - 50f) / 50f, 0, 1);
 
         // Game Over       
         if (!_gameOver && timeLimit == _countdown)
