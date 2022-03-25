@@ -53,9 +53,13 @@ public class MinigameManager : MonoBehaviour
         }
 
         // If the player moves away from the minigame, the minigame stops and the player has to start from the beginning
-        if (Mathf.Abs(Player.Instance.transform.position.x - start_pos.x) >= 1 
-        || Mathf.Abs(Player.Instance.transform.position.z - start_pos.z) >= 1){
-            _currentMinigame.MovedAway();
+        if(_currentMinigame != null)
+        {
+            if (Mathf.Abs(Player.Instance.transform.position.x - start_pos.x) >= 1
+                || Mathf.Abs(Player.Instance.transform.position.z - start_pos.z) >= 1)
+            {
+                _currentMinigame.MovedAway();
+            }
         }
     }
 }

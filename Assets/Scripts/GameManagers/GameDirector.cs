@@ -170,7 +170,7 @@ public class GameDirector : NetworkBehaviour
                 Player.Instance.runSpeed = 6f - 0.1f * temp_stress;
                 Player.Instance.acceleration = 10f - 0.18f * temp_stress;
             }
-            Debug.Log("Player.Instance.walkSpeed: " + Player.Instance.walkSpeed);
+            //Debug.Log("Player.Instance.walkSpeed: " + Player.Instance.walkSpeed);
         }
         
 

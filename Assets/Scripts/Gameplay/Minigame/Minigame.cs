@@ -23,7 +23,7 @@ public class Minigame : MonoBehaviour
         InputManager.CurrentInputMode = InputManager.InputMode.Player;
 
         // Once a minigame is completed we just dispose of it
-        Destroy(gameObject);
+        if (gameObject != null) Destroy(gameObject);
     }
 
     public void MovedAway(){
@@ -31,6 +31,6 @@ public class Minigame : MonoBehaviour
         InputManager.CurrentInputMode = InputManager.InputMode.Player;
 
         // Once a minigame is completed we just dispose of it
-        Destroy(gameObject);
+        if(gameObject != null) Destroy(gameObject);
     }
 }

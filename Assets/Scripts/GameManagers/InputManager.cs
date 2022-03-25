@@ -76,7 +76,10 @@ public static class InputManager
         {
             Debug.Log($"Changing InputMode to {value}");
             _currentInputMode = value;
-            if (_currentInputMode == InputMode.Player) Cursor.lockState = CursorLockMode.Locked;
+            if (_currentInputMode == InputMode.Player)
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+            }
             else
             {
                 Cursor.lockState = CursorLockMode.None;
