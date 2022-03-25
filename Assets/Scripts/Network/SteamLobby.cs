@@ -55,6 +55,7 @@ public class SteamLobby : MonoBehaviour
     {
         if (callback.m_eResult != EResult.k_EResultOK)
         {
+            Debug.Log($"Failed to create lobby [{callback.m_ulSteamIDLobby}] reason: [{callback.m_eResult}]");
             return;
         }
 
@@ -71,14 +72,14 @@ public class SteamLobby : MonoBehaviour
 
     private void OnGameLobbyJoinRequested(GameLobbyJoinRequested_t callback)
     {
-        Debug.Log("Request to join lobby");
+        Debug.Log($"Request to join lobby [{callback.m_steamIDLobby}]");
 
         SteamMatchmaking.JoinLobby(callback.m_steamIDLobby);
     }
 
     private void OnLobbyEnter(LobbyEnter_t callback)
     {
-        Debug.Log($"Joining lobby {callback.m_ulSteamIDLobby}");
+        Debug.Log($"Joining lobby [{callback.m_ulSteamIDLobby}]");
 
         // We're a client trying to join
         if (!NetworkServer.active)

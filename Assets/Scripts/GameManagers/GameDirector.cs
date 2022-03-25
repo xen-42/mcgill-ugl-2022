@@ -151,7 +151,7 @@ public class GameDirector : NetworkBehaviour
         // Stress vision -----------------------------------
         // Enable stress vision
         if (_stress > 49 && _stress < 101 && !apply_stress)
-        {
+		{
             apply_stress = true;
             _postProcessingController.EnableAllOverrides();
         }
@@ -160,6 +160,10 @@ public class GameDirector : NetworkBehaviour
         {
             apply_stress = false;
             _postProcessingController.DisableAllOverrides();
+            Player.Instance.moveSpeed = 6f;
+            Player.Instance.walkSpeed = 4f;
+            Player.Instance.runSpeed = 6f;
+            Player.Instance.acceleration = 10f;
         }
         // Apply modifications
         if (apply_stress)
@@ -167,6 +171,7 @@ public class GameDirector : NetworkBehaviour
             float temp_stress = _stress - 50;
             _postProcessingController.UpdateStressVision(temp_stress);
         }
+        
 
         Player.Instance.stressModifier = Mathf.Clamp((_stress - 50f) / 50f, 0, 1);
 
@@ -183,22 +188,4 @@ public class GameDirector : NetworkBehaviour
         if (list.Count == 0) return default;
         return list[(int)Random.Range(0, list.Count)];
     }
-
-
-    /*
-    private void GraduallyApplyStressVision(){
-        _postProcessingController.GraduallyIncrease(_stress);
-        // Need modify speed
-        Player.Instance.walkSpeed = 1f;
-        Player.Instance.runSpeed = 1f;
-        Player.Instance.acceleration = 1f;
-    }
-
-    private void GraduallyDisableStressVision(){
-        _postProcessingController.DisableAllOverridesGradually();
-        Player.Instance.walkSpeed = 6f;
-        Player.Instance.runSpeed = 6f;
-        Player.Instance.acceleration = 10f;
-    }
-    */
 }

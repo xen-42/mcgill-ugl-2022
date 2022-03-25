@@ -11,6 +11,7 @@ public class MinigameInteractable : Interactable
 
     [SerializeField]
     public UnityEvent OnCompleteMinigame;
+    public UnityEvent OnMoveAway;
 
     protected override InputCommand InputCommand { get => InputCommand.Interact; }
 
@@ -23,6 +24,7 @@ public class MinigameInteractable : Interactable
             MinigameManager.Instance.StartMinigame(MinigamePrefab, out var minigame);
             minigame.OnCompleteMinigame.AddListener(() => OnCompleteMinigame.Invoke());
             minigame.OnCompleteMinigame.AddListener(() => IsInteractable = true);
+            minigame.OnMoveAway.AddListener(() => OnMoveAway.Invoke());
             if (requiredObject != Holdable.Type.NONE)
             {
                 // Should never be null but could be a bug and it'll hang the player
