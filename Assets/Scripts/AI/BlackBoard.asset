@@ -15,6 +15,11 @@ MonoBehaviour:
   IntegerParams:
   - name: Energy
     initValue: 20
-  FloatParams: []
+  FloatParams:
+  - name: spawnTimeElapsed
+    initValue: 0
   BoolParams: []
-  TriggerParams: []
+  TriggerParams:
+  - name: OnPet
+    initValue:
+      isTriggered: 0

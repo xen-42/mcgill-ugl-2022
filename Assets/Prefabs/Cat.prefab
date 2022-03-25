@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 4946464366587674623}
   - component: {fileID: 4946464366587674616}
   - component: {fileID: 4946464366587674617}
+  - component: {fileID: 8361776269145333365}
   - component: {fileID: 4946464366587674598}
   - component: {fileID: 4946464366587674621}
   - component: {fileID: 4946464366587674622}
@@ -118,7 +119,7 @@ MonoBehaviour:
   mode: 2
   m_executionTimeStep: 0.2
   m_initialState: {fileID: 4946464366587674616}
-  m_globalState: {fileID: 0}
+  m_globalState: {fileID: 8361776269145333365}
 --- !u!114 &4946464366587674616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -167,6 +168,21 @@ MonoBehaviour:
     floatConditions: []
     boolConditions: []
     triggerConditions: []
+--- !u!114 &8361776269145333365
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4946464366587674599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 11f9de6a8c882234daef74c64e007df3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isActive: 1
+  m_stateMachine: {fileID: 4946464366587674623}
+  m_transitions: []
 --- !u!114 &4946464366587674598
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -182,6 +198,12 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   energy: 5
+  m_maxSpeed: 2
+  m_speedLerpFactor: 0.5
+  m_energyIncreasingAmount: 3
+  m_sockPrefab: {fileID: 3873952053484179079, guid: a810a4fe580364b46b0f341680ba9ca1, type: 3}
+  m_spawnRadius: 3
+  m_spawnProbility: 0.08
 --- !u!114 &4946464366587674621
 MonoBehaviour:
   m_ObjectHideFlags: 0

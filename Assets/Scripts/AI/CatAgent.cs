@@ -29,20 +29,20 @@ public class CatAgent : NetworkBehaviour
 
     [Header("Cat Sitting State Params")]
     [SerializeField] private int m_energyIncreasingAmount = 3;
-    private Rigidbody rb;
-    private Collider collider;
 
     private bool m_arrivedCurrentPath;
     private bool m_reachedMaxSpeed;
+
+    [Header("Cat Spawning Socks Params")]
+    [SerializeField] private GameObject m_sockPrefab;
+    [SerializeField] private float m_spawnRadius = 3f;
+    [SerializeField] [Range(0, 1)] private float m_spawnProbility = .1f;
 
     private void Awake()
     {
         NMAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         m_fsm = GetComponent<FSM>();
         m_manager = BlackboardManager.Instance;
-
-        rb = GetComponent<Rigidbody>();
-        collider = GetComponent<Collider>();
 
         destination = this.transform.position;
     }
@@ -128,5 +128,15 @@ public class CatAgent : NetworkBehaviour
         UnityEngine.AI.NavMeshHit hit;
         UnityEngine.AI.NavMesh.SamplePosition(random_dir, out hit, walk_radius, 1);
         NMAgent.destination = hit.position;
+    }
+
+    public void SpawnSock()
+    {
+        if (Random.Range(0, 1f) > m_spawnProbility)
+            return;
+
+        Vector2 spawnOffset = Random.insideUnitCircle * m_spawnRadius;
+        Vector3 spawnPos = transform.position + new Vector3(spawnOffset.x, 0, spawnOffset.y);
+        NetworkServer.Spawn(Instantiate(m_sockPrefab, spawnPos, m_sockPrefab.transform.rotation));
     }
 }
