@@ -25,7 +25,6 @@ public abstract class Interactable : NetworkBehaviour
     public PromptInfo NonInteractablePrompt { get; set; }
     private PromptInfo _lastPrompt;
 
-
     [SyncVar] private bool _isInteractable = true;
 
     public bool HasFocus { get; private set; }
@@ -68,7 +67,7 @@ public abstract class Interactable : NetworkBehaviour
     {
         if (HasFocus) return;
 
-        if(!_isInteractable) 
+        if (!_isInteractable)
         {
             EventManager<PromptInfo>.TriggerEvent("PromptHit", NonInteractablePrompt);
             _lastPrompt = NonInteractablePrompt;
@@ -82,7 +81,7 @@ public abstract class Interactable : NetworkBehaviour
         {
             EventManager<PromptInfo>.TriggerEvent("PromptHit", InteractablePrompt);
             _lastPrompt = InteractablePrompt;
-        }              
+        }
 
         HasFocus = true;
     }
@@ -117,7 +116,6 @@ public abstract class Interactable : NetworkBehaviour
         }
     }
 
-
     [Command]
     private void CmdSetInteractable(bool value)
     {
@@ -130,7 +128,7 @@ public abstract class Interactable : NetworkBehaviour
         if (_isInteractable == value) return;
         _isInteractable = value;
 
-        if(HasFocus)
+        if (HasFocus)
         {
             // Remove old prompt
             EventManager<PromptInfo>.TriggerEvent("PromptLost", _lastPrompt);

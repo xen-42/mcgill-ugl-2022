@@ -75,10 +75,10 @@ public class GameDirector : NetworkBehaviour
 
     public void LowerStressGradually(float change)
     {
-        //StartCoroutine(nameof(StressDecreasing), change);
+        StartCoroutine(nameof(StressDecreasing), change);
     }
 
-    private IEnumerable StressDecreasing(float change)
+    private IEnumerator StressDecreasing(float change)
     {
         float timeElapsed = 0f;
         float targetStressValue = Mathf.Max(_stress - change, 0f);
@@ -151,7 +151,7 @@ public class GameDirector : NetworkBehaviour
         // Stress vision -----------------------------------
         // Enable stress vision
         if (_stress > 49 && _stress < 101 && !apply_stress)
-		{
+        {
             apply_stress = true;
             _postProcessingController.EnableAllOverrides();
         }
@@ -171,11 +171,10 @@ public class GameDirector : NetworkBehaviour
             float temp_stress = _stress - 50;
             _postProcessingController.UpdateStressVision(temp_stress);
         }
-        
 
         Player.Instance.stressModifier = Mathf.Clamp((_stress - 50f) / 50f, 0, 1);
 
-        // Game Over       
+        // Game Over
         if (!_gameOver && timeLimit == _countdown)
         {
             _gameOver = true;

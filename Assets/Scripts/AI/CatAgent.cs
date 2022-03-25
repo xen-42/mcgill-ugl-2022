@@ -10,6 +10,8 @@ public class CatAgent : NetworkBehaviour
     //Caches
     private FSM m_fsm;
     private BlackboardManager m_manager;
+    private CatInteractable m_petInteract;
+    private MeshRenderer m_renderer;
 
     [SerializeField] private int energy;
 
@@ -43,15 +45,18 @@ public class CatAgent : NetworkBehaviour
     [SerializeField] private Color m_petColor;
 
     [Tooltip("When the cat turns around to face you")]
-    [SerializeField] private float m_petTurningAroundSpeed;
+    [SerializeField] private float m_petTurningAroundSlerpFactor;
 
     private Color m_normalColor;
+    private Player m_petter;
 
     private void Awake()
     {
         NMAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         m_fsm = GetComponent<FSM>();
         m_manager = BlackboardManager.Instance;
+        m_petInteract = GetComponent<CatInteractable>();
+        m_renderer = GetComponent<MeshRenderer>();
 
         destination = this.transform.position;
     }
@@ -71,6 +76,12 @@ public class CatAgent : NetworkBehaviour
     private void FixedUpdate()
     {
         m_manager.SetInteger("Energy", energy);
+    }
+
+    public void OnUpdatePetStatus(Player pPetter)
+    {
+        m_petter = pPetter;
+        m_manager.SetTrigger("OnPet");
     }
 
     // Called when we first enter the 'Walking' state
@@ -151,13 +162,17 @@ public class CatAgent : NetworkBehaviour
 
     public void EnterPet()
     {
+        m_normalColor = m_renderer.material.color;
     }
 
     public void Pet()
     {
+        transform.forward = Vector3.Slerp(transform.forward, m_petter.transform.position - transform.position, m_petTurningAroundSlerpFactor);
     }
 
     public void ExitPet()
     {
+        m_petter = null;
+        m_renderer.material.color = m_normalColor;
     }
 }

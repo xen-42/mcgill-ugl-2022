@@ -204,6 +204,7 @@ MonoBehaviour:
     floatConditions: []
     boolConditions: []
     triggerConditions: []
+  m_exitTime: 7
 --- !u!114 &8361776269145333365
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -241,7 +242,7 @@ MonoBehaviour:
   m_spawnRadius: 3
   m_spawnProbility: 0.08
   m_petColor: {r: 0, g: 0, b: 0, a: 0}
-  m_petTurningAroundSpeed: 0
+  m_petTurningAroundSlerpFactor: 0.3
 --- !u!114 &4946464366587674621
 MonoBehaviour:
   m_ObjectHideFlags: 0

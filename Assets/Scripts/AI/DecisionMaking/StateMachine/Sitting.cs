@@ -5,7 +5,7 @@ using DecisionMaking.StateMachine;
 
 public class Sitting : FSMStateBehaviour
 {
-    private CatAgent cat;
+    protected CatAgent cat;
 
     protected override void Enter()
     {

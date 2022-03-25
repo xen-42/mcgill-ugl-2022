@@ -32,6 +32,15 @@ namespace DecisionMaking.StateMachine
 
         #endregion Caches
 
+        public float TimeElapsed
+            => mode switch
+            {
+                UpdateMode.FixedUpdate => Time.fixedDeltaTime,
+                UpdateMode.TimeStep => m_executionTimeStep,
+                UpdateMode.Update => Time.deltaTime,
+                _ => throw new System.NotImplementedException(),
+            };
+
         protected bool m_isRunning;
         public bool IsRunning => m_isRunning;
 

@@ -1,4 +1,5 @@
 using Mirror;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,17 +12,30 @@ public class CatInteractable : Interactable
     [SerializeField] public int StressReduction = 20;
 
     [SyncVar] private float _cooldown;
-
     protected override InputCommand InputCommand { get => InputCommand.Interact; }
 
-    void Start()
+    #region Caches
+
+    private CatAgent m_cat;
+
+    #endregion Caches
+
+    private void Awake()
+    {
+        m_cat = GetComponent<CatAgent>();
+    }
+
+    private void Start()
     {
         _unityEvent.AddListener(OnPet);
     }
 
     public void OnPet()
     {
+        print("Why not call");
         GameDirector.Instance.LowerStressImmediate(StressReduction);
+        m_cat.OnUpdatePetStatus(Player.Instance);
+
         IsInteractable = false;
         if (isServer)
         {
