@@ -1,18 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DecisionMaking.StateMachine;
 
-public class Petting : MonoBehaviour
+/// <summary>
+/// <para>The cat will slowdown to sit, turn around to the player, and change its color</para>
+/// while being pet, the cat wont spawn any socks
+/// </summary>
+public class Petting : Sitting
 {
-    // Start is called before the first frame update
-    void Start()
+    protected override void Enter()
     {
-        
+        base.Enter();
     }
 
-    // Update is called once per frame
-    void Update()
+    protected override void Execute()
     {
-        
+        base.Execute();
+    }
+
+    protected override void Exit()
+    {
+        base.Exit();
     }
 }

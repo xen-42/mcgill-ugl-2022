@@ -38,6 +38,15 @@ public class CatAgent : NetworkBehaviour
     [SerializeField] private float m_spawnRadius = 3f;
     [SerializeField] [Range(0, 1)] private float m_spawnProbility = .1f;
 
+    [Header("Cat Petting Params")]
+    [Tooltip("When the cat  is being pet, the rendering color will be changed.")]
+    [SerializeField] private Color m_petColor;
+
+    [Tooltip("When the cat turns around to face you")]
+    [SerializeField] private float m_petTurningAroundSpeed;
+
+    private Color m_normalColor;
+
     private void Awake()
     {
         NMAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
@@ -138,5 +147,17 @@ public class CatAgent : NetworkBehaviour
         Vector2 spawnOffset = Random.insideUnitCircle * m_spawnRadius;
         Vector3 spawnPos = transform.position + new Vector3(spawnOffset.x, 0, spawnOffset.y);
         NetworkServer.Spawn(Instantiate(m_sockPrefab, spawnPos, m_sockPrefab.transform.rotation));
+    }
+
+    public void EnterPet()
+    {
+    }
+
+    public void Pet()
+    {
+    }
+
+    public void ExitPet()
+    {
     }
 }
