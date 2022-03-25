@@ -7,6 +7,7 @@ public class MinigameManager : MonoBehaviour
     public static MinigameManager Instance { get; private set; }
 
     private Minigame _currentMinigame;
+    private Vector3 start_pos;
 
     private void Awake()
     {
@@ -23,6 +24,7 @@ public class MinigameManager : MonoBehaviour
         // Dividing by 10 because when testing minigames the camera defaults to being at that distance
         newMinigame.transform.localScale = Vector3.one * z / 10f;
 
+        start_pos = Player.Instance.transform.position;
         _currentMinigame = newMinigame.GetComponent<Minigame>();
         returnMinigame = _currentMinigame;
     }
@@ -47,6 +49,16 @@ public class MinigameManager : MonoBehaviour
             {
                 if (_currentMinigame != null) StopMinigame();
                 InputManager.CurrentInputMode = InputManager.InputMode.Player;
+            }
+        }
+
+        // If the player moves away from the minigame, the minigame stops and the player has to start from the beginning
+        if(_currentMinigame != null)
+        {
+            if (Mathf.Abs(Player.Instance.transform.position.x - start_pos.x) >= 1
+                || Mathf.Abs(Player.Instance.transform.position.z - start_pos.z) >= 1)
+            {
+                _currentMinigame.MovedAway();
             }
         }
     }
