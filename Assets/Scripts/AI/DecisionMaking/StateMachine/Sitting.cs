@@ -6,10 +6,13 @@ using DecisionMaking.StateMachine;
 public class Sitting : FSMStateBehaviour
 {
     private CatAgent cat;
+
     protected override void Enter()
     {
         print("Entered: Sitting");
         cat = GameObject.Find("Cat").GetComponent<CatAgent>();
+
+        cat.EnterSit();
     }
 
     protected override void Execute()

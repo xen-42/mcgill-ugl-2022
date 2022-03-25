@@ -23,12 +23,21 @@ public class CatAgent : NetworkBehaviour
     private UnityEngine.AI.NavMeshPath path;
     private float elapsed = 0.0f;
 
-    // Cat's components
+    [Header("Cat Moving Speed Params")]
+    [SerializeField] private float m_maxSpeed = 2f;
+    [SerializeField] private float m_speedLerpFactor = .5f;
+
+    [Header("Cat Sitting State Params")]
+    [SerializeField] private int m_energyIncreasingAmount = 3;
     private Rigidbody rb;
     private Collider collider;
 
+    private bool m_arrivedCurrentPath;
+    private bool m_reachedMaxSpeed;
+
     private void Awake()
     {
+        NMAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         m_fsm = GetComponent<FSM>();
         m_manager = BlackboardManager.Instance;
 
@@ -44,7 +53,7 @@ public class CatAgent : NetworkBehaviour
         m_fsm.TurnOn();
 
         energy = 5;
-        NMAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+
         //path = new UnityEngine.AI.NavMeshPath();
         destination = new Vector3(10f, 1.77f, -4f);
         //elapsed = 0.0f;
@@ -61,7 +70,10 @@ public class CatAgent : NetworkBehaviour
         //transform.position += new Vector3(0,0,0.5f) * Time.deltaTime * speed;
 
         NMAgent.enabled = true;
-        NMAgent.speed = 2;
+        m_reachedMaxSpeed = false;
+        m_arrivedCurrentPath = false;
+
+        //NMAgent.speed = 2;
 
         PickRandomPos();
         print(NMAgent.destination);
@@ -75,26 +87,37 @@ public class CatAgent : NetworkBehaviour
         }*/
     }
 
+    public void EnterSit()
+    {
+        //NMAgent.enabled = false;
+    }
+
     public void Walk()
     {
         energy -= 2;
+
+        m_arrivedCurrentPath = NMAgent.remainingDistance <= NMAgent.stoppingDistance;
+        m_reachedMaxSpeed = (m_maxSpeed - NMAgent.speed) <= float.Epsilon;
+        if (!m_reachedMaxSpeed && !m_arrivedCurrentPath)
+        {
+            NMAgent.speed = Mathf.Lerp(NMAgent.speed, m_maxSpeed, m_speedLerpFactor);
+        }
 
         // Reached destination, needs to find new one
         if (NMAgent.remainingDistance <= NMAgent.stoppingDistance)
         {
             if (!NMAgent.hasPath || NMAgent.velocity.sqrMagnitude == 0f)
             {
+                print("This is actually been called");
                 PickRandomPos();
             }
         }
-
     }
 
     public void Sit()
     {
-        energy += 10;
-
-        //NMAgent.speed = 0;
+        energy += m_energyIncreasingAmount;
+        NMAgent.speed = Mathf.Lerp(NMAgent.speed, 0f, m_speedLerpFactor);
     }
 
     public void PickRandomPos()
