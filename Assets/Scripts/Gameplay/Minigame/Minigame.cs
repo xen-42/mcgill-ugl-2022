@@ -6,6 +6,7 @@ using UnityEngine.Events;
 public class Minigame : MonoBehaviour
 {
     public UnityEvent OnCompleteMinigame = new UnityEvent();
+    public UnityEvent OnMoveAway = new UnityEvent();
 
     public void Start()
     {
@@ -19,6 +20,14 @@ public class Minigame : MonoBehaviour
         EventManager.TriggerEvent("MinigameComplete");
         OnCompleteMinigame.Invoke();
 
+        InputManager.CurrentInputMode = InputManager.InputMode.Player;
+
+        // Once a minigame is completed we just dispose of it
+        Destroy(gameObject);
+    }
+
+    public void MovedAway(){
+        OnMoveAway.Invoke();
         InputManager.CurrentInputMode = InputManager.InputMode.Player;
 
         // Once a minigame is completed we just dispose of it
