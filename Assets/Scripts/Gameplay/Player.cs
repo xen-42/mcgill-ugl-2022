@@ -10,19 +10,16 @@ public class Player : NetworkBehaviour
 {
     [Header("Movement")]
     [SerializeField] Transform orientation;
-    public float moveSpeed = 6f;
+    [SerializeField] public float moveSpeed = 6f;
 
     [Header("Drag")]
     float rbDrag = 6f;
     float airDrag = 2f;
-    float horizontalMovement;
-    float verticalMovement;
     float movementMultiplier = 10f;
     [SerializeField] float airMultiplier = 0.4f;
     float playerHeight = 2f;
 
     [Header("Ground Detection")]
-    [SerializeField] LayerMask groundMask;
     [SerializeField] Transform groundCheck;
     float groundDistance = 0.4f;
     bool isGrounded;
@@ -56,10 +53,13 @@ public class Player : NetworkBehaviour
     private GameObject _focusedObject;
     public Holdable heldObject;
 
+    public float stressModifier;
+
     // Synced network stuff
     [SyncVar] private Vector3 _movement;
     [SyncVar] private bool _jump;
     [SyncVar] private bool _sprint;
+    [SyncVar] private float _serverSideStressModifier;
 
     public static Player Instance { get; private set; }
 
@@ -99,7 +99,7 @@ public class Player : NetworkBehaviour
 
     private void Update()
     {
-        if(hasAuthority)
+        if (hasAuthority)
         {
             CheckInputs();
         }
@@ -149,7 +149,7 @@ public class Player : NetworkBehaviour
         xRotation -= lookVector.y * sensY * multiplier;
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
-        CmdSendInputs(movement, jump, sprint, xRotation, yRotation);
+        CmdSendInputs(movement, jump, sprint, xRotation, yRotation, stressModifier);
 
         // Raycast for object interaction / pickup
 
@@ -190,6 +190,8 @@ public class Player : NetworkBehaviour
     {
         if (!isServer) return;
 
+        var actualMoveSpeed = Mathf.Lerp(moveSpeed, 1, _serverSideStressModifier * _serverSideStressModifier);
+
         isGrounded = Physics.Raycast(groundCheck.position, -Vector3.up, groundDistance + 0.1f);
         PlayerDrag();
         ControlSpeed();
@@ -205,16 +207,16 @@ public class Player : NetworkBehaviour
 
         if (isGrounded && !OnSlope())
         {
-            rb.AddForce(_movement.normalized * moveSpeed * movementMultiplier, ForceMode.Acceleration);
+            rb.AddForce(_movement.normalized * actualMoveSpeed * movementMultiplier, ForceMode.Acceleration);
         }
         else if (isGrounded && OnSlope())
         {
-            rb.AddForce(slopeMoveDirection.normalized * moveSpeed * movementMultiplier, ForceMode.Acceleration);
+            rb.AddForce(slopeMoveDirection.normalized * actualMoveSpeed * movementMultiplier, ForceMode.Acceleration);
 
         }
         else if (!isGrounded)
         {
-            rb.AddForce(_movement.normalized * moveSpeed * movementMultiplier * airMultiplier, ForceMode.Acceleration);
+            rb.AddForce(_movement.normalized * actualMoveSpeed * movementMultiplier * airMultiplier, ForceMode.Acceleration);
         }
     }
 
@@ -222,14 +224,19 @@ public class Player : NetworkBehaviour
     [Server]
     void ControlSpeed()
     {
+        var actualMoveSpeed = Mathf.Lerp(moveSpeed, 1, _serverSideStressModifier * _serverSideStressModifier);
+        var actualWalkSpeed = Mathf.Lerp(walkSpeed, 1, _serverSideStressModifier * _serverSideStressModifier);
+        var actualRunSpeed = Mathf.Lerp(runSpeed, 1, _serverSideStressModifier * _serverSideStressModifier);
+        var actualAcceleration = Mathf.Lerp(acceleration, 1, _serverSideStressModifier * _serverSideStressModifier);
+
         if (_sprint && isGrounded)
         {
-            moveSpeed = Mathf.Lerp(moveSpeed, runSpeed, acceleration * Time.deltaTime);
+            moveSpeed = Mathf.Lerp(actualMoveSpeed, actualRunSpeed, actualAcceleration * Time.deltaTime);
             cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, fastfov, fovaccel * Time.deltaTime);
         }
         else
         {
-            moveSpeed = Mathf.Lerp(moveSpeed, walkSpeed, acceleration * Time.deltaTime);
+            moveSpeed = Mathf.Lerp(actualMoveSpeed, actualWalkSpeed, actualAcceleration * Time.deltaTime);
             cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, fov, fovaccel * Time.deltaTime);
         }
     }
@@ -268,17 +275,18 @@ public class Player : NetworkBehaviour
 
     #region Commands and RPC
     [Command]
-    public void CmdSendInputs(Vector3 movement, bool jump, bool sprint, float xRot, float yRot)
+    public void CmdSendInputs(Vector3 movement, bool jump, bool sprint, float xRot, float yRot, float stress)
     {
-        RpcSendInputs(movement, jump, sprint, xRot, yRot);
+        RpcSendInputs(movement, jump, sprint, xRot, yRot, stress);
     }
 
     [ClientRpc]
-    private void RpcSendInputs(Vector3 movement, bool jump, bool sprint, float xRot, float yRot)
+    private void RpcSendInputs(Vector3 movement, bool jump, bool sprint, float xRot, float yRot, float stress)
     {
         _movement = movement;
         _jump = jump;
         _sprint = sprint;
+        _serverSideStressModifier = stress;
 
         cam.transform.localRotation = Quaternion.Euler(xRot, yRot, 0);
         orientation.transform.rotation = Quaternion.Euler(0, yRot, 0);
@@ -321,7 +329,7 @@ public class Player : NetworkBehaviour
                 identity.AssignClientAuthority(connectionToClient);
             }
         }
-        catch(Exception e)
+        catch (Exception e)
         {
             Debug.LogError($"{e.Message}: {e.StackTrace}");
         }
