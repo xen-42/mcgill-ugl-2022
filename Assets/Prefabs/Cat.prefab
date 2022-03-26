@@ -337,4 +337,4 @@ MonoBehaviour:
   _promptHoldTime: 0
   requiredObject: 0
   Cooldown: 10
-  StressReduction: 20
+  StressReduction: 50

@@ -64,11 +64,13 @@ public class CustomNetworkManager : NetworkManager
 
     public override void OnStartServer()
     {
+        Debug.Log("Starting server");
         base.OnStartServer();
     }
 
     public override void OnStopServer()
     {
+        Debug.Log("Stopping server");
         lobbyPlayers.Clear();
 
         base.OnStopServer();
@@ -76,7 +78,15 @@ public class CustomNetworkManager : NetworkManager
 
     public override void OnStartClient()
     {
+        Debug.Log("Starting client");
         base.OnStartClient();
+    }
+
+    public override void OnStopClient()
+    {
+        Debug.Log("Stopping client");
+        EventManager<string>.TriggerEvent("ConnectionFailed", "Disconnected");
+        base.OnStopClient();
     }
 
     public override void OnClientDisconnect()
@@ -116,11 +126,14 @@ public class CustomNetworkManager : NetworkManager
 
     public override void OnServerConnect(NetworkConnection conn)
     {
+        Debug.Log("Connecting to server");
+
         base.OnServerConnect(conn);
 
         // Limit the total number of players
         if (numPlayers >= maxConnections)
         {
+            EventManager<string>.TriggerEvent("ConnectionFailed", "Max connections exceeded.");
             conn.Disconnect();
             return;
         }
@@ -128,6 +141,7 @@ public class CustomNetworkManager : NetworkManager
         // Don't let players join in the middle of a match
         if (SceneManager.GetActiveScene().path != lobbyMenu)
         {
+            EventManager<string>.TriggerEvent("ConnectionFailed", "Cannot join on ongoing game.");
             conn.Disconnect();
             return;
         }
@@ -253,7 +267,6 @@ public class CustomNetworkManager : NetworkManager
             NetworkServer.Spawn(playerSpawnerInstance);
         }
     }
-
 
     public override void OnServerReady(NetworkConnection conn)
     {

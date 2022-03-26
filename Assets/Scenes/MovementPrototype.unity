@@ -3457,6 +3457,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 519424875}
     m_Modifications:
+    - target: {fileID: 1836625061, guid: ebbfb724032ae064c8ca8bbe267132af, type: 3}
+      propertyPath: sceneId
+      value: 1478379593
+      objectReference: {fileID: 0}
     - target: {fileID: 7454582958463281566, guid: ebbfb724032ae064c8ca8bbe267132af, type: 3}
       propertyPath: m_Name
       value: teapotSmooth (1)
@@ -5435,14 +5439,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Cat
       objectReference: {fileID: 0}
-    - target: {fileID: 4946464366587674599, guid: 179c14c7d094f45438965a4b6e805b7a, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4946464366587674599, guid: 179c14c7d094f45438965a4b6e805b7a, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4946464366587674618, guid: 179c14c7d094f45438965a4b6e805b7a, type: 3}
       propertyPath: m_RootOrder
       value: 5
@@ -5957,50 +5953,6 @@ Mesh:
     offset: 0
     size: 0
     path: 
---- !u!1 &1836625056 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7454582958463281566, guid: ebbfb724032ae064c8ca8bbe267132af, type: 3}
-  m_PrefabInstance: {fileID: 7760430470969521704}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1836625060
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1836625056}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0c687752fa5ece040932477cec03a329, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  _promptText: Drink tea
-  _promptTextNotInteractable: It's empty
-  _promptTextMissingItem: 
-  _promptPriority: 0
-  _promptHoldTime: 0
-  requiredObject: 0
-  Cooldown: 10
-  StressReduction: 20
---- !u!114 &1836625061
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1836625056}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneId: 124661500
-  serverOnly: 0
-  visible: 0
-  m_AssetId: ebbfb724032ae064c8ca8bbe267132af
-  hasSpawned: 0
 --- !u!65 &1844392305
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8989,7 +8941,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2571412278434311991, guid: f51d6069b5defb64db6e94f5093323dd, type: 3}
       propertyPath: m_RootOrder
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2571412278434311991, guid: f51d6069b5defb64db6e94f5093323dd, type: 3}
       propertyPath: m_LocalPosition.x
@@ -9409,17 +9361,13 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 519424875}
     m_Modifications:
+    - target: {fileID: 1836625061, guid: ebbfb724032ae064c8ca8bbe267132af, type: 3}
+      propertyPath: sceneId
+      value: 124661500
+      objectReference: {fileID: 0}
     - target: {fileID: 7454582958463281566, guid: ebbfb724032ae064c8ca8bbe267132af, type: 3}
       propertyPath: m_Name
       value: teapotSmooth
-      objectReference: {fileID: 0}
-    - target: {fileID: 7454582958463281566, guid: ebbfb724032ae064c8ca8bbe267132af, type: 3}
-      propertyPath: m_Layer
-      value: 6
-      objectReference: {fileID: 0}
-    - target: {fileID: 7454582958463281566, guid: ebbfb724032ae064c8ca8bbe267132af, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 7798034539100648228, guid: ebbfb724032ae064c8ca8bbe267132af, type: 3}
       propertyPath: m_RootOrder

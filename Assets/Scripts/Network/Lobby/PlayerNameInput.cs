@@ -1,11 +1,15 @@
+using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class PlayerNameInput : MonoBehaviour
 {
+    [Scene] [SerializeField] private string mainMenu = null;
+
     [Header("UI")]
     [SerializeField] private TMP_InputField nameInputField = null;
     [SerializeField] private Button continueButton = null;
@@ -47,5 +51,10 @@ public class PlayerNameInput : MonoBehaviour
         DisplayName = nameInputField.text;
 
         PlayerPrefs.SetString(PlayerPrefsNameKey, DisplayName);
+    }
+
+    public void ReturnToMainMenu()
+    {
+        SceneManager.LoadScene(mainMenu);
     }
 }

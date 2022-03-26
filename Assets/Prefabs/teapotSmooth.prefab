@@ -12,12 +12,14 @@ GameObject:
   - component: {fileID: 6600012668572875905}
   - component: {fileID: 8967515424804423755}
   - component: {fileID: 7760430470800762074}
-  m_Layer: 0
+  - component: {fileID: 1836625060}
+  - component: {fileID: 1836625061}
+  m_Layer: 6
   m_Name: teapotSmooth
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
+  m_StaticEditorFlags: 4294967295
   m_IsActive: 1
 --- !u!4 &7798034539100648228
 Transform:
@@ -26,13 +28,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7454582958463281566}
-  m_LocalRotation: {x: -0.7071068, y: 0, z: -0, w: 0.7071067}
+  m_LocalRotation: {x: -0.7069834, y: 0, z: 0, w: 0.7072302}
   m_LocalPosition: {x: 13.741, y: 2.695, z: -13.076002}
   m_LocalScale: {x: 20, y: 20, z: 20}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -89.98, y: 0, z: 0}
 --- !u!33 &6600012668572875905
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -95,3 +97,42 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 0.025157167, y: 0.021044398, z: 0.029608505}
   m_Center: {x: 0.000049304963, y: -0.0005473204, z: -0.0027900757}
+--- !u!114 &1836625060
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7454582958463281566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c687752fa5ece040932477cec03a329, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  _promptText: Drink tea
+  _promptTextNotInteractable: It's empty
+  _promptTextMissingItem: 
+  _promptPriority: 0
+  _promptHoldTime: 0
+  requiredObject: 0
+  Cooldown: 10
+  StressReduction: 50
+--- !u!114 &1836625061
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7454582958463281566}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  sceneId: 0
+  serverOnly: 0
+  visible: 0
+  m_AssetId: ebbfb724032ae064c8ca8bbe267132af
+  hasSpawned: 0

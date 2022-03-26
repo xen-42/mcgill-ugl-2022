@@ -1,10 +1,12 @@
-﻿using System;
+﻿using Mirror;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 namespace Assets.Scripts.UI.MenuScripts
@@ -13,6 +15,11 @@ namespace Assets.Scripts.UI.MenuScripts
     {
         [Header("UI")]
         [SerializeField] private GameObject landingPagePanel = null;
+        [SerializeField] private Text connectingText = null;
+
+        [Header("PopUp")]
+        [SerializeField] private GameObject popUp = null;
+        [SerializeField] private Text errorText = null;
 
         [Header("Steam")]
         [SerializeField] private TMP_InputField steamLobbyInputField = null;
@@ -27,12 +34,18 @@ namespace Assets.Scripts.UI.MenuScripts
         {
             CustomNetworkManager.OnClientConnected += HandleClientConnected;
             CustomNetworkManager.OnClientDisconnected += HandleClientDisconnected;
+
+            connectingText.enabled = false;
+
+            EventManager<string>.AddListener("ConnectionFailed", OnConnectionFailed);
         }
 
         private void OnDisable()
         {
             CustomNetworkManager.OnClientConnected -= HandleClientConnected;
             CustomNetworkManager.OnClientDisconnected -= HandleClientDisconnected;
+
+            EventManager<string>.RemoveListener("ConnectionFailed", OnConnectionFailed);
         }
 
         public void JoinSteamLobby()
@@ -51,6 +64,8 @@ namespace Assets.Scripts.UI.MenuScripts
             joinSteamButton.interactable = false;
             hostLocalButton.interactable = false;
             hostSteamButton.interactable = false;
+
+            connectingText.enabled = true;
         }
 
         public void OnSetSteamCode()
@@ -69,6 +84,8 @@ namespace Assets.Scripts.UI.MenuScripts
             joinSteamButton.interactable = false;
             hostLocalButton.interactable = false;
             hostSteamButton.interactable = false;
+
+            connectingText.enabled = true;
         }
 
         public void HostSteamLobby()
@@ -81,6 +98,8 @@ namespace Assets.Scripts.UI.MenuScripts
             joinSteamButton.interactable = false;
             hostLocalButton.interactable = false;
             hostSteamButton.interactable = false;
+
+            connectingText.enabled = true;
         }
 
         public void HostLocalLobby()
@@ -95,6 +114,8 @@ namespace Assets.Scripts.UI.MenuScripts
             joinSteamButton.interactable = false;
             hostLocalButton.interactable = false;
             hostSteamButton.interactable = false;
+
+            connectingText.enabled = true;
         }
 
         private void HandleClientConnected()
@@ -106,17 +127,35 @@ namespace Assets.Scripts.UI.MenuScripts
             hostSteamButton.interactable = true;
 
             landingPagePanel.SetActive(false);
+
+            connectingText.enabled = false;
         }
 
         private void HandleClientDisconnected()
         {
-            // This is so that if they fail to connect and go back to the lobby these buttons are re-enabled
+            OnConnectionFailed($"Connection failed.");
+        }
+
+        private void OnConnectionFailed(string errorMessage)
+        {
+            popUp.SetActive(true);
+            errorText.text = errorMessage;
+
+            // Just making sure it re-enables the UI
             joinLocalButton.interactable = true;
             joinSteamButton.interactable = true;
             hostLocalButton.interactable = true;
             hostSteamButton.interactable = true;
 
             landingPagePanel.SetActive(true);
+
+            connectingText.enabled = false;
+        }
+
+        public void OnBackButtonPressed()
+        {
+            // Just reload the scene
+            SceneManager.LoadScene(SceneManager.GetActiveScene().path);
         }
     }
 }
