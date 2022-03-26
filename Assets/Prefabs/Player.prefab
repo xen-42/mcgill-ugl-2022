@@ -467,7 +467,7 @@ MonoBehaviour:
   moveSpeed: 10
   airMultiplier: 0.4
   groundCheck: {fileID: 4481484669680942855}
-  jumpForce: 5
+  jumpForce: 5.6
   cam: {fileID: 2931020107092680412}
   fastfov: 110
   fov: 90
