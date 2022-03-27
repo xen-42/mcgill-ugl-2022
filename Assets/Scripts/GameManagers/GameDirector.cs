@@ -47,6 +47,8 @@ public class GameDirector : NetworkBehaviour
 
     private bool _gameOver;
 
+    [SerializeField] public string scanSound;
+
     private void Awake()
     {
         Instance = this;
@@ -110,6 +112,9 @@ public class GameDirector : NetworkBehaviour
 
     public void ScanAssignment()
     {
+        if (scanSound != null){
+            FindObjectOfType<AudioManager>().PlaySound(scanSound);
+        }
         NumAssignmentsScanned += 1;
     }
 

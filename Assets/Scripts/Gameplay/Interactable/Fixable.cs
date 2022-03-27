@@ -19,6 +19,9 @@ public class Fixable : NetworkBehaviour
 
     private Interactable _interactable;
 
+    [SerializeField] public string brokenStateSound;
+    [SerializeField] public string fixedStateSound;
+
     private void Awake()
     {
         _fixedName = fixedState.name;
@@ -34,11 +37,17 @@ public class Fixable : NetworkBehaviour
 
     public void Break()
     {
+        if (brokenStateSound != null){
+            FindObjectOfType<AudioManager>().PlaySound(brokenStateSound);
+        }
         SwitchState(brokenState.name);
     }
 
     public void Fix()
     {
+        if (fixedStateSound != null){
+            FindObjectOfType<AudioManager>().PlaySound(fixedStateSound);
+        }
         SwitchState(fixedState.name);
     }
 
