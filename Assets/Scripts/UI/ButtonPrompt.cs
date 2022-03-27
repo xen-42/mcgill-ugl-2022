@@ -33,6 +33,9 @@ public class ButtonPrompt : MonoBehaviour
             // The prompt just needs to be clicked
             _radialMeterUI.gameObject.SetActive(false);
         }
+
+        Debug.Log(info.Text);
+
         _textUI.text = Info.Text;
 
         RefreshSprite();

@@ -29,7 +29,7 @@ public abstract class Interactable : NetworkBehaviour
 
     public bool HasFocus { get; private set; }
 
-    private void Awake()
+    protected virtual void Awake()
     {
         InteractablePrompt = new PromptInfo(InputCommand, _promptText, _promptPriority, _promptHoldTime);
         MissingItemPrompt = new PromptInfo(InputCommand.None, _promptTextMissingItem, _promptPriority, _promptHoldTime);

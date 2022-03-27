@@ -20,8 +20,9 @@ public class CatInteractable : Interactable
 
     #endregion Caches
 
-    private void Awake()
+    protected override void Awake()
     {
+        base.Awake();
         m_cat = GetComponent<CatAgent>();
     }
 
@@ -64,6 +65,8 @@ public class CatInteractable : Interactable
                 IsInteractable = true;
             }
         }
+
+        Debug.Log("CatInteractable" + InteractablePrompt.Text);
     }
 
     [Command]
