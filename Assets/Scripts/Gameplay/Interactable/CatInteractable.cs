@@ -14,6 +14,8 @@ public class CatInteractable : Interactable
 
     protected override InputCommand InputCommand { get => InputCommand.Interact; }
 
+    [SerializeField] public string sound;
+
     void Start()
     {
         _unityEvent.AddListener(OnPet);
@@ -21,6 +23,9 @@ public class CatInteractable : Interactable
 
     public void OnPet()
     {
+        if (sound != null){
+            FindObjectOfType<AudioManager>().PlaySound(sound);
+        }
         GameDirector.Instance.LowerStressImmediate(StressReduction);
         IsInteractable = false;
         if (isServer)

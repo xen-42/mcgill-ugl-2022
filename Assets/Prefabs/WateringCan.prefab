@@ -15,8 +15,8 @@ GameObject:
   - component: {fileID: 1371549147706381713}
   - component: {fileID: 1371549147706381712}
   - component: {fileID: 1371549147706381718}
-  - component: {fileID: 1371549147706381717}
   - component: {fileID: 1371549147706381719}
+  - component: {fileID: 1371549147706381717}
   m_Layer: 0
   m_Name: WateringCan
   m_TagString: Untagged
@@ -167,31 +167,6 @@ MonoBehaviour:
   showGizmos: 0
   showOverlay: 0
   overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
---- !u!114 &1371549147706381717
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1371549147706381716}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: cf0b1ddf3cab83f4b8ac84c617e33e4c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  _inputCommand: 4
-  _promptText: Grab watering can
-  _promptPriority: 0
-  _promptHoldTime: 0
-  _promptInfo:
-    _command: 4
-    _text: Grab watering can
-    _priority: 0
-    _holdTime: 0
-  requiredObject: 0
-  type: 1
 --- !u!114 &1371549147706381719
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -214,3 +189,24 @@ MonoBehaviour:
   syncAngularVelocity: 1
   clearAngularVelocity: 0
   angularVelocitySensitivity: 0.1
+--- !u!114 &1371549147706381717
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371549147706381716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf0b1ddf3cab83f4b8ac84c617e33e4c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  _promptText: Grab watering can
+  _promptTextNotInteractable: 
+  _promptTextMissingItem: 
+  _promptPriority: 0
+  _promptHoldTime: 0
+  requiredObject: 0
+  type: 1

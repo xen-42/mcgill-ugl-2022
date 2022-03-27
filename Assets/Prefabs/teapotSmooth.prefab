@@ -119,6 +119,7 @@ MonoBehaviour:
   requiredObject: 0
   Cooldown: 10
   StressReduction: 50
+  sound: Drink_Tea
 --- !u!114 &1836625061
 MonoBehaviour:
   m_ObjectHideFlags: 0

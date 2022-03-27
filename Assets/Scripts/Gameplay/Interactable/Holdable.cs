@@ -34,11 +34,11 @@ public class Holdable : Interactable
 
     public void OnInteract()
     {
-        var player = Player.Instance;
-        if (HasFocus && player.heldObject == null)
-        {
-            player.CmdGrab(this);
-        }
+        var canPickUp = HasFocus && Player.Instance.heldObject == null;
+
+        Debug.Log($"Trying to pick up {gameObject.name}, success: {canPickUp}");
+
+        if (canPickUp) Player.Instance.CmdGrab(this);
     }
 
     // Update is called once per frame
