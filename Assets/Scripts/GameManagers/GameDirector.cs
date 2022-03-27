@@ -126,7 +126,7 @@ public class GameDirector : NetworkBehaviour
     {
         if (_gameOver) return;
 
-        var available = _distractions.Where(x => !x.IsBroken).ToList();
+        var available = _distractions.Where(x => !x.CanBreak).ToList();
         _numDistractions = _distractions.Count - available.Count;
 
         if (isServer)
