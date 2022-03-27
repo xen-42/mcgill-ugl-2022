@@ -180,7 +180,7 @@ public class CatAgent : NetworkBehaviour
     public void EnterPet()
     {
         m_arrivedCurrentPath = false;
-        NMAgent.stoppingDistance = m_petStoppingDistance;
+        //NMAgent.stoppingDistance = m_petStoppingDistance;
     }
 
     public void Pet()
@@ -189,16 +189,17 @@ public class CatAgent : NetworkBehaviour
         {
             NMAgent.speed = Mathf.Lerp(NMAgent.speed, m_petLinearSpeed, m_speedLerpFactor);
             NMAgent.destination = m_petter.transform.position;
-            if (m_arrivedCurrentPath = (NMAgent.remainingDistance < NMAgent.stoppingDistance)) //Should modify in the future
+            if (m_arrivedCurrentPath = (NMAgent.remainingDistance < m_petStoppingDistance)) //Should modify in the future
             {
                 NMAgent.speed = 0;
                 SetStillState();
+                StartCoroutine(nameof(FacePlayer));
             }
         }
-        else
-        {
-            transform.forward = Vector3.Slerp(transform.forward, m_petter.transform.position - transform.position, .1f);
-        }
+        //else
+        //{
+        //    transform.forward = Vector3.Slerp(transform.forward, m_petter.transform.position - transform.position, .1f);
+        //}
     }
 
     public void ExitPet()
@@ -206,6 +207,16 @@ public class CatAgent : NetworkBehaviour
         m_petter = null;
         ResetStillState();
         NMAgent.stoppingDistance = 0f;
+        StopCoroutine(nameof(FacePlayer));
+    }
+
+    private IEnumerator FacePlayer()
+    {
+        while (true)
+        {
+            transform.forward = Vector3.RotateTowards(transform.forward, m_petter.transform.position - transform.position, NMAgent.angularSpeed * Time.deltaTime * Mathf.PI / 180f, 1f);
+            yield return new WaitForEndOfFrame();
+        }
     }
 
     public void SetStillState()
