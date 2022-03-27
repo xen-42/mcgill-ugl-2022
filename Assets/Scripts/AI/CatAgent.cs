@@ -45,7 +45,10 @@ public class CatAgent : NetworkBehaviour
     [SerializeField] private Color m_petColor;
 
     [Tooltip("When the cat turns around to face you")]
-    [SerializeField] private float m_petTurningAroundSlerpFactor;
+    [SerializeField] private float m_petAngularSpeed;
+
+    [Tooltip("When the cat approches you")]
+    [SerializeField] private float m_petLinearSpeed;
 
     private Color m_normalColor;
     private Player m_petter;
@@ -53,6 +56,7 @@ public class CatAgent : NetworkBehaviour
     private void Awake()
     {
         NMAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
+        NMAgent.speed = 0;
         m_fsm = GetComponent<FSM>();
         m_manager = BlackboardManager.Instance;
         m_petInteract = GetComponent<CatInteractable>();
@@ -82,6 +86,7 @@ public class CatAgent : NetworkBehaviour
     {
         m_petter = pPetter;
         m_manager.SetTrigger("OnPet");
+        print("OnPet: " + m_manager.GetTrigger("OnPet"));
     }
 
     // Called when we first enter the 'Walking' state
@@ -163,16 +168,23 @@ public class CatAgent : NetworkBehaviour
     public void EnterPet()
     {
         m_normalColor = m_renderer.material.color;
+        //NMAgent.speed = m_petLinearSpeed;
+        //NMAgent.angularSpeed = m_petAngularSpeed;
+        //NMAgent.destination = m_petter.transform.position;
     }
 
     public void Pet()
     {
-        transform.forward = Vector3.Slerp(transform.forward, m_petter.transform.position - transform.position, m_petTurningAroundSlerpFactor);
+        NMAgent.speed = Mathf.Lerp(NMAgent.speed, m_petLinearSpeed, m_speedLerpFactor);
+        NMAgent.destination = m_petter.transform.position;
+
+        //transform.forward = Vector3.Slerp(transform.forward, m_petter.transform.position - transform.position, m_petTurningAroundSlerpFactor);
     }
 
     public void ExitPet()
     {
         m_petter = null;
+        //NMAgent.speed = m_maxSpeed;
         m_renderer.material.color = m_normalColor;
     }
 }

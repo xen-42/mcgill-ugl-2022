@@ -7,10 +7,15 @@ public class Sitting : FSMStateBehaviour
 {
     protected CatAgent cat;
 
+    protected override void Awake()
+    {
+        base.Awake();
+        cat = GetComponent<CatAgent>();
+    }
+
     protected override void Enter()
     {
         print("Entered: Sitting");
-        cat = GameObject.Find("Cat").GetComponent<CatAgent>();
 
         cat.EnterSit();
     }

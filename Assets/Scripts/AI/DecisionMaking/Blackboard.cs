@@ -10,7 +10,7 @@ using UnityEngine;
 public class Blackboard : ScriptableObject
 {
     [Serializable]
-    public struct Trigger
+    public class Trigger
     {
         [Tooltip("Is it triggered or not")]
         public bool isTriggered;
@@ -21,7 +21,7 @@ public class Blackboard : ScriptableObject
     }
 
     [Serializable]
-    public struct BlackboardParam<T> where T : struct
+    public struct BlackboardParam<T>
     {
         [Tooltip("The name of the parameter.")]
         public string name;

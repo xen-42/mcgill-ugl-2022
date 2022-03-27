@@ -26,21 +26,21 @@ public class Petting : Sitting
 
     protected override void Enter()
     {
-        base.Enter();
+        //base.Enter();
         cat.EnterPet();
         m_ss.isActive = false;
     }
 
     protected override void Execute()
     {
-        base.Execute();
+        //base.Execute();
         cat.Pet();
         m_timeElapsed += m_stateMachine.TimeElapsed;
     }
 
     protected override void Exit()
     {
-        base.Exit();
+        // base.Exit();
         cat.ExitPet();
         m_ss.isActive = true;
         m_timeElapsed = 0f;
