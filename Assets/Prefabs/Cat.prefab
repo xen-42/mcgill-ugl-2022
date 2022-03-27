@@ -241,9 +241,10 @@ MonoBehaviour:
   m_sockPrefab: {fileID: 3873952053484179079, guid: a810a4fe580364b46b0f341680ba9ca1, type: 3}
   m_spawnRadius: 3
   m_spawnProbility: 0.08
-  m_petColor: {r: 0, g: 0, b: 0, a: 0}
+  m_petColor: {r: 0.9433962, g: 0.07475963, b: 0.6006729, a: 0}
   m_petAngularSpeed: 60
   m_petLinearSpeed: 0.5
+  m_petStoppingDistance: 2
 --- !u!114 &4946464366587674621
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -309,7 +310,7 @@ NavMeshAgent:
   m_Acceleration: 8
   avoidancePriority: 50
   m_AngularSpeed: 120
-  m_StoppingDistance: 0
+  m_StoppingDistance: 0.5
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
   m_AutoRepath: 1

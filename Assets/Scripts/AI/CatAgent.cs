@@ -50,6 +50,8 @@ public class CatAgent : NetworkBehaviour
     [Tooltip("When the cat approches you")]
     [SerializeField] private float m_petLinearSpeed;
 
+    [SerializeField] private float m_petStoppingDistance;
+
     private Color m_normalColor;
     private Player m_petter;
 
@@ -75,6 +77,8 @@ public class CatAgent : NetworkBehaviour
         //path = new UnityEngine.AI.NavMeshPath();
         destination = new Vector3(10f, 1.77f, -4f);
         //elapsed = 0.0f;
+
+        m_normalColor = m_renderer.material.color;
     }
 
     private void FixedUpdate()
@@ -142,7 +146,15 @@ public class CatAgent : NetworkBehaviour
     public void Sit()
     {
         energy += m_energyIncreasingAmount;
-        NMAgent.speed = Mathf.Lerp(NMAgent.speed, 0f, m_speedLerpFactor);
+        if ((NMAgent.speed = Mathf.Lerp(NMAgent.speed, 0f, m_speedLerpFactor)) < .001f)
+        {
+            SetStillState();
+        }
+    }
+
+    public void ExitSit()
+    {
+        ResetStillState();
     }
 
     public void PickRandomPos()
@@ -167,24 +179,42 @@ public class CatAgent : NetworkBehaviour
 
     public void EnterPet()
     {
-        m_normalColor = m_renderer.material.color;
-        //NMAgent.speed = m_petLinearSpeed;
-        //NMAgent.angularSpeed = m_petAngularSpeed;
-        //NMAgent.destination = m_petter.transform.position;
+        m_arrivedCurrentPath = false;
+        NMAgent.stoppingDistance = m_petStoppingDistance;
     }
 
     public void Pet()
     {
-        NMAgent.speed = Mathf.Lerp(NMAgent.speed, m_petLinearSpeed, m_speedLerpFactor);
-        NMAgent.destination = m_petter.transform.position;
-
-        //transform.forward = Vector3.Slerp(transform.forward, m_petter.transform.position - transform.position, m_petTurningAroundSlerpFactor);
+        if (!m_arrivedCurrentPath)
+        {
+            NMAgent.speed = Mathf.Lerp(NMAgent.speed, m_petLinearSpeed, m_speedLerpFactor);
+            NMAgent.destination = m_petter.transform.position;
+            if (m_arrivedCurrentPath = (NMAgent.remainingDistance < NMAgent.stoppingDistance)) //Should modify in the future
+            {
+                NMAgent.speed = 0;
+                SetStillState();
+            }
+        }
+        else
+        {
+            transform.forward = Vector3.Slerp(transform.forward, m_petter.transform.position - transform.position, .1f);
+        }
     }
 
     public void ExitPet()
     {
         m_petter = null;
-        //NMAgent.speed = m_maxSpeed;
+        ResetStillState();
+        NMAgent.stoppingDistance = 0f;
+    }
+
+    public void SetStillState()
+    {
+        m_renderer.material.color = m_petColor;
+    }
+
+    public void ResetStillState()
+    {
         m_renderer.material.color = m_normalColor;
     }
 }

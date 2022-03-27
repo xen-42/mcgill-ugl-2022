@@ -26,5 +26,7 @@ public class Sitting : FSMStateBehaviour
     }
 
     protected override void Exit()
-    { }
+    {
+        cat.ExitSit();
+    }
 }
