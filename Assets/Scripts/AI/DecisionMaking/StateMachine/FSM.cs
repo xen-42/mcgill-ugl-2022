@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 namespace DecisionMaking.StateMachine
 {
@@ -164,6 +165,15 @@ namespace DecisionMaking.StateMachine
                         yield return new WaitForSeconds(m_executionTimeStep);
                         break;
                 }
+            }
+        }
+
+        private void OnDrawGizmos()
+        {
+            //Show current state
+            if (CurrentState != null)
+            {
+                Handles.Label(transform.position, CurrentState.ToString());
             }
         }
     }
