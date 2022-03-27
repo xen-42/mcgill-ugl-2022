@@ -23,5 +23,6 @@ public class Sound {
     [HideInInspector] public float spatialBlend = 1.0f;
 
     [HideInInspector] public bool playOnAwake = false;
+    public bool loop = false;
 
 }

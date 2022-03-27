@@ -285,13 +285,15 @@ MonoBehaviour:
     pitch: 1
     spatialBlend: 0
     playOnAwake: 0
+    loop: 0
   - clip: {fileID: 8300000, guid: 6478fe64f85e24c18b1f412cf37fc527, type: 3}
     name: Broken_AC
     source: {fileID: 0}
-    volume: 0.35
+    volume: 0.2
     pitch: 1
     spatialBlend: 0
     playOnAwake: 0
+    loop: 0
   - clip: {fileID: 8300000, guid: 7ad10bc5885fc4d429ccc5199fec3089, type: 3}
     name: Fixed_AC
     source: {fileID: 0}
@@ -299,6 +301,7 @@ MonoBehaviour:
     pitch: 1
     spatialBlend: 0
     playOnAwake: 0
+    loop: 0
   - clip: {fileID: 8300000, guid: 2a7b1265af96c46af9c485bc3f1b553b, type: 3}
     name: Drink_Tea
     source: {fileID: 0}
@@ -306,6 +309,7 @@ MonoBehaviour:
     pitch: 1
     spatialBlend: 0
     playOnAwake: 0
+    loop: 0
   - clip: {fileID: 8300000, guid: 7c6ecc32b700e4f95b0c9d81a99f146d, type: 3}
     name: Dry_Plant
     source: {fileID: 0}
@@ -313,6 +317,7 @@ MonoBehaviour:
     pitch: 1
     spatialBlend: 0
     playOnAwake: 0
+    loop: 0
   - clip: {fileID: 8300000, guid: 25c51ae6a1be14479aec045a0d52edc9, type: 3}
     name: Watered_Plant
     source: {fileID: 0}
@@ -320,13 +325,15 @@ MonoBehaviour:
     pitch: 1
     spatialBlend: 0
     playOnAwake: 0
-  - clip: {fileID: 8300000, guid: 4c15bc7bbdf4c4f749abde7ff13c4431, type: 3}
+    loop: 0
+  - clip: {fileID: 8300000, guid: cd32bc4c96d7f43948e4bae0e81af26f, type: 3}
     name: Heartbeat
     source: {fileID: 0}
-    volume: 0.5
+    volume: 0
     pitch: 1
     spatialBlend: 0
     playOnAwake: 0
+    loop: 1
   - clip: {fileID: 8300000, guid: 5ed5abb0b096d4da3afcb904c270ba8b, type: 3}
     name: Write_Assignment
     source: {fileID: 0}
@@ -334,6 +341,7 @@ MonoBehaviour:
     pitch: 1
     spatialBlend: 0
     playOnAwake: 0
+    loop: 0
   - clip: {fileID: 8300000, guid: 86bdba4e039194928a54abfa8a0c5fda, type: 3}
     name: Scan_Assignment
     source: {fileID: 0}
@@ -341,6 +349,7 @@ MonoBehaviour:
     pitch: 1
     spatialBlend: 0
     playOnAwake: 0
+    loop: 0
   - clip: {fileID: 8300000, guid: 38b574025cf354c67a721c1beff32287, type: 3}
     name: Submit_Assignment
     source: {fileID: 0}
@@ -348,6 +357,7 @@ MonoBehaviour:
     pitch: 1
     spatialBlend: 0
     playOnAwake: 0
+    loop: 0
 --- !u!4 &101876512
 Transform:
   m_ObjectHideFlags: 0
@@ -7655,6 +7665,8 @@ MonoBehaviour:
   assignmentsGoal: 5
   _stressDecreasingTime: 0.5
   scanSound: Scan_Assignment
+  heartbeatSound: Heartbeat
+  audio_manager: {fileID: 0}
 --- !u!114 &1692160702
 MonoBehaviour:
   m_ObjectHideFlags: 0
