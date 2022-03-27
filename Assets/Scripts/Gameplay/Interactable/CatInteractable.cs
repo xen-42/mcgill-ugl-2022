@@ -26,14 +26,18 @@ public class CatInteractable : Interactable
         m_cat = GetComponent<CatAgent>();
     }
 
-    private void Start()
+    [SerializeField] public string sound;
+
+    void Start()
     {
         _unityEvent.AddListener(OnPet);
     }
 
     public void OnPet()
     {
-        print("Why not call");
+        if (sound != null){
+            FindObjectOfType<AudioManager>().PlaySound(sound);
+        }
         GameDirector.Instance.LowerStressImmediate(StressReduction);
         m_cat.OnUpdatePetStatus(Player.Instance);
 

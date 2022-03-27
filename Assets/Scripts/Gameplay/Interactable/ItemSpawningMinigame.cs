@@ -14,6 +14,7 @@ public class ItemSpawningMinigame : Interactable
     public GameObject HoldableItemPrefab;
 
     protected override InputCommand InputCommand { get => InputCommand.Interact; }
+    [SerializeField] public string sound;
 
     void Start()
     {
@@ -63,6 +64,9 @@ public class ItemSpawningMinigame : Interactable
     [Server]
     private void Spawn()
     {
+        if (sound != null){
+            FindObjectOfType<AudioManager>().PlaySound(sound);
+        }
         var position = transform.position + Vector3.up * 0.2f;
         var newObj = Instantiate(HoldableItemPrefab, position, HoldableItemPrefab.transform.rotation);
         NetworkServer.Spawn(newObj);

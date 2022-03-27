@@ -57,6 +57,8 @@ public abstract class Interactable : NetworkBehaviour
 
     private void Interact()
     {
+        Debug.Log($"Interact with object {gameObject.name}");
+
         // Do nothing if we don't meet the requirements
         if (!IsInteractable || !HasItem()) return;
 

@@ -47,6 +47,10 @@ public class GameDirector : NetworkBehaviour
 
     private bool _gameOver;
 
+    [SerializeField] public string scanSound;
+    [SerializeField] public string heartbeatSound;
+    [HideInInspector] public AudioManager audio_manager;
+
     private void Awake()
     {
         Instance = this;
@@ -65,6 +69,8 @@ public class GameDirector : NetworkBehaviour
 
         _postProcessingController.DisableAllOverrides();
         apply_stress = false;
+
+        audio_manager = FindObjectOfType<AudioManager>();
     }
 
     public void LowerStressImmediate(float change)
@@ -110,6 +116,9 @@ public class GameDirector : NetworkBehaviour
 
     public void ScanAssignment()
     {
+        if (scanSound != null){
+            FindObjectOfType<AudioManager>().PlaySound(scanSound);
+        }
         NumAssignmentsScanned += 1;
     }
 
@@ -117,7 +126,7 @@ public class GameDirector : NetworkBehaviour
     {
         if (_gameOver) return;
 
-        var available = _distractions.Where(x => !x.IsBroken).ToList();
+        var available = _distractions.Where(x => !x.CanBreak).ToList();
         _numDistractions = _distractions.Count - available.Count;
 
         if (isServer)
@@ -153,12 +162,19 @@ public class GameDirector : NetworkBehaviour
         if (_stress > 49 && _stress < 101 && !apply_stress)
         {
             apply_stress = true;
+            if (heartbeatSound != null){
+                audio_manager.PlaySound(heartbeatSound);
+            }
             _postProcessingController.EnableAllOverrides();
         }
         // Disable stress vision
         if (_stress <= 49 && apply_stress)
         {
             apply_stress = false;
+
+            audio_manager.StopSound(heartbeatSound);
+            audio_manager.ChangeVolume(heartbeatSound, 0f);
+
             _postProcessingController.DisableAllOverrides();
             Player.Instance.moveSpeed = 6f;
             Player.Instance.walkSpeed = 4f;
@@ -169,6 +185,7 @@ public class GameDirector : NetworkBehaviour
         if (apply_stress)
         {
             float temp_stress = _stress - 50;
+            audio_manager.ChangeVolume(heartbeatSound, (float) temp_stress * 0.02f);
             _postProcessingController.UpdateStressVision(temp_stress);
         }
 

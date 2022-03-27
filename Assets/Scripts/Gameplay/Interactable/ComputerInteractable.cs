@@ -11,6 +11,8 @@ public class ComputerInteractable : Interactable
 
     protected override InputCommand InputCommand { get => InputCommand.Interact; }
 
+    [SerializeField] public string sound;
+
     void Start()
     {
         // When the player interacts with this object it'll start the minigame
@@ -32,6 +34,9 @@ public class ComputerInteractable : Interactable
 
     private void OnCompleteMinigame()
     {
+        if (sound != null){
+            FindObjectOfType<AudioManager>().PlaySound(sound);
+        }
         IsInteractable = true;
         GameDirector.Instance.DoAssignment();
     }
