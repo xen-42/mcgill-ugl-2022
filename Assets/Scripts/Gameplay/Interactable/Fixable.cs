@@ -13,7 +13,7 @@ public class Fixable : NetworkBehaviour
 
     [SyncVar] private bool _isBroken;
 
-    public bool IsBroken { get => _isBroken; }
+    public bool CanBreak { get => _isBroken && _cooldown == 0f; }
 
     [SyncVar] private string _currentState = null;
 
@@ -22,6 +22,10 @@ public class Fixable : NetworkBehaviour
     [SerializeField] public AudioSource brokenStateSound;
     [SerializeField] public AudioSource fixedStateSound;
     [SerializeField] public AudioSource ambientNoise;
+
+    // Cooldown to prevent breaking right after fixing it
+    [SerializeField] public float brokenCooldown = 5f;
+    private float _cooldown;
 
     private void Awake()
     {
@@ -35,6 +39,21 @@ public class Fixable : NetworkBehaviour
 
         _SwitchState(_currentState);
 
+    }
+
+    [Server]
+    private void Update()
+    {
+        if (!isServer) return;
+
+        if(_cooldown > 0)
+        {
+            _cooldown -= Time.deltaTime;
+        }
+        if(_cooldown <= 0)
+        {
+            _cooldown = 0f;
+        }
     }
 
     public void Break()
@@ -56,6 +75,7 @@ public class Fixable : NetworkBehaviour
         if (ambientNoise != null){
             ambientNoise.Play();
         }
+        _cooldown = brokenCooldown;
         SwitchState(fixedState.name);
     }
 
