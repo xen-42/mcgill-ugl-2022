@@ -47,9 +47,10 @@ public class GameDirector : NetworkBehaviour
 
     private bool _gameOver;
 
-    [SerializeField] public string scanSound;
-    [SerializeField] public string heartbeatSound;
-    [HideInInspector] public AudioManager audio_manager;
+    [SerializeField] public AudioSource scanSound;
+    [SerializeField] public AudioSource heartbeatSound;
+    [SerializeField] public AudioSource clockSound;
+    private bool under30s;
 
     private void Awake()
     {
@@ -70,7 +71,7 @@ public class GameDirector : NetworkBehaviour
         _postProcessingController.DisableAllOverrides();
         apply_stress = false;
 
-        audio_manager = FindObjectOfType<AudioManager>();
+        under30s = false;
     }
 
     public void LowerStressImmediate(float change)
@@ -117,7 +118,7 @@ public class GameDirector : NetworkBehaviour
     public void ScanAssignment()
     {
         if (scanSound != null){
-            FindObjectOfType<AudioManager>().PlaySound(scanSound);
+            scanSound.Play();
         }
         NumAssignmentsScanned += 1;
     }
@@ -163,7 +164,7 @@ public class GameDirector : NetworkBehaviour
 		{
             apply_stress = true;
             if (heartbeatSound != null){
-                audio_manager.PlaySound(heartbeatSound);
+                heartbeatSound.Play();
             }
             _postProcessingController.EnableAllOverrides();
         }
@@ -172,8 +173,8 @@ public class GameDirector : NetworkBehaviour
         {
             apply_stress = false;
 
-            audio_manager.StopSound(heartbeatSound);
-            audio_manager.ChangeVolume(heartbeatSound, 0f);
+            heartbeatSound.volume = 0f;
+            heartbeatSound.Stop();
 
             _postProcessingController.DisableAllOverrides();
             Player.Instance.moveSpeed = 6f;
@@ -185,8 +186,13 @@ public class GameDirector : NetworkBehaviour
         if (apply_stress)
         {
             float temp_stress = _stress - 50;
-            audio_manager.ChangeVolume(heartbeatSound, (float) temp_stress * 0.02f);
+            heartbeatSound.volume = (float) temp_stress * 0.02f;
             _postProcessingController.UpdateStressVision(temp_stress);
+        }
+
+        if (!under30s && _countdown >= timeLimit - 30f){
+            under30s = true;
+            clockSound.Play();
         }
         
 
@@ -197,6 +203,8 @@ public class GameDirector : NetworkBehaviour
         {
             _gameOver = true;
             InputManager.CurrentInputMode = InputManager.InputMode.UI;
+            heartbeatSound.Stop();
+            clockSound.Stop();
         }
     }
 
