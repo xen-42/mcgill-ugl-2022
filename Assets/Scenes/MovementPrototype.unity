@@ -19545,6 +19545,10 @@ PrefabInstance:
       propertyPath: sound
       value: Pet_Cat
       objectReference: {fileID: 0}
+    - target: {fileID: 4946464366587674598, guid: 179c14c7d094f45438965a4b6e805b7a, type: 3}
+      propertyPath: m_spawnLimit
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4946464366587674599, guid: 179c14c7d094f45438965a4b6e805b7a, type: 3}
       propertyPath: m_Name
       value: Cat

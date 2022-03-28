@@ -38,7 +38,9 @@ public class CatAgent : NetworkBehaviour
     [Header("Cat Spawning Socks Params")]
     [SerializeField] private GameObject m_sockPrefab;
     [SerializeField] private float m_spawnRadius = 3f;
+    [SerializeField] [Range(0, 50)] private int m_spawnLimit;
     [SerializeField] [Range(0, 1)] private float m_spawnProbility = .1f;
+    private int m_curSpawnNum = 0;
 
     [Header("Cat Petting Params")]
     [Tooltip("When the cat  is being pet, the rendering color will be changed.")]
@@ -169,12 +171,16 @@ public class CatAgent : NetworkBehaviour
 
     public void SpawnSock()
     {
-        if (Random.Range(0, 1f) > m_spawnProbility)
-            return;
+        if (m_curSpawnNum < m_spawnLimit)
+        {
+            if (Random.Range(0, 1f) > m_spawnProbility)
+                return;
 
-        Vector2 spawnOffset = Random.insideUnitCircle * m_spawnRadius;
-        Vector3 spawnPos = transform.position + new Vector3(spawnOffset.x, 0, spawnOffset.y);
-        NetworkServer.Spawn(Instantiate(m_sockPrefab, spawnPos, m_sockPrefab.transform.rotation));
+            m_curSpawnNum++;
+            Vector2 spawnOffset = Random.insideUnitCircle * m_spawnRadius;
+            Vector3 spawnPos = transform.position + new Vector3(spawnOffset.x, 0, spawnOffset.y);
+            NetworkServer.Spawn(Instantiate(m_sockPrefab, spawnPos, m_sockPrefab.transform.rotation));
+        }
     }
 
     public void EnterPet()
