@@ -28,6 +28,8 @@ public class LobbyPlayer : NetworkBehaviour
 
     protected Callback<AvatarImageLoaded_t> _avatarImageLoaded;
 
+    private bool _connected = false;
+
     private void Awake()
     {
         int imageID = SteamFriends.GetLargeFriendAvatar(SteamUser.GetSteamID());
@@ -81,6 +83,8 @@ public class LobbyPlayer : NetworkBehaviour
 
     public override void OnStartClient()
     {
+        _connected = true;
+
         _avatarImageLoaded = Callback<AvatarImageLoaded_t>.Create(OnAvatarImageLoaded);
 
         CustomNetworkManager.Instance.lobbyPlayers.Add(this);
@@ -92,6 +96,8 @@ public class LobbyPlayer : NetworkBehaviour
 
     public override void OnStopClient()
     {
+        _connected = false;
+
         CustomNetworkManager.Instance.lobbyPlayers.Remove(this);
 
         UpdateDisplay();
@@ -105,6 +111,8 @@ public class LobbyPlayer : NetworkBehaviour
 
     public void Update()
     {
+        if (!_connected) return;
+
         if(hasAuthority)
         {
             Ping = (int)Math.Round(NetworkTime.rtt * 1000);
