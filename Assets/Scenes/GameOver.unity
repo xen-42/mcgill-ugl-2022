@@ -470,7 +470,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1136325612}
         m_TargetAssemblyTypeName: GameOver, Assembly-CSharp
-        m_MethodName: OnMainMenuButtonPressed
+        m_MethodName: OnContinueButtonPressed
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -695,7 +695,9 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Main menu
+  m_Text: 'Continue
+
+'
 --- !u!222 &775545017
 CanvasRenderer:
   m_ObjectHideFlags: 0

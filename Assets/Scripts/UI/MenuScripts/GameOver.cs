@@ -12,9 +12,8 @@ public class GameOver : MonoBehaviour
         
     }
 
-    public void OnMainMenuButtonPressed()
+    public void OnContinueButtonPressed()
     {
-        // Just reload the scene
-        SceneManager.LoadScene(Scenes.MainMenu);
+        SceneManager.LoadScene(Scenes.Lobby);
     }
 }
