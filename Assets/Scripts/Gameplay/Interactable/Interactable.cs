@@ -14,7 +14,7 @@ public abstract class Interactable : NetworkBehaviour
 
     [SerializeField] private string _promptText;
     [SerializeField] private string _promptTextNotInteractable;
-    [SerializeField] private string _promptTextMissingItem;
+    [SerializeField] private string _promptTextWrongItem;
     [SerializeField] private int _promptPriority;
     [SerializeField] private float _promptHoldTime;
 
@@ -33,7 +33,7 @@ public abstract class Interactable : NetworkBehaviour
     private void Awake()
     {
         InteractablePrompt = new PromptInfo(InputCommand, _promptText, _promptPriority, _promptHoldTime);
-        MissingItemPrompt = new PromptInfo(InputCommand.None, _promptTextMissingItem, _promptPriority, _promptHoldTime);
+        MissingItemPrompt = new PromptInfo(InputCommand.None, _promptTextWrongItem, _promptPriority, _promptHoldTime);
         NonInteractablePrompt = new PromptInfo(InputCommand.None, _promptTextNotInteractable, _promptPriority, _promptHoldTime);
     }
 
@@ -53,7 +53,9 @@ public abstract class Interactable : NetworkBehaviour
 
     protected virtual bool HasItem()
     {
-        return requiredObject == Holdable.Type.NONE || (Player.Instance.heldObject != null && Player.Instance.heldObject.type == requiredObject);
+        var heldObjectType = Player.Instance.heldObject?.type ?? Holdable.Type.NONE;
+
+        return requiredObject == heldObjectType;
     }
 
     private void Interact()
