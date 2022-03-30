@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,15 +6,11 @@ using UnityEngine.SceneManagement;
 
 public static class Scenes
 {
-    private static string _mainMenu = SceneManager.GetSceneByName("MainMenu").path;
-    public static string MainMenu { get => _mainMenu; }
+    public static int MainMenu { get => 0; }
 
-    private static string _lobbyMenu = SceneManager.GetSceneByName("LobbyMenu").path;
-    public static string Lobby { get => _lobbyMenu; }
+    public static int Lobby { get => 2; }
 
-    private static string _gameScene = SceneManager.GetSceneByName("MovementPrototype").path;
-    public static string GameScene { get => _gameScene; }
+    public static int GameScene { get => 1; }
 
-    private static string _gameOver = SceneManager.GetSceneByName("GameOver").path;
-    public static string GameOver { get => _gameOver; }
+    public static int GameOver { get => 3; }
 }
