@@ -7979,12 +7979,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  timeLimit: 180
-  minTimeBetweenDistractions: 5
-  maxTimeBetweenDistractions: 10
-  timeUntilFirstDistraction: 1
-  stressPerSecond: 1
-  stressExponent: 1.5
+  timeLimit: 3
+  minTimeBetweenDistractions: 20
+  maxTimeBetweenDistractions: 30
+  timeUntilFirstDistraction: 20
+  stressPerSecond: 3
+  stressExponent: 2
   assignmentsGoal: 5
   _stressDecreasingTime: 0.5
   scanSound: {fileID: 2571412278634998059}
