@@ -11,9 +11,10 @@ public class Fixable : NetworkBehaviour
     private string _fixedName;
     private string _brokenName;
 
+    public bool IsBroken { get => _isBroken; }
     [SyncVar] private bool _isBroken;
 
-    public bool CanBreak { get => _isBroken && _cooldown == 0f; }
+    public bool CanBreak { get => (!_isBroken && _cooldown == 0f); }
 
     [SyncVar] private string _currentState = null;
 
@@ -24,8 +25,10 @@ public class Fixable : NetworkBehaviour
     [SerializeField] public AudioSource ambientNoise;
 
     // Cooldown to prevent breaking right after fixing it
-    [SerializeField] public float brokenCooldown = 5f;
-    private float _cooldown;
+    [SerializeField] public float brokenCooldown = 30f;
+    [SyncVar] private float _cooldown;
+
+    [SerializeField] public float stressReduction = 20f;
 
     private void Awake()
     {
@@ -39,6 +42,8 @@ public class Fixable : NetworkBehaviour
 
         _SwitchState(_currentState);
 
+        // Have to give time for interactable to set up
+        ActionManager.FireOnNextUpdate(() => _interactable.IsInteractable = IsBroken);
     }
 
     [Server]
@@ -46,11 +51,12 @@ public class Fixable : NetworkBehaviour
     {
         if (!isServer) return;
 
-        if(_cooldown > 0)
+        // Only do the cool down when its fixed
+        if (_cooldown > 0)
         {
             _cooldown -= Time.deltaTime;
         }
-        if(_cooldown <= 0)
+        if (_cooldown <= 0)
         {
             _cooldown = 0f;
         }
@@ -58,10 +64,12 @@ public class Fixable : NetworkBehaviour
 
     public void Break()
     {
-        if (brokenStateSound != null){
+        if (brokenStateSound != null)
+        {
             brokenStateSound.Play();
         }
-        if (ambientNoise != null){
+        if (ambientNoise != null)
+        {
             ambientNoise.Stop();
         }
         SwitchState(brokenState.name);
@@ -69,13 +77,15 @@ public class Fixable : NetworkBehaviour
 
     public void Fix()
     {
-        if (fixedStateSound != null){
+        GameDirector.Instance.LowerStressImmediate(stressReduction);
+        if (fixedStateSound != null)
+        {
             fixedStateSound.Play();
         }
-        if (ambientNoise != null){
+        if (ambientNoise != null)
+        {
             ambientNoise.Play();
         }
-        _cooldown = brokenCooldown;
         SwitchState(fixedState.name);
     }
 
@@ -88,6 +98,9 @@ public class Fixable : NetworkBehaviour
         }
         else
         {
+            // Cooldown handled on server
+            if (stateID == fixedState.name) _cooldown = brokenCooldown;
+
             RpcSwapState(stateID);
         }
     }
@@ -115,7 +128,8 @@ public class Fixable : NetworkBehaviour
                 t.gameObject.SetActive(t.gameObject.name == _currentState);
             }
         }
-        _isBroken = (stateID != fixedState.name);
+
+        _isBroken = (stateID == _brokenName);
 
         if (_interactable != null) _interactable.IsInteractable = _isBroken;
     }

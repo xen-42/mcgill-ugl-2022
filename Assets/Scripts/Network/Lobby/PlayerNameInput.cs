@@ -8,8 +8,6 @@ using UnityEngine.UI;
 
 public class PlayerNameInput : MonoBehaviour
 {
-    [Scene] [SerializeField] private string mainMenu = null;
-
     [Header("UI")]
     [SerializeField] private TMP_InputField nameInputField = null;
     [SerializeField] private Button continueButton = null;
@@ -55,6 +53,6 @@ public class PlayerNameInput : MonoBehaviour
 
     public void ReturnToMainMenu()
     {
-        SceneManager.LoadScene(mainMenu);
+        SceneManager.LoadScene(Scenes.MainMenu);
     }
 }

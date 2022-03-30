@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 1371549147706381718}
   - component: {fileID: 1371549147706381719}
   - component: {fileID: 1371549147706381717}
+  - component: {fileID: 1371549147914494039}
   m_Layer: 0
   m_Name: WateringCan
   m_TagString: Untagged
@@ -205,8 +206,24 @@ MonoBehaviour:
   syncInterval: 0.1
   _promptText: Grab watering can
   _promptTextNotInteractable: 
-  _promptTextMissingItem: 
+  _promptTextWrongItem: Your hands are full
   _promptPriority: 0
   _promptHoldTime: 0
   requiredObject: 0
   type: 1
+--- !u!208 &1371549147914494039
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371549147706381716}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5

@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
 
 public class GameDirector : NetworkBehaviour
@@ -45,8 +46,6 @@ public class GameDirector : NetworkBehaviour
     public int NumAssignmentsDone { get; private set; }
     public int NumAssignmentsScanned { get; private set; }
 
-    private bool _gameOver;
-
     [SerializeField] public AudioSource scanSound;
     [SerializeField] public AudioSource heartbeatSound;
     [SerializeField] public AudioSource clockSound;
@@ -80,36 +79,6 @@ public class GameDirector : NetworkBehaviour
         if (_stress < 0) _stress = 0;
     }
 
-    public void LowerStressGradually(float change)
-    {
-        //StartCoroutine(nameof(StressDecreasing), change);
-    }
-
-    private IEnumerable StressDecreasing(float change)
-    {
-        float timeElapsed = 0f;
-        float targetStressValue = Mathf.Max(_stress - change, 0f);
-        _isStressDecreasing = true;
-
-        while (timeElapsed < _stressDecreasingTime)
-        {
-            timeElapsed += Time.deltaTime;
-            _stress = Mathf.Lerp(_stress, targetStressValue, timeElapsed / _stressDecreasingTime);
-            HUD.Instance.SetStressValue(_stress);
-
-            if (_stress > 49)
-            {
-                _postProcessingController.UpdateStressVision(_stress - 50);
-            }
-
-            yield return null;
-        }
-
-        _stress = targetStressValue;
-        _isStressDecreasing = false;
-        yield return null;
-    }
-
     public void DoAssignment()
     {
         NumAssignmentsDone += 1;
@@ -125,9 +94,7 @@ public class GameDirector : NetworkBehaviour
 
     private void Update()
     {
-        if (_gameOver) return;
-
-        var available = _distractions.Where(x => !x.CanBreak).ToList();
+        var available = _distractions.Where(x => x.CanBreak).ToList();
         _numDistractions = _distractions.Count - available.Count;
 
         if (isServer)
@@ -199,12 +166,13 @@ public class GameDirector : NetworkBehaviour
         Player.Instance.stressModifier = Mathf.Clamp((_stress - 50f) / 50f, 0, 1);
 
         // Game Over       
-        if (!_gameOver && timeLimit == _countdown)
+        if (timeLimit <= _countdown)
         {
-            _gameOver = true;
             InputManager.CurrentInputMode = InputManager.InputMode.UI;
             heartbeatSound.Stop();
             clockSound.Stop();
+            CustomNetworkManager.Instance.Stop();
+            SceneManager.LoadScene(Scenes.GameOver);
         }
     }
 

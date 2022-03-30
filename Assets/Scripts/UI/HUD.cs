@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class HUD : MonoBehaviour
 {
-    [SerializeField] private GameObject _gamepadIndicator;
+    //[SerializeField] private GameObject _gamepadIndicator;
 
     [SerializeField] private GameObject _buttonPrompt;
 
@@ -18,8 +18,6 @@ public class HUD : MonoBehaviour
     [SerializeField] private Image _stressBarFillImage;
 
     #endregion UI Variable Values
-
-    [SerializeField] private Text _gameOverText;
 
     private Dictionary<ButtonPrompt.PromptInfo, ButtonPrompt> _buttonPromptDict;
 
@@ -42,17 +40,6 @@ public class HUD : MonoBehaviour
     {
         EventManager<ButtonPrompt.PromptInfo>.RemoveListener("PromptHit", OnPromptHit);
         EventManager<ButtonPrompt.PromptInfo>.RemoveListener("PromptLost", OnPromptLost);
-    }
-
-    private void Update()
-    {
-        var indicatorShown = _gamepadIndicator.activeInHierarchy;
-        var gamepadEnabled = InputManager.IsGamepadEnabled();
-
-        if (indicatorShown == gamepadEnabled)
-        {
-            _gamepadIndicator.SetActive(!indicatorShown);
-        }
     }
 
     private void OnPromptHit(ButtonPrompt.PromptInfo promptInfo)
@@ -108,12 +95,6 @@ public class HUD : MonoBehaviour
     /// <param name="submitted"></param>
     public void SetGameState(int time, float stress, int submitted)
     {
-        if (time < 0)
-        {
-            _gameOverText.text = $"The semester is over!\n You finished {submitted} assignments.";
-            return;
-        }
-
         var minutes = (int)Math.Floor(time / 60f);
         var seconds = (int)(time % 60);
 

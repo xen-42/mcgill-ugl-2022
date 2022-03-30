@@ -7,6 +7,7 @@ public class MinigameManager : MonoBehaviour
     public static MinigameManager Instance { get; private set; }
 
     private Minigame _currentMinigame;
+    private Interactable _currentInteractable;
     private Vector3 start_pos;
 
     private void Awake()
@@ -14,7 +15,7 @@ public class MinigameManager : MonoBehaviour
         Instance = this;
     }
 
-    public void StartMinigame(GameObject minigame, out Minigame returnMinigame)
+    public void StartMinigame(Interactable interactable, GameObject minigame, out Minigame returnMinigame)
     {
         var newMinigame = Instantiate(minigame, Camera.main.transform);
 
@@ -26,39 +27,41 @@ public class MinigameManager : MonoBehaviour
 
         start_pos = Player.Instance.transform.position;
         _currentMinigame = newMinigame.GetComponent<Minigame>();
+        _currentInteractable = interactable;
         returnMinigame = _currentMinigame;
     }
 
-    public void StartMinigame(GameObject minigame)
+    public void StartMinigame(Interactable interactable, GameObject minigame)
     {
-        StartMinigame(minigame, out var _);
+        // If we don't care about returning the reference to the minigame
+        StartMinigame(interactable, minigame, out var _);
     }
 
     public void StopMinigame()
     {
-        // Temporary, should be able to just pause them
+        // Destroy the minigame
         Destroy(_currentMinigame.gameObject);
         _currentMinigame = null;
+
+        // Reset the object interacted with if need be
+        if(_currentInteractable.resetAfterUse) _currentInteractable.IsInteractable = true;
+        _currentInteractable = null;
+
+        InputManager.CurrentInputMode = InputManager.InputMode.Player;
     }
 
     public void Update()
     {
-        if (InputManager.CurrentInputMode == InputManager.InputMode.Minigame)
-        {
-            if (InputManager.IsCommandJustPressed(InputManager.InputCommand.Back))
-            {
-                if (_currentMinigame != null) StopMinigame();
-                InputManager.CurrentInputMode = InputManager.InputMode.Player;
-            }
-        }
-
         // If the player moves away from the minigame, the minigame stops and the player has to start from the beginning
         if(_currentMinigame != null)
         {
-            if (Mathf.Abs(Player.Instance.transform.position.x - start_pos.x) >= 1
-                || Mathf.Abs(Player.Instance.transform.position.z - start_pos.z) >= 1)
+            var dx = Mathf.Abs(Player.Instance.transform.position.x - start_pos.x);
+            var dz = Mathf.Abs(Player.Instance.transform.position.z - start_pos.z);
+
+            // Also check if the player pressed the button to quit out of the minigame
+            if (dx >= 1 || dz >= 1 || InputManager.IsCommandJustPressed(InputManager.InputCommand.Back))
             {
-                _currentMinigame.MovedAway();
+                StopMinigame();
             }
         }
     }

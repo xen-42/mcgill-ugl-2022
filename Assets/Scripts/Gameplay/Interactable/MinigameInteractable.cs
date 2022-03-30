@@ -6,12 +6,9 @@ using static InputManager;
 
 public class MinigameInteractable : Interactable
 {
-    [SerializeField]
-    public GameObject MinigamePrefab;
+    [SerializeField] public GameObject MinigamePrefab;
 
-    [SerializeField]
-    public UnityEvent OnCompleteMinigame;
-    public UnityEvent OnMoveAway;
+    [SerializeField] public UnityEvent OnCompleteMinigame;
 
     protected override InputCommand InputCommand { get => InputCommand.Interact; }
 
@@ -21,10 +18,9 @@ public class MinigameInteractable : Interactable
         _unityEvent.AddListener(() =>
         {
             IsInteractable = false;
-            MinigameManager.Instance.StartMinigame(MinigamePrefab, out var minigame);
+            MinigameManager.Instance.StartMinigame(this, MinigamePrefab, out var minigame);
             minigame.OnCompleteMinigame.AddListener(() => OnCompleteMinigame.Invoke());
             minigame.OnCompleteMinigame.AddListener(() => IsInteractable = true);
-            minigame.OnMoveAway.AddListener(() => OnMoveAway.Invoke());
             if (requiredObject != Holdable.Type.NONE)
             {
                 // Should never be null but could be a bug and it'll hang the player

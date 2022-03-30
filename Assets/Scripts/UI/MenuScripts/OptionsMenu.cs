@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class OptionsMenu : MonoBehaviour
 {
-    public static bool GamePaused = false;
+    public bool GamePaused = false;
     public GameObject pauseMenuUI;
     public AudioMixer audioMixer;
     public Dropdown resolutionDropdown;
@@ -119,6 +119,6 @@ public class OptionsMenu : MonoBehaviour
     public void ReturnToMainMenu()
     {
         CustomNetworkManager.Instance.Stop();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        SceneManager.LoadScene(Scenes.MainMenu);
     }
 }

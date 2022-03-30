@@ -62,7 +62,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 59f214b4c90a644588a8ffbab6a64be9, type: 2}
+  - {fileID: 2100000, guid: 883dece92e5d2404f8307b6ae0af08c8, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -113,13 +113,14 @@ MonoBehaviour:
   syncInterval: 0.1
   _promptText: Drink tea
   _promptTextNotInteractable: It's empty
-  _promptTextMissingItem: 
+  _promptTextWrongItem: Your hands are full
   _promptPriority: 0
   _promptHoldTime: 0
   requiredObject: 0
+  resetAfterUse: 0
   Cooldown: 10
-  StressReduction: 50
-  sound: Drink_Tea
+  StressReduction: 20
+  sound: {fileID: 0}
 --- !u!114 &1836625061
 MonoBehaviour:
   m_ObjectHideFlags: 0

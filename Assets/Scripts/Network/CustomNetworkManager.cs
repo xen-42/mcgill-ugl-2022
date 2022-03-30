@@ -95,7 +95,7 @@ public class CustomNetworkManager : NetworkManager
         {
             // Back to main menu
             Stop();
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+            SceneManager.LoadScene(Scenes.MainMenu);
         }
 
         base.OnClientDisconnect();
@@ -118,7 +118,7 @@ public class CustomNetworkManager : NetworkManager
         {
             // Back to main menu
             Stop();
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+            SceneManager.LoadScene(Scenes.MainMenu);
         }
 
         base.OnServerDisconnect(conn);

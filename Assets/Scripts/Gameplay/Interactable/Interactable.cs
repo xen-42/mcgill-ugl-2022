@@ -14,26 +14,28 @@ public abstract class Interactable : NetworkBehaviour
 
     [SerializeField] private string _promptText;
     [SerializeField] private string _promptTextNotInteractable;
-    [SerializeField] private string _promptTextMissingItem;
+    [SerializeField] private string _promptTextWrongItem;
     [SerializeField] private int _promptPriority;
     [SerializeField] private float _promptHoldTime;
 
     [SerializeField] public Holdable.Type requiredObject = Holdable.Type.NONE;
 
     public PromptInfo InteractablePrompt { get; set; }
-    public PromptInfo MissingItemPrompt { get; set; }
+    public PromptInfo WrongItemPrompt { get; set; }
     public PromptInfo NonInteractablePrompt { get; set; }
     private PromptInfo _lastPrompt;
-
 
     [SyncVar] private bool _isInteractable = true;
 
     public bool HasFocus { get; private set; }
 
+    // If we reset the IsInteractable status back to true when the minigame is done.
+    public bool resetAfterUse = false;
+
     private void Awake()
     {
         InteractablePrompt = new PromptInfo(InputCommand, _promptText, _promptPriority, _promptHoldTime);
-        MissingItemPrompt = new PromptInfo(InputCommand.None, _promptTextMissingItem, _promptPriority, _promptHoldTime);
+        WrongItemPrompt = new PromptInfo(InputCommand.None, _promptTextWrongItem, _promptPriority, _promptHoldTime);
         NonInteractablePrompt = new PromptInfo(InputCommand.None, _promptTextNotInteractable, _promptPriority, _promptHoldTime);
     }
 
@@ -53,7 +55,9 @@ public abstract class Interactable : NetworkBehaviour
 
     protected virtual bool HasItem()
     {
-        return requiredObject == Holdable.Type.NONE || (Player.Instance.heldObject != null && Player.Instance.heldObject.type == requiredObject);
+        var heldObjectType = Player.Instance.heldObject?.type ?? Holdable.Type.NONE;
+
+        return requiredObject == heldObjectType;
     }
 
     private void Interact()
@@ -77,8 +81,8 @@ public abstract class Interactable : NetworkBehaviour
         }
         else if (!HasItem())
         {
-            EventManager<PromptInfo>.TriggerEvent("PromptHit", MissingItemPrompt);
-            _lastPrompt = MissingItemPrompt;
+            EventManager<PromptInfo>.TriggerEvent("PromptHit", WrongItemPrompt);
+            _lastPrompt = WrongItemPrompt;
         }
         else
         {
