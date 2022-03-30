@@ -19,8 +19,9 @@ public class Fixable : NetworkBehaviour
 
     private Interactable _interactable;
 
-    [SerializeField] public string brokenStateSound;
-    [SerializeField] public string fixedStateSound;
+    [SerializeField] public AudioSource brokenStateSound;
+    [SerializeField] public AudioSource fixedStateSound;
+    [SerializeField] public AudioSource ambientNoise;
 
     // Cooldown to prevent breaking right after fixing it
     [SerializeField] public float brokenCooldown = 5f;
@@ -37,6 +38,7 @@ public class Fixable : NetworkBehaviour
         _interactable = GetComponent<Interactable>();
 
         _SwitchState(_currentState);
+
     }
 
     [Server]
@@ -57,7 +59,10 @@ public class Fixable : NetworkBehaviour
     public void Break()
     {
         if (brokenStateSound != null){
-            FindObjectOfType<AudioManager>().PlaySound(brokenStateSound);
+            brokenStateSound.Play();
+        }
+        if (ambientNoise != null){
+            ambientNoise.Stop();
         }
         SwitchState(brokenState.name);
     }
@@ -65,9 +70,12 @@ public class Fixable : NetworkBehaviour
     public void Fix()
     {
         if (fixedStateSound != null){
-            FindObjectOfType<AudioManager>().PlaySound(fixedStateSound);
-            _cooldown = brokenCooldown;
+            fixedStateSound.Play();
         }
+        if (ambientNoise != null){
+            ambientNoise.Play();
+        }
+        _cooldown = brokenCooldown;
         SwitchState(fixedState.name);
     }
 

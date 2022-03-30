@@ -4,8 +4,9 @@ using System;
 
 public class AudioManager : MonoBehaviour
 {
-    public Sound[] sounds;
+    [SerializeField] public AudioSource petCat;
     
+    /*
     void Awake()
     {
         foreach (Sound s in sounds){
@@ -18,7 +19,7 @@ public class AudioManager : MonoBehaviour
             s.source.loop = s.loop;
         }
     }
-
+    
     public void PlaySound(string name){
         Sound sound = Array.Find(sounds, sound => sound.name == name);
         sound.source.Play();
@@ -38,5 +39,5 @@ public class AudioManager : MonoBehaviour
     public float GetVolume(string name){
         Sound sound = Array.Find(sounds, sound => sound.name == name);
         return sound.source.volume;
-    }
+    }*/
 }

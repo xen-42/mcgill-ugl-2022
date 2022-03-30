@@ -10,8 +10,7 @@ public class ComputerInteractable : Interactable
     public GameObject MinigamePrefab;
 
     protected override InputCommand InputCommand { get => InputCommand.Interact; }
-
-    [SerializeField] public string sound;
+    [SerializeField] public AudioSource sound;
 
     void Start()
     {
@@ -35,7 +34,7 @@ public class ComputerInteractable : Interactable
     private void OnCompleteMinigame()
     {
         if (sound != null){
-            FindObjectOfType<AudioManager>().PlaySound(sound);
+            sound.Play();
         }
         IsInteractable = true;
         GameDirector.Instance.DoAssignment();
