@@ -68,6 +68,7 @@ MonoBehaviour:
   _promptPriority: 0
   _promptHoldTime: 0
   requiredObject: 2
+  resetAfterUse: 1
   MinigamePrefab: {fileID: 796745773547017806, guid: 6cdf3a0e4bf57ac44bf6e9341c591e1a, type: 3}
   OnCompleteMinigame:
     m_PersistentCalls:
@@ -84,9 +85,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  OnMoveAway:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &2571412278434311990
 MonoBehaviour:
   m_ObjectHideFlags: 0

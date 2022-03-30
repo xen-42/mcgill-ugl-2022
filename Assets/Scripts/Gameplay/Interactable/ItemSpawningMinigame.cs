@@ -24,10 +24,11 @@ public class ItemSpawningMinigame : Interactable
         _unityEvent.AddListener(() =>
         {
             IsInteractable = false;
-            MinigameManager.Instance.StartMinigame(MinigamePrefab, out var minigame);
+            MinigameManager.Instance.StartMinigame(this, MinigamePrefab, out var minigame);
             minigame.OnCompleteMinigame.AddListener(OnCompleteMinigame);
-            minigame.OnMoveAway.AddListener(OnMoveAway);
         });
+
+        resetAfterUse = true;
     }
 
     private void OnCompleteMinigame()
@@ -48,10 +49,6 @@ public class ItemSpawningMinigame : Interactable
             Spawn();
         }
 
-        IsInteractable = true;
-    }
-
-    private void OnMoveAway(){
         IsInteractable = true;
     }
 

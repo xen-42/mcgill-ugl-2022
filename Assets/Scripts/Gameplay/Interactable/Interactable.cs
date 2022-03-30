@@ -25,10 +25,12 @@ public abstract class Interactable : NetworkBehaviour
     public PromptInfo NonInteractablePrompt { get; set; }
     private PromptInfo _lastPrompt;
 
-
     [SyncVar] private bool _isInteractable = true;
 
     public bool HasFocus { get; private set; }
+
+    // If we reset the IsInteractable status back to true when the minigame is done.
+    public bool resetAfterUse = false;
 
     private void Awake()
     {
