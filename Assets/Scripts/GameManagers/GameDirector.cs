@@ -166,7 +166,7 @@ public class GameDirector : NetworkBehaviour
         Player.Instance.stressModifier = Mathf.Clamp((_stress - 50f) / 50f, 0, 1);
 
         // Game Over       
-        if (timeLimit == _countdown)
+        if (timeLimit <= _countdown)
         {
             InputManager.CurrentInputMode = InputManager.InputMode.UI;
             heartbeatSound.Stop();
