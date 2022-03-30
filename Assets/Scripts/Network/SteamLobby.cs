@@ -41,7 +41,8 @@ public class SteamLobby : MonoBehaviour
         try
         {
             Debug.Log($"Trying to join {Convert.ToUInt64(code)}");
-            SteamMatchmaking.JoinLobby(new CSteamID(Convert.ToUInt64(code)));
+            var lobby = new CSteamID(Convert.ToUInt64(code));
+            SteamMatchmaking.JoinLobby(lobby);
             return true;
         }
         catch (Exception e)
@@ -101,6 +102,8 @@ public class SteamLobby : MonoBehaviour
             }
 
             _networkManager.StartClient();
+
+            LobbyID = new CSteamID(callback.m_ulSteamIDLobby);
         }
     }
 }

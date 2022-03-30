@@ -242,8 +242,6 @@ public class LobbyPlayer : NetworkBehaviour
 
     private bool LoadAvatar(int imageID)
     {
-        return false;
-
         if (imageID != -1)
         {
             if (SteamUtils.GetImageSize(imageID, out uint width, out uint height))
