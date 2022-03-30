@@ -11,6 +11,7 @@ public class Fixable : NetworkBehaviour
     private string _fixedName;
     private string _brokenName;
 
+    public bool IsBroken { get => _isBroken; }
     [SyncVar] private bool _isBroken;
 
     public bool CanBreak { get => (!_isBroken && _cooldown == 0f); }
@@ -40,6 +41,9 @@ public class Fixable : NetworkBehaviour
         _interactable = GetComponent<Interactable>();
 
         _SwitchState(_currentState);
+
+        // Have to give time for interactable to set up
+        ActionManager.FireOnNextUpdate(() => _interactable.IsInteractable = IsBroken);
     }
 
     [Server]
