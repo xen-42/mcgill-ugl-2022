@@ -1,4 +1,5 @@
 using Mirror;
+using Steamworks;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -11,16 +12,27 @@ public class LobbyPlayer : NetworkBehaviour
     [SerializeField] private GameObject lobbyUI = null;
     [SerializeField] private TMP_Text[] playerNameTexts = new TMP_Text[2];
     [SerializeField] private TMP_Text[] playerReadyTexts = new TMP_Text[2];
+    [SerializeField] private Image[] playerAvatars = new Image[2];
+
     [SerializeField] private Button startGameButton = null;
 
     [SerializeField] private TMP_Text steamLobbyCode = null;
     [SerializeField] private Button copySteamCodeButton = null;
 
+
+    private Texture2D steamProfilePicture = null;
+
     [SyncVar(hook = nameof(HandleDisplayNameChanged))] public string DisplayName = "Loading...";
     [SyncVar(hook = nameof(HandleReadyStatusChanged))] public bool IsReady = false;
 
+    protected Callback<AvatarImageLoaded_t> _avatarImageLoaded;
+
     private void Awake()
     {
+        int imageID = SteamFriends.GetLargeFriendAvatar(SteamUser.GetSteamID());
+
+        LoadAvatar(imageID);
+
         InputManager.CurrentInputMode = InputManager.InputMode.UI;
 
         lobbyUI.SetActive(false);
@@ -29,7 +41,7 @@ public class LobbyPlayer : NetworkBehaviour
         {
             Debug.Log("Steam transport");
 
-            steamLobbyCode.SetText(CustomNetworkManager.Instance.steamLobby.LobbyID);
+            steamLobbyCode.SetText(CustomNetworkManager.Instance.steamLobby.LobbyID.ToString());
             copySteamCodeButton.interactable = true;
 
             steamLobbyCode.gameObject.SetActive(true);
@@ -68,6 +80,8 @@ public class LobbyPlayer : NetworkBehaviour
 
     public override void OnStartClient()
     {
+        _avatarImageLoaded = Callback<AvatarImageLoaded_t>.Create(OnAvatarImageLoaded);
+
         CustomNetworkManager.Instance.lobbyPlayers.Add(this);
 
         UpdateDisplay();
@@ -113,11 +127,25 @@ public class LobbyPlayer : NetworkBehaviour
                 var player = CustomNetworkManager.Instance.lobbyPlayers[i];
                 playerNameTexts[i].text = player.DisplayName;
                 playerReadyTexts[i].text = player.IsReady ? "<color=green>Ready</color>" : "<color=red>Not Ready</color>";
+                if(player.steamProfilePicture != null)
+                {
+                    playerAvatars[i].sprite = Sprite.Create(
+                        player.steamProfilePicture,
+                        new Rect(0, 0, player.steamProfilePicture.width, player.steamProfilePicture.height),
+                        new Vector2(player.steamProfilePicture.width / 2f, player.steamProfilePicture.height / 2f)
+                        );
+                    playerAvatars[i].gameObject.SetActive(true);
+                }
+                else
+                {
+                    playerAvatars[i].gameObject.SetActive(false);
+                }
             }
             else
             {
                 playerNameTexts[i].text = "Waiting for player...";
                 playerReadyTexts[i].text = string.Empty;
+                playerAvatars[i].gameObject.SetActive(false);
             }
         }
     }
@@ -134,7 +162,7 @@ public class LobbyPlayer : NetworkBehaviour
 
     public void OnBackButtonPressed()
     {
-        if(isLeader)
+        if (isLeader)
         {
             CustomNetworkManager.Instance.StopHost();
         }
@@ -175,5 +203,41 @@ public class LobbyPlayer : NetworkBehaviour
     }
 
     #endregion Commands
+
+    private void OnAvatarImageLoaded(AvatarImageLoaded_t callback)
+    {
+        if (callback.m_steamID.m_SteamID == SteamUser.GetSteamID().m_SteamID)
+        {
+            LoadAvatar(callback.m_iImage);
+        }
+    }
+
+    private bool LoadAvatar(int imageID)
+    {
+
+
+        if (imageID != -1)
+        {
+            if (SteamUtils.GetImageSize(imageID, out uint width, out uint height))
+            {
+                var size = width * height * 4;
+                byte[] image = new byte[size];
+                if (SteamUtils.GetImageRGBA(imageID, image, (int)size))
+                {
+                    var texture = new Texture2D((int)width, (int)height, TextureFormat.RGBA32, false, true);
+                    texture.LoadRawTextureData(image);
+                    texture.Apply();
+                    steamProfilePicture = texture;
+
+                    Debug.Log($"Loaded image [{imageID}]");
+
+                    return true;
+                }
+            }
+        }
+        
+        Debug.Log($"Failed to loaded image [{imageID}]");
+        return false;
+    }
 }
 

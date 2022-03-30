@@ -18,7 +18,7 @@ public class SteamLobby : MonoBehaviour
 
     private CustomNetworkManager _networkManager;
 
-    public string LobbyID { get; private set; }
+    public CSteamID LobbyID { get; private set; }
 
     private void Start()
     {
@@ -68,7 +68,7 @@ public class SteamLobby : MonoBehaviour
         SteamMatchmaking.SetLobbyData(lobbyID, HostAddressKey, SteamUser.GetSteamID().ToString());
         SteamMatchmaking.SetLobbyData(lobbyID, "name", SteamFriends.GetPersonaName().ToString());
 
-        LobbyID = lobbyID.ToString();
+        LobbyID = lobbyID;
 
         Debug.Log($"Created lobby {lobbyID.m_SteamID}");
     }
