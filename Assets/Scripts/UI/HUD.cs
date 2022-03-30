@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class HUD : MonoBehaviour
 {
-    [SerializeField] private GameObject _gamepadIndicator;
+    //[SerializeField] private GameObject _gamepadIndicator;
 
     [SerializeField] private GameObject _buttonPrompt;
 
@@ -46,6 +46,7 @@ public class HUD : MonoBehaviour
 
     private void Update()
     {
+        /*
         var indicatorShown = _gamepadIndicator.activeInHierarchy;
         var gamepadEnabled = InputManager.IsGamepadEnabled();
 
@@ -53,6 +54,7 @@ public class HUD : MonoBehaviour
         {
             _gamepadIndicator.SetActive(!indicatorShown);
         }
+        */
     }
 
     private void OnPromptHit(ButtonPrompt.PromptInfo promptInfo)

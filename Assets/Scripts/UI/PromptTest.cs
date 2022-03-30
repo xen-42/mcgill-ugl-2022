@@ -35,20 +35,6 @@ public class PromptTest : MonoBehaviour
             catch (Exception) { }
         }
 
-        foreach (GamepadButton button in Enum.GetValues(typeof(GamepadButton)))
-        {
-            try
-            {
-                if (Gamepad.current[button].wasPressedThisFrame)
-                {
-                    var texture = ButtonIconManager.GetGamepadButtonTexture(button);
-                    image.sprite = Sprite.Create(texture, new Rect(0, 0, texture.width, texture.height), new Vector2(texture.width / 2f, texture.height / 2f));
-                    Debug.Log($"Button pressed: {button}");
-                }
-            }
-            catch (Exception) { }
-        }
-
         foreach (MouseButton button in Enum.GetValues(typeof(MouseButton)))
         {
             try
