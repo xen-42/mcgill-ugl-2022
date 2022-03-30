@@ -1,5 +1,6 @@
 using Mirror;
 using Steamworks;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -19,8 +20,8 @@ public class LobbyPlayer : NetworkBehaviour
     [SerializeField] private TMP_Text steamLobbyCode = null;
     [SerializeField] private Button copySteamCodeButton = null;
 
-
     private Texture2D steamProfilePicture = null;
+    private int Ping = 0;
 
     [SyncVar(hook = nameof(HandleDisplayNameChanged))] public string DisplayName = "Loading...";
     [SyncVar(hook = nameof(HandleReadyStatusChanged))] public bool IsReady = false;
@@ -102,6 +103,25 @@ public class LobbyPlayer : NetworkBehaviour
 
     public void HandleDisplayNameChanged(string oldValue, string newValue) => UpdateDisplay();
 
+    public void Update()
+    {
+        if(hasAuthority)
+        {
+            Ping = (int)Math.Round(NetworkTime.rtt * 1000);
+        }
+
+        for (int i = 0; i < playerNameTexts.Length; i++)
+        {
+            if (i < CustomNetworkManager.Instance.lobbyPlayers.Count)
+            {
+                var player = CustomNetworkManager.Instance.lobbyPlayers[i];
+
+                var displayName = player.DisplayName.Length < 12 ? player.DisplayName : player.DisplayName.Substring(0, 11) + "...";
+                playerNameTexts[i].text = $"{displayName}\n{player.Ping}ms";
+            }
+        }
+    }
+
     public void UpdateDisplay()
     {
         if (!hasAuthority)
@@ -125,7 +145,7 @@ public class LobbyPlayer : NetworkBehaviour
             if (i < playerCount)
             {
                 var player = CustomNetworkManager.Instance.lobbyPlayers[i];
-                playerNameTexts[i].text = player.DisplayName;
+                playerNameTexts[i].text = $"{player.DisplayName}";
                 playerReadyTexts[i].text = player.IsReady ? "<color=green>Ready</color>" : "<color=red>Not Ready</color>";
                 if(player.steamProfilePicture != null)
                 {
