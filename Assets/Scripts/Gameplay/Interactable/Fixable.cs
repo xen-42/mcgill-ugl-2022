@@ -27,6 +27,8 @@ public class Fixable : NetworkBehaviour
     [SerializeField] public float brokenCooldown = 30f;
     [SyncVar] private float _cooldown;
 
+    [SerializeField] public float stressReduction = 20f;
+
     private void Awake()
     {
         _fixedName = fixedState.name;
@@ -43,8 +45,6 @@ public class Fixable : NetworkBehaviour
     [Server]
     private void Update()
     {
-        Debug.Log($"{_cooldown}");
-
         if (!isServer) return;
 
         // Only do the cool down when its fixed
@@ -60,10 +60,12 @@ public class Fixable : NetworkBehaviour
 
     public void Break()
     {
-        if (brokenStateSound != null){
+        if (brokenStateSound != null)
+        {
             brokenStateSound.Play();
         }
-        if (ambientNoise != null){
+        if (ambientNoise != null)
+        {
             ambientNoise.Stop();
         }
         SwitchState(brokenState.name);
@@ -71,10 +73,13 @@ public class Fixable : NetworkBehaviour
 
     public void Fix()
     {
-        if (fixedStateSound != null){
+        GameDirector.Instance.LowerStressImmediate(stressReduction);
+        if (fixedStateSound != null)
+        {
             fixedStateSound.Play();
         }
-        if (ambientNoise != null){
+        if (ambientNoise != null)
+        {
             ambientNoise.Play();
         }
         SwitchState(fixedState.name);
@@ -90,7 +95,7 @@ public class Fixable : NetworkBehaviour
         else
         {
             // Cooldown handled on server
-            if(stateID == fixedState.name) _cooldown = brokenCooldown;
+            if (stateID == fixedState.name) _cooldown = brokenCooldown;
 
             RpcSwapState(stateID);
         }
