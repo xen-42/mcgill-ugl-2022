@@ -117,8 +117,9 @@ MonoBehaviour:
   _promptPriority: 0
   _promptHoldTime: 0
   requiredObject: 0
+  resetAfterUse: 0
   Cooldown: 10
-  StressReduction: 50
+  StressReduction: 20
   sound: {fileID: 0}
 --- !u!114 &1836625061
 MonoBehaviour:
