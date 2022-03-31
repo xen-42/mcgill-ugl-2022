@@ -14,7 +14,7 @@ public class Minigame : MonoBehaviour
         Debug.Log("Minigame starting");
     }
 
-    public void CompleteMinigame()
+    public virtual void CompleteMinigame()
     {
         EventManager.TriggerEvent("MinigameComplete");
         OnCompleteMinigame.Invoke();

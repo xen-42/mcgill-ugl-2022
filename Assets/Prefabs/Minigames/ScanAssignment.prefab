@@ -338,7 +338,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6308221788281085129}
-  - component: {fileID: 796745773547017804}
+  - component: {fileID: 3127585891226767923}
   m_Layer: 3
   m_Name: ScanAssignment
   m_TagString: Untagged
@@ -362,7 +362,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &796745773547017804
+--- !u!114 &3127585891226767923
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -371,7 +371,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 796745773547017806}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a77bf7b4074207440bc0128c907cf2dc, type: 3}
+  m_Script: {fileID: 11500000, guid: 975e59443fff6a04f8b1d52985cb5213, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   OnCompleteMinigame:
@@ -379,6 +379,9 @@ MonoBehaviour:
       m_Calls: []
   holdableObject: {fileID: 796745772766427530}
   dropCollider: {fileID: 693483833433175540}
+  openScanner: {fileID: 796745773534569236}
+  closedScanner: {fileID: 4739912433008446000}
+  delayTime: 1
 --- !u!1 &4739912433008446000
 GameObject:
   m_ObjectHideFlags: 0
