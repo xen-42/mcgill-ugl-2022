@@ -20,7 +20,7 @@ public class LobbyPlayer : NetworkBehaviour
     [SerializeField] private TMP_Text steamLobbyCode = null;
     [SerializeField] private Button copySteamCodeButton = null;
 
-    private Texture2D steamProfilePicture = null;
+    private Sprite steamAvatarSprite = null;
     [SyncVar] private int Ping = 0;
 
     [SyncVar(hook = nameof(HandleDisplayNameChanged))] public string DisplayName = "Loading...";
@@ -54,6 +54,8 @@ public class LobbyPlayer : NetworkBehaviour
             steamLobbyCode.gameObject.SetActive(false);
             copySteamCodeButton.gameObject.SetActive(false);
         }
+
+        UpdateDisplay();
     }
 
     [SyncVar] private bool isLeader;
@@ -167,13 +169,9 @@ public class LobbyPlayer : NetworkBehaviour
                 var player = CustomNetworkManager.Instance.lobbyPlayers[i];
                 playerNameTexts[i].text = $"{player.DisplayName}";
                 playerReadyTexts[i].text = player.IsReady ? "<color=green>Ready</color>" : "<color=red>Not Ready</color>";
-                if(player.steamProfilePicture != null)
+                if(player.steamAvatarSprite != null)
                 {
-                    playerAvatars[i].sprite = Sprite.Create(
-                        player.steamProfilePicture,
-                        new Rect(0, 0, player.steamProfilePicture.width, player.steamProfilePicture.height),
-                        new Vector2(player.steamProfilePicture.width / 2f, player.steamProfilePicture.height / 2f)
-                        );
+                    playerAvatars[i].sprite = steamAvatarSprite;
                     playerAvatars[i].gameObject.SetActive(true);
                 }
                 else
@@ -273,7 +271,11 @@ public class LobbyPlayer : NetworkBehaviour
                     var texture = new Texture2D((int)width, (int)height, TextureFormat.RGBA32, false, true);
                     texture.LoadRawTextureData(image);
                     texture.Apply();
-                    steamProfilePicture = texture;
+                    steamAvatarSprite = Sprite.Create(
+                        texture,
+                        new Rect(0, 0, texture.width, texture.height),
+                        new Vector2(texture.width / 2f, texture.height / 2f)
+                        );
 
                     Debug.Log($"Loaded image [{imageID}]");
 
