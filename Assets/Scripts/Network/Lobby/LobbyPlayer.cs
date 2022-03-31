@@ -163,6 +163,8 @@ public class LobbyPlayer : NetworkBehaviour
             return;
         }
 
+        Debug.Log("Updating Display");
+
         var playerCount = CustomNetworkManager.Instance.lobbyPlayers.Count;
 
         for (int i = 0; i < playerNameTexts.Length; i++)
@@ -172,9 +174,12 @@ public class LobbyPlayer : NetworkBehaviour
                 var player = CustomNetworkManager.Instance.lobbyPlayers[i];
                 playerNameTexts[i].text = $"{player.DisplayName}";
                 playerReadyTexts[i].text = player.IsReady ? "<color=green>Ready</color>" : "<color=red>Not Ready</color>";
-                if(player.steamAvatarSprite != null)
+
+                var sprite = LoadAvatar(SteamFriends.GetLargeFriendAvatar(new CSteamID(SteamID)));
+
+                if (sprite != null)
                 {
-                    playerAvatars[i].sprite = LoadAvatar(SteamFriends.GetLargeFriendAvatar(new CSteamID(SteamID)));
+                    playerAvatars[i].sprite = sprite;
                     playerAvatars[i].gameObject.SetActive(true);
                 }
                 else
