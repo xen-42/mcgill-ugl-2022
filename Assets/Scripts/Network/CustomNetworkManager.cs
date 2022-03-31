@@ -78,6 +78,8 @@ public class CustomNetworkManager : NetworkManager
 
     public override void OnStartClient()
     {
+        RegisterPrefabs();
+
         Debug.Log("Starting client");
         base.OnStartClient();
     }
@@ -126,7 +128,7 @@ public class CustomNetworkManager : NetworkManager
 
     public override void OnServerConnect(NetworkConnection conn)
     {
-        Debug.Log("Connecting to server");
+        Debug.Log($"[{conn.identity}] connecting to server");
 
         base.OnServerConnect(conn);
 
@@ -165,8 +167,9 @@ public class CustomNetworkManager : NetworkManager
     // Start is called before the first frame update
     new void Awake()
     {
-        NetworkClient.RegisterPrefab(lobbyPlayerPrefab.gameObject);
-        NetworkClient.RegisterPrefab(gamePlayerPrefab.gameObject);
+        Debug.Log($"Starting {nameof(CustomNetworkManager)}");
+
+        RegisterPrefabs();
 
         if (_instance != null)
         {
@@ -195,12 +198,14 @@ public class CustomNetworkManager : NetworkManager
         {
             StopClient();
         }
+        transport.Shutdown();
     }
 
     private new void OnDestroy()
     {
-        base.OnDestroy();
+        Debug.Log($"Destroying {nameof(CustomNetworkManager)}");
         Stop();
+        base.OnDestroy();
     }
 
     public void NotifyPlayersOfReadyState()
@@ -273,5 +278,11 @@ public class CustomNetworkManager : NetworkManager
         base.OnServerReady(conn);
 
         OnServerReadied?.Invoke(conn);
+    }
+
+    private void RegisterPrefabs()
+    {
+        NetworkClient.RegisterPrefab(lobbyPlayerPrefab.gameObject);
+        NetworkClient.RegisterPrefab(gamePlayerPrefab.gameObject);
     }
 }

@@ -21,7 +21,7 @@ public class LobbyPlayer : NetworkBehaviour
     [SerializeField] private Button copySteamCodeButton = null;
 
     private Texture2D steamProfilePicture = null;
-    private int Ping = 0;
+    [SyncVar] private int Ping = 0;
 
     [SyncVar(hook = nameof(HandleDisplayNameChanged))] public string DisplayName = "Loading...";
     [SyncVar(hook = nameof(HandleReadyStatusChanged))] public bool IsReady = false;
@@ -59,7 +59,7 @@ public class LobbyPlayer : NetworkBehaviour
         }
     }
 
-    private bool isLeader;
+    [SyncVar] private bool isLeader;
     public bool IsLeader
     {
         set
@@ -115,7 +115,7 @@ public class LobbyPlayer : NetworkBehaviour
 
         if(hasAuthority)
         {
-            Ping = (int)Math.Round(NetworkTime.rtt * 1000);
+            SetPing((int)Math.Round(NetworkTime.rtt * 1000));
         }
 
         for (int i = 0; i < playerNameTexts.Length; i++)
@@ -125,7 +125,15 @@ public class LobbyPlayer : NetworkBehaviour
                 var player = CustomNetworkManager.Instance.lobbyPlayers[i];
 
                 var displayName = player.DisplayName.Length < 12 ? player.DisplayName : player.DisplayName.Substring(0, 11) + "...";
-                playerNameTexts[i].text = $"{displayName}\n{player.Ping}ms";
+                
+                if(player.isLeader)
+                {
+                    playerNameTexts[i].text = $"{displayName}\n";
+                }
+                else
+                {
+                    playerNameTexts[i].text = $"{displayName}\n{player.Ping}ms";
+                }
             }
         }
     }
@@ -264,6 +272,24 @@ public class LobbyPlayer : NetworkBehaviour
         
         Debug.Log($"Failed to loaded image [{imageID}]");
         return false;
+    }
+
+    private void SetPing(int ping)
+    {
+        if(isServer)
+        {
+            Ping = ping;
+        }
+        else
+        {
+            CmdSetPing(ping);
+        }
+    }
+
+    [Command]
+    private void CmdSetPing(int ping)
+    {
+        Ping = ping;
     }
 }
 
