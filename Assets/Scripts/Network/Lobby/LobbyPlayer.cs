@@ -115,8 +115,7 @@ public class LobbyPlayer : NetworkBehaviour
     {
         Debug.Log($"Steam ID was changed to [{newValue}] for [{DisplayName}]");
         SteamID = newValue;
-        var cSteamID = new CSteamID(newValue);
-        SetAvatar(SteamFriends.GetLargeFriendAvatar(cSteamID));
+        UpdateDisplay();
     }
 
     public void Update()
@@ -175,7 +174,7 @@ public class LobbyPlayer : NetworkBehaviour
                 playerReadyTexts[i].text = player.IsReady ? "<color=green>Ready</color>" : "<color=red>Not Ready</color>";
                 if(player.steamAvatarSprite != null)
                 {
-                    playerAvatars[i].sprite = steamAvatarSprite;
+                    playerAvatars[i].sprite = LoadAvatar(SteamFriends.GetLargeFriendAvatar(new CSteamID(SteamID)));
                     playerAvatars[i].gameObject.SetActive(true);
                 }
                 else
@@ -250,42 +249,14 @@ public class LobbyPlayer : NetworkBehaviour
         CustomNetworkManager.Instance.StartGame();
     }
 
-    public void SetAvatar(int imageID)
-    {
-        if(isServer)
-        {
-            RpcSetAvatar(imageID);
-        }
-        else
-        {
-            CmdSetAvatar(imageID);
-        }
-    }
-
-    [Command]
-    public void CmdSetAvatar(int imageID)
-    {
-        RpcSetAvatar(imageID);
-    }
-
-    [ClientRpc]
-    public void RpcSetAvatar(int imageID)
-    {
-        LoadAvatar(imageID);
-    }
-
     #endregion Commands
 
     private void OnAvatarImageLoaded(AvatarImageLoaded_t callback)
     {
-        if (callback.m_steamID.m_SteamID == SteamID)
-        {
-            Debug.Log("Updating avatar from callback");
-            SetAvatar(callback.m_iImage);
-        }
+        UpdateDisplay();
     } 
 
-    private bool LoadAvatar(int imageID)
+    private Sprite LoadAvatar(int imageID)
     {
         Debug.Log($"Loading [{imageID}] for [{DisplayName}]");
 
@@ -300,20 +271,16 @@ public class LobbyPlayer : NetworkBehaviour
                     var texture = new Texture2D((int)width, (int)height, TextureFormat.RGBA32, false, true);
                     texture.LoadRawTextureData(image);
                     texture.Apply();
-                    steamAvatarSprite = Sprite.Create(
+                    return Sprite.Create(
                         texture,
                         new Rect(0, 0, texture.width, texture.height),
                         new Vector2(texture.width / 2f, texture.height / 2f)
                         );
-
-                    UpdateDisplay();
-
-                    return true;
                 }
             }
         }
         
-        return false;
+        return null;
     }
 
     private void SetPing(int ping)
