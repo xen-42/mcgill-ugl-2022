@@ -175,7 +175,7 @@ public class LobbyPlayer : NetworkBehaviour
                 playerNameTexts[i].text = $"{player.DisplayName}";
                 playerReadyTexts[i].text = player.IsReady ? "<color=green>Ready</color>" : "<color=red>Not Ready</color>";
 
-                var sprite = LoadAvatar(SteamFriends.GetLargeFriendAvatar(new CSteamID(SteamID)));
+                var sprite = LoadAvatar(SteamFriends.GetLargeFriendAvatar(new CSteamID(player.SteamID)));
 
                 if (sprite != null)
                 {
