@@ -76,7 +76,6 @@ public class LobbyPlayer : NetworkBehaviour
     public override void OnStartAuthority()
     {
         CmdSetDisplayName(PlayerNameInput.DisplayName);
-        CmdSetSteamID(SteamUser.GetSteamID().m_SteamID);
 
         lobbyUI.SetActive(true);
     }
@@ -111,6 +110,7 @@ public class LobbyPlayer : NetworkBehaviour
 
     public void HandleSteamIDChanged(ulong oldValue, ulong newValue)
     {
+        Debug.Log($"Steam ID was changed to [{newValue}] for [{DisplayName}]");
         var cSteamID = new CSteamID(newValue);
         LoadAvatar(SteamFriends.GetLargeFriendAvatar(cSteamID));
     }
@@ -221,12 +221,6 @@ public class LobbyPlayer : NetworkBehaviour
     }
 
     [Command]
-    private void CmdSetSteamID(ulong steamID)
-    {
-        SteamID = steamID;
-    }
-
-    [Command]
     public void CmdReadyUp()
     {
         IsReady = !IsReady;
@@ -258,7 +252,7 @@ public class LobbyPlayer : NetworkBehaviour
 
     private bool LoadAvatar(int imageID)
     {
-        Debug.Log($"Loading {imageID}");
+        Debug.Log($"Loading [{imageID}] for [{DisplayName}]");
 
         if (imageID != -1)
         {

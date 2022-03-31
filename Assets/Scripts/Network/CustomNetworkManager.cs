@@ -158,16 +158,16 @@ public class CustomNetworkManager : NetworkManager
 
             LobbyPlayer lobbyPlayerInstance = Instantiate(lobbyPlayerPrefab);
 
+            lobbyPlayerInstance.IsLeader = isLeader;
+
+            // Says that this game object represents the new player who connected
+            NetworkServer.AddPlayerForConnection(conn, lobbyPlayerInstance.gameObject);
+
             // ID of person that just joined
             lobbyPlayerInstance.SteamID = SteamMatchmaking.GetLobbyMemberByIndex(
                 steamLobby.LobbyID,
                 numPlayers - 1
             ).m_SteamID;
-
-            lobbyPlayerInstance.IsLeader = isLeader;
-
-            // Says that this game object represents the new player who connected
-            NetworkServer.AddPlayerForConnection(conn, lobbyPlayerInstance.gameObject);
         }
     }
 
