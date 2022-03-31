@@ -20,7 +20,7 @@ public class LobbyPlayer : NetworkBehaviour
     [SerializeField] private TMP_Text steamLobbyCode = null;
     [SerializeField] private Button copySteamCodeButton = null;
 
-    private Texture2D steamProfilePicture = null;
+    [SyncVar] private Texture2D steamProfilePicture = null;
     [SyncVar] private int Ping = 0;
 
     [SyncVar(hook = nameof(HandleDisplayNameChanged))] public string DisplayName = "Loading...";
@@ -261,7 +261,15 @@ public class LobbyPlayer : NetworkBehaviour
                     var texture = new Texture2D((int)width, (int)height, TextureFormat.RGBA32, false, true);
                     texture.LoadRawTextureData(image);
                     texture.Apply();
-                    steamProfilePicture = texture;
+
+                    if(isServer)
+                    {
+                        steamProfilePicture = texture;
+                    }
+                    else
+                    {
+                        CmdSetAvatar(texture);
+                    }
 
                     Debug.Log($"Loaded image [{imageID}]");
 
@@ -272,6 +280,12 @@ public class LobbyPlayer : NetworkBehaviour
         
         Debug.Log($"Failed to loaded image [{imageID}]");
         return false;
+    }
+
+    [Command]
+    private void CmdSetAvatar(Texture2D texture)
+    {
+        steamProfilePicture = texture;
     }
 
     private void SetPing(int ping)
