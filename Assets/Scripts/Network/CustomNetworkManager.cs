@@ -1,6 +1,7 @@
 using kcp2k;
 using Mirror;
 using Mirror.FizzySteam;
+using Steamworks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -156,6 +157,12 @@ public class CustomNetworkManager : NetworkManager
             bool isLeader = lobbyPlayers.Count == 0;
 
             LobbyPlayer lobbyPlayerInstance = Instantiate(lobbyPlayerPrefab);
+
+            // ID of person that just joined
+            lobbyPlayerInstance.SteamID = SteamMatchmaking.GetLobbyMemberByIndex(
+                steamLobby.LobbyID,
+                numPlayers - 1
+            ).m_SteamID;
 
             lobbyPlayerInstance.IsLeader = isLeader;
 

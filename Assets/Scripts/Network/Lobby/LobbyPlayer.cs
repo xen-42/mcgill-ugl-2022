@@ -20,11 +20,12 @@ public class LobbyPlayer : NetworkBehaviour
     [SerializeField] private TMP_Text steamLobbyCode = null;
     [SerializeField] private Button copySteamCodeButton = null;
 
-    [SyncVar] private Texture2D steamProfilePicture = null;
+    private Texture2D steamProfilePicture = null;
     [SyncVar] private int Ping = 0;
 
     [SyncVar(hook = nameof(HandleDisplayNameChanged))] public string DisplayName = "Loading...";
     [SyncVar(hook = nameof(HandleReadyStatusChanged))] public bool IsReady = false;
+    [SyncVar(hook = nameof(HandleSteamIDChanged))] public ulong SteamID;
 
     protected Callback<AvatarImageLoaded_t> _avatarImageLoaded;
 
@@ -32,10 +33,6 @@ public class LobbyPlayer : NetworkBehaviour
 
     private void Awake()
     {
-        int imageID = SteamFriends.GetLargeFriendAvatar(SteamUser.GetSteamID());
-
-        LoadAvatar(imageID);
-
         InputManager.CurrentInputMode = InputManager.InputMode.UI;
 
         lobbyUI.SetActive(false);
@@ -77,6 +74,7 @@ public class LobbyPlayer : NetworkBehaviour
     public override void OnStartAuthority()
     {
         CmdSetDisplayName(PlayerNameInput.DisplayName);
+        CmdSetSteamID(SteamUser.GetSteamID().m_SteamID);
 
         lobbyUI.SetActive(true);
     }
@@ -108,6 +106,12 @@ public class LobbyPlayer : NetworkBehaviour
     public void HandleReadyStatusChanged(bool oldValue, bool newValue) => UpdateDisplay();
 
     public void HandleDisplayNameChanged(string oldValue, string newValue) => UpdateDisplay();
+
+    public void HandleSteamIDChanged(ulong oldValue, ulong newValue)
+    {
+        var cSteamID = new CSteamID(newValue);
+        LoadAvatar(SteamFriends.GetLargeFriendAvatar(cSteamID));
+    }
 
     public void Update()
     {
@@ -219,6 +223,12 @@ public class LobbyPlayer : NetworkBehaviour
     }
 
     [Command]
+    private void CmdSetSteamID(ulong steamID)
+    {
+        SteamID = steamID;
+    }
+
+    [Command]
     public void CmdReadyUp()
     {
         IsReady = !IsReady;
@@ -250,6 +260,8 @@ public class LobbyPlayer : NetworkBehaviour
 
     private bool LoadAvatar(int imageID)
     {
+        Debug.Log($"Loading {imageID}");
+
         if (imageID != -1)
         {
             if (SteamUtils.GetImageSize(imageID, out uint width, out uint height))
@@ -261,17 +273,11 @@ public class LobbyPlayer : NetworkBehaviour
                     var texture = new Texture2D((int)width, (int)height, TextureFormat.RGBA32, false, true);
                     texture.LoadRawTextureData(image);
                     texture.Apply();
-
-                    if(isServer)
-                    {
-                        steamProfilePicture = texture;
-                    }
-                    else
-                    {
-                        CmdSetAvatar(texture);
-                    }
+                    steamProfilePicture = texture;
 
                     Debug.Log($"Loaded image [{imageID}]");
+
+                    UpdateDisplay();
 
                     return true;
                 }
@@ -280,12 +286,6 @@ public class LobbyPlayer : NetworkBehaviour
         
         Debug.Log($"Failed to loaded image [{imageID}]");
         return false;
-    }
-
-    [Command]
-    private void CmdSetAvatar(Texture2D texture)
-    {
-        steamProfilePicture = texture;
     }
 
     private void SetPing(int ping)
