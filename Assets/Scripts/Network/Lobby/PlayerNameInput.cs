@@ -1,4 +1,5 @@
 using Mirror;
+using Steamworks;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -10,7 +11,6 @@ public class PlayerNameInput : MonoBehaviour
 {
     [Header("UI")]
     [SerializeField] private TMP_InputField nameInputField = null;
-    [SerializeField] private Button continueButton = null;
 
     public static string DisplayName { get; private set; }
 
@@ -19,35 +19,36 @@ public class PlayerNameInput : MonoBehaviour
 
     void Start()
     {
-        SetUpInputField();
-    }
+        string defaultName = "Player";
 
-    private void SetUpInputField()
-    {
-        if(!PlayerPrefs.HasKey(PlayerPrefsNameKey))
+        if (!PlayerPrefs.HasKey(PlayerPrefsNameKey))
         {
-            // TODO: Get steam name
+            // Try-catch in case steam works isnt initialized
+            try
+            {
+                defaultName = SteamFriends.GetPersonaName();
+            }
+            catch { }
 
             return;
         }
-
-        string defaultName = PlayerPrefs.GetString(PlayerPrefsNameKey);
+        else
+        {
+            defaultName = PlayerPrefs.GetString(PlayerPrefsNameKey);
+        }
 
         nameInputField.text = defaultName;
-
-        RefreshPlayerName();
-    }
-
-    public void RefreshPlayerName()
-    {
-        // Only let them continue if the name is valid
-        continueButton.interactable = !string.IsNullOrEmpty(nameInputField.text);
+        DisplayName = defaultName;
     }
 
     public void SavePlayerName()
     {
-        DisplayName = nameInputField.text;
+        if(string.IsNullOrWhiteSpace(nameInputField.text))
+        {
+            nameInputField.text = "Player";
+        }
 
+        DisplayName = nameInputField.text;
         PlayerPrefs.SetString(PlayerPrefsNameKey, DisplayName);
     }
 

@@ -1,4 +1,6 @@
 using Mirror;
+using Steamworks;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -11,13 +13,23 @@ public class LobbyPlayer : NetworkBehaviour
     [SerializeField] private GameObject lobbyUI = null;
     [SerializeField] private TMP_Text[] playerNameTexts = new TMP_Text[2];
     [SerializeField] private TMP_Text[] playerReadyTexts = new TMP_Text[2];
+    [SerializeField] private Image[] playerAvatars = new Image[2];
+
     [SerializeField] private Button startGameButton = null;
 
     [SerializeField] private TMP_Text steamLobbyCode = null;
     [SerializeField] private Button copySteamCodeButton = null;
 
+    private Sprite steamAvatarSprite = null;
+    [SyncVar] private int Ping = 0;
+
     [SyncVar(hook = nameof(HandleDisplayNameChanged))] public string DisplayName = "Loading...";
     [SyncVar(hook = nameof(HandleReadyStatusChanged))] public bool IsReady = false;
+    [SyncVar(hook = nameof(HandleSteamIDChanged))] public ulong SteamID;
+
+    protected Callback<AvatarImageLoaded_t> _avatarImageLoaded;
+
+    private bool _connected = false;
 
     private void Awake()
     {
@@ -29,7 +41,7 @@ public class LobbyPlayer : NetworkBehaviour
         {
             Debug.Log("Steam transport");
 
-            steamLobbyCode.SetText(CustomNetworkManager.Instance.steamLobby.LobbyID);
+            steamLobbyCode.SetText(CustomNetworkManager.Instance.steamLobby.LobbyID.ToString());
             copySteamCodeButton.interactable = true;
 
             steamLobbyCode.gameObject.SetActive(true);
@@ -42,9 +54,11 @@ public class LobbyPlayer : NetworkBehaviour
             steamLobbyCode.gameObject.SetActive(false);
             copySteamCodeButton.gameObject.SetActive(false);
         }
+
+        UpdateDisplay();
     }
 
-    private bool isLeader;
+    [SyncVar] private bool isLeader;
     public bool IsLeader
     {
         set
@@ -63,11 +77,18 @@ public class LobbyPlayer : NetworkBehaviour
     {
         CmdSetDisplayName(PlayerNameInput.DisplayName);
 
+        // If we have authority then this is us
+        CmdSetSteamID(SteamUser.GetSteamID().m_SteamID);
+
         lobbyUI.SetActive(true);
     }
 
     public override void OnStartClient()
     {
+        _connected = true;
+
+        _avatarImageLoaded = Callback<AvatarImageLoaded_t>.Create(OnAvatarImageLoaded);
+
         CustomNetworkManager.Instance.lobbyPlayers.Add(this);
 
         UpdateDisplay();
@@ -77,6 +98,8 @@ public class LobbyPlayer : NetworkBehaviour
 
     public override void OnStopClient()
     {
+        _connected = false;
+
         CustomNetworkManager.Instance.lobbyPlayers.Remove(this);
 
         UpdateDisplay();
@@ -87,6 +110,42 @@ public class LobbyPlayer : NetworkBehaviour
     public void HandleReadyStatusChanged(bool oldValue, bool newValue) => UpdateDisplay();
 
     public void HandleDisplayNameChanged(string oldValue, string newValue) => UpdateDisplay();
+
+    public void HandleSteamIDChanged(ulong oldValue, ulong newValue)
+    {
+        Debug.Log($"Steam ID was changed to [{newValue}] for [{DisplayName}]");
+        SteamID = newValue;
+        UpdateDisplay();
+    }
+
+    public void Update()
+    {
+        if (!_connected) return;
+
+        if(hasAuthority)
+        {
+            SetPing((int)Math.Round(NetworkTime.rtt * 1000));
+        }
+
+        for (int i = 0; i < playerNameTexts.Length; i++)
+        {
+            if (i < CustomNetworkManager.Instance.lobbyPlayers.Count)
+            {
+                var player = CustomNetworkManager.Instance.lobbyPlayers[i];
+
+                var displayName = player.DisplayName.Length < 12 ? player.DisplayName : player.DisplayName.Substring(0, 11) + "...";
+                
+                if(player.isLeader)
+                {
+                    playerNameTexts[i].text = $"{displayName}\n";
+                }
+                else
+                {
+                    playerNameTexts[i].text = $"{displayName}\n{player.Ping}ms";
+                }
+            }
+        }
+    }
 
     public void UpdateDisplay()
     {
@@ -104,6 +163,8 @@ public class LobbyPlayer : NetworkBehaviour
             return;
         }
 
+        Debug.Log("Updating Display");
+
         var playerCount = CustomNetworkManager.Instance.lobbyPlayers.Count;
 
         for (int i = 0; i < playerNameTexts.Length; i++)
@@ -111,13 +172,26 @@ public class LobbyPlayer : NetworkBehaviour
             if (i < playerCount)
             {
                 var player = CustomNetworkManager.Instance.lobbyPlayers[i];
-                playerNameTexts[i].text = player.DisplayName;
+                playerNameTexts[i].text = $"{player.DisplayName}";
                 playerReadyTexts[i].text = player.IsReady ? "<color=green>Ready</color>" : "<color=red>Not Ready</color>";
+
+                var sprite = LoadAvatar(SteamFriends.GetLargeFriendAvatar(new CSteamID(player.SteamID)));
+
+                if (sprite != null)
+                {
+                    playerAvatars[i].sprite = sprite;
+                    playerAvatars[i].gameObject.SetActive(true);
+                }
+                else
+                {
+                    playerAvatars[i].gameObject.SetActive(false);
+                }
             }
             else
             {
                 playerNameTexts[i].text = "Waiting for player...";
                 playerReadyTexts[i].text = string.Empty;
+                playerAvatars[i].gameObject.SetActive(false);
             }
         }
     }
@@ -134,7 +208,7 @@ public class LobbyPlayer : NetworkBehaviour
 
     public void OnBackButtonPressed()
     {
-        if(isLeader)
+        if (isLeader)
         {
             CustomNetworkManager.Instance.StopHost();
         }
@@ -152,6 +226,12 @@ public class LobbyPlayer : NetworkBehaviour
     private void CmdSetDisplayName(string displayName)
     {
         DisplayName = displayName;
+    }
+
+    [Command]
+    private void CmdSetSteamID(ulong steamID)
+    {
+        SteamID = steamID;
     }
 
     [Command]
@@ -175,5 +255,55 @@ public class LobbyPlayer : NetworkBehaviour
     }
 
     #endregion Commands
+
+    private void OnAvatarImageLoaded(AvatarImageLoaded_t callback)
+    {
+        UpdateDisplay();
+    } 
+
+    private Sprite LoadAvatar(int imageID)
+    {
+        Debug.Log($"Loading [{imageID}] for [{DisplayName}]");
+
+        if (imageID != -1)
+        {
+            if (SteamUtils.GetImageSize(imageID, out uint width, out uint height))
+            {
+                var size = width * height * 4;
+                byte[] image = new byte[size];
+                if (SteamUtils.GetImageRGBA(imageID, image, (int)size))
+                {
+                    var texture = new Texture2D((int)width, (int)height, TextureFormat.RGBA32, false, true);
+                    texture.LoadRawTextureData(image);
+                    texture.Apply();
+                    return Sprite.Create(
+                        texture,
+                        new Rect(0, 0, texture.width, texture.height),
+                        new Vector2(texture.width / 2f, texture.height / 2f)
+                        );
+                }
+            }
+        }
+        
+        return null;
+    }
+
+    private void SetPing(int ping)
+    {
+        if(isServer)
+        {
+            Ping = ping;
+        }
+        else
+        {
+            CmdSetPing(ping);
+        }
+    }
+
+    [Command]
+    private void CmdSetPing(int ping)
+    {
+        Ping = ping;
+    }
 }
 

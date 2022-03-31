@@ -69,7 +69,7 @@ public class Player : NetworkBehaviour
         DontDestroyOnLoad(this);
 
         SceneManager.sceneLoaded += OnSceneLoaded;
-
+        
         rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
 
@@ -82,6 +82,7 @@ public class Player : NetworkBehaviour
         }
         else
         {
+            cam.GetComponent<AudioListener>().enabled = false;
             cam.enabled = false;
         }
     }

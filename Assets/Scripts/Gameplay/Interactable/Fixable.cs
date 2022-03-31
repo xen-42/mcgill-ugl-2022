@@ -46,7 +46,6 @@ public class Fixable : NetworkBehaviour
         ActionManager.FireOnNextUpdate(() => _interactable.IsInteractable = IsBroken);
     }
 
-    [Server]
     private void Update()
     {
         if (!isServer) return;

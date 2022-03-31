@@ -18,7 +18,7 @@ public class SteamLobby : MonoBehaviour
 
     private CustomNetworkManager _networkManager;
 
-    public string LobbyID { get; private set; }
+    public CSteamID LobbyID { get; private set; }
 
     private void Start()
     {
@@ -41,7 +41,8 @@ public class SteamLobby : MonoBehaviour
         try
         {
             Debug.Log($"Trying to join {Convert.ToUInt64(code)}");
-            SteamMatchmaking.JoinLobby(new CSteamID(Convert.ToUInt64(code)));
+            var lobby = new CSteamID(Convert.ToUInt64(code));
+            SteamMatchmaking.JoinLobby(lobby);
             return true;
         }
         catch (Exception e)
@@ -68,7 +69,7 @@ public class SteamLobby : MonoBehaviour
         SteamMatchmaking.SetLobbyData(lobbyID, HostAddressKey, SteamUser.GetSteamID().ToString());
         SteamMatchmaking.SetLobbyData(lobbyID, "name", SteamFriends.GetPersonaName().ToString());
 
-        LobbyID = lobbyID.ToString();
+        LobbyID = lobbyID;
 
         Debug.Log($"Created lobby {lobbyID.m_SteamID}");
     }
@@ -101,6 +102,8 @@ public class SteamLobby : MonoBehaviour
             }
 
             _networkManager.StartClient();
+
+            LobbyID = new CSteamID(callback.m_ulSteamIDLobby);
         }
     }
 }

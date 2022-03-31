@@ -37,8 +37,6 @@ public class GameDirector : NetworkBehaviour
     // Stress is out of 100
     private float _stress;
     private bool _isStressDecreasing;
-    [SerializeField] private float _stressDecreasingTime = 0.5f;
-    private bool _stressed_out;
     private PostProcessingController _postProcessingController;
     public float CurrentStress => _stress;
     private bool apply_stress;
@@ -64,7 +62,6 @@ public class GameDirector : NetworkBehaviour
 
         _nextDistraction = timeUntilFirstDistraction;
 
-        _stressed_out = false;
         _postProcessingController = GameObject.Find("GlobalVolume").GetComponent<PostProcessingController>();
 
         _postProcessingController.DisableAllOverrides();
