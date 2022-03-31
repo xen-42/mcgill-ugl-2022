@@ -40,5 +40,16 @@ public class ScannerMinigame : DragDropMinigame
         closedScanner.SetActive(true);
 
         _completed = true;
+
+        EventManager.TriggerEvent("MinigameComplete");
+        OnCompleteMinigame.Invoke();
+    }
+
+    public override void CompleteMinigame()
+    {
+        InputManager.CurrentInputMode = InputManager.InputMode.Player;
+
+        // Once a minigame is completed we just dispose of it
+        if (gameObject != null) Destroy(gameObject);
     }
 }
