@@ -22,4 +22,8 @@ public class MainMenu : MonoBehaviour
         //Only work when the game is built, force quits the app
         Application.Quit();
     }
+
+    public void ShowCredits(){
+        SceneManager.LoadScene(Scenes.Credits);
+    }
 }
