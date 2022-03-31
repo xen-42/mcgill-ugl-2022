@@ -116,7 +116,7 @@ public class LobbyPlayer : NetworkBehaviour
         Debug.Log($"Steam ID was changed to [{newValue}] for [{DisplayName}]");
         SteamID = newValue;
         var cSteamID = new CSteamID(newValue);
-        LoadAvatar(SteamFriends.GetLargeFriendAvatar(cSteamID));
+        SetAvatar(SteamFriends.GetLargeFriendAvatar(cSteamID));
     }
 
     public void Update()
@@ -250,6 +250,30 @@ public class LobbyPlayer : NetworkBehaviour
         CustomNetworkManager.Instance.StartGame();
     }
 
+    public void SetAvatar(int imageID)
+    {
+        if(isServer)
+        {
+            RpcSetAvatar(imageID);
+        }
+        else
+        {
+            CmdSetAvatar(imageID);
+        }
+    }
+
+    [Command]
+    public void CmdSetAvatar(int imageID)
+    {
+        RpcSetAvatar(imageID);
+    }
+
+    [ClientRpc]
+    public void RpcSetAvatar(int imageID)
+    {
+        LoadAvatar(imageID);
+    }
+
     #endregion Commands
 
     private void OnAvatarImageLoaded(AvatarImageLoaded_t callback)
@@ -257,9 +281,9 @@ public class LobbyPlayer : NetworkBehaviour
         if (callback.m_steamID.m_SteamID == SteamID)
         {
             Debug.Log("Updating avatar from callback");
-            LoadAvatar(callback.m_iImage);
+            SetAvatar(callback.m_iImage);
         }
-    }
+    } 
 
     private bool LoadAvatar(int imageID)
     {
