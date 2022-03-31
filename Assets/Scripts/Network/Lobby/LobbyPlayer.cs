@@ -114,6 +114,7 @@ public class LobbyPlayer : NetworkBehaviour
     public void HandleSteamIDChanged(ulong oldValue, ulong newValue)
     {
         Debug.Log($"Steam ID was changed to [{newValue}] for [{DisplayName}]");
+        SteamID = newValue;
         var cSteamID = new CSteamID(newValue);
         LoadAvatar(SteamFriends.GetLargeFriendAvatar(cSteamID));
     }
@@ -255,6 +256,7 @@ public class LobbyPlayer : NetworkBehaviour
     {
         if (callback.m_steamID.m_SteamID == SteamID)
         {
+            Debug.Log("Updating avatar from callback");
             LoadAvatar(callback.m_iImage);
         }
     }
