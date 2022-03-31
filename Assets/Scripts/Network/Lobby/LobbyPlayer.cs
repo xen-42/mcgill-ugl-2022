@@ -77,6 +77,9 @@ public class LobbyPlayer : NetworkBehaviour
     {
         CmdSetDisplayName(PlayerNameInput.DisplayName);
 
+        // If we have authority then this is us
+        CmdSetSteamID(SteamUser.GetSteamID().m_SteamID);
+
         lobbyUI.SetActive(true);
     }
 
@@ -221,6 +224,12 @@ public class LobbyPlayer : NetworkBehaviour
     }
 
     [Command]
+    private void CmdSetSteamID(ulong steamID)
+    {
+        SteamID = steamID;
+    }
+
+    [Command]
     public void CmdReadyUp()
     {
         IsReady = !IsReady;
@@ -271,8 +280,6 @@ public class LobbyPlayer : NetworkBehaviour
                         new Vector2(texture.width / 2f, texture.height / 2f)
                         );
 
-                    Debug.Log($"Loaded image [{imageID}]");
-
                     UpdateDisplay();
 
                     return true;
@@ -280,7 +287,6 @@ public class LobbyPlayer : NetworkBehaviour
             }
         }
         
-        Debug.Log($"Failed to loaded image [{imageID}]");
         return false;
     }
 
