@@ -4236,6 +4236,10 @@ PrefabInstance:
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
+    - target: {fileID: 7713412729713608064, guid: f466d4f4e47e1fc4bb7dcb29d53d89aa, type: 3}
+      propertyPath: plantSelection
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f466d4f4e47e1fc4bb7dcb29d53d89aa, type: 3}
 --- !u!1 &1027872426 stripped
@@ -7877,11 +7881,10 @@ MonoBehaviour:
   timeLimit: 180
   minTimeBetweenDistractions: 10
   maxTimeBetweenDistractions: 30
-  timeUntilFirstDistraction: 20
-  stressPerSecond: 3
-  stressExponent: 2
+  timeUntilFirstDistraction: 1
+  stressPerSecond: 2
+  stressExponent: 1
   assignmentsGoal: 5
-  _stressDecreasingTime: 0.5
   scanSound: {fileID: 2571412278634998059}
   heartbeatSound: {fileID: 1692160703}
   clockSound: {fileID: 1692160704}
@@ -12292,6 +12295,10 @@ PrefabInstance:
     - target: {fileID: 3121370866660294350, guid: f466d4f4e47e1fc4bb7dcb29d53d89aa, type: 3}
       propertyPath: sceneId
       value: 1912130239
+      objectReference: {fileID: 0}
+    - target: {fileID: 7713412729713608064, guid: f466d4f4e47e1fc4bb7dcb29d53d89aa, type: 3}
+      propertyPath: plantSelection
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f466d4f4e47e1fc4bb7dcb29d53d89aa, type: 3}

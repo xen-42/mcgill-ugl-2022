@@ -4,12 +4,10 @@ using UnityEngine;
 
 public class DragDropMinigame : Minigame
 {
-    [SerializeField]
-    public Holdable2D holdableObject;
+    [SerializeField] public Holdable2D holdableObject;
 
-    [SerializeField]
-    public Collider dropCollider;
-    private Collider _heldCollider;
+    [SerializeField] public Collider dropCollider;
+    protected Collider _heldCollider;
 
     private void Awake()
     {
