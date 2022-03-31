@@ -253,7 +253,7 @@ public class LobbyPlayer : NetworkBehaviour
 
     private void OnAvatarImageLoaded(AvatarImageLoaded_t callback)
     {
-        if (callback.m_steamID.m_SteamID == SteamUser.GetSteamID().m_SteamID)
+        if (callback.m_steamID.m_SteamID == SteamID)
         {
             LoadAvatar(callback.m_iImage);
         }
