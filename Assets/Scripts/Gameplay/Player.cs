@@ -189,7 +189,7 @@ public class Player : NetworkBehaviour
 
     private void FixedUpdate()
     {
-        if (!isServer) return;
+        //if (!isServer) return;
 
         var actualMoveSpeed = Mathf.Lerp(moveSpeed, 1, _serverSideStressModifier * _serverSideStressModifier);
 
