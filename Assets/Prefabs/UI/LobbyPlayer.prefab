@@ -311,6 +311,12 @@ MonoBehaviour:
   DisplayName: Loading...
   IsReady: 0
   SteamID: 0
+  plantSelection: {fileID: 6806611014771868785}
+  drinkSelection: {fileID: 8573254640498334268}
+  posterSelection: {fileID: 2769933147627492347}
+  plant: 0
+  drink: 0
+  poster: 0
 --- !u!1 &1153423825658112260
 GameObject:
   m_ObjectHideFlags: 0
@@ -447,6 +453,9 @@ MonoBehaviour:
   leftButton: {fileID: 4700679714060704697}
   rightButton: {fileID: 1209440473616522221}
   optionID: PosterChoice
+  OnSetSelection:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &1765671347228004399
 GameObject:
   m_ObjectHideFlags: 0
@@ -2652,6 +2661,9 @@ MonoBehaviour:
   leftButton: {fileID: 7030887758019315366}
   rightButton: {fileID: 5509997070464242238}
   optionID: DrinkChoice
+  OnSetSelection:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &5095255018018997561
 GameObject:
   m_ObjectHideFlags: 0
@@ -3817,6 +3829,9 @@ MonoBehaviour:
   leftButton: {fileID: 4646849978918269191}
   rightButton: {fileID: 5290109891955736417}
   optionID: PlantChoice
+  OnSetSelection:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &7562576646933663626
 GameObject:
   m_ObjectHideFlags: 0

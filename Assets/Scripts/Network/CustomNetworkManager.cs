@@ -258,11 +258,20 @@ public class CustomNetworkManager : NetworkManager
         {
             for (int i = lobbyPlayers.Count - 1; i >= 0; i--)
             {
-                var conn = lobbyPlayers[i].connectionToClient;
+                var lobbyPlayer = lobbyPlayers[i];
+
+                var conn = lobbyPlayer.connectionToClient;
                 var player = Instantiate(gamePlayerPrefab);
 
                 // Disable the audio listener until we get to the game scene
                 player.cam.GetComponent<AudioListener>().enabled = false;
+
+                // Pass over the players customization choices
+                player.plant = lobbyPlayer.plant;
+                player.drink = lobbyPlayer.drink;
+                player.poster = lobbyPlayer.poster;
+
+                Debug.Log($"Copied over customization options: {player.plant}, {player.drink}, {player.poster}");
 
                 NetworkServer.Destroy(conn.identity.gameObject);
                 NetworkServer.ReplacePlayerForConnection(conn, player.gameObject);

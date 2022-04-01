@@ -6,19 +6,19 @@ using UnityEngine;
 
 public class PlayerSpawner : NetworkBehaviour
 {
-    private static List<Transform> spawnPoints = new List<Transform>();
+    private static List<PlayerSpawnPoint> spawnPoints = new List<PlayerSpawnPoint>();
 
     private int nextIndex = 0;
 
-    public static void AddSpawnPoint(Transform transform)
+    public static void AddSpawnPoint(PlayerSpawnPoint spawnPoint)
     {
-        spawnPoints.Add(transform);
+        spawnPoints.Add(spawnPoint);
 
-        spawnPoints = spawnPoints.OrderBy(x => x.GetSiblingIndex()).ToList();
+        spawnPoints = spawnPoints.OrderBy(x => x.transform.GetSiblingIndex()).ToList();
     }
-    public static void RemoveSpawnPoint(Transform transform)
+    public static void RemoveSpawnPoint(PlayerSpawnPoint spawnPoint)
     {
-        spawnPoints.Remove(transform);
+        spawnPoints.Remove(spawnPoint);
     }
 
     public override void OnStartServer()
@@ -35,7 +35,7 @@ public class PlayerSpawner : NetworkBehaviour
     [Server]
     public void SpawnPlayer(NetworkConnection conn)
     {
-        Transform spawnPoint = spawnPoints.ElementAtOrDefault(nextIndex);
+        PlayerSpawnPoint spawnPoint = spawnPoints.ElementAtOrDefault(nextIndex);
 
         if(spawnPoint == null)
         {
@@ -43,13 +43,13 @@ public class PlayerSpawner : NetworkBehaviour
             return;
         }
 
-        RpcSetPlayerPosition(conn.identity.netId, spawnPoint.position, spawnPoint.rotation);
+        RpcSpawnPlayer(conn.identity.netId, spawnPoint.transform.position, spawnPoint.transform.rotation);
 
         nextIndex++;
     }
 
     [ClientRpc]
-    private void RpcSetPlayerPosition(uint id, Vector3 pos, Quaternion rot)
+    private void RpcSpawnPlayer(uint id, Vector3 pos, Quaternion rot)
     {
         foreach (var player in CustomNetworkManager.Instance.players)
         {

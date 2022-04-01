@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.UI;
 
 public class UISelector : MonoBehaviour
@@ -10,6 +11,8 @@ public class UISelector : MonoBehaviour
     [SerializeField] public Button leftButton;
     [SerializeField] public Button rightButton;
     [SerializeField] public string optionID;
+
+    public UnityEvent<int> OnSetSelection = new UnityEvent<int>();
 
     public int Selection { get; private set; }
 
@@ -27,6 +30,9 @@ public class UISelector : MonoBehaviour
 
         leftButton.onClick.AddListener(OnLeftButtonClick);
         rightButton.onClick.AddListener(OnRightButtonClick);
+
+        // In case the player just uses the default:
+        OnSetSelection.Invoke(Selection);
     }
 
     void OnDestroy()
@@ -55,6 +61,8 @@ public class UISelector : MonoBehaviour
         Selection = newSelection;
 
         PlayerPrefs.SetInt(optionID, Selection);
+
+        OnSetSelection.Invoke(Selection);
     }
 
     private int Posmod(int x, int m)

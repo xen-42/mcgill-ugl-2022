@@ -63,6 +63,11 @@ public class Player : NetworkBehaviour
 
     public static Player Instance { get; private set; }
 
+    // Customization options
+    [SyncVar] public PlayerCustomization.PLANT plant;
+    [SyncVar] public PlayerCustomization.DRINK drink;
+    [SyncVar] public PlayerCustomization.POSTER poster;
+
     private void Start()
     {
         // We do this because we create the player in the lobby scene then put them in the play scene
@@ -83,7 +88,7 @@ public class Player : NetworkBehaviour
         else
         {
             GameObject.Destroy(cam.GetComponent<AudioListener>());
-            GameObject.Destroy(cam);
+            cam.enabled = false;
         }
     }
 

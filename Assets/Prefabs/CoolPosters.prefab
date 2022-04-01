@@ -651,6 +651,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4690709189951136498}
+  - component: {fileID: 1148325961909529852}
   m_Layer: 6
   m_Name: CoolPosters
   m_TagString: Untagged
@@ -665,7 +666,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2956679434268314729}
-  m_LocalRotation: {x: -0, y: 1, z: -0, w: 0}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 29.04, y: 4.85, z: -20.24}
   m_LocalScale: {x: 2, y: 4, z: 1}
   m_Children:
@@ -674,7 +675,33 @@ Transform:
   - {fileID: 7496420969837416293}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &1148325961909529852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2956679434268314729}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89acaaa1e13b63d41bb955b9ba2c755b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  Set1:
+  - {fileID: 1331955703746506534}
+  - {fileID: 2812080517451743942}
+  - {fileID: 6453003925048976280}
+  Set2:
+  - {fileID: 4944195801347302394}
+  - {fileID: 2224569065353168960}
+  - {fileID: 1191628527954443474}
+  Set3:
+  - {fileID: 4317662005185373363}
+  - {fileID: 894962315444339457}
+  - {fileID: 199153471441052274}
 --- !u!1 &4317662005185373363
 GameObject:
   m_ObjectHideFlags: 0

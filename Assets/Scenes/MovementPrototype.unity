@@ -403,7 +403,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh147380
+  m_Name: pb_Mesh167816
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1378,7 +1378,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh147344
+  m_Name: pb_Mesh167780
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3609,7 +3609,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh147156
+  m_Name: pb_Mesh167592
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -4141,7 +4141,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3121370866660294339, guid: f466d4f4e47e1fc4bb7dcb29d53d89aa, type: 3}
       propertyPath: m_Name
-      value: Player2Plant
+      value: CoolPlant
       objectReference: {fileID: 0}
     - target: {fileID: 3121370866660294339, guid: f466d4f4e47e1fc4bb7dcb29d53d89aa, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -4401,7 +4401,7 @@ GameObject:
   - component: {fileID: 1034714570}
   - component: {fileID: 1034714571}
   m_Layer: 6
-  m_Name: Player2Spawn
+  m_Name: CoolSpawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -4433,6 +4433,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d75214efe51c9e4c80bb3c884fb6da6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  plant: {fileID: 0}
+  drink: {fileID: 0}
+  posters: {fileID: 1148325961909529842}
 --- !u!1 &1099482127
 GameObject:
   m_ObjectHideFlags: 0
@@ -4557,7 +4560,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7454582958463281566, guid: ebbfb724032ae064c8ca8bbe267132af, type: 3}
       propertyPath: m_Name
-      value: teapotSmooth (1)
+      value: WarmDrink
       objectReference: {fileID: 0}
     - target: {fileID: 7454582958463281566, guid: ebbfb724032ae064c8ca8bbe267132af, type: 3}
       propertyPath: m_Layer
@@ -6382,7 +6385,7 @@ GameObject:
   - component: {fileID: 1297179640}
   - component: {fileID: 1297179641}
   m_Layer: 6
-  m_Name: Player1Spawn
+  m_Name: WarmSpawn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -6414,6 +6417,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0d75214efe51c9e4c80bb3c884fb6da6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  plant: {fileID: 0}
+  drink: {fileID: 0}
+  posters: {fileID: 3845949406240043201}
 --- !u!1001 &1310135796
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -6523,7 +6529,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh147270
+  m_Name: pb_Mesh167706
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -8211,7 +8217,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh147202
+  m_Name: pb_Mesh167638
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -10319,7 +10325,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh147112
+  m_Name: pb_Mesh167548
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -10886,7 +10892,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh147126
+  m_Name: pb_Mesh167562
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -11914,7 +11920,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 82976909455380118, guid: a80116eeff66739439ea03e96b97a712, type: 3}
       propertyPath: m_Name
-      value: CoffeTable
+      value: CoffeeTable
       objectReference: {fileID: 0}
     - target: {fileID: 82976909455380118, guid: a80116eeff66739439ea03e96b97a712, type: 3}
       propertyPath: m_Layer
@@ -12002,6 +12008,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 519424875}
     m_Modifications:
+    - target: {fileID: -7215996090720696518, guid: 11f540f79e03d624c95544c8bbc2dcfb, type: 3}
+      propertyPath: sceneId
+      value: 1225635869
+      objectReference: {fileID: 0}
     - target: {fileID: 2956679434268314729, guid: 11f540f79e03d624c95544c8bbc2dcfb, type: 3}
       propertyPath: m_Name
       value: CoolPosters
@@ -12057,6 +12067,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4690709189951136498, guid: 11f540f79e03d624c95544c8bbc2dcfb, type: 3}
   m_PrefabInstance: {fileID: 1148325961909529840}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1148325961909529842 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1148325961909529852, guid: 11f540f79e03d624c95544c8bbc2dcfb, type: 3}
+  m_PrefabInstance: {fileID: 1148325961909529840}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89acaaa1e13b63d41bb955b9ba2c755b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1371549147914494036
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12287,7 +12308,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3121370866660294339, guid: f466d4f4e47e1fc4bb7dcb29d53d89aa, type: 3}
       propertyPath: m_Name
-      value: Player1Plant
+      value: WarmPlant
       objectReference: {fileID: 0}
     - target: {fileID: 3121370866660294350, guid: f466d4f4e47e1fc4bb7dcb29d53d89aa, type: 3}
       propertyPath: sceneId
@@ -12375,6 +12396,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 519424875}
     m_Modifications:
+    - target: {fileID: -1086752072515542057, guid: 5916da6d7c276dc4990c2ac3f85d3856, type: 3}
+      propertyPath: sceneId
+      value: 262885309
+      objectReference: {fileID: 0}
     - target: {fileID: 2257127502547454950, guid: 5916da6d7c276dc4990c2ac3f85d3856, type: 3}
       propertyPath: m_Name
       value: WarmPosters
@@ -12430,6 +12455,17 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 7519013884056495370, guid: 5916da6d7c276dc4990c2ac3f85d3856, type: 3}
   m_PrefabInstance: {fileID: 3845949406240043199}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &3845949406240043201 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 3845949406240043211, guid: 5916da6d7c276dc4990c2ac3f85d3856, type: 3}
+  m_PrefabInstance: {fileID: 3845949406240043199}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 89acaaa1e13b63d41bb955b9ba2c755b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4481151090687175614
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -12655,7 +12691,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 7296359565223465773, guid: 85780d7075e3acd4396bd69d81987e7c, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 85780d7075e3acd4396bd69d81987e7c, type: 3}
 --- !u!1001 &7760430470969521704
 PrefabInstance:
@@ -12674,7 +12711,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7454582958463281566, guid: ebbfb724032ae064c8ca8bbe267132af, type: 3}
       propertyPath: m_Name
-      value: teapotSmooth
+      value: CoolDrink
       objectReference: {fileID: 0}
     - target: {fileID: 7798034539100648228, guid: ebbfb724032ae064c8ca8bbe267132af, type: 3}
       propertyPath: m_RootOrder
