@@ -50,7 +50,7 @@ public class CustomNetworkManager : NetworkManager
     private FizzySteamworks _steamTransport;
     private LatencySimulation _latencySimulation;
 
-    public const bool ENABLE_LATENCY_SIMULATION = true;
+    public const bool ENABLE_LATENCY_SIMULATION = false;
 
     public void SetTransport(TransportType type)
     {
