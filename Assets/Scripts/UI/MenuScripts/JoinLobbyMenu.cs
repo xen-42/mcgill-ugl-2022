@@ -157,5 +157,6 @@ namespace Assets.Scripts.UI.MenuScripts
             // Just reload the scene
             SceneManager.LoadScene(Scenes.Lobby);
         }
+        
     }
 }
