@@ -29,6 +29,7 @@ public class Fixable : NetworkBehaviour
     [SyncVar] private float _cooldown;
 
     [SerializeField] public float stressReduction = 20f;
+    public ParticleSystem _particleSystemBroken;
 
     private void Awake()
     {
@@ -71,6 +72,11 @@ public class Fixable : NetworkBehaviour
         {
             ambientNoise.Stop();
         }
+        if (_particleSystemBroken != null){
+            _particleSystemBroken.Play();
+            _particleSystemBroken.loop = true;
+        }
+
         SwitchState(brokenState.name);
     }
 
@@ -84,6 +90,9 @@ public class Fixable : NetworkBehaviour
         if (ambientNoise != null)
         {
             ambientNoise.Play();
+        }
+        if (_particleSystemBroken != null){
+            _particleSystemBroken.Stop();
         }
         SwitchState(fixedState.name);
     }
