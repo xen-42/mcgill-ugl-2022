@@ -4160,9 +4160,17 @@ PrefabInstance:
       value: 4294967295
       objectReference: {fileID: 0}
     - target: {fileID: 6574202264360783843, guid: f466d4f4e47e1fc4bb7dcb29d53d89aa, type: 3}
+      propertyPath: brokenCooldown
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6574202264360783843, guid: f466d4f4e47e1fc4bb7dcb29d53d89aa, type: 3}
       propertyPath: fixedStateSound
       value: 
       objectReference: {fileID: 1027872428}
+    - target: {fileID: 6574202264360783843, guid: f466d4f4e47e1fc4bb7dcb29d53d89aa, type: 3}
+      propertyPath: stressReduction
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6574202264360783843, guid: f466d4f4e47e1fc4bb7dcb29d53d89aa, type: 3}
       propertyPath: brokenStateSound
       value: 
@@ -12324,6 +12332,14 @@ PrefabInstance:
       propertyPath: sceneId
       value: 1912130239
       objectReference: {fileID: 0}
+    - target: {fileID: 6574202264360783843, guid: f466d4f4e47e1fc4bb7dcb29d53d89aa, type: 3}
+      propertyPath: brokenCooldown
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 6574202264360783843, guid: f466d4f4e47e1fc4bb7dcb29d53d89aa, type: 3}
+      propertyPath: stressReduction
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7713412729713608064, guid: f466d4f4e47e1fc4bb7dcb29d53d89aa, type: 3}
       propertyPath: plantSelection
       value: 5
@@ -12494,6 +12510,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 519424875}
     m_Modifications:
+    - target: {fileID: 4481151090819568734, guid: caa60d3dbfca13249a03865df6ceb0a6, type: 3}
+      propertyPath: brokenCooldown
+      value: 15
+      objectReference: {fileID: 0}
+    - target: {fileID: 4481151090819568734, guid: caa60d3dbfca13249a03865df6ceb0a6, type: 3}
+      propertyPath: stressReduction
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 4481151090819568736, guid: caa60d3dbfca13249a03865df6ceb0a6, type: 3}
       propertyPath: sceneId
       value: 3329639306
