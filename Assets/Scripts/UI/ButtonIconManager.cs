@@ -63,7 +63,7 @@ public static class ButtonIconManager
         {
             if (_keyboardPrompts.ContainsKey(key))
             {
-                Debug.LogWarning($"Keyboard button dictionary alread contains {key}");
+                //Debug.LogWarning($"Keyboard button dictionary alread contains {key}");
                 continue;
             }
 

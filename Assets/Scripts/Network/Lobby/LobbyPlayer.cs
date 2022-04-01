@@ -27,6 +27,15 @@ public class LobbyPlayer : NetworkBehaviour
     [SyncVar(hook = nameof(HandleReadyStatusChanged))] public bool IsReady = false;
     [SyncVar(hook = nameof(HandleSteamIDChanged))] public ulong SteamID;
 
+    [Header("Customization")]
+    [SerializeField] UISelector plantSelection;
+    [SerializeField] UISelector drinkSelection;
+    [SerializeField] UISelector posterSelection;
+
+    [SyncVar] public PlayerCustomization.PLANT plant;
+    [SyncVar] public PlayerCustomization.DRINK drink;
+    [SyncVar] public PlayerCustomization.POSTER poster;
+
     protected Callback<AvatarImageLoaded_t> _avatarImageLoaded;
 
     private bool _connected = false;
@@ -56,6 +65,19 @@ public class LobbyPlayer : NetworkBehaviour
         }
 
         UpdateDisplay();
+
+        plantSelection.OnSetSelection.AddListener(OnSetPlantSelection);
+        drinkSelection.OnSetSelection.AddListener(OnSetDrinkSelection);
+        posterSelection.OnSetSelection.AddListener(OnSetPosterSelection);
+
+        startGameButton.gameObject.SetActive(isLeader);
+    }
+
+    private void OnDestroy()
+    {
+        plantSelection.OnSetSelection.RemoveListener(OnSetPlantSelection);
+        drinkSelection.OnSetSelection.RemoveListener(OnSetDrinkSelection);
+        posterSelection.OnSetSelection.RemoveListener(OnSetPosterSelection);
     }
 
     [SyncVar] private bool isLeader;
@@ -305,5 +327,63 @@ public class LobbyPlayer : NetworkBehaviour
     {
         Ping = ping;
     }
+
+    #region Customization Stuff
+
+    public void OnSetPlantSelection(int selection)
+    {
+        if(isServer)
+        {
+            plant = (PlayerCustomization.PLANT)selection;
+        }
+        else
+        {
+            CmdSetPlantSelection(selection);
+        }
+    }
+
+    [Command]
+    public void CmdSetPlantSelection(int selection)
+    {
+        plant = (PlayerCustomization.PLANT)selection;
+    }
+
+    public void OnSetDrinkSelection(int selection)
+    {
+        if (isServer)
+        {
+            drink = (PlayerCustomization.DRINK)selection;
+        }
+        else
+        {
+            CmdSetDrinkSelection(selection);
+        }
+    }
+
+    [Command]
+    public void CmdSetDrinkSelection(int selection)
+    {
+        drink = (PlayerCustomization.DRINK)selection;
+    }
+
+    public void OnSetPosterSelection(int selection)
+    {
+        if (isServer)
+        {
+            poster = (PlayerCustomization.POSTER)selection;
+        }
+        else
+        {
+            CmdSetPosterSelection(selection);
+        }
+    }
+
+    [Command]
+    public void CmdSetPosterSelection(int selection)
+    {
+        poster = (PlayerCustomization.POSTER)selection;
+    }
+
+    #endregion Customization Stuff
 }
 
