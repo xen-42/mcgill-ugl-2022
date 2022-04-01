@@ -11,6 +11,8 @@ public class Holdable : Interactable
 
     private Rigidbody _rb;
     private Collider _collider;
+    
+    [SerializeField] public float throwForce = 1000f;
 
     protected override InputCommand InputCommand { get => InputCommand.PickUp; }
 
@@ -52,7 +54,17 @@ public class Holdable : Interactable
         var player = Player.Instance;
         if (InputManager.IsCommandJustPressed(InputCommand) && player.heldObject == this)
         {
-            player.CmdDrop();
+            if (gameObject.name.Equals("Chair")){
+                  player.CmdDrop();
+                  this._rb.isKinematic = false;
+                 this._rb.AddForce(player.cam.transform.forward.normalized * throwForce);
+                
+                  
+             
+            }
+
+          
+            
         }
     }
 

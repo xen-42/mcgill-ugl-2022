@@ -6,6 +6,8 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.Rendering;
 
 public class GameDirector : NetworkBehaviour
 {
@@ -49,25 +51,40 @@ public class GameDirector : NetworkBehaviour
     [SerializeField] public AudioSource clockSound;
     private bool under30s;
 
+    //Day -> Colour Changes
+    public Light[] lightreference;
+    public Light[] lightCopy;
+    //Colours
+    [SerializeField] public Color endColor;
+    [SerializeField] public Color startingColor;
+    [SerializeField] public float maxIntensity = 50f;
+    [SerializeField] public float minInensityOne = 2f;
+    [SerializeField] public float minInensityTwo = 20f;
+    
+   
     private void Awake()
     {
         Instance = this;
     }
 
     // Start is called before the first frame update
-    private void Start()
+    private async void Start()
     {
+       
+      
+
         _distractions = FindObjectsOfType<Fixable>().ToList();
         Random.InitState((int)DateTime.Now.Ticks);
 
         _nextDistraction = timeUntilFirstDistraction;
 
         _postProcessingController = GameObject.Find("GlobalVolume").GetComponent<PostProcessingController>();
-
         _postProcessingController.DisableAllOverrides();
         apply_stress = false;
-
         under30s = false;
+       
+
+
     }
 
     public void LowerStressImmediate(float change)
@@ -89,7 +106,7 @@ public class GameDirector : NetworkBehaviour
         NumAssignmentsScanned += 1;
     }
 
-    private void Update()
+    private async void Update()
     {
         var available = _distractions.Where(x => x.CanBreak).ToList();
         _numDistractions = _distractions.Count - available.Count;
@@ -162,6 +179,14 @@ public class GameDirector : NetworkBehaviour
 
         Player.Instance.stressModifier = Mathf.Clamp((_stress - 50f) / 50f, 0, 1);
 
+        //Changing colour of lights
+        
+        for (int i = 0; i < lightreference.Length; i++){
+        lightreference[i].color = Color.Lerp(startingColor, endColor,  _countdown/timeLimit);
+        }
+         lightreference[0].intensity = Mathf.Lerp(minInensityTwo, maxIntensity,  _countdown/timeLimit);
+    
+      
         // Game Over       
         if (timeLimit <= _countdown)
         {

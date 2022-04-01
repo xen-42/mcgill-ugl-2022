@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -97,7 +97,7 @@ LightmapSettings:
     m_ExportTrainingData: 0
     m_TrainingDataDestination: TrainingData
     m_LightProbeSampleCountMultiplier: 4
-  m_LightingDataAsset: {fileID: 0}
+  m_LightingDataAsset: {fileID: 112000000, guid: e6c8c805030b9774faa42ef73a4bc362, type: 2}
   m_LightingSettings: {fileID: 0}
 --- !u!196 &4
 NavMeshSettings:
@@ -1019,8 +1019,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 693e44a08eb9b7c45be77dfbcd14afdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  lobbyMenu: Assets/Scenes/LobbyMenu.unity
-  landingPagePanel: {fileID: 424478602}
 --- !u!1 &438593890
 GameObject:
   m_ObjectHideFlags: 0
@@ -2977,6 +2975,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d85bc061277572439316701bc5e4fd5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  GamePaused: 0
   pauseMenuUI: {fileID: 1407011846}
   audioMixer: {fileID: 24100000, guid: 856e5d17e210af24283ff12712f44f61, type: 2}
   resolutionDropdown: {fileID: 1169857555}

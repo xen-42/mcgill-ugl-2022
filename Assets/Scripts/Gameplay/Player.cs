@@ -30,7 +30,7 @@ public class Player : NetworkBehaviour
 
     RaycastHit slopeHit;
     [Header("Camera Adjusts")]
-    [SerializeField] private Camera cam;
+    [SerializeField] public Camera cam;
     [SerializeField] private float fastfov;
     [SerializeField] private float fov;
     [SerializeField] private float fovaccel;
