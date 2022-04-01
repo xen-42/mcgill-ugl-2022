@@ -59,8 +59,8 @@ public class GameDirector : NetworkBehaviour
     [SerializeField] public float maxIntensity = 50f;
     [SerializeField] public float minInensityOne = 2f;
     [SerializeField] public float minInensityTwo = 20f;
-    
-   
+
+
     private void Awake()
     {
         Instance = this;
@@ -69,8 +69,8 @@ public class GameDirector : NetworkBehaviour
     // Start is called before the first frame update
     private async void Start()
     {
-       
-      
+
+
 
         _distractions = FindObjectsOfType<Fixable>().ToList();
         Random.InitState((int)DateTime.Now.Ticks);
@@ -81,7 +81,7 @@ public class GameDirector : NetworkBehaviour
         _postProcessingController.DisableAllOverrides();
         apply_stress = false;
         under30s = false;
-       
+
 
 
     }
@@ -99,7 +99,8 @@ public class GameDirector : NetworkBehaviour
 
     public void ScanAssignment()
     {
-        if (scanSound != null){
+        if (scanSound != null)
+        {
             scanSound.Play();
         }
         NumAssignmentsScanned += 1;
@@ -138,9 +139,10 @@ public class GameDirector : NetworkBehaviour
         // Stress vision -----------------------------------
         // Enable stress vision
         if (_stress > 49 && _stress < 101 && !apply_stress)
-		{
+        {
             apply_stress = true;
-            if (heartbeatSound != null){
+            if (heartbeatSound != null)
+            {
                 heartbeatSound.Play();
             }
             _postProcessingController.EnableAllOverrides();
@@ -163,26 +165,28 @@ public class GameDirector : NetworkBehaviour
         if (apply_stress)
         {
             float temp_stress = _stress - 50;
-            heartbeatSound.volume = (float) temp_stress * 0.02f;
+            heartbeatSound.volume = (float)temp_stress * 0.02f;
             _postProcessingController.UpdateStressVision(temp_stress);
         }
 
-        if (!under30s && _countdown >= timeLimit - 30f){
+        if (!under30s && _countdown >= timeLimit - 30f)
+        {
             under30s = true;
             clockSound.Play();
         }
-        
+
 
         Player.Instance.stressModifier = Mathf.Clamp((_stress - 50f) / 50f, 0, 1);
 
         //Changing colour of lights
-        
-        for (int i = 0; i < lightreference.Length; i++){
-        lightreference[i].color = Color.Lerp(startingColor, endColor,  _countdown/timeLimit);
+
+        for (int i = 0; i < lightreference.Length; i++)
+        {
+            lightreference[i].color = Color.Lerp(startingColor, endColor, _countdown / timeLimit);
         }
-         lightreference[0].intensity = Mathf.Lerp(minInensityTwo, maxIntensity,  _countdown/timeLimit);
-    
-      
+        lightreference[0].intensity = Mathf.Lerp(minInensityTwo, maxIntensity, _countdown / timeLimit);
+
+
         // Game Over       
         if (timeLimit <= _countdown)
         {
