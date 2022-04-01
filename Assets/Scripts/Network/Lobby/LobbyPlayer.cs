@@ -144,7 +144,7 @@ public class LobbyPlayer : NetworkBehaviour
     {
         if (!_connected) return;
 
-        if(hasAuthority)
+        if (hasAuthority)
         {
             SetPing((int)Math.Round(NetworkTime.rtt * 1000));
         }
@@ -156,8 +156,8 @@ public class LobbyPlayer : NetworkBehaviour
                 var player = CustomNetworkManager.Instance.lobbyPlayers[i];
 
                 var displayName = player.DisplayName.Length < 12 ? player.DisplayName : player.DisplayName.Substring(0, 11) + "...";
-                
-                if(player.isLeader)
+
+                if (player.isLeader)
                 {
                     playerNameTexts[i].text = $"{displayName}\n";
                 }
@@ -281,7 +281,7 @@ public class LobbyPlayer : NetworkBehaviour
     private void OnAvatarImageLoaded(AvatarImageLoaded_t callback)
     {
         UpdateDisplay();
-    } 
+    }
 
     private Sprite LoadAvatar(int imageID)
     {
@@ -306,13 +306,13 @@ public class LobbyPlayer : NetworkBehaviour
                 }
             }
         }
-        
+
         return null;
     }
 
     private void SetPing(int ping)
     {
-        if(isServer)
+        if (isServer)
         {
             Ping = ping;
         }
@@ -332,7 +332,7 @@ public class LobbyPlayer : NetworkBehaviour
 
     public void OnSetPlantSelection(int selection)
     {
-        if(isServer)
+        if (isServer)
         {
             plant = (PlayerCustomization.PLANT)selection;
         }
