@@ -9,6 +9,7 @@ public class OptionsMenu : MonoBehaviour
 {
     public bool GamePaused = false;
     public GameObject pauseMenuUI;
+    public GameObject tutorialUI;
     public AudioMixer audioMixer;
     public Dropdown resolutionDropdown;
     Resolution[] resolutions;
@@ -49,6 +50,7 @@ public class OptionsMenu : MonoBehaviour
         }
 
         pauseMenuUI.SetActive(false);
+        tutorialUI.SetActive(false);
     }
     public void SetVolume(float volume)
     {
@@ -120,5 +122,15 @@ public class OptionsMenu : MonoBehaviour
     {
         CustomNetworkManager.Instance.Stop();
         SceneManager.LoadScene(Scenes.MainMenu);
+    }
+
+    public void Tutorial(){
+        pauseMenuUI.SetActive(false);
+        tutorialUI.SetActive(true);
+    }
+
+    public void QuitTutorial(){
+        tutorialUI.SetActive(false);
+        pauseMenuUI.SetActive(true);
     }
 }
