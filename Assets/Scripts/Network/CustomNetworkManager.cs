@@ -107,9 +107,7 @@ public class CustomNetworkManager : NetworkManager
     {
         if (SceneManager.GetActiveScene().path == gameScene)
         {
-            // Back to main menu
-            Stop();
-            SceneManager.LoadScene(Scenes.MainMenu);
+            QuitGame();
         }
 
         base.OnClientDisconnect();
@@ -130,12 +128,27 @@ public class CustomNetworkManager : NetworkManager
 
         if (SceneManager.GetActiveScene().path == gameScene)
         {
-            // Back to main menu
-            Stop();
-            SceneManager.LoadScene(Scenes.MainMenu);
+            QuitGame();
         }
 
         base.OnServerDisconnect(conn);
+    }
+
+    public void QuitGame()
+    {
+        Stop();
+
+        InputManager.CurrentInputMode = InputManager.InputMode.UI;
+
+        // Back to main menu
+        if (GameDirector.Instance.GetTimeLeft() > 10)
+        {
+            SceneManager.LoadScene(Scenes.MainMenu);
+        }
+        else
+        {
+            SceneManager.LoadScene(Scenes.GameOver);
+        }
     }
 
     public override void OnServerConnect(NetworkConnection conn)
