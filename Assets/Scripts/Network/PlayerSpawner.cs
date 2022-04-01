@@ -45,6 +45,16 @@ public class PlayerSpawner : NetworkBehaviour
 
         RpcSpawnPlayer(conn.identity.netId, spawnPoint.transform.position, spawnPoint.transform.rotation);
 
+        foreach (var player in CustomNetworkManager.Instance.players)
+        {
+            if (player.netId == conn.identity.netId)
+            {
+                spawnPoint.posters.SetSelection(player.poster);
+            }
+        }
+
+
+
         nextIndex++;
     }
 
