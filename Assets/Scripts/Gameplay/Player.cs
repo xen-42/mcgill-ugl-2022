@@ -92,6 +92,12 @@ public class Player : NetworkBehaviour
             GameObject.Destroy(cam.GetComponent<AudioListener>());
             cam.enabled = false;
         }
+
+        if(!isServer)
+        {
+            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("RemotePlayer"), LayerMask.NameToLayer("Static"));
+            gameObject.layer = LayerMask.NameToLayer("RemotePlayer");
+        }
     }
 
     private void OnDestroy()
