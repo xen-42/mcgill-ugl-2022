@@ -828,6 +828,10 @@ PrefabInstance:
       value: SideTable
       objectReference: {fileID: 0}
     - target: {fileID: 6645587534270425985, guid: 16766e73479e9d8409db60d9e3e24719, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6645587534270425985, guid: 16766e73479e9d8409db60d9e3e24719, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
@@ -916,6 +920,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3139807526709805101, guid: b4c0e5062d6afee49812ff2383e75374, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3139807526709805101, guid: b4c0e5062d6afee49812ff2383e75374, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -924,20 +932,40 @@ PrefabInstance:
       value: doublebed
       objectReference: {fileID: 0}
     - target: {fileID: 3233545029577199384, guid: b4c0e5062d6afee49812ff2383e75374, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3233545029577199384, guid: b4c0e5062d6afee49812ff2383e75374, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4381089183113502264, guid: b4c0e5062d6afee49812ff2383e75374, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4381089183113502264, guid: b4c0e5062d6afee49812ff2383e75374, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4498584903984197427, guid: b4c0e5062d6afee49812ff2383e75374, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4498584903984197427, guid: b4c0e5062d6afee49812ff2383e75374, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6111999388520952748, guid: b4c0e5062d6afee49812ff2383e75374, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6111999388520952748, guid: b4c0e5062d6afee49812ff2383e75374, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6397581272863453785, guid: b4c0e5062d6afee49812ff2383e75374, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6397581272863453785, guid: b4c0e5062d6afee49812ff2383e75374, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1108,6 +1136,10 @@ PrefabInstance:
     - target: {fileID: 5180478424204468881, guid: 255cd6d204ecf1d43acd21c208624444, type: 3}
       propertyPath: m_Name
       value: lamp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5180478424204468881, guid: 255cd6d204ecf1d43acd21c208624444, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5180478424204468881, guid: 255cd6d204ecf1d43acd21c208624444, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1475,7 +1507,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh263768
+  m_Name: pb_Mesh105472
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1652,7 +1684,7 @@ GameObject:
   - component: {fileID: 778470205}
   - component: {fileID: 778470204}
   - component: {fileID: 778470209}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube (5)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3243,7 +3275,7 @@ GameObject:
   - component: {fileID: 865236489}
   - component: {fileID: 865236488}
   - component: {fileID: 865236487}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3706,7 +3738,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh263580
+  m_Name: pb_Mesh105284
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3877,7 +3909,7 @@ GameObject:
   - component: {fileID: 1027734177}
   - component: {fileID: 1027734176}
   - component: {fileID: 1027734175}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube (6)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4638,6 +4670,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3139807526709805101, guid: b4c0e5062d6afee49812ff2383e75374, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3139807526709805101, guid: b4c0e5062d6afee49812ff2383e75374, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
@@ -4646,20 +4682,40 @@ PrefabInstance:
       value: doublebed (1)
       objectReference: {fileID: 0}
     - target: {fileID: 3233545029577199384, guid: b4c0e5062d6afee49812ff2383e75374, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 3233545029577199384, guid: b4c0e5062d6afee49812ff2383e75374, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4381089183113502264, guid: b4c0e5062d6afee49812ff2383e75374, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4381089183113502264, guid: b4c0e5062d6afee49812ff2383e75374, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4498584903984197427, guid: b4c0e5062d6afee49812ff2383e75374, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 4498584903984197427, guid: b4c0e5062d6afee49812ff2383e75374, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6111999388520952748, guid: b4c0e5062d6afee49812ff2383e75374, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 6111999388520952748, guid: b4c0e5062d6afee49812ff2383e75374, type: 3}
       propertyPath: m_StaticEditorFlags
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6397581272863453785, guid: b4c0e5062d6afee49812ff2383e75374, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6397581272863453785, guid: b4c0e5062d6afee49812ff2383e75374, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -4681,7 +4737,7 @@ GameObject:
   - component: {fileID: 1114216680}
   - component: {fileID: 1114216679}
   - component: {fileID: 1114216684}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube (4)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6006,7 +6062,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1221873315}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Apartment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6043,6 +6099,10 @@ PrefabInstance:
     - target: {fileID: 5180478424204468881, guid: 255cd6d204ecf1d43acd21c208624444, type: 3}
       propertyPath: m_Name
       value: lamp (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 5180478424204468881, guid: 255cd6d204ecf1d43acd21c208624444, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 5180478424204468881, guid: 255cd6d204ecf1d43acd21c208624444, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -6177,6 +6237,10 @@ PrefabInstance:
     - target: {fileID: 6645587534270425985, guid: 16766e73479e9d8409db60d9e3e24719, type: 3}
       propertyPath: m_Name
       value: SideTable (1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6645587534270425985, guid: 16766e73479e9d8409db60d9e3e24719, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 6645587534270425985, guid: 16766e73479e9d8409db60d9e3e24719, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -6445,7 +6509,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh263688
+  m_Name: pb_Mesh105392
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -6845,7 +6909,7 @@ GameObject:
   - component: {fileID: 1475780674}
   - component: {fileID: 1475780673}
   - component: {fileID: 1475780678}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -7565,6 +7629,10 @@ PrefabInstance:
       value: Particle_Lamp
       objectReference: {fileID: 0}
     - target: {fileID: 5420631157610519522, guid: 9e4bbecd524088448adc080d3b6da1dd, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 5420631157610519522, guid: 9e4bbecd524088448adc080d3b6da1dd, type: 3}
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
@@ -8230,7 +8298,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh263616
+  m_Name: pb_Mesh105320
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -8567,7 +8635,7 @@ GameObject:
   - component: {fileID: 1983514519}
   - component: {fileID: 1983514518}
   - component: {fileID: 1983514517}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -10491,7 +10559,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh263536
+  m_Name: pb_Mesh105240
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -11022,7 +11090,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh263550
+  m_Name: pb_Mesh105254
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

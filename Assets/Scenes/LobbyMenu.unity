@@ -4250,5 +4250,21 @@ PrefabInstance:
       propertyPath: m_Name
       value: NetworkManager
       objectReference: {fileID: 0}
+    - target: {fileID: 4067558381880446680, guid: 903f5e364b9911d46974b32c9601ea2f, type: 3}
+      propertyPath: unreliableLoss
+      value: 0.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 4067558381880446680, guid: 903f5e364b9911d46974b32c9601ea2f, type: 3}
+      propertyPath: reliableLatency
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4067558381880446680, guid: 903f5e364b9911d46974b32c9601ea2f, type: 3}
+      propertyPath: unreliableLatency
+      value: 0.1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4067558381880446680, guid: 903f5e364b9911d46974b32c9601ea2f, type: 3}
+      propertyPath: unreliableScramble
+      value: 0.05
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 903f5e364b9911d46974b32c9601ea2f, type: 3}

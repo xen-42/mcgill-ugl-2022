@@ -24,7 +24,6 @@ public class Player : NetworkBehaviour
     float groundDistance = 0.4f;
     bool isGrounded;
 
-    Rigidbody rb;
     [Header("Jumping")]
     public float jumpForce = 5f;
 
@@ -37,8 +36,8 @@ public class Player : NetworkBehaviour
     [SerializeField] public float sensX;
     [SerializeField] public float sensY;
     float multiplier = 0.01f;
-    [SyncVar] public float xRotation;
-    [SyncVar] public float yRotation;
+    public float xRotation;
+    public float yRotation;
 
     [Header("Sprinting")]
     [SerializeField] public float walkSpeed = 4f;
@@ -49,6 +48,10 @@ public class Player : NetworkBehaviour
     [SerializeField] Transform heldItemPosition;
     [SerializeField] float heldItemTranslationResponsiveness = 20f;
     [SerializeField] float heldItemRotationResponsiveness = 10f;
+
+    [Header("Physics Stuff")]
+    [SerializeField] Rigidbody rb;
+    [SerializeField] Collider collider;
 
     private GameObject _focusedObject;
     public Holdable heldObject;
@@ -75,7 +78,6 @@ public class Player : NetworkBehaviour
 
         SceneManager.sceneLoaded += OnSceneLoaded;
         
-        rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
 
         if (hasAuthority)
@@ -89,6 +91,12 @@ public class Player : NetworkBehaviour
         {
             GameObject.Destroy(cam.GetComponent<AudioListener>());
             cam.enabled = false;
+        }
+
+        if(!isServer)
+        {
+            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("RemotePlayer"), LayerMask.NameToLayer("Static"));
+            gameObject.layer = LayerMask.NameToLayer("RemotePlayer");
         }
     }
 
@@ -156,6 +164,10 @@ public class Player : NetworkBehaviour
         xRotation = Mathf.Clamp(xRotation, -90f, 90f);
 
         CmdSendInputs(movement, jump, sprint, xRotation, yRotation, stressModifier);
+
+        // The client can set the rotations immediately 
+        cam.transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0);
+        orientation.transform.rotation = Quaternion.Euler(0, yRotation, 0);
 
         // Raycast for object interaction / pickup
 
@@ -295,8 +307,11 @@ public class Player : NetworkBehaviour
         _sprint = sprint;
         _serverSideStressModifier = stress;
 
-        cam.transform.localRotation = Quaternion.Euler(xRot, yRot, 0);
-        orientation.transform.rotation = Quaternion.Euler(0, yRot, 0);
+        if(!hasAuthority)
+        {
+            cam.transform.localRotation = Quaternion.Euler(xRot, yRot, 0);
+            orientation.transform.rotation = Quaternion.Euler(0, yRot, 0);
+        }
     }
 
     [Command]
