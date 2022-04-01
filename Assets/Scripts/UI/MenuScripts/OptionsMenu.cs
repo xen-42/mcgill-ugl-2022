@@ -101,6 +101,7 @@ public class OptionsMenu : MonoBehaviour
     public void Resume()
     {
         pauseMenuUI.SetActive(false);
+        if(tutorialUI != null) tutorialUI.SetActive(false);
         InputManager.CurrentInputMode = _lastInputMode;
         GamePaused = false;
     }
