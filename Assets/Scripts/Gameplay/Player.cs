@@ -82,8 +82,8 @@ public class Player : NetworkBehaviour
         }
         else
         {
-            cam.GetComponent<AudioListener>().enabled = false;
-            cam.enabled = false;
+            GameObject.Destroy(cam.GetComponent<AudioListener>());
+            GameObject.Destroy(cam);
         }
     }
 
