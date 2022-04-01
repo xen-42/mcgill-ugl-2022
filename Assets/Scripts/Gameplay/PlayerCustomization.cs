@@ -24,4 +24,10 @@ public static class PlayerCustomization
         SET2,
         SET3
     }
+
+    public enum COLOUR
+    {
+        WARM,
+        COOL
+    }
 }
