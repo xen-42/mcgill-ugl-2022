@@ -229,11 +229,18 @@ public class Player : NetworkBehaviour
         if (_sprint && isGrounded)
         {
             moveSpeed = Mathf.Lerp(actualMoveSpeed, actualRunSpeed, actualAcceleration * Time.deltaTime);
-            cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, fastfov, fovaccel * Time.deltaTime);
         }
         else
         {
             moveSpeed = Mathf.Lerp(actualMoveSpeed, actualWalkSpeed, actualAcceleration * Time.deltaTime);
+        }
+
+        if(_sprint && isGrounded && _movement != Vector3.zero)
+        {
+            cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, fastfov, fovaccel * Time.deltaTime);
+        }
+        else
+        {
             cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, fov, fovaccel * Time.deltaTime);
         }
     }
