@@ -60,7 +60,12 @@ public class Holdable : Interactable
     {
         _parent = grabber.gameObject;
 
-        if (isServer) gameObject.GetComponent<NetworkIdentity>().AssignClientAuthority(grabber.connectionToClient);
+        if (isServer)
+        {
+            var netID = gameObject.GetComponent<NetworkIdentity>();
+            netID.RemoveClientAuthority();
+            netID.AssignClientAuthority(grabber.connectionToClient);
+        }
         IsInteractable = false;
         _collider.enabled = false;
         foreach (var collider in GetComponentsInChildren<Collider>())

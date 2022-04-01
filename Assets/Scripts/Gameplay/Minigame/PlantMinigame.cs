@@ -15,9 +15,21 @@ public class PlantMinigame : DragDropMinigame
     private float _delay = 0f;
     private bool _completed;
 
-    public void SetPlantSelection(int selection)
+    public void SetPlantSelection(PlayerCustomization.COLOUR colour, PlayerCustomization.PLANT plant)
     {
-        plantIndex = selection % plants.Length;
+        switch(plant)
+        {
+            case PlayerCustomization.PLANT.CACTUS:
+                plantIndex = colour == PlayerCustomization.COLOUR.COOL ? 0 : 1;
+                break;
+            case PlayerCustomization.PLANT.FLOWER:
+                plantIndex = colour == PlayerCustomization.COLOUR.COOL ? 2 : 3;
+                break;
+            case PlayerCustomization.PLANT.LEAF:
+                plantIndex = colour == PlayerCustomization.COLOUR.COOL ? 4 : 5;
+                break;
+        }
+
         for(int i = 0; i < plants.Length; i++)
         {
             if(i == plantIndex)

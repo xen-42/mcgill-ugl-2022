@@ -4027,7 +4027,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GamePaused: 0
   pauseMenuUI: {fileID: 378899680632062141}
-  tutorialUI: {fileID: 345107299}
+  tutorialUI: {fileID: 1708260716}
   audioMixer: {fileID: 24100000, guid: 856e5d17e210af24283ff12712f44f61, type: 2}
   resolutionDropdown: {fileID: 0}
   playercharacter: {fileID: 4481484670218387116, guid: 67f9b724cbd9bee41949f2126a2bd403, type: 3}
