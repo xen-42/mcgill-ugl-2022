@@ -48,13 +48,24 @@ public class CustomNetworkManager : NetworkManager
 
     private KcpTransport _kcpTransport;
     private FizzySteamworks _steamTransport;
+    private LatencySimulation _latencySimulation;
+
+    public const bool ENABLE_LATENCY_SIMULATION = false;
 
     public void SetTransport(TransportType type)
     {
         switch (type)
         {
             case TransportType.KCP:
-                transport = _kcpTransport;
+                if(ENABLE_LATENCY_SIMULATION)
+                {
+                    transport = _latencySimulation;
+                }
+                else
+                {
+                    transport = _kcpTransport;
+                }
+
                 break;
             case TransportType.STEAM:
                 transport = _steamTransport;
@@ -188,6 +199,7 @@ public class CustomNetworkManager : NetworkManager
 
             _kcpTransport = gameObject.GetComponent<KcpTransport>();
             _steamTransport = gameObject.AddComponent<FizzySteamworks>();
+            _latencySimulation = gameObject.GetComponent<LatencySimulation>();
             gameObject.AddComponent<SteamManager>();
             steamLobby = gameObject.AddComponent<SteamLobby>();
         }

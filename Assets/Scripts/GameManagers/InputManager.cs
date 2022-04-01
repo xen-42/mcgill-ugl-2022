@@ -19,7 +19,8 @@ public static class InputManager
         Jump,
         Sprint,
         PickUp,
-        Back
+        Back,
+        Throw
     }
 
     private static Dictionary<InputCommand, Key> _keyboardMappings = new Dictionary<InputCommand, Key>()
@@ -32,7 +33,8 @@ public static class InputManager
 
     private static Dictionary<InputCommand, MouseButton> _mouseMappings = new Dictionary<InputCommand, MouseButton>()
     {
-        {InputCommand.PickUp, MouseButton.Left }
+        {InputCommand.PickUp, MouseButton.Left },
+        {InputCommand.Throw, MouseButton.Right}
     };
 
     public static Dictionary<InputCommand, Key> KeyboardMappings
