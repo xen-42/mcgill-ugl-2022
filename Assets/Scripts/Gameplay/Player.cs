@@ -157,6 +157,10 @@ public class Player : NetworkBehaviour
 
         CmdSendInputs(movement, jump, sprint, xRotation, yRotation, stressModifier);
 
+        // The client can set the rotations immediately 
+        cam.transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0);
+        orientation.transform.rotation = Quaternion.Euler(0, yRotation, 0);
+
         // Raycast for object interaction / pickup
 
         GameObject hitObject = null;
@@ -300,8 +304,11 @@ public class Player : NetworkBehaviour
         _sprint = sprint;
         _serverSideStressModifier = stress;
 
-        cam.transform.localRotation = Quaternion.Euler(xRot, yRot, 0);
-        orientation.transform.rotation = Quaternion.Euler(0, yRot, 0);
+        if(!hasAuthority)
+        {
+            cam.transform.localRotation = Quaternion.Euler(xRot, yRot, 0);
+            orientation.transform.rotation = Quaternion.Euler(0, yRot, 0);
+        }
     }
 
     [Command]
