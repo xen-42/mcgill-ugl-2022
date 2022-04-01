@@ -62,5 +62,16 @@ public class PlantMinigame : DragDropMinigame
         plants[plantIndex].transform.Find("Sad").gameObject.SetActive(false);
 
         _completed = true;
+
+        EventManager.TriggerEvent("MinigameComplete");
+        OnCompleteMinigame.Invoke();
+    }
+
+    public override void CompleteMinigame()
+    {
+        InputManager.CurrentInputMode = InputManager.InputMode.Player;
+
+        // Once a minigame is completed we just dispose of it
+        if (gameObject != null) Destroy(gameObject);
     }
 }
