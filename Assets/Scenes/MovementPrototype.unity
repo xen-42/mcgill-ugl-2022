@@ -16724,6 +16724,10 @@ PrefabInstance:
       propertyPath: sceneId
       value: 4001867490
       objectReference: {fileID: 0}
+    - target: {fileID: 1371549147706381713, guid: 8f60b467328527f49af19bbef7de376e, type: 3}
+      propertyPath: m_Mass
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1371549147706381716, guid: 8f60b467328527f49af19bbef7de376e, type: 3}
       propertyPath: m_Name
       value: WateringCan
