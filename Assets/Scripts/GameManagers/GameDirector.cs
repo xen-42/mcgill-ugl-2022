@@ -69,9 +69,6 @@ public class GameDirector : NetworkBehaviour
     // Start is called before the first frame update
     private async void Start()
     {
-
-
-
         _distractions = FindObjectsOfType<Fixable>().ToList();
         Random.InitState((int)DateTime.Now.Ticks);
 
@@ -81,9 +78,6 @@ public class GameDirector : NetworkBehaviour
         _postProcessingController.DisableAllOverrides();
         apply_stress = false;
         under30s = false;
-
-
-
     }
 
     public void LowerStressImmediate(float change)
@@ -106,7 +100,7 @@ public class GameDirector : NetworkBehaviour
         NumAssignmentsScanned += 1;
     }
 
-    private async void Update()
+    private void Update()
     {
         var available = _distractions.Where(x => x.CanBreak).ToList();
         _numDistractions = _distractions.Where(x => x.IsBroken).Count();
@@ -181,14 +175,14 @@ public class GameDirector : NetworkBehaviour
         //Changing colour of lights
 
         //for (int i = 0; i < lightreference.Length; i++)
-      //  {
-    //        lightreference[i].color = Color.Lerp(startingColor, endColor, _countdown / timeLimit);
-  //      }
-//        lightreference[0].intensity = Mathf.Lerp(minInensityTwo, maxIntensity, _countdown / timeLimit);
+        //{
+        //  lightreference[i].color = Color.Lerp(startingColor, endColor, _countdown / timeLimit);
+        //}
+        //lightreference[0].intensity = Mathf.Lerp(minInensityTwo, maxIntensity, _countdown / timeLimit);
 
 
         // Game Over       
-        if (timeLimit <= _countdown)
+        if (isServer && timeLimit <= _countdown)
         {
             InputManager.CurrentInputMode = InputManager.InputMode.UI;
             heartbeatSound.Stop();
