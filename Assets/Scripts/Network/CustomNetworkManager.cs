@@ -48,13 +48,24 @@ public class CustomNetworkManager : NetworkManager
 
     private KcpTransport _kcpTransport;
     private FizzySteamworks _steamTransport;
+    private LatencySimulation _latencySimulation;
+
+    public const bool ENABLE_LATENCY_SIMULATION = false;
 
     public void SetTransport(TransportType type)
     {
         switch (type)
         {
             case TransportType.KCP:
-                transport = _kcpTransport;
+                if(ENABLE_LATENCY_SIMULATION)
+                {
+                    transport = _latencySimulation;
+                }
+                else
+                {
+                    transport = _kcpTransport;
+                }
+
                 break;
             case TransportType.STEAM:
                 transport = _steamTransport;
@@ -188,6 +199,7 @@ public class CustomNetworkManager : NetworkManager
 
             _kcpTransport = gameObject.GetComponent<KcpTransport>();
             _steamTransport = gameObject.AddComponent<FizzySteamworks>();
+            _latencySimulation = gameObject.GetComponent<LatencySimulation>();
             gameObject.AddComponent<SteamManager>();
             steamLobby = gameObject.AddComponent<SteamLobby>();
         }
@@ -258,8 +270,20 @@ public class CustomNetworkManager : NetworkManager
         {
             for (int i = lobbyPlayers.Count - 1; i >= 0; i--)
             {
-                var conn = lobbyPlayers[i].connectionToClient;
+                var lobbyPlayer = lobbyPlayers[i];
+
+                var conn = lobbyPlayer.connectionToClient;
                 var player = Instantiate(gamePlayerPrefab);
+
+                // Disable the audio listener until we get to the game scene
+                player.cam.GetComponent<AudioListener>().enabled = false;
+
+                // Pass over the players customization choices
+                player.plant = lobbyPlayer.plant;
+                player.drink = lobbyPlayer.drink;
+                player.poster = lobbyPlayer.poster;
+
+                Debug.Log($"Copied over customization options: {player.plant}, {player.drink}, {player.poster}");
 
                 NetworkServer.Destroy(conn.identity.gameObject);
                 NetworkServer.ReplacePlayerForConnection(conn, player.gameObject);
@@ -275,6 +299,16 @@ public class CustomNetworkManager : NetworkManager
 
         if(sceneName == gameScene)
         {
+            //Enable audio listeners for the players
+            foreach(var player in players)
+            {
+                var audioListener = player.cam?.GetComponent<AudioListener>();
+                if (audioListener != null)
+                {
+                    audioListener.enabled = true;
+                }
+            }
+
             GameObject playerSpawnerInstance = Instantiate(playerSpawnerPrefab);
             NetworkServer.Spawn(playerSpawnerInstance);
         }
