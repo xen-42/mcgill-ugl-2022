@@ -49,8 +49,8 @@ public class OptionsMenu : MonoBehaviour
             }
         }
 
-        pauseMenuUI.SetActive(false);
-        tutorialUI.SetActive(false);
+        //pauseMenuUI.SetActive(false);
+        //tutorialUI.SetActive(false);
     }
     public void SetVolume(float volume)
     {
