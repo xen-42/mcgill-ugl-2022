@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using static InputManager;
 using static ButtonPrompt;
+using UnityEngine.Rendering.Universal;
 
 public abstract class Interactable : NetworkBehaviour
 {
