@@ -37,8 +37,8 @@ public class Player : NetworkBehaviour
     [SerializeField] public float sensX;
     [SerializeField] public float sensY;
     float multiplier = 0.01f;
-    [SyncVar] public float xRotation;
-    [SyncVar] public float yRotation;
+    public float xRotation;
+    public float yRotation;
 
     [Header("Sprinting")]
     [SerializeField] public float walkSpeed = 4f;
@@ -226,6 +226,7 @@ public class Player : NetworkBehaviour
         }
     }
 
+    [Server]
     void ControlSpeed()
     {
         var actualMoveSpeed = Mathf.Lerp(moveSpeed, 1, _serverSideStressModifier * _serverSideStressModifier);
@@ -252,6 +253,7 @@ public class Player : NetworkBehaviour
         }
     }
 
+    [Server]
     private bool OnSlope()
     {
         if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight / 2 + 0.5f))
@@ -268,6 +270,7 @@ public class Player : NetworkBehaviour
         return false;
     }
 
+    [Server]
     void PlayerDrag()
     {
         if (isGrounded)
