@@ -1,10 +1,12 @@
+using Mirror;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlantInteractable : MinigameInteractable
 {
-    [SerializeField] public int plantSelection = 0;
+    [SyncVar] [SerializeField] public PlayerCustomization.COLOUR colour;
+    [SyncVar] [SerializeField] public PlayerCustomization.PLANT plant;
 
     // Start is called before the first frame update
     void Start()
@@ -18,7 +20,7 @@ public class PlantInteractable : MinigameInteractable
             minigame.OnCompleteMinigame.AddListener(() => IsInteractable = true);
 
             // TODO: customization thing
-            (minigame as PlantMinigame).SetPlantSelection(plantSelection);
+            (minigame as PlantMinigame).SetPlantSelection(colour, plant);
 
             if (requiredObject != Holdable.Type.NONE)
             {
@@ -30,5 +32,11 @@ public class PlantInteractable : MinigameInteractable
                 }
             }
         });
+    }
+
+    [Server]
+    public void SetSelection(PlayerCustomization.PLANT selection)
+    {
+        plant = selection;
     }
 }

@@ -4,14 +4,18 @@ using UnityEngine;
 
 public class PlayerSpawnPoint : MonoBehaviour
 {
+    [SerializeField] public PlantInteractable plant;
+    [SerializeField] public Drink drink;
+    [SerializeField] public Posters posters;
+
     void Awake()
     {
-        PlayerSpawner.AddSpawnPoint(transform);    
+        PlayerSpawner.AddSpawnPoint(this);    
     }
 
     void OnDestroy()
     {
-        PlayerSpawner.RemoveSpawnPoint(transform);
+        PlayerSpawner.RemoveSpawnPoint(this);
     }
 
     private void OnDrawGizmos()

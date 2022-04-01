@@ -49,8 +49,8 @@ public class OptionsMenu : MonoBehaviour
             }
         }
 
-        pauseMenuUI.SetActive(false);
-        tutorialUI.SetActive(false);
+        //pauseMenuUI.SetActive(false);
+        //tutorialUI.SetActive(false);
     }
     public void SetVolume(float volume)
     {
@@ -101,6 +101,7 @@ public class OptionsMenu : MonoBehaviour
     public void Resume()
     {
         pauseMenuUI.SetActive(false);
+        if(tutorialUI != null) tutorialUI.SetActive(false);
         InputManager.CurrentInputMode = _lastInputMode;
         GamePaused = false;
     }

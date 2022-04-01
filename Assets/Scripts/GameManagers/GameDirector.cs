@@ -36,7 +36,6 @@ public class GameDirector : NetworkBehaviour
 
     // Stress is out of 100
     private float _stress;
-    private bool _isStressDecreasing;
     private PostProcessingController _postProcessingController;
     public float CurrentStress => _stress;
     private bool apply_stress;
@@ -92,7 +91,7 @@ public class GameDirector : NetworkBehaviour
     private void Update()
     {
         var available = _distractions.Where(x => x.CanBreak).ToList();
-        _numDistractions = _distractions.Count - available.Count;
+        _numDistractions = _distractions.Where(x => x.IsBroken).Count();
 
         if (isServer)
         {
@@ -107,16 +106,13 @@ public class GameDirector : NetworkBehaviour
             }
         }
 
-        if (!_isStressDecreasing)
+        if (_stress > 10)
         {
-            if (_stress > 10)
-            {
-                _stress += stressPerSecond * Mathf.Pow(_numDistractions, stressExponent) * Time.deltaTime * 0.5f;
-            }
-            else
-            {
-                _stress += stressPerSecond * Mathf.Pow(_numDistractions, stressExponent) * Time.deltaTime;
-            }
+            _stress += stressPerSecond * Mathf.Pow(_numDistractions, stressExponent) * Time.deltaTime * 0.5f;
+        }
+        else
+        {
+            _stress += stressPerSecond * Mathf.Pow(_numDistractions, stressExponent) * Time.deltaTime;
         }
 
         _stress = Mathf.Clamp(_stress, 0f, 100f);
