@@ -24,7 +24,6 @@ public class Player : NetworkBehaviour
     float groundDistance = 0.4f;
     bool isGrounded;
 
-    Rigidbody rb;
     [Header("Jumping")]
     public float jumpForce = 5f;
 
@@ -49,6 +48,10 @@ public class Player : NetworkBehaviour
     [SerializeField] Transform heldItemPosition;
     [SerializeField] float heldItemTranslationResponsiveness = 20f;
     [SerializeField] float heldItemRotationResponsiveness = 10f;
+
+    [Header("Physics Stuff")]
+    [SerializeField] Rigidbody rb;
+    [SerializeField] Collider collider;
 
     private GameObject _focusedObject;
     public Holdable heldObject;
@@ -75,7 +78,6 @@ public class Player : NetworkBehaviour
 
         SceneManager.sceneLoaded += OnSceneLoaded;
         
-        rb = GetComponent<Rigidbody>();
         rb.freezeRotation = true;
 
         if (hasAuthority)
