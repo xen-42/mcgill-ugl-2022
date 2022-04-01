@@ -50,7 +50,8 @@ public class PlayerSpawner : NetworkBehaviour
             if (player.netId == conn.identity.netId)
             {
                 spawnPoint.posters.SetSelection(player.poster);
-                spawnPoint.plant.plant = player.plant;
+                spawnPoint.plant.SetSelection(player.plant);
+                spawnPoint.drink.SetSelection(player.drink);
             }
         }
 

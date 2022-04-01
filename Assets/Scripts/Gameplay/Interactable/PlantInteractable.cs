@@ -33,4 +33,10 @@ public class PlantInteractable : MinigameInteractable
             }
         });
     }
+
+    [Server]
+    public void SetSelection(PlayerCustomization.PLANT selection)
+    {
+        plant = selection;
+    }
 }

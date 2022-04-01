@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerSpawnPoint : MonoBehaviour
 {
     [SerializeField] public PlantInteractable plant;
-    [SerializeField] public GameObject drink;
+    [SerializeField] public Drink drink;
     [SerializeField] public Posters posters;
 
     void Awake()
