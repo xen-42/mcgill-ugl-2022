@@ -26,15 +26,18 @@ public class CatInteractable : Interactable
         if (sound != null){
             sound.Play();
         }
+
         GameDirector.Instance.LowerStressImmediate(StressReduction);
         IsInteractable = false;
+
         if (isServer)
         {
             _cooldown = Cooldown;
         }
         else
         {
-            CmdStartCooldown();
+            Player.Instance.CmdGiveAuthority(netIdentity);
+            ActionManager.RunWhen(() => netIdentity.hasAuthority, () => CmdStartCooldown());
         }
     }
 
