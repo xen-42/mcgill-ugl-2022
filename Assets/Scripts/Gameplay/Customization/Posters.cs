@@ -9,26 +9,41 @@ public class Posters : NetworkBehaviour
     [SerializeField] private GameObject[] Set2 = new GameObject[3];
     [SerializeField] private GameObject[] Set3 = new GameObject[3];
 
+    private bool _initialized = false;
+    [SyncVar] private PlayerCustomization.POSTER posterSelection;
+
+    private void Start()
+    {
+        // At this point only the client should be un-initialized
+        if (!_initialized)
+        {
+            ShowPosters();
+        }
+    }
+
     [Server]
     public void SetSelection(PlayerCustomization.POSTER selection)
     {
-        RpcSetSelection(selection);
+        posterSelection = selection;
+
+        ShowPosters();
     }
 
-    [ClientRpc]
-    private void RpcSetSelection(PlayerCustomization.POSTER selection)
+    private void ShowPosters()
     {
+        _initialized = true;
+
         foreach (var poster in Set1)
         {
-            poster.SetActive(selection == PlayerCustomization.POSTER.SET1);
+            poster.SetActive(posterSelection == PlayerCustomization.POSTER.SET1);
         }
         foreach (var poster in Set2)
         {
-            poster.SetActive(selection == PlayerCustomization.POSTER.SET2);
+            poster.SetActive(posterSelection == PlayerCustomization.POSTER.SET2);
         }
         foreach (var poster in Set3)
         {
-            poster.SetActive(selection == PlayerCustomization.POSTER.SET3);
+            poster.SetActive(posterSelection == PlayerCustomization.POSTER.SET3);
         }
     }
 }
