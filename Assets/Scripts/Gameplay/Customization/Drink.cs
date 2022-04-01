@@ -9,17 +9,29 @@ public class Drink : NetworkBehaviour
     [SerializeField] public GameObject tea;
     [SerializeField] public GameObject energyDrink;
 
+    private bool _initialized = false;
+    [SyncVar] private PlayerCustomization.DRINK drinkSelection;
+
+    private void Start()
+    {
+        // At this point only the client should be un-initialized
+        if (!_initialized)
+        {
+            ShowDrinks();
+        }
+    }
+
     [Server]
     public void SetSelection(PlayerCustomization.DRINK selection)
     {
-        RpcSetSelection(selection);
+        drinkSelection = selection;
+        ShowDrinks();
     }
 
-    [ClientRpc]
-    private void RpcSetSelection(PlayerCustomization.DRINK selection)
+    private void ShowDrinks()
     {
-        coffee.SetActive(selection == PlayerCustomization.DRINK.COFFEE);
-        tea.SetActive(selection == PlayerCustomization.DRINK.TEA);
-        energyDrink.SetActive(selection == PlayerCustomization.DRINK.ENERGYDRINK);
+        coffee.SetActive(drinkSelection == PlayerCustomization.DRINK.COFFEE);
+        tea.SetActive(drinkSelection == PlayerCustomization.DRINK.TEA);
+        energyDrink.SetActive(drinkSelection == PlayerCustomization.DRINK.ENERGYDRINK);
     }
 }

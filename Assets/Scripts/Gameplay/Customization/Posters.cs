@@ -25,7 +25,6 @@ public class Posters : NetworkBehaviour
     public void SetSelection(PlayerCustomization.POSTER selection)
     {
         posterSelection = selection;
-
         ShowPosters();
     }
 
