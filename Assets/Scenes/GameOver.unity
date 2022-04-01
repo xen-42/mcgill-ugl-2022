@@ -1176,5 +1176,9 @@ PrefabInstance:
       propertyPath: m_Name
       value: Player1Stats
       objectReference: {fileID: 0}
+    - target: {fileID: 157068083431576638, guid: cfc3a363076a6d147a5cfaa56b324ea4, type: 3}
+      propertyPath: m_Text
+      value: 'GRADE: A+'
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cfc3a363076a6d147a5cfaa56b324ea4, type: 3}
