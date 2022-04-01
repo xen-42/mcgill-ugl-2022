@@ -13,4 +13,7 @@ public static class Scenes
     public static int GameScene { get => 1; }
 
     public static int GameOver { get => 3; }
+
+    public static int Credits { get => 4; }
+    public static int Tutorial { get => 5; }
 }
