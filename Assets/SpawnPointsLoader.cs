@@ -19,6 +19,7 @@ public class SpawnPointsLoader : MonoBehaviour
                     spawnPointsContainer.wayPoints.Add(tts.position);
                 }
             }
+
             run = false;
         }
     }

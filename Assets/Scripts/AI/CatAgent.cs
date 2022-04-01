@@ -37,6 +37,7 @@ public class CatAgent : NetworkBehaviour
 
     [Header("Cat Spawning Socks Params")]
     [SerializeField] private GameObject m_sockPrefab;
+    [SerializeField] private SpawnPointsManager m_spawnManager;
     [SerializeField] private float m_spawnRadius = 3f;
     [SerializeField] [Range(0, 50)] private int m_spawnLimit;
     [SerializeField] [Range(0, 1)] private float m_spawnProbility = .1f;
@@ -65,7 +66,8 @@ public class CatAgent : NetworkBehaviour
         m_manager = BlackboardManager.Instance;
         m_petInteract = GetComponent<CatInteractable>();
         m_renderer = GetComponent<MeshRenderer>();
-
+        if (m_spawnManager == null)
+            m_spawnManager = GameObject.Find("Waypoints").GetComponent<SpawnPointsManager>();
         destination = this.transform.position;
     }
 
@@ -177,9 +179,12 @@ public class CatAgent : NetworkBehaviour
                 return;
 
             m_curSpawnNum++;
-            Vector2 spawnOffset = Random.insideUnitCircle * m_spawnRadius;
-            Vector3 spawnPos = transform.position + new Vector3(spawnOffset.x, 0, spawnOffset.y);
-            NetworkServer.Spawn(Instantiate(m_sockPrefab, spawnPos, m_sockPrefab.transform.rotation));
+            //Vector2 spawnOffset = Random.insideUnitCircle * m_spawnRadius;
+            //Vector3 spawnPos = transform.position + new Vector3(spawnOffset.x, 0, spawnOffset.y);
+
+            Vector3 spawnPos;
+            if (m_spawnManager.TryQueryNeighbour(transform.position, out spawnPos))
+                NetworkServer.Spawn(Instantiate(m_sockPrefab, spawnPos, m_sockPrefab.transform.rotation));
         }
     }
 
