@@ -7549,8 +7549,12 @@ MonoBehaviour:
   scanSound: {fileID: 2571412278634998059}
   heartbeatSound: {fileID: 1692160703}
   clockSound: {fileID: 1692160704}
-  lightreference: []
-  lightCopy: []
+  lightreference:
+  - {fileID: 0}
+  - {fileID: 0}
+  lightCopy:
+  - {fileID: 0}
+  - {fileID: 0}
   endColor: {r: 0, g: 0, b: 0, a: 0}
   startingColor: {r: 0, g: 0, b: 0, a: 0}
   maxIntensity: 50
