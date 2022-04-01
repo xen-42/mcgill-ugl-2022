@@ -106,8 +106,6 @@ public class GameDirector : NetworkBehaviour
             }
         }
 
-        Debug.Log($"Distractions: {_numDistractions}");
-
         if (_stress > 10)
         {
             _stress += stressPerSecond * Mathf.Pow(_numDistractions, stressExponent) * Time.deltaTime * 0.5f;

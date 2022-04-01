@@ -43,16 +43,22 @@ public class PlayerSpawner : NetworkBehaviour
             return;
         }
 
-        foreach(var player in CustomNetworkManager.Instance.players)
-        {
-            if(player.netId == conn.identity.netId)
-            {
-                player.transform.position = spawnPoint.position;
-                // Rotation isnt synced currently idk why
-                //player.transform.rotation = spawnPoint.rotation;
-            }
-        }
+        RpcSetPlayerPosition(conn.identity.netId, spawnPoint.position, spawnPoint.rotation);
 
         nextIndex++;
+    }
+
+    [ClientRpc]
+    private void RpcSetPlayerPosition(uint id, Vector3 pos, Quaternion rot)
+    {
+        foreach (var player in CustomNetworkManager.Instance.players)
+        {
+            if (player.netId == id)
+            {
+                Debug.Log($"Set spawn position for [{id}]");
+                player.transform.position = pos;
+                player.yRotation = rot.eulerAngles.y;
+            }
+        }
     }
 }

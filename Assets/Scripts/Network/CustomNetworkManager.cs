@@ -261,6 +261,9 @@ public class CustomNetworkManager : NetworkManager
                 var conn = lobbyPlayers[i].connectionToClient;
                 var player = Instantiate(gamePlayerPrefab);
 
+                // Disable the audio listener until we get to the game scene
+                player.cam.GetComponent<AudioListener>().enabled = false;
+
                 NetworkServer.Destroy(conn.identity.gameObject);
                 NetworkServer.ReplacePlayerForConnection(conn, player.gameObject);
             }
@@ -275,6 +278,16 @@ public class CustomNetworkManager : NetworkManager
 
         if(sceneName == gameScene)
         {
+            //Enable audio listeners for the players
+            foreach(var player in players)
+            {
+                var audioListener = player.cam?.GetComponent<AudioListener>();
+                if (audioListener != null)
+                {
+                    audioListener.enabled = true;
+                }
+            }
+
             GameObject playerSpawnerInstance = Instantiate(playerSpawnerPrefab);
             NetworkServer.Spawn(playerSpawnerInstance);
         }

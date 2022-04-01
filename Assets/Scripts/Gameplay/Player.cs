@@ -9,7 +9,7 @@ using UnityEngine.SceneManagement;
 public class Player : NetworkBehaviour
 {
     [Header("Movement")]
-    [SerializeField] Transform orientation;
+    [SerializeField] public Transform orientation;
     [SerializeField] public float moveSpeed = 6f;
 
     [Header("Drag")]
@@ -30,15 +30,15 @@ public class Player : NetworkBehaviour
 
     RaycastHit slopeHit;
     [Header("Camera Adjusts")]
-    [SerializeField] private Camera cam;
+    [SerializeField] public Camera cam;
     [SerializeField] private float fastfov;
     [SerializeField] private float fov;
     [SerializeField] private float fovaccel;
     [SerializeField] public float sensX;
     [SerializeField] public float sensY;
     float multiplier = 0.01f;
-    float xRotation;
-    float yRotation;
+    [SyncVar] public float xRotation;
+    [SyncVar] public float yRotation;
 
     [Header("Sprinting")]
     [SerializeField] public float walkSpeed = 4f;
@@ -189,8 +189,6 @@ public class Player : NetworkBehaviour
 
     private void FixedUpdate()
     {
-        //if (!isServer) return;
-
         var actualMoveSpeed = Mathf.Lerp(moveSpeed, 1, _serverSideStressModifier * _serverSideStressModifier);
 
         isGrounded = Physics.Raycast(groundCheck.position, -Vector3.up, groundDistance + 0.1f);
@@ -221,8 +219,6 @@ public class Player : NetworkBehaviour
         }
     }
 
-    #region Server
-    [Server]
     void ControlSpeed()
     {
         var actualMoveSpeed = Mathf.Lerp(moveSpeed, 1, _serverSideStressModifier * _serverSideStressModifier);
@@ -242,7 +238,6 @@ public class Player : NetworkBehaviour
         }
     }
 
-    [Server]
     private bool OnSlope()
     {
         if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight / 2 + 0.5f))
@@ -259,7 +254,6 @@ public class Player : NetworkBehaviour
         return false;
     }
 
-    [Server]
     void PlayerDrag()
     {
         if (isGrounded)
@@ -272,13 +266,13 @@ public class Player : NetworkBehaviour
         }
     }
 
-    #endregion Server
-
     #region Commands and RPC
     [Command]
     public void CmdSendInputs(Vector3 movement, bool jump, bool sprint, float xRot, float yRot, float stress)
     {
         RpcSendInputs(movement, jump, sprint, xRot, yRot, stress);
+        xRotation = xRot;
+        yRotation = yRot;
     }
 
     [ClientRpc]
