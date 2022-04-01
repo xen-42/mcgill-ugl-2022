@@ -206,8 +206,6 @@ public class Player : NetworkBehaviour
 
     private void FixedUpdate()
     {
-        if (!isServer) return;
-
         var actualMoveSpeed = Mathf.Lerp(moveSpeed, 1, _serverSideStressModifier * _serverSideStressModifier);
 
         isGrounded = Physics.Raycast(groundCheck.position, -Vector3.up, groundDistance + 0.1f);
@@ -238,7 +236,6 @@ public class Player : NetworkBehaviour
         }
     }
 
-    [Server]
     void ControlSpeed()
     {
         var actualMoveSpeed = Mathf.Lerp(moveSpeed, 1, _serverSideStressModifier * _serverSideStressModifier);
@@ -265,7 +262,6 @@ public class Player : NetworkBehaviour
         }
     }
 
-    [Server]
     private bool OnSlope()
     {
         if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight / 2 + 0.5f))
@@ -282,7 +278,6 @@ public class Player : NetworkBehaviour
         return false;
     }
 
-    [Server]
     void PlayerDrag()
     {
         if (isGrounded)

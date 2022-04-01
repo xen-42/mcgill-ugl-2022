@@ -112,7 +112,7 @@ MonoBehaviour:
   wrap: {fileID: 1906388637003974525}
   latencySpikeMultiplier: 0
   latencySpikeSpeedMultiplier: 1
-  reliableLatency: 0.1
+  reliableLatency: 0.05
   unreliableLoss: 0.05
-  unreliableLatency: 0.1
+  unreliableLatency: 0.05
   unreliableScramble: 0.05
