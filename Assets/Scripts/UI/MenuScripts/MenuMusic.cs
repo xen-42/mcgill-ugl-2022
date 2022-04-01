@@ -7,13 +7,29 @@ public class MenuMusic : MonoBehaviour
 {
     private AudioSource menuMusicTheme;
 
-    private void Awake(){
-        DontDestroyOnLoad(transform.gameObject);
-        menuMusicTheme = GetComponent<AudioSource>();
+    private static MenuMusic _instance;
+
+    void Start()
+    {
+        // Only ever have one at a time
+        if (_instance != null)
+        {
+            Debug.Log($"Can only have one {nameof(MenuMusic)}");
+            GameObject.Destroy(gameObject);
+        }
+        else
+        {
+            _instance = this;
+
+            DontDestroyOnLoad(transform.gameObject);
+            menuMusicTheme = GetComponent<AudioSource>();
+        }
     }
 
-    public void Update(){
-        if (SceneManager.GetActiveScene().name.Equals("MovementPrototype")){
+    public void Update()
+    {
+        if (SceneManager.GetActiveScene().buildIndex == Scenes.GameScene)
+        {
             Destroy(transform.gameObject);
         }
     }
@@ -22,7 +38,7 @@ public class MenuMusic : MonoBehaviour
         if (menuMusicTheme.isPlaying) return;
         menuMusicTheme.Play();
     }
- 
+
     public void Stop()
     {
         menuMusicTheme.Stop();
