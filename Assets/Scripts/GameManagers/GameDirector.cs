@@ -108,7 +108,7 @@ public class GameDirector : NetworkBehaviour
     private void Update()
     {
         var available = _distractions.Where(x => x.CanBreak).ToList();
-        _numDistractions = _distractions.Where(x => x.IsBroken).Count() + (CatAgent.Instance.GetNumberOfSocks() / CatAgent.Instance.m_spawnLimit);
+        _numDistractions = _distractions.Where(x => x.IsBroken).Count() + (CatAgent.Instance.GetNumberOfSocks() / (float)CatAgent.Instance.m_spawnLimit);
 
         if (isServer)
         {
