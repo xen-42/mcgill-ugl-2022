@@ -24,7 +24,8 @@ public class Holdable : Interactable
     {
         NONE,
         WATERING_CAN,
-        ASSIGNMENT
+        ASSIGNMENT,
+        SOCK
     }
 
     void Start()
