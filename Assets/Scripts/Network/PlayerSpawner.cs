@@ -26,9 +26,11 @@ public class PlayerSpawner : NetworkBehaviour
         CustomNetworkManager.OnServerReadied += SpawnPlayer;
     }
 
-    [ServerCallback]
     private void OnDestroy()
     {
+        // Refresh spawn points list
+        spawnPoints = new List<PlayerSpawnPoint>();
+
         CustomNetworkManager.OnServerReadied -= SpawnPlayer;
     }
 
@@ -54,8 +56,6 @@ public class PlayerSpawner : NetworkBehaviour
                 spawnPoint.drink.SetSelection(player.drink);
             }
         }
-
-
 
         nextIndex++;
     }
