@@ -33,7 +33,9 @@ public abstract class Interactable : NetworkBehaviour
     // If we reset the IsInteractable status back to true when the minigame is done.
     public bool resetAfterUse = false;
 
-    protected virtual void Awake()
+    [SerializeField] public string interactionEvent = null;
+
+    private void Awake()
     {
         InteractablePrompt = new PromptInfo(InputCommand, _promptText, _promptPriority, _promptHoldTime);
         WrongItemPrompt = new PromptInfo(InputCommand.None, _promptTextWrongItem, _promptPriority, _promptHoldTime);
@@ -113,9 +115,7 @@ public abstract class Interactable : NetworkBehaviour
         {
             if (!isServer)
             {
-                // Need authority before we can give commands
-                Player.Instance.CmdGiveAuthority(netIdentity);
-                ActionManager.RunWhen(() => netIdentity.hasAuthority, () => CmdSetInteractable(value));
+                Player.Instance.DoWithAuthority(netIdentity, () => CmdSetInteractable(value));
             }
             else
             {
@@ -123,6 +123,7 @@ public abstract class Interactable : NetworkBehaviour
             }
         }
     }
+
 
     [Command]
     private void CmdSetInteractable(bool value)

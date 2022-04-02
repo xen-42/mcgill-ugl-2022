@@ -36,7 +36,8 @@ public class CatInteractable : Interactable
 
     public void OnPet()
     {
-        if (sound != null){
+        if (sound != null)
+        {
             sound.Play();
         }
 
@@ -45,14 +46,18 @@ public class CatInteractable : Interactable
 
         IsInteractable = false;
 
+        if (interactionEvent != null)
+        {
+            EventManager.TriggerEvent(interactionEvent);
+        }
+
         if (isServer)
         {
             _cooldown = Cooldown;
         }
         else
         {
-            Player.Instance.CmdGiveAuthority(netIdentity);
-            ActionManager.RunWhen(() => netIdentity.hasAuthority, () => CmdStartCooldown());
+            Player.Instance.DoWithAuthority(netIdentity, CmdStartCooldown);
         }
     }
 

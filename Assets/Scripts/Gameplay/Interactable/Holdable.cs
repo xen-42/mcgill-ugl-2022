@@ -11,12 +11,12 @@ public class Holdable : Interactable
 
     private Rigidbody _rb;
     private Collider _collider;
-    
+
     [SerializeField] public float throwForce = 1000f;
-      [SerializeField] public float yeetForce = 500f;
+
+    [SerializeField] public PlayerCustomization.COLOUR colour;
 
     protected override InputCommand InputCommand { get => InputCommand.PickUp; }
-    
 
     public Type type;
 
@@ -55,18 +55,17 @@ public class Holdable : Interactable
         if (InputManager.CurrentInputMode != InputManager.InputMode.Player) return;
 
         var player = Player.Instance;
+
         if (InputManager.IsCommandJustPressed(InputCommand) && player.heldObject == this)
         {
-             player.CmdDrop();
-            if (gameObject.name.Equals("Chair")){
-                  this._rb.isKinematic = false;
-                 this._rb.AddForce(player.cam.transform.forward.normalized * throwForce);
-            }
+            player.CmdDrop();
         }
-        if (InputManager.IsCommandJustPressed(InputCommand.Throw) && player.heldObject == this){
-             player.CmdDrop();
-             this._rb.isKinematic = false;
-            this._rb.AddForce(player.cam.transform.forward.normalized * yeetForce);
+
+        if (InputManager.IsCommandJustPressed(InputCommand.Throw) && player.heldObject == this)
+        {
+            player.CmdDrop();
+            _rb.isKinematic = false;
+            _rb.AddForce(player.cam.transform.forward.normalized * throwForce);
         }
     }
 
@@ -92,6 +91,8 @@ public class Holdable : Interactable
 
     public void Drop()
     {
+        Debug.Log("Drop item");
+
         _parent = null;
         if (isServer) gameObject.GetComponent<NetworkIdentity>().RemoveClientAuthority();
 

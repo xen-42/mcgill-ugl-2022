@@ -31,7 +31,7 @@ public class GameDirector : NetworkBehaviour
     private List<Fixable> _distractions;
 
     // Host controls the timer
-    [SyncVar] private float _countdown;
+    [SyncVar] private float _currentTime;
 
     private float _nextDistraction;
     private int _numDistractions;
@@ -53,7 +53,6 @@ public class GameDirector : NetworkBehaviour
     //Day -> Colour Changes
     public Light[] lightreference;
     public Light[] lightCopy;
-
     //Colours
     [SerializeField] public Color endColor;
     [SerializeField] public Color startingColor;
@@ -67,7 +66,7 @@ public class GameDirector : NetworkBehaviour
     }
 
     // Start is called before the first frame update
-    private async void Start()
+    private void Start()
     {
         _distractions = FindObjectsOfType<Fixable>().ToList();
         Random.InitState((int)DateTime.Now.Ticks);
@@ -78,6 +77,8 @@ public class GameDirector : NetworkBehaviour
         _postProcessingController.DisableAllOverrides();
         apply_stress = false;
         under30s = false;
+
+        StatTracker.Instance.RefreshStats();
     }
 
     public void LowerStressImmediate(float change)
@@ -86,39 +87,11 @@ public class GameDirector : NetworkBehaviour
         if (_stress < 0) _stress = 0;
     }
 
-    //public void LowerStressGradually(float change)
-    //{
-    //    StartCoroutine(nameof(StressDecreasing), change);
-    //}
-
-    //private IEnumerator StressDecreasing(float change)
-    //{
-    //    float timeElapsed = 0f;
-    //    float targetStressValue = Mathf.Max(_stress - change, 0f);
-    //    _isStressDecreasing = true;
-
-    //    while (timeElapsed < _stressDecreasingTime)
-    //    {
-    //        timeElapsed += Time.deltaTime;
-    //        _stress = Mathf.Lerp(_stress, targetStressValue, timeElapsed / _stressDecreasingTime);
-    //        HUD.Instance.SetStressValue(_stress);
-
-    //        if (_stress > 49)
-    //        {
-    //            _postProcessingController.UpdateStressVision(_stress - 50);
-    //        }
-
-    //        yield return null;
-    //    }
-
-    //    _stress = targetStressValue;
-    //    _isStressDecreasing = false;
-    //    yield return null;
-    //}
-
     public void DoAssignment()
     {
         NumAssignmentsDone += 1;
+
+        StatTracker.Instance.OnSubmitAssignment();
     }
 
     public void ScanAssignment()
@@ -128,16 +101,18 @@ public class GameDirector : NetworkBehaviour
             scanSound.Play();
         }
         NumAssignmentsScanned += 1;
+
+        StatTracker.Instance.OnScanAssignment();
     }
 
-    private async void Update()
+    private void Update()
     {
         var available = _distractions.Where(x => x.CanBreak).ToList();
         _numDistractions = _distractions.Where(x => x.IsBroken).Count();
 
         if (isServer)
         {
-            _countdown += Time.deltaTime;
+            _currentTime += Time.deltaTime;
 
             _nextDistraction -= Time.deltaTime;
             if (_nextDistraction < 0)
@@ -158,7 +133,7 @@ public class GameDirector : NetworkBehaviour
         }
 
         _stress = Mathf.Clamp(_stress, 0f, 100f);
-        HUD.Instance.SetGameState(timeLimit - (int)_countdown, _stress, NumAssignmentsDone);
+        HUD.Instance.SetGameState(timeLimit - (int)_currentTime, _stress, NumAssignmentsDone);
 
         // Stress vision -----------------------------------
         // Enable stress vision
@@ -193,30 +168,28 @@ public class GameDirector : NetworkBehaviour
             _postProcessingController.UpdateStressVision(temp_stress);
         }
 
-        if (!under30s && _countdown >= timeLimit - 30f)
+        if (!under30s && _currentTime >= timeLimit - 30f)
         {
             under30s = true;
             clockSound.Play();
         }
+
 
         Player.Instance.stressModifier = Mathf.Clamp((_stress - 50f) / 50f, 0, 1);
 
         //Changing colour of lights
 
         //for (int i = 0; i < lightreference.Length; i++)
-        //  {
-        //        lightreference[i].color = Color.Lerp(startingColor, endColor, _countdown / timeLimit);
-        //      }
-        //        lightreference[0].intensity = Mathf.Lerp(minInensityTwo, maxIntensity, _countdown / timeLimit);
+        //{
+        //  lightreference[i].color = Color.Lerp(startingColor, endColor, _countdown / timeLimit);
+        //}
+        //lightreference[0].intensity = Mathf.Lerp(minInensityTwo, maxIntensity, _countdown / timeLimit);
 
-        // Game Over
-        if (timeLimit <= _countdown)
-        {
-            InputManager.CurrentInputMode = InputManager.InputMode.UI;
-            heartbeatSound.Stop();
-            clockSound.Stop();
+
+        // Game Over       
+        if (isServer && timeLimit <= _currentTime)
+        {            
             CustomNetworkManager.Instance.Stop();
-            SceneManager.LoadScene(Scenes.GameOver);
         }
     }
 
@@ -224,5 +197,10 @@ public class GameDirector : NetworkBehaviour
     {
         if (list.Count == 0) return default;
         return list[(int)Random.Range(0, list.Count)];
+    }
+
+    public float GetTimeLeft()
+    {
+        return timeLimit - _currentTime;
     }
 }

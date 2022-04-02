@@ -38,34 +38,41 @@ public class ItemSpawningMinigame : Interactable
             Player.Instance.CmdDrop();
         }
 
+        // Used for tracking stats
+        if (interactionEvent != null) EventManager.TriggerEvent(interactionEvent);
+
         if (!isServer)
         {
-            // Need authority before we can give commands
-            Player.Instance.CmdGiveAuthority(netIdentity);
-            ActionManager.RunWhen(() => netIdentity.hasAuthority, CmdCompleteMinigame);
+            Player.Instance.DoWithAuthority(netIdentity, () => CmdCompleteMinigame(Player.Instance.colour));
         }
         else
         {
-            Spawn();
+            Spawn(Player.Instance.colour);
         }
 
         IsInteractable = true;
     }
 
     [Command]
-    private void CmdCompleteMinigame()
+    private void CmdCompleteMinigame(PlayerCustomization.COLOUR colour)
     {
-        Spawn();
+        Spawn(colour);
     }
 
     [Server]
-    private void Spawn()
+    private void Spawn(PlayerCustomization.COLOUR colour)
     {
-        if (sound != null){
+        if (sound != null)
+        {
             sound.Play();
         }
         var position = transform.position + Vector3.up * 0.2f;
         var newObj = Instantiate(HoldableItemPrefab, position, HoldableItemPrefab.transform.rotation);
+
+        // Lets us track who owns it
+        var holdable = newObj.GetComponent<Holdable>();
+        if (holdable != null) holdable.colour = colour;
+
         NetworkServer.Spawn(newObj);
     }
 }

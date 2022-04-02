@@ -138,8 +138,9 @@ MonoBehaviour:
   _promptHoldTime: 0
   requiredObject: 0
   resetAfterUse: 0
+  interactionEvent: Drink
   Cooldown: 10
-  StressReduction: 20
+  StressReduction: 50
   sound: {fileID: 1713028120375684669}
 --- !u!65 &8641644119981715644
 BoxCollider:
