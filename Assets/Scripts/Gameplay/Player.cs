@@ -136,6 +136,20 @@ public class Player : NetworkBehaviour
         // If we're paused or in a minigame we cant control the player
         if (InputManager.CurrentInputMode != InputManager.InputMode.Player)
         {
+            // Don't move during minigame
+            if(_movement != Vector3.zero)
+            {
+                if (isServer)
+                {
+                    _movement = Vector3.zero;
+                }
+                else
+                {
+                    CmdStopMoving();
+                }
+            }
+
+
             // If we were looking at something make sure its lost focus
             if (_focusedObject != null)
             {
@@ -373,6 +387,12 @@ public class Player : NetworkBehaviour
         {
             Debug.LogError($"{e.Message}: {e.StackTrace}");
         }
+    }
+
+    [Command]
+    public void CmdStopMoving()
+    {
+        _movement = Vector3.zero;
     }
     #endregion Commands and RPC
 
