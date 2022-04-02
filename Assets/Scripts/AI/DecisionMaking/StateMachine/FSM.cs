@@ -167,14 +167,5 @@ namespace DecisionMaking.StateMachine
                 }
             }
         }
-
-        private void OnDrawGizmos()
-        {
-            //Show current state
-            if (CurrentState != null)
-            {
-                Handles.Label(transform.position, CurrentState.ToString());
-            }
-        }
     }
 }
