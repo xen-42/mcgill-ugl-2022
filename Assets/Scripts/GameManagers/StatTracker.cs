@@ -14,8 +14,8 @@ public class StatTracker : NetworkBehaviour
     }
     private static StatTracker _instance = null;
 
-    public PlayerStats clientStats = new PlayerStats { stats = new int[8] };
-    public PlayerStats serverStats = new PlayerStats { stats = new int[8] };
+    public static PlayerStats clientStats = new PlayerStats { stats = new int[8] };
+    public static PlayerStats serverStats = new PlayerStats { stats = new int[8] };
 
     private bool _initialized;
 
@@ -38,10 +38,7 @@ public class StatTracker : NetworkBehaviour
                 //netIdentity.AssignClientAuthority(connectionToClient);
             }
 
-            if (isServer)
-            {
-                RefreshStats();
-            }
+            RefreshStats();
         }
     }
 
@@ -56,45 +53,59 @@ public class StatTracker : NetworkBehaviour
 
     public void RefreshStats()
     {
+        Debug.Log("Refreshing stats");
+
         clientStats = new PlayerStats { stats = new int[8] };
         serverStats = new PlayerStats { stats = new int[8] };
     }
 
-    private void UpdateStat(string name)
+    private void IncrementStat(string name)
     {
         if (isServer)
         {
             // Synced to client automatically
-            Debug.Log("Server updating stat");
-            serverStats.stats[NameToInt(name)] += 1;
+            Debug.Log($"Server incrementing stat {name}");
+            RpcIncrementServerStat(name);
         }
         else
         {
-            Debug.Log("Client updating stat");
-            CmdUpdateStat(name);
+            Debug.Log($"Client incrementing stat {name}");
+
+            Player.Instance.DoWithAuthority(netIdentity, () => CmdIncrementStat(name));
         }
     }
 
     [Command]
-    private void CmdUpdateStat(string name)
+    private void CmdIncrementStat(string name)
     {
-        Debug.Log("Hello?");
+        RpcIncrementClientStat(name);
+    }
+
+    [ClientRpc]
+    private void RpcIncrementClientStat(string name)
+    {
         clientStats.stats[NameToInt(name)] += 1;
+    }
+
+    [ClientRpc]
+    private void RpcIncrementServerStat(string name)
+    {
+        serverStats.stats[NameToInt(name)] += 1;
     }
 
     public void OnWriteAssignment()
     {
-        UpdateStat("AssignmentsWritten");
+        IncrementStat("AssignmentsWritten");
     }
 
     public void OnScanAssignment()
     {
-        UpdateStat("AssignmentsScanned");
+        IncrementStat("AssignmentsScanned");
     }
 
     public void OnSubmitAssignment()
     {
-        UpdateStat("AssignmentsSubmitted");
+        IncrementStat("AssignmentsSubmitted");
     }
 
     // This is jank but its so it can be a SyncVar
