@@ -73,6 +73,11 @@ public class CatAgent : NetworkBehaviour
         EventManager.AddListener("PetCat", OnUpdatePetStatus);
     }
 
+    private void OnDestroy()
+    {
+        EventManager.RemoveListener("PetCat", OnUpdatePetStatus);
+    }
+
     // Start is called before the first frame update
     private void Start()
     {
