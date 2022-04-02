@@ -11,20 +11,25 @@ public class Fixable : NetworkBehaviour
     private string _fixedName;
     private string _brokenName;
 
+    public bool IsBroken { get => _isBroken; }
     [SyncVar] private bool _isBroken;
 
-    public bool CanBreak { get => _isBroken && _cooldown == 0f; }
+    public bool CanBreak { get => (!_isBroken && _cooldown == 0f); }
 
     [SyncVar] private string _currentState = null;
 
     private Interactable _interactable;
 
-    [SerializeField] public string brokenStateSound;
-    [SerializeField] public string fixedStateSound;
+    [SerializeField] public AudioSource brokenStateSound;
+    [SerializeField] public AudioSource fixedStateSound;
+    [SerializeField] public AudioSource ambientNoise;
 
     // Cooldown to prevent breaking right after fixing it
-    [SerializeField] public float brokenCooldown = 5f;
-    private float _cooldown;
+    [SerializeField] public float brokenCooldown = 30f;
+    [SyncVar] private float _cooldown;
+
+    [SerializeField] public float stressReduction = 20f;
+    public ParticleSystem _particleSystemBroken;
 
     private void Awake()
     {
@@ -37,18 +42,21 @@ public class Fixable : NetworkBehaviour
         _interactable = GetComponent<Interactable>();
 
         _SwitchState(_currentState);
+
+        // Have to give time for interactable to set up
+        ActionManager.FireOnNextUpdate(() => _interactable.IsInteractable = IsBroken);
     }
 
-    [Server]
     private void Update()
     {
         if (!isServer) return;
 
-        if(_cooldown > 0)
+        // Only do the cool down when its fixed
+        if (_cooldown > 0)
         {
             _cooldown -= Time.deltaTime;
         }
-        if(_cooldown <= 0)
+        if (_cooldown <= 0)
         {
             _cooldown = 0f;
         }
@@ -56,17 +64,35 @@ public class Fixable : NetworkBehaviour
 
     public void Break()
     {
-        if (brokenStateSound != null){
-            FindObjectOfType<AudioManager>().PlaySound(brokenStateSound);
+        if (brokenStateSound != null)
+        {
+            brokenStateSound.Play();
         }
+        if (ambientNoise != null)
+        {
+            ambientNoise.Stop();
+        }
+        if (_particleSystemBroken != null){
+            _particleSystemBroken.Play();
+            _particleSystemBroken.loop = true;
+        }
+
         SwitchState(brokenState.name);
     }
 
     public void Fix()
     {
-        if (fixedStateSound != null){
-            FindObjectOfType<AudioManager>().PlaySound(fixedStateSound);
-            _cooldown = brokenCooldown;
+        GameDirector.Instance.LowerStressImmediate(stressReduction);
+        if (fixedStateSound != null)
+        {
+            fixedStateSound.Play();
+        }
+        if (ambientNoise != null)
+        {
+            ambientNoise.Play();
+        }
+        if (_particleSystemBroken != null){
+            _particleSystemBroken.Stop();
         }
         SwitchState(fixedState.name);
     }
@@ -80,6 +106,9 @@ public class Fixable : NetworkBehaviour
         }
         else
         {
+            // Cooldown handled on server
+            if (stateID == fixedState.name) _cooldown = brokenCooldown;
+
             RpcSwapState(stateID);
         }
     }
@@ -107,7 +136,8 @@ public class Fixable : NetworkBehaviour
                 t.gameObject.SetActive(t.gameObject.name == _currentState);
             }
         }
-        _isBroken = (stateID != fixedState.name);
+
+        _isBroken = (stateID == _brokenName);
 
         if (_interactable != null) _interactable.IsInteractable = _isBroken;
     }

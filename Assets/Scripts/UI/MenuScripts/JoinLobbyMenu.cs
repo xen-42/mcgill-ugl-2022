@@ -155,7 +155,8 @@ namespace Assets.Scripts.UI.MenuScripts
         public void OnBackButtonPressed()
         {
             // Just reload the scene
-            SceneManager.LoadScene(SceneManager.GetActiveScene().path);
+            SceneManager.LoadScene(Scenes.Lobby);
         }
+        
     }
 }

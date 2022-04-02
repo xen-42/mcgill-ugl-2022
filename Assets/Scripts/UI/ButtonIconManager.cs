@@ -10,7 +10,6 @@ public static class ButtonIconManager
     private static Texture2D _missingKey = null;
     private static Texture2D _missingMouse = null;
     private static readonly Dictionary<Key, Texture2D> _keyboardPrompts = new Dictionary<Key, Texture2D>();
-    private static readonly Dictionary<GamepadButton, Texture2D> _gamepadPrompts = new Dictionary<GamepadButton, Texture2D>();
     private static readonly Dictionary<MouseButton, Texture2D> _mousePrompts = new Dictionary<MouseButton, Texture2D>();
 
     // Does nothing but trying to call it will trigger the constructor
@@ -22,13 +21,6 @@ public static class ButtonIconManager
 
         if (key.ToString().Contains("Mouse")) return _missingMouse;
         else return _missingKey;
-    }
-
-    public static Texture2D GetGamepadButtonTexture(GamepadButton gamepadButton)
-    {
-        if (_gamepadPrompts.ContainsKey(gamepadButton)) return _gamepadPrompts[gamepadButton];
-
-        return _missingKey;
     }
 
     public static Texture2D GetMouseButtonTexture(MouseButton button)
@@ -43,11 +35,7 @@ public static class ButtonIconManager
         if (command == InputManager.InputCommand.None) return null;
 
         Texture2D texture = null;
-        if (InputManager.IsUsingGamepad() && InputManager.GamepadMapping.ContainsKey(command))
-        {
-            texture = GetGamepadButtonTexture(InputManager.GamepadMapping[command]);
-        }
-        else if (InputManager.KeyboardMappings.ContainsKey(command))
+        if (InputManager.KeyboardMappings.ContainsKey(command))
         {
             texture = GetKeyTexture(InputManager.KeyboardMappings[command]);
         }
@@ -75,7 +63,7 @@ public static class ButtonIconManager
         {
             if (_keyboardPrompts.ContainsKey(key))
             {
-                Debug.LogWarning($"Keyboard button dictionary alread contains {key}");
+                //Debug.LogWarning($"Keyboard button dictionary alread contains {key}");
                 continue;
             }
 
@@ -85,18 +73,6 @@ public static class ButtonIconManager
             if (texture == null) continue;
 
             _keyboardPrompts.Add(key, texture);
-        }
-
-        foreach (GamepadButton gamepadButton in Enum.GetValues(typeof(GamepadButton)))
-        {
-            if (_gamepadPrompts.ContainsKey(gamepadButton)) continue;
-
-            var path = "UI/Prompts/Xbox Series/XBoxSeriesX_" + GamepadButtonToFileName(gamepadButton);
-            var texture = Resources.Load<Texture2D>(path);
-
-            if (texture == null) continue;
-
-            _gamepadPrompts.Add(gamepadButton, texture);
         }
 
         foreach (MouseButton mouseButton in Enum.GetValues(typeof(MouseButton)))

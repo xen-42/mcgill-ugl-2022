@@ -7,8 +7,9 @@ using UnityEngine.SceneManagement;
 
 public class OptionsMenu : MonoBehaviour
 {
-    public static bool GamePaused = false;
+    public bool GamePaused = false;
     public GameObject pauseMenuUI;
+    public GameObject tutorialUI;
     public AudioMixer audioMixer;
     public Dropdown resolutionDropdown;
     Resolution[] resolutions;
@@ -48,7 +49,8 @@ public class OptionsMenu : MonoBehaviour
             }
         }
 
-        pauseMenuUI.SetActive(false);
+        //pauseMenuUI.SetActive(false);
+        //tutorialUI.SetActive(false);
     }
     public void SetVolume(float volume)
     {
@@ -99,6 +101,7 @@ public class OptionsMenu : MonoBehaviour
     public void Resume()
     {
         pauseMenuUI.SetActive(false);
+        if(tutorialUI != null) tutorialUI.SetActive(false);
         InputManager.CurrentInputMode = _lastInputMode;
         GamePaused = false;
     }
@@ -119,6 +122,16 @@ public class OptionsMenu : MonoBehaviour
     public void ReturnToMainMenu()
     {
         CustomNetworkManager.Instance.Stop();
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+        SceneManager.LoadScene(Scenes.MainMenu);
+    }
+
+    public void Tutorial(){
+        pauseMenuUI.SetActive(false);
+        tutorialUI.SetActive(true);
+    }
+
+    public void QuitTutorial(){
+        tutorialUI.SetActive(false);
+        pauseMenuUI.SetActive(true);
     }
 }

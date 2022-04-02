@@ -11,7 +11,13 @@ public class Holdable2D : Hoverable2D
     public bool IsHeld { get { return _isHeld; } }
     private Plane _plane;
 
+    public AudioSource clickSound;
+
     protected override InputCommand InputCommand { get => InputCommand.PickUp; }
+
+    void Start(){
+        clickSound = GameObject.Find("AudioManager").GetComponent<AudioSource>();
+    }
 
     void Update()
     {
@@ -20,6 +26,7 @@ public class Holdable2D : Hoverable2D
         if (InputManager.IsCommandJustPressed(InputCommand.PickUp) && isHovering)
         {
             _isHeld = true;
+            clickSound.Play();
         }
 
         if (_isHeld)

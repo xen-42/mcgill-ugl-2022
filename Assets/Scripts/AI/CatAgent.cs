@@ -109,7 +109,6 @@ public class CatAgent : NetworkBehaviour
         //NMAgent.speed = 2;
 
         PickRandomPos();
-        print(NMAgent.destination);
 
         /*
         elapsed += Time.deltaTime;

@@ -26,7 +26,8 @@ public class CatInteractable : Interactable
         m_cat = GetComponent<CatAgent>();
     }
 
-    [SerializeField] public string sound;
+    
+    [SerializeField] public AudioSource sound;
 
     void Start()
     {
@@ -36,19 +37,22 @@ public class CatInteractable : Interactable
     public void OnPet()
     {
         if (sound != null){
-            FindObjectOfType<AudioManager>().PlaySound(sound);
+            sound.Play();
         }
+
         GameDirector.Instance.LowerStressImmediate(StressReduction);
         m_cat.OnUpdatePetStatus(Player.Instance);
 
         IsInteractable = false;
+
         if (isServer)
         {
             _cooldown = Cooldown;
         }
         else
         {
-            CmdStartCooldown();
+            Player.Instance.CmdGiveAuthority(netIdentity);
+            ActionManager.RunWhen(() => netIdentity.hasAuthority, () => CmdStartCooldown());
         }
     }
 

@@ -483,14 +483,21 @@ MonoBehaviour:
   fovaccel: 5
   sensX: 10
   sensY: 10
+  xRotation: 0
+  yRotation: 0
   walkSpeed: 4
   runSpeed: 6
   acceleration: 10
   heldItemPosition: {fileID: 2194708783220485502}
   heldItemTranslationResponsiveness: 20
   heldItemRotationResponsiveness: 10
+  rb: {fileID: 4481484670218387115}
+  collider: {fileID: 4481484669479351748}
   heldObject: {fileID: 0}
   stressModifier: 0
+  plant: 0
+  drink: 0
+  poster: 0
 --- !u!1 &4481484670693502597
 GameObject:
   m_ObjectHideFlags: 0

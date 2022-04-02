@@ -14,7 +14,7 @@ public class ItemSpawningMinigame : Interactable
     public GameObject HoldableItemPrefab;
 
     protected override InputCommand InputCommand { get => InputCommand.Interact; }
-    [SerializeField] public string sound;
+    [SerializeField] public AudioSource sound;
 
     void Start()
     {
@@ -24,10 +24,11 @@ public class ItemSpawningMinigame : Interactable
         _unityEvent.AddListener(() =>
         {
             IsInteractable = false;
-            MinigameManager.Instance.StartMinigame(MinigamePrefab, out var minigame);
+            MinigameManager.Instance.StartMinigame(this, MinigamePrefab, out var minigame);
             minigame.OnCompleteMinigame.AddListener(OnCompleteMinigame);
-            minigame.OnMoveAway.AddListener(OnMoveAway);
         });
+
+        resetAfterUse = true;
     }
 
     private void OnCompleteMinigame()
@@ -51,10 +52,6 @@ public class ItemSpawningMinigame : Interactable
         IsInteractable = true;
     }
 
-    private void OnMoveAway(){
-        IsInteractable = true;
-    }
-
     [Command]
     private void CmdCompleteMinigame()
     {
@@ -65,7 +62,7 @@ public class ItemSpawningMinigame : Interactable
     private void Spawn()
     {
         if (sound != null){
-            FindObjectOfType<AudioManager>().PlaySound(sound);
+            sound.Play();
         }
         var position = transform.position + Vector3.up * 0.2f;
         var newObj = Instantiate(HoldableItemPrefab, position, HoldableItemPrefab.transform.rotation);

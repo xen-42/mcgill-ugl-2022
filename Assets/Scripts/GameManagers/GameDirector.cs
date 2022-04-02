@@ -4,7 +4,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
+using UnityEngine.Rendering.Universal;
+using UnityEngine.Rendering;
 
 public class GameDirector : NetworkBehaviour
 {
@@ -35,9 +38,6 @@ public class GameDirector : NetworkBehaviour
 
     // Stress is out of 100
     private float _stress;
-    private bool _isStressDecreasing;
-    [SerializeField] private float _stressDecreasingTime = 0.5f;
-    private bool _stressed_out;
     private PostProcessingController _postProcessingController;
     public float CurrentStress => _stress;
     private bool apply_stress;
@@ -45,11 +45,21 @@ public class GameDirector : NetworkBehaviour
     public int NumAssignmentsDone { get; private set; }
     public int NumAssignmentsScanned { get; private set; }
 
-    private bool _gameOver;
+    [SerializeField] public AudioSource scanSound;
+    [SerializeField] public AudioSource heartbeatSound;
+    [SerializeField] public AudioSource clockSound;
+    private bool under30s;
 
-    [SerializeField] public string scanSound;
-    [SerializeField] public string heartbeatSound;
-    [HideInInspector] public AudioManager audio_manager;
+    //Day -> Colour Changes
+    public Light[] lightreference;
+    public Light[] lightCopy;
+    //Colours
+    [SerializeField] public Color endColor;
+    [SerializeField] public Color startingColor;
+    [SerializeField] public float maxIntensity = 50f;
+    [SerializeField] public float minInensityOne = 2f;
+    [SerializeField] public float minInensityTwo = 20f;
+
 
     private void Awake()
     {
@@ -57,20 +67,23 @@ public class GameDirector : NetworkBehaviour
     }
 
     // Start is called before the first frame update
-    private void Start()
+    private async void Start()
     {
+
+
+
         _distractions = FindObjectsOfType<Fixable>().ToList();
         Random.InitState((int)DateTime.Now.Ticks);
 
         _nextDistraction = timeUntilFirstDistraction;
 
-        _stressed_out = false;
         _postProcessingController = GameObject.Find("GlobalVolume").GetComponent<PostProcessingController>();
-
         _postProcessingController.DisableAllOverrides();
         apply_stress = false;
+        under30s = false;
 
-        audio_manager = FindObjectOfType<AudioManager>();
+
+
     }
 
     public void LowerStressImmediate(float change)
@@ -116,18 +129,17 @@ public class GameDirector : NetworkBehaviour
 
     public void ScanAssignment()
     {
-        if (scanSound != null){
-            FindObjectOfType<AudioManager>().PlaySound(scanSound);
+        if (scanSound != null)
+        {
+            scanSound.Play();
         }
         NumAssignmentsScanned += 1;
     }
 
-    private void Update()
+    private async void Update()
     {
-        if (_gameOver) return;
-
-        var available = _distractions.Where(x => !x.CanBreak).ToList();
-        _numDistractions = _distractions.Count - available.Count;
+        var available = _distractions.Where(x => x.CanBreak).ToList();
+        _numDistractions = _distractions.Where(x => x.IsBroken).Count();
 
         if (isServer)
         {
@@ -142,16 +154,13 @@ public class GameDirector : NetworkBehaviour
             }
         }
 
-        if (!_isStressDecreasing)
+        if (_stress > 10)
         {
-            if (_stress > 10)
-            {
-                _stress += stressPerSecond * Mathf.Pow(_numDistractions, stressExponent) * Time.deltaTime * 0.5f;
-            }
-            else
-            {
-                _stress += stressPerSecond * Mathf.Pow(_numDistractions, stressExponent) * Time.deltaTime;
-            }
+            _stress += stressPerSecond * Mathf.Pow(_numDistractions, stressExponent) * Time.deltaTime * 0.5f;
+        }
+        else
+        {
+            _stress += stressPerSecond * Mathf.Pow(_numDistractions, stressExponent) * Time.deltaTime;
         }
 
         _stress = Mathf.Clamp(_stress, 0f, 100f);
@@ -162,8 +171,9 @@ public class GameDirector : NetworkBehaviour
         if (_stress > 49 && _stress < 101 && !apply_stress)
         {
             apply_stress = true;
-            if (heartbeatSound != null){
-                audio_manager.PlaySound(heartbeatSound);
+            if (heartbeatSound != null)
+            {
+                heartbeatSound.Play();
             }
             _postProcessingController.EnableAllOverrides();
         }
@@ -172,8 +182,8 @@ public class GameDirector : NetworkBehaviour
         {
             apply_stress = false;
 
-            audio_manager.StopSound(heartbeatSound);
-            audio_manager.ChangeVolume(heartbeatSound, 0f);
+            heartbeatSound.volume = 0f;
+            heartbeatSound.Stop();
 
             _postProcessingController.DisableAllOverrides();
             Player.Instance.moveSpeed = 6f;
@@ -185,17 +195,36 @@ public class GameDirector : NetworkBehaviour
         if (apply_stress)
         {
             float temp_stress = _stress - 50;
-            audio_manager.ChangeVolume(heartbeatSound, (float) temp_stress * 0.02f);
+            heartbeatSound.volume = (float)temp_stress * 0.02f;
             _postProcessingController.UpdateStressVision(temp_stress);
         }
 
+        if (!under30s && _countdown >= timeLimit - 30f)
+        {
+            under30s = true;
+            clockSound.Play();
+        }
+
+
         Player.Instance.stressModifier = Mathf.Clamp((_stress - 50f) / 50f, 0, 1);
 
-        // Game Over
-        if (!_gameOver && timeLimit == _countdown)
+        //Changing colour of lights
+
+        //for (int i = 0; i < lightreference.Length; i++)
+      //  {
+    //        lightreference[i].color = Color.Lerp(startingColor, endColor, _countdown / timeLimit);
+  //      }
+//        lightreference[0].intensity = Mathf.Lerp(minInensityTwo, maxIntensity, _countdown / timeLimit);
+
+
+        // Game Over       
+        if (timeLimit <= _countdown)
         {
-            _gameOver = true;
             InputManager.CurrentInputMode = InputManager.InputMode.UI;
+            heartbeatSound.Stop();
+            clockSound.Stop();
+            CustomNetworkManager.Instance.Stop();
+            SceneManager.LoadScene(Scenes.GameOver);
         }
     }
 

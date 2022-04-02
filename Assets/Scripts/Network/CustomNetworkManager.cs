@@ -1,6 +1,7 @@
 using kcp2k;
 using Mirror;
 using Mirror.FizzySteam;
+using Steamworks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -47,13 +48,24 @@ public class CustomNetworkManager : NetworkManager
 
     private KcpTransport _kcpTransport;
     private FizzySteamworks _steamTransport;
+    private LatencySimulation _latencySimulation;
+
+    public const bool ENABLE_LATENCY_SIMULATION = false;
 
     public void SetTransport(TransportType type)
     {
         switch (type)
         {
             case TransportType.KCP:
-                transport = _kcpTransport;
+                if(ENABLE_LATENCY_SIMULATION)
+                {
+                    transport = _latencySimulation;
+                }
+                else
+                {
+                    transport = _kcpTransport;
+                }
+
                 break;
             case TransportType.STEAM:
                 transport = _steamTransport;
@@ -78,6 +90,8 @@ public class CustomNetworkManager : NetworkManager
 
     public override void OnStartClient()
     {
+        RegisterPrefabs();
+
         Debug.Log("Starting client");
         base.OnStartClient();
     }
@@ -95,7 +109,7 @@ public class CustomNetworkManager : NetworkManager
         {
             // Back to main menu
             Stop();
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+            SceneManager.LoadScene(Scenes.MainMenu);
         }
 
         base.OnClientDisconnect();
@@ -118,7 +132,7 @@ public class CustomNetworkManager : NetworkManager
         {
             // Back to main menu
             Stop();
-            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex - 1);
+            SceneManager.LoadScene(Scenes.MainMenu);
         }
 
         base.OnServerDisconnect(conn);
@@ -126,7 +140,7 @@ public class CustomNetworkManager : NetworkManager
 
     public override void OnServerConnect(NetworkConnection conn)
     {
-        Debug.Log("Connecting to server");
+        Debug.Log($"[{conn.identity}] connecting to server");
 
         base.OnServerConnect(conn);
 
@@ -159,14 +173,21 @@ public class CustomNetworkManager : NetworkManager
 
             // Says that this game object represents the new player who connected
             NetworkServer.AddPlayerForConnection(conn, lobbyPlayerInstance.gameObject);
+
+            // ID of person that just joined
+            lobbyPlayerInstance.SteamID = SteamMatchmaking.GetLobbyMemberByIndex(
+                steamLobby.LobbyID,
+                numPlayers - 1
+            ).m_SteamID;
         }
     }
 
     // Start is called before the first frame update
     new void Awake()
     {
-        NetworkClient.RegisterPrefab(lobbyPlayerPrefab.gameObject);
-        NetworkClient.RegisterPrefab(gamePlayerPrefab.gameObject);
+        Debug.Log($"Starting {nameof(CustomNetworkManager)}");
+
+        RegisterPrefabs();
 
         if (_instance != null)
         {
@@ -178,6 +199,7 @@ public class CustomNetworkManager : NetworkManager
 
             _kcpTransport = gameObject.GetComponent<KcpTransport>();
             _steamTransport = gameObject.AddComponent<FizzySteamworks>();
+            _latencySimulation = gameObject.GetComponent<LatencySimulation>();
             gameObject.AddComponent<SteamManager>();
             steamLobby = gameObject.AddComponent<SteamLobby>();
         }
@@ -195,12 +217,14 @@ public class CustomNetworkManager : NetworkManager
         {
             StopClient();
         }
+        transport.Shutdown();
     }
 
     private new void OnDestroy()
     {
-        base.OnDestroy();
+        Debug.Log($"Destroying {nameof(CustomNetworkManager)}");
         Stop();
+        base.OnDestroy();
     }
 
     public void NotifyPlayersOfReadyState()
@@ -246,8 +270,20 @@ public class CustomNetworkManager : NetworkManager
         {
             for (int i = lobbyPlayers.Count - 1; i >= 0; i--)
             {
-                var conn = lobbyPlayers[i].connectionToClient;
+                var lobbyPlayer = lobbyPlayers[i];
+
+                var conn = lobbyPlayer.connectionToClient;
                 var player = Instantiate(gamePlayerPrefab);
+
+                // Disable the audio listener until we get to the game scene
+                player.cam.GetComponent<AudioListener>().enabled = false;
+
+                // Pass over the players customization choices
+                player.plant = lobbyPlayer.plant;
+                player.drink = lobbyPlayer.drink;
+                player.poster = lobbyPlayer.poster;
+
+                Debug.Log($"Copied over customization options: {player.plant}, {player.drink}, {player.poster}");
 
                 NetworkServer.Destroy(conn.identity.gameObject);
                 NetworkServer.ReplacePlayerForConnection(conn, player.gameObject);
@@ -263,6 +299,16 @@ public class CustomNetworkManager : NetworkManager
 
         if(sceneName == gameScene)
         {
+            //Enable audio listeners for the players
+            foreach(var player in players)
+            {
+                var audioListener = player.cam?.GetComponent<AudioListener>();
+                if (audioListener != null)
+                {
+                    audioListener.enabled = true;
+                }
+            }
+
             GameObject playerSpawnerInstance = Instantiate(playerSpawnerPrefab);
             NetworkServer.Spawn(playerSpawnerInstance);
         }
@@ -273,5 +319,12 @@ public class CustomNetworkManager : NetworkManager
         base.OnServerReady(conn);
 
         OnServerReadied?.Invoke(conn);
+    }
+
+    private void RegisterPrefabs()
+    {
+        NetworkClient.RegisterPrefab(lobbyPlayerPrefab.gameObject);
+        NetworkClient.RegisterPrefab(gamePlayerPrefab.gameObject);
+        NetworkClient.RegisterPrefab(playerSpawnerPrefab.gameObject);
     }
 }

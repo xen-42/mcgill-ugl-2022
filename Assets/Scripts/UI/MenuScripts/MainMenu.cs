@@ -6,8 +6,6 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour
 {
-    [Scene] [SerializeField] private string lobbyMenu = null;
-
     private void Start()
     {
         InputManager.CurrentInputMode = InputManager.InputMode.UI;
@@ -15,7 +13,7 @@ public class MainMenu : MonoBehaviour
 
     public void PlayGame()
     {
-        SceneManager.LoadScene(lobbyMenu);
+        SceneManager.LoadScene(Scenes.Lobby);
     }
 
     public void QuitGame()
@@ -23,5 +21,9 @@ public class MainMenu : MonoBehaviour
         Debug.Log("Quit");
         //Only work when the game is built, force quits the app
         Application.Quit();
+    }
+
+    public void ShowCredits(){
+        SceneManager.LoadScene(Scenes.Credits);
     }
 }
