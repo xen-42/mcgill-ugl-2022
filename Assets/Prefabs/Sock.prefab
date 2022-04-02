@@ -133,11 +133,14 @@ MonoBehaviour:
   syncInterval: 0.1
   _promptText: Pick sock
   _promptTextNotInteractable: 
-  _promptTextMissingItem: 
+  _promptTextWrongItem: 
   _promptPriority: 0
   _promptHoldTime: 0
   requiredObject: 0
-  type: 2
+  resetAfterUse: 0
+  throwForce: 1000
+  yeetForce: 500
+  type: 3
 --- !u!114 &3873952053484179076
 MonoBehaviour:
   m_ObjectHideFlags: 0
