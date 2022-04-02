@@ -114,6 +114,7 @@ public class Holdable : Interactable
         switch (type)
         {
             case Type.ASSIGNMENT:
+            case Type.SOCK:
                 isConsumable = true;
                 break;
         }
