@@ -19,7 +19,7 @@ public class Holdable2D : Hoverable2D
         clickSound = GameObject.Find("AudioManager").GetComponent<AudioSource>();
     }
 
-    void Update()
+    new void Update()
     {
         var isHovering = IsCursorHovering();
 
