@@ -27,8 +27,6 @@ public class ButtonPrompt : MonoBehaviour
     {
         Info = info;
 
-        Debug.Log(info.Text);
-
         _textUI.text = Info.Text;
 
         RefreshSprite();
