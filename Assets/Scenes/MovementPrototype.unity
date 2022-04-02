@@ -3166,6 +3166,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 519424875}
     m_Modifications:
+    - target: {fileID: 8006056577381684, guid: 67ab93f508289984bb3befd6ecbcd16f, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1692160701}
     - target: {fileID: 2571412278434311988, guid: 67ab93f508289984bb3befd6ecbcd16f, type: 3}
       propertyPath: m_Name
       value: Laundry Bin
