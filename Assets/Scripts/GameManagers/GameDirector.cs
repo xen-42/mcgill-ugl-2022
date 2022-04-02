@@ -77,6 +77,8 @@ public class GameDirector : NetworkBehaviour
         _postProcessingController.DisableAllOverrides();
         apply_stress = false;
         under30s = false;
+
+        StatTracker.Instance.RefreshStats();
     }
 
     public void LowerStressImmediate(float change)
@@ -88,6 +90,8 @@ public class GameDirector : NetworkBehaviour
     public void DoAssignment()
     {
         NumAssignmentsDone += 1;
+
+        StatTracker.Instance.OnSubmitAssignment();
     }
 
     public void ScanAssignment()
@@ -97,6 +101,8 @@ public class GameDirector : NetworkBehaviour
             scanSound.Play();
         }
         NumAssignmentsScanned += 1;
+
+        StatTracker.Instance.OnScanAssignment();
     }
 
     private void Update()
