@@ -16,7 +16,7 @@ public class ButtonCombinationMiniGame : MonoBehaviour
         RestartGame(); //Starts the minigame
     }
 
-    public async void RestartGame(){
+    public void RestartGame(){
         count = 0;
         shuffleButtons=Buttons.OrderBy(a => Random.RandomRange(0,100)).ToList(); //Randomly orders the buttons and saves to shuffled buttons
         //Run the loop for the number of buttons in the minigame so in our case 10 loops
