@@ -7606,7 +7606,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  timeLimit: 60
+  timeLimit: 180
   minTimeBetweenDistractions: 10
   maxTimeBetweenDistractions: 15
   timeUntilFirstDistraction: 10

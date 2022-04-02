@@ -733,6 +733,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a461df5dad2d8c488240573d314dd11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  passingGrade: 5
+  highestGrade: 20
+  avatar: {fileID: 157068082645223074}
+  usernameText: {fileID: 157068082574188167}
+  gradeText: {fileID: 157068083431576638}
   assignmentsWritten: {fileID: 157068081452579084}
   assignmentsScanned: {fileID: 157068083570866489}
   assignmentsSubmitted: {fileID: 157068082464599264}
