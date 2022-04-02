@@ -41,7 +41,7 @@ public class CatAgent : NetworkBehaviour
     [SerializeField] private float m_spawnRadius = 3f;
     [SerializeField] [Range(0, 10)] public int m_spawnLimit;
     [SerializeField] [Range(0, 1)] private float m_spawnProbility = .1f;
-    private int m_curSpawnNum = 0;
+    [SyncVar] private int m_curSpawnNum = 0;
 
     [Header("Cat Petting Params")]
     [Tooltip("When the cat  is being pet, the rendering color will be changed.")]
@@ -106,7 +106,6 @@ public class CatAgent : NetworkBehaviour
         m_normalColor = m_renderer.material.color;
     }
 
-    [Server]
     private void FixedUpdate()
     {
         if (!isServer) return;
@@ -193,7 +192,6 @@ public class CatAgent : NetworkBehaviour
         {
             if (!NMAgent.hasPath || NMAgent.velocity.sqrMagnitude == 0f)
             {
-                print("This is actually been called");
                 PickRandomPos();
             }
         }
@@ -325,6 +323,20 @@ public class CatAgent : NetworkBehaviour
     }
 
     public void OnSockReturned()
+    {
+        Debug.Log($"Sock returned, there were {m_curSpawnNum}");
+        if (isServer)
+        {
+            m_curSpawnNum -= 1;
+        }
+        else
+        {
+            Player.Instance.DoWithAuthority(netIdentity, CmdOnSockReturned);
+        }
+    }
+
+    [Command]
+    public void CmdOnSockReturned()
     {
         m_curSpawnNum -= 1;
     }
