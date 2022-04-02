@@ -72,10 +72,6 @@ public class Fixable : NetworkBehaviour
         {
             ambientNoise.Stop();
         }
-        if (_particleSystemBroken != null){
-            _particleSystemBroken.Play();
-            _particleSystemBroken.loop = true;
-        }
 
         SwitchState(brokenState.name);
     }
@@ -91,7 +87,8 @@ public class Fixable : NetworkBehaviour
         {
             ambientNoise.Play();
         }
-        if (_particleSystemBroken != null){
+        if (_particleSystemBroken != null)
+        {
             _particleSystemBroken.Stop();
         }
         SwitchState(fixedState.name);
@@ -139,5 +136,19 @@ public class Fixable : NetworkBehaviour
         _isBroken = (stateID == _brokenName);
 
         if (_interactable != null) _interactable.IsInteractable = _isBroken;
+
+        if (_particleSystemBroken != null)
+        {
+            if (_isBroken)
+            {
+                _particleSystemBroken.Play();
+            }
+            else
+            {
+                _particleSystemBroken.Stop();
+            }
+
+            _particleSystemBroken.loop = _isBroken;
+        }
     }
 }

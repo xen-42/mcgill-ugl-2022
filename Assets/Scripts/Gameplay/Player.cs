@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using static InputManager;
 
 public class Player : NetworkBehaviour
 {
@@ -72,6 +73,8 @@ public class Player : NetworkBehaviour
     [SyncVar] public PlayerCustomization.DRINK drink;
     [SyncVar] public PlayerCustomization.POSTER poster;
     [SyncVar] public PlayerCustomization.COLOUR colour;
+
+    public bool interactedThisTick = false;
 
     private void Start()
     {
@@ -214,6 +217,43 @@ public class Player : NetworkBehaviour
         {
             Screen.fullScreen = !Screen.fullScreen;
         }
+
+        // Held item
+        if(heldObject != null && !interactedThisTick)
+        {
+            if (InputManager.IsCommandJustPressed(InputCommand.PickUp))
+            {
+                if (isServer)
+                {
+                    RpcDrop();
+                }
+                else
+                {
+                    Player.Instance.DoWithAuthority(heldObject.netIdentity, CmdDrop);
+                }
+            }
+
+            if (InputManager.IsCommandJustPressed(InputCommand.Throw))
+            {
+                if (isServer)
+                {
+                    // Dropping removes our reference to the object but we need that
+                    var obj = heldObject;
+                    RpcDrop();
+                    obj.Toss(cam.transform.forward.normalized);
+                }
+                else
+                {
+                    var obj = heldObject;
+                    CmdDrop();
+                    Player.Instance.DoWithAuthority(netIdentity, () => {
+                        obj.CmdToss(cam.transform.forward.normalized);
+                    });
+                }
+            }
+        }
+
+        interactedThisTick = false;
     }
 
     private void FixedUpdate()
@@ -346,7 +386,7 @@ public class Player : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void RpcDrop()
+    public void RpcDrop()
     {
         if (heldObject != null)
         {

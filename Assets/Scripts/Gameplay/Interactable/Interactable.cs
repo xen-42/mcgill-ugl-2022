@@ -68,7 +68,11 @@ public abstract class Interactable : NetworkBehaviour
         // Do nothing if we don't meet the requirements
         if (!IsInteractable || !HasItem()) return;
 
-        if (_unityEvent != null) _unityEvent.Invoke();
+        if (_unityEvent != null)
+        {
+            Player.Instance.interactedThisTick = true;
+            _unityEvent.Invoke();
+        }
     }
 
     public void GainFocus()
