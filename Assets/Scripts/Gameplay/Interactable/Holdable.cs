@@ -18,7 +18,6 @@ public class Holdable : Interactable
 
     protected override InputCommand InputCommand { get => InputCommand.PickUp; }
 
-
     public Type type;
 
     public enum Type
@@ -55,7 +54,8 @@ public class Holdable : Interactable
         if (InputManager.CurrentInputMode != InputManager.InputMode.Player) return;
 
         var player = Player.Instance;
-        if (InputManager.IsCommandJustPressed(InputCommand))
+
+        if (InputManager.IsCommandJustPressed(InputCommand) && player.heldObject == this)
         {
             player.CmdDrop();
         }
