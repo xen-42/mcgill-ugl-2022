@@ -99,9 +99,18 @@ public class Player : NetworkBehaviour
 
         if (!isServer)
         {
-            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("RemotePlayer"), LayerMask.NameToLayer("Static"));
+            // The server handles most player collisions so the remote player doesnt have to
             gameObject.layer = LayerMask.NameToLayer("RemotePlayer");
+            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("RemotePlayer"), LayerMask.NameToLayer("Static"));
+            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("RemotePlayer"), LayerMask.NameToLayer("NoPlayerCollision"));
         }
+        else
+        {
+            gameObject.layer = LayerMask.NameToLayer("LocalPlayer");
+            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("RemotePlayer"), LayerMask.NameToLayer("NoPlayerCollision"));
+        }
+
+
     }
 
     private void OnDestroy()
@@ -365,14 +374,21 @@ public class Player : NetworkBehaviour
     {
         if (!NetworkClient.active) return;
 
-        if (!identity.hasAuthority) CmdGetAuthority(identity);
+        if (!identity.hasAuthority)
+        {
+            CmdGetAuthority(identity);
 
-        ActionManager.RunWhen(
-            // Run when we get authority or when the server stops
-            () => netIdentity.hasAuthority || !NetworkClient.active,
-            // If the server stopped don't try to call the action
-            () => { if (NetworkClient.active) action.Invoke(); }
-        );
+            ActionManager.RunWhen(
+                // Run when we get authority or when the server stops
+                () => netIdentity.hasAuthority || !NetworkClient.active,
+                // If the server stopped don't try to call the action
+                () => { if (NetworkClient.active) action.Invoke(); }
+            );
+        }
+        else
+        {
+            action.Invoke();
+        }
     }
 
     [Command]

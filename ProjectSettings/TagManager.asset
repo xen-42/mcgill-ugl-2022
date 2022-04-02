@@ -15,8 +15,8 @@ TagManager:
   - Static
   - Interactable
   - RemotePlayer
-  - 
-  - 
+  - NoPlayerCollision
+  - LocalPlayer
   - 
   - 
   - 
