@@ -9,18 +9,13 @@ public class HUD : MonoBehaviour
 {
     //[SerializeField] private GameObject _gamepadIndicator;
 
-    [SerializeField] private GameObject _buttonPrompt;
-
-    #region UI Variable Values
+    [SerializeField] private ButtonPrompt _buttonPrompt;
+    private ButtonPrompt.PromptInfo _currentPromptInfo;
 
     [SerializeField] private Text _timer;
     [SerializeField] private Text _stress;
     [SerializeField] private Text _submitted;
     [SerializeField] private Image _stressBarFillImage;
-
-    #endregion UI Variable Values
-
-    private Dictionary<ButtonPrompt.PromptInfo, ButtonPrompt> _buttonPromptDict;
 
     public static HUD Instance;
     private static GameDirector _director;
@@ -33,8 +28,6 @@ public class HUD : MonoBehaviour
         EventManager<ButtonPrompt.PromptInfo>.AddListener("PromptLost", OnPromptLost);
 
         ButtonIconManager.Init();
-
-        _buttonPromptDict = new Dictionary<ButtonPrompt.PromptInfo, ButtonPrompt>();
     }
 
     private void OnDestroy()
@@ -45,54 +38,20 @@ public class HUD : MonoBehaviour
 
     private void OnPromptHit(ButtonPrompt.PromptInfo promptInfo)
     {
-        if (_buttonPromptDict.TryGetValue(promptInfo, out ButtonPrompt buttonPrompt))
-        {
-            buttonPrompt.gameObject.SetActive(true);
-        }
-        else
-        {
-            var newPrompt = GameObject.Instantiate(_buttonPrompt, _buttonPrompt.transform.parent);
-            newPrompt.GetComponent<ButtonPrompt>().Init(promptInfo);
-
-            _buttonPromptDict.Add(promptInfo, newPrompt.GetComponent<ButtonPrompt>());
-            newPrompt.SetActive(true);
-
-            SortPrompts();
-        }
+        _currentPromptInfo = promptInfo;
+        _buttonPrompt.Init(promptInfo);
+        _buttonPrompt.gameObject.SetActive(true);
     }
 
     private void OnPromptLost(ButtonPrompt.PromptInfo promptInfo)
     {
-        if (_buttonPromptDict.TryGetValue(promptInfo, out ButtonPrompt buttonPrompt))
+        if(_currentPromptInfo.Equals(promptInfo))
         {
-            _buttonPromptDict.Remove(promptInfo);
-            GameObject.Destroy(buttonPrompt.gameObject);
-
-            SortPrompts();
+            _buttonPrompt.gameObject.SetActive(false);
+            _currentPromptInfo = default;
         }
     }
 
-    private void SortPrompts()
-    {
-        // Reorder the remaining ones
-        int i = 0;
-        foreach (var prompt in _buttonPromptDict.Values.ToArray())
-        {
-            RectTransform rect = prompt.GetComponent<RectTransform>();
-            var pos = rect.localPosition;
-            pos.y = i++ * -rect.sizeDelta.y;
-            rect.localPosition = pos;
-        }
-    }
-
-    #region Variable Values Update Callbacks
-
-    /// <summary>
-    /// Update Time Remaining, the stress level of the player, and how many assignments player has submitted
-    /// </summary>
-    /// <param name="time"></param>
-    /// <param name="stress"></param>
-    /// <param name="submitted"></param>
     public void SetGameState(int time, float stress, int submitted)
     {
         var minutes = (int)Math.Floor(time / 60f);
@@ -115,6 +74,4 @@ public class HUD : MonoBehaviour
         _stressBarFillImage.fillAmount = pct;
         _stressBarFillImage.color = Color.Lerp(Color.green, Color.red, pct);
     }
-
-    #endregion Variable Values Update Callbacks
 }

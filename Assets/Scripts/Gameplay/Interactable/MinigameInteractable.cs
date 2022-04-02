@@ -19,17 +19,14 @@ public class MinigameInteractable : Interactable
         {
             IsInteractable = false;
             MinigameManager.Instance.StartMinigame(this, MinigamePrefab, out var minigame);
-            minigame.OnCompleteMinigame.AddListener(() => OnCompleteMinigame.Invoke());
-            minigame.OnCompleteMinigame.AddListener(() => IsInteractable = true);
-            if (requiredObject != Holdable.Type.NONE)
-            {
-                // Should never be null but could be a bug and it'll hang the player
-                if (Player.Instance.heldObject != null)
+            minigame.OnCompleteMinigame.AddListener(() => {
+                OnCompleteMinigame.Invoke();
+                IsInteractable = true;
+                if(requiredObject != Holdable.Type.NONE && Player.Instance.heldObject != null)
                 {
-                    // Try consuming the required object after use
-                    minigame.OnCompleteMinigame.AddListener(() => Player.Instance.heldObject.Consume());
+                    Player.Instance.heldObject.Consume();
                 }
-            }
+            });
         });
     }
 }

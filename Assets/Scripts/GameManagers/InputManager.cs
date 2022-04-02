@@ -25,16 +25,16 @@ public static class InputManager
 
     private static Dictionary<InputCommand, Key> _keyboardMappings = new Dictionary<InputCommand, Key>()
     {
-        { InputCommand.Interact, Key.E },
         { InputCommand.Jump, Key.Space },
         { InputCommand.Sprint, Key.LeftShift },
-        { InputCommand.Back, Key.Tab }
+        { InputCommand.Back, Key.Escape }
     };
 
     private static Dictionary<InputCommand, MouseButton> _mouseMappings = new Dictionary<InputCommand, MouseButton>()
     {
-        {InputCommand.PickUp, MouseButton.Left },
-        {InputCommand.Throw, MouseButton.Right}
+        { InputCommand.Interact, MouseButton.Left },
+        { InputCommand.PickUp, MouseButton.Left },
+        { InputCommand.Throw, MouseButton.Right }
     };
 
     public static Dictionary<InputCommand, Key> KeyboardMappings
