@@ -64,8 +64,6 @@ public class CatInteractable : Interactable
                 IsInteractable = true;
             }
         }
-
-        Debug.Log("CatInteractable" + InteractablePrompt.Text);
     }
 
     [Command]
