@@ -69,6 +69,8 @@ public class CatAgent : NetworkBehaviour
         if (m_spawnManager == null)
             m_spawnManager = GameObject.Find("Waypoints").GetComponent<SpawnPointsManager>();
         destination = this.transform.position;
+
+        EventManager.AddListener("PetCat", OnUpdatePetStatus);
     }
 
     // Start is called before the first frame update
@@ -90,9 +92,11 @@ public class CatAgent : NetworkBehaviour
         m_manager.SetInteger("Energy", energy);
     }
 
-    public void OnUpdatePetStatus(Player pPetter)
+    public void OnUpdatePetStatus()
     {
-        m_petter = pPetter;
+        // Only the local player could have ever caused this method to be called.
+
+        m_petter = Player.Instance;
         m_manager.SetTrigger("OnPet");
         print("OnPet: " + m_manager.GetTrigger("OnPet"));
     }

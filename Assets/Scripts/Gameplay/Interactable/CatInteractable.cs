@@ -13,19 +13,6 @@ public class CatInteractable : Interactable
 
     [SyncVar] private float _cooldown;
     protected override InputCommand InputCommand { get => InputCommand.Interact; }
-
-    #region Caches
-
-    private CatAgent m_cat;
-
-    #endregion Caches
-
-    protected override void Awake()
-    {
-        base.Awake();
-        m_cat = GetComponent<CatAgent>();
-    }
-
     
     [SerializeField] public AudioSource sound;
 
@@ -42,7 +29,6 @@ public class CatInteractable : Interactable
         }
 
         GameDirector.Instance.LowerStressImmediate(StressReduction);
-        m_cat.OnUpdatePetStatus(Player.Instance);
 
         IsInteractable = false;
 
