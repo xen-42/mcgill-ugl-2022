@@ -75,6 +75,8 @@ public class PlantMinigame : DragDropMinigame
 
         _completed = true;
 
+        StatTracker.Instance.OnWaterPlant();
+
         EventManager.TriggerEvent("MinigameComplete");
         OnCompleteMinigame.Invoke();
     }

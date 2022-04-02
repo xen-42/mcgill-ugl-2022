@@ -407,7 +407,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh340680
+  m_Name: pb_Mesh106348
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -1383,7 +1383,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh340650
+  m_Name: pb_Mesh106318
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -3671,7 +3671,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh340464
+  m_Name: pb_Mesh106132
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -6378,7 +6378,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh340566
+  m_Name: pb_Mesh106234
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -7441,6 +7441,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2105525903, guid: 179c14c7d094f45438965a4b6e805b7a, type: 3}
+      propertyPath: StressReduction
+      value: 100
+      objectReference: {fileID: 0}
     - target: {fileID: 4946464366587674599, guid: 179c14c7d094f45438965a4b6e805b7a, type: 3}
       propertyPath: m_Name
       value: Cat
@@ -7600,7 +7604,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  timeLimit: 10
+  timeLimit: 180
   minTimeBetweenDistractions: 10
   maxTimeBetweenDistractions: 15
   timeUntilFirstDistraction: 10
@@ -8105,7 +8109,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh340500
+  m_Name: pb_Mesh106168
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -8319,6 +8323,10 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 59f214b4c90a644588a8ffbab6a64be9, type: 2}
+    - target: {fileID: 1037535213468921855, guid: 72d82d635acdae34faa785f44690cf26, type: 3}
+      propertyPath: StressReduction
+      value: 50
+      objectReference: {fileID: 0}
     - target: {fileID: 1226665018501669296, guid: 72d82d635acdae34faa785f44690cf26, type: 3}
       propertyPath: m_LocalPosition.y
       value: 0
@@ -10398,7 +10406,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh340418
+  m_Name: pb_Mesh106086
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -10836,7 +10844,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh340434
+  m_Name: pb_Mesh106102
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2
@@ -12518,17 +12526,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 519424875}
     m_Modifications:
-    - target: {fileID: 4481151090819568734, guid: caa60d3dbfca13249a03865df6ceb0a6, type: 3}
-      propertyPath: brokenCooldown
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 4481151090819568734, guid: caa60d3dbfca13249a03865df6ceb0a6, type: 3}
-      propertyPath: stressReduction
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 4481151090819568736, guid: caa60d3dbfca13249a03865df6ceb0a6, type: 3}
       propertyPath: sceneId
-      value: 3329639306
+      value: 2164661851
       objectReference: {fileID: 0}
     - target: {fileID: 4481151090819568738, guid: caa60d3dbfca13249a03865df6ceb0a6, type: 3}
       propertyPath: m_RootOrder

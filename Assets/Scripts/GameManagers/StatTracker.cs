@@ -32,11 +32,9 @@ public class StatTracker : NetworkBehaviour
             _initialized = true;
 
             EventManager.AddListener("WriteAssignment", OnWriteAssignment);
-
-            if (isClient)
-            {
-                //netIdentity.AssignClientAuthority(connectionToClient);
-            }
+            EventManager.AddListener("Drink", OnDrink);
+            EventManager.AddListener("PetCat", OnPetCat);
+            EventManager.AddListener("FixAirConditioning", OnFixAirConditioning);
 
             RefreshStats();
         }
@@ -47,6 +45,9 @@ public class StatTracker : NetworkBehaviour
         if (!_initialized) return;
 
         EventManager.RemoveListener("WriteAssignment", OnWriteAssignment);
+        EventManager.RemoveListener("Drink", OnDrink);
+        EventManager.RemoveListener("PetCat", OnPetCat);
+        EventManager.RemoveListener("FixAirConditioning", OnFixAirConditioning);
 
         _instance = null;
     }
@@ -106,6 +107,31 @@ public class StatTracker : NetworkBehaviour
     public void OnSubmitAssignment()
     {
         IncrementStat("AssignmentsSubmitted");
+    }
+
+    public void OnStealAssignment()
+    {
+        IncrementStat("AssignmentsStolen");
+    }
+
+    public void OnDrink()
+    {
+        IncrementStat("DrinksDrank");
+    }
+
+    public void OnPetCat()
+    {
+        IncrementStat("CatsPet");
+    }
+
+    public void OnWaterPlant()
+    {
+        IncrementStat("PlantsWatered");
+    }
+
+    public void OnFixAirConditioning()
+    {
+        IncrementStat("AirConditionersFixed");
     }
 
     // This is jank but its so it can be a SyncVar

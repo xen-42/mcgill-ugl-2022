@@ -277,6 +277,7 @@ MonoBehaviour:
   _promptHoldTime: 0
   requiredObject: 0
   resetAfterUse: 0
+  interactionEvent: PetCat
   Cooldown: 20
   StressReduction: 50
   sound: {fileID: 1571155245}
