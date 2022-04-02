@@ -4521,6 +4521,7 @@ MonoBehaviour:
   plant: {fileID: 1027872430}
   drink: {fileID: 1245454640}
   posters: {fileID: 1148325961909529842}
+  colour: 1
 --- !u!1 &1099482127
 GameObject:
   m_ObjectHideFlags: 0
@@ -6269,6 +6270,7 @@ MonoBehaviour:
   plant: {fileID: 3121370866252402728}
   drink: {fileID: 1938205961}
   posters: {fileID: 3845949406240043201}
+  colour: 0
 --- !u!1001 &1310135796
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7604,7 +7606,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  timeLimit: 180
+  timeLimit: 60
   minTimeBetweenDistractions: 10
   maxTimeBetweenDistractions: 15
   timeUntilFirstDistraction: 10
@@ -8109,7 +8111,7 @@ Mesh:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: pb_Mesh106168
+  m_Name: pb_Mesh119040
   serializedVersion: 10
   m_SubMeshes:
   - serializedVersion: 2

@@ -70,6 +70,7 @@ public class Player : NetworkBehaviour
     [SyncVar] public PlayerCustomization.PLANT plant;
     [SyncVar] public PlayerCustomization.DRINK drink;
     [SyncVar] public PlayerCustomization.POSTER poster;
+    [SyncVar] public PlayerCustomization.COLOUR colour;
 
     private void Start()
     {

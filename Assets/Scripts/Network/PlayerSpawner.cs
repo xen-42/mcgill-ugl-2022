@@ -51,9 +51,13 @@ public class PlayerSpawner : NetworkBehaviour
         {
             if (player.netId == conn.identity.netId)
             {
+                // Set up all the customization options
                 spawnPoint.posters.SetSelection(player.poster);
                 spawnPoint.plant.SetSelection(player.plant);
                 spawnPoint.drink.SetSelection(player.drink);
+
+                // Record which side of the room the player is from
+                player.colour = spawnPoint.colour;
             }
         }
 
