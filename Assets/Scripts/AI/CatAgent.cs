@@ -124,6 +124,7 @@ public class CatAgent : NetworkBehaviour
     [Server]
     private void ServerUpdatePetStatus(bool serverPlayer)
     {
+        Debug.Log($"Cat was pet by {(serverPlayer ? "server" : "client")}");
         m_petter = serverPlayer ? Player.Instance : Player.OtherPlayer;
         m_manager.SetTrigger("OnPet");
         print("OnPet: " + m_manager.GetTrigger("OnPet"));
