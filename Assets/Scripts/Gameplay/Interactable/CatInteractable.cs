@@ -49,8 +49,6 @@ public class CatInteractable : Interactable
 
     private void Update()
     {
-        base.Update();
-
         if (!isServer)
         {
             return;

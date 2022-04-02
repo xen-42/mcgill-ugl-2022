@@ -74,7 +74,7 @@ public class Player : NetworkBehaviour
     [SyncVar] public PlayerCustomization.POSTER poster;
     [SyncVar] public PlayerCustomization.COLOUR colour;
 
-    public bool interactedThisTick = false;
+    private bool _interactedThisTick = false;
 
     private void Start()
     {
@@ -137,7 +137,7 @@ public class Player : NetworkBehaviour
         if (InputManager.CurrentInputMode != InputManager.InputMode.Player)
         {
             // Don't move during minigame
-            if(_movement != Vector3.zero)
+            if (_movement != Vector3.zero)
             {
                 if (isServer)
                 {
@@ -218,8 +218,16 @@ public class Player : NetworkBehaviour
             Screen.fullScreen = !Screen.fullScreen;
         }
 
+        if(_focusedObject != null && InputManager.IsCommandJustPressed(InputCommand.Interact))
+        {
+            foreach (var interactable in _focusedObject.GetComponents<Interactable>())
+            {
+                if(interactable.Interact()) _interactedThisTick = true;
+            }
+        }
+
         // Held item
-        if(heldObject != null && !interactedThisTick)
+        if (heldObject != null && !_interactedThisTick)
         {
             if (InputManager.IsCommandJustPressed(InputCommand.PickUp))
             {
@@ -246,14 +254,15 @@ public class Player : NetworkBehaviour
                 {
                     var obj = heldObject;
                     CmdDrop();
-                    Player.Instance.DoWithAuthority(netIdentity, () => {
+                    Player.Instance.DoWithAuthority(netIdentity, () =>
+                    {
                         obj.CmdToss(cam.transform.forward.normalized);
                     });
                 }
             }
         }
 
-        interactedThisTick = false;
+        _interactedThisTick = false;
     }
 
     private void FixedUpdate()

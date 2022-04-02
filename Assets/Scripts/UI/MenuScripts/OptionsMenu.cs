@@ -83,13 +83,13 @@ public class OptionsMenu : MonoBehaviour
 
     void Update()
     {
-        //Checks if the game is paused or not
-        if (Input.GetKeyDown(KeyCode.Escape))
+        // Checks if the game is paused or not
+        // In minigames we leave the minigame dont go to the menu
+        if (Input.GetKeyDown(KeyCode.Escape) && InputManager.CurrentInputMode != InputManager.InputMode.Minigame)
         {
             if (GamePaused)
             {
                 Resume();
-
             }
             else
             {
@@ -101,7 +101,7 @@ public class OptionsMenu : MonoBehaviour
     public void Resume()
     {
         pauseMenuUI.SetActive(false);
-        if(tutorialUI != null) tutorialUI.SetActive(false);
+        if (tutorialUI != null) tutorialUI.SetActive(false);
         InputManager.CurrentInputMode = _lastInputMode;
         GamePaused = false;
     }
@@ -125,12 +125,14 @@ public class OptionsMenu : MonoBehaviour
         SceneManager.LoadScene(Scenes.MainMenu);
     }
 
-    public void Tutorial(){
+    public void Tutorial()
+    {
         pauseMenuUI.SetActive(false);
         tutorialUI.SetActive(true);
     }
 
-    public void QuitTutorial(){
+    public void QuitTutorial()
+    {
         tutorialUI.SetActive(false);
         pauseMenuUI.SetActive(true);
     }

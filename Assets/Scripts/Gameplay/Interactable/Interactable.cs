@@ -45,15 +45,6 @@ public abstract class Interactable : NetworkBehaviour
         _isInteractable = initialStatus;
     }
 
-    protected void Update()
-    {
-        if (!HasFocus || !IsInteractable) return;
-
-        if (CurrentInputMode != InputMode.Player) return;
-
-        if (IsCommandJustPressed(InputCommand)) Interact();
-    }
-
     protected virtual bool HasItem()
     {
         var heldObjectType = Player.Instance.heldObject?.type ?? Holdable.Type.NONE;
@@ -61,18 +52,17 @@ public abstract class Interactable : NetworkBehaviour
         return requiredObject == heldObjectType;
     }
 
-    private void Interact()
+    // Returns if we interacted with it
+    public bool Interact()
     {
         Debug.Log($"Interact with object {gameObject.name}");
 
         // Do nothing if we don't meet the requirements
-        if (!IsInteractable || !HasItem()) return;
+        if (!IsInteractable || !HasItem() || _unityEvent == null) return false;
 
-        if (_unityEvent != null)
-        {
-            Player.Instance.interactedThisTick = true;
-            _unityEvent.Invoke();
-        }
+        _unityEvent.Invoke();
+
+        return true;
     }
 
     public void GainFocus()
