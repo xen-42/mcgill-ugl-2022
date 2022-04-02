@@ -46,27 +46,17 @@ public class Holdable : Interactable
         if (canPickUp) Player.Instance.CmdGrab(this);
     }
 
-    // Update is called once per frame
-    new void Update()
+    [Command]
+    public void CmdToss(Vector3 direction)
     {
-        base.Update();
+        Toss(direction);
+    }
 
-        // Input
-        if (InputManager.CurrentInputMode != InputManager.InputMode.Player) return;
-
-        var player = Player.Instance;
-
-        if (InputManager.IsCommandJustPressed(InputCommand) && player.heldObject == this)
-        {
-            player.CmdDrop();
-        }
-
-        if (InputManager.IsCommandJustPressed(InputCommand.Throw) && player.heldObject == this)
-        {
-            player.CmdDrop();
-            _rb.isKinematic = false;
-            _rb.AddForce(player.cam.transform.forward.normalized * throwForce);
-        }
+    [Server]
+    public void Toss(Vector3 direction)
+    {
+        _rb.isKinematic = false;
+        _rb.AddForce(direction * throwForce);
     }
 
     public void Grab(NetworkBehaviour grabber)
