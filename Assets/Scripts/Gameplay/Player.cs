@@ -65,6 +65,7 @@ public class Player : NetworkBehaviour
     [SyncVar] private float _serverSideStressModifier;
 
     public static Player Instance { get; private set; }
+    public static Player OtherPlayer { get; private set; }
 
     // Customization options
     [SyncVar] public PlayerCustomization.PLANT plant;
@@ -90,6 +91,8 @@ public class Player : NetworkBehaviour
         }
         else
         {
+            // This is the other player (there can only be two)
+            OtherPlayer = this;
             GameObject.Destroy(cam.GetComponent<AudioListener>());
             cam.enabled = false;
         }
