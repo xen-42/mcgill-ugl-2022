@@ -5,12 +5,13 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using UnityEngine;
 using static Blackboard;
+using Mirror;
 
 /// <summary>
 /// Blackboard Managger.
 /// Blackboard stores the global game state, where entities can read and write back
 /// </summary>
-public class BlackboardManager : MonoBehaviour
+public class BlackboardManager : NetworkBehaviour
 {
     [SerializeField] private Blackboard blackboardInfo;
 
@@ -35,7 +36,7 @@ public class BlackboardManager : MonoBehaviour
         {
             if (!m_instance)
             {
-                m_instance = FindObjectOfType(typeof(BlackboardManager)) as BlackboardManager;
+                m_instance = FindObjectOfType<BlackboardManager>();
 
                 if (!m_instance)
                 {

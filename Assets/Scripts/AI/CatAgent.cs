@@ -60,17 +60,21 @@ public class CatAgent : NetworkBehaviour
 
     private void Awake()
     {
+        Debug.Log($"Cat awake {(isServer ? "on server" : "on client")}");
+
         NMAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
         NMAgent.speed = 0;
         m_fsm = GetComponent<FSM>();
         m_manager = BlackboardManager.Instance;
         m_petInteract = GetComponent<CatInteractable>();
-        m_renderer = GetComponent<MeshRenderer>();
         if (m_spawnManager == null)
             m_spawnManager = GameObject.Find("Waypoints").GetComponent<SpawnPointsManager>();
         destination = this.transform.position;
 
+        m_renderer = GetComponent<MeshRenderer>();
         EventManager.AddListener("PetCat", OnUpdatePetStatus);
+
+        NetworkClient.RegisterPrefab(m_sockPrefab);
     }
 
     private void OnDestroy()
@@ -81,13 +85,16 @@ public class CatAgent : NetworkBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        m_fsm.TurnOn();
+        if(isServer)
+        {
+            m_fsm.TurnOn();
 
-        energy = 5;
+            energy = 5;
 
-        //path = new UnityEngine.AI.NavMeshPath();
-        destination = new Vector3(10f, 1.77f, -4f);
-        //elapsed = 0.0f;
+            //path = new UnityEngine.AI.NavMeshPath();
+            destination = new Vector3(10f, 1.77f, -4f);
+            //elapsed = 0.0f;
+        }
 
         m_normalColor = m_renderer.material.color;
     }
@@ -96,6 +103,7 @@ public class CatAgent : NetworkBehaviour
     private void FixedUpdate()
     {
         if (!isServer) return;
+
         m_manager.SetInteger("Energy", energy);
     }
 
@@ -108,10 +116,12 @@ public class CatAgent : NetworkBehaviour
         }
         else
         {
+            Debug.Log("Client pet the cat");
             Player.Instance.DoWithAuthority(netIdentity, CmdUpdatePetStatus);
         }
     }
 
+    [Server]
     private void ServerUpdatePetStatus(bool serverPlayer)
     {
         m_petter = serverPlayer ? Player.Instance : Player.OtherPlayer;
