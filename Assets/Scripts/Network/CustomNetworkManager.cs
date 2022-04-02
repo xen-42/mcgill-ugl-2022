@@ -338,5 +338,6 @@ public class CustomNetworkManager : NetworkManager
     {
         NetworkClient.RegisterPrefab(lobbyPlayerPrefab.gameObject);
         NetworkClient.RegisterPrefab(gamePlayerPrefab.gameObject);
+        NetworkClient.RegisterPrefab(playerSpawnerPrefab.gameObject);
     }
 }
