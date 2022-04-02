@@ -45,7 +45,6 @@ public class HUD : MonoBehaviour
 
     private void OnPromptHit(ButtonPrompt.PromptInfo promptInfo)
     {
-        Debug.Log("HUD: " + promptInfo.Text);
         if (_buttonPromptDict.TryGetValue(promptInfo, out ButtonPrompt buttonPrompt))
         {
             buttonPrompt.gameObject.SetActive(true);
