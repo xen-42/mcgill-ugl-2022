@@ -180,6 +180,8 @@ public class CustomNetworkManager : NetworkManager
         {
             bool isLeader = lobbyPlayers.Count == 0;
 
+            Debug.Log("Spawning lobby player");
+
             LobbyPlayer lobbyPlayerInstance = Instantiate(lobbyPlayerPrefab);
 
             lobbyPlayerInstance.IsLeader = isLeader;
@@ -283,6 +285,8 @@ public class CustomNetworkManager : NetworkManager
         {
             for (int i = lobbyPlayers.Count - 1; i >= 0; i--)
             {
+                Debug.Log("Spawning player");
+
                 var lobbyPlayer = lobbyPlayers[i];
 
                 var conn = lobbyPlayer.connectionToClient;
@@ -312,6 +316,8 @@ public class CustomNetworkManager : NetworkManager
 
         if(sceneName == gameScene)
         {
+            Debug.Log("Spawning player spawner");
+
             //Enable audio listeners for the players
             foreach(var player in players)
             {
@@ -334,8 +340,13 @@ public class CustomNetworkManager : NetworkManager
         OnServerReadied?.Invoke(conn);
     }
 
+    private bool _hasRegisteredPrefabs = false;
     private void RegisterPrefabs()
     {
+        if (_hasRegisteredPrefabs) return;
+
+        _hasRegisteredPrefabs = true;
+
         NetworkClient.RegisterPrefab(lobbyPlayerPrefab.gameObject);
         NetworkClient.RegisterPrefab(gamePlayerPrefab.gameObject);
         NetworkClient.RegisterPrefab(playerSpawnerPrefab.gameObject);
