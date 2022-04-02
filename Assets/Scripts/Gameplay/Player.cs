@@ -340,12 +340,11 @@ public class Player : NetworkBehaviour
         heldObject = null;
     }
 
-    public void GetAuthority(NetworkIdentity identity)
+    public void DoWithAuthority(NetworkIdentity identity, Action action)
     {
-        if(NetworkClient.active && identity != null && connectionToClient != null)
-        {
-            CmdGetAuthority(identity);
-        }
+        if (!identity.hasAuthority) CmdGetAuthority(identity);
+
+        ActionManager.RunWhen(() => netIdentity.hasAuthority, action.Invoke);
     }
 
     [Command]

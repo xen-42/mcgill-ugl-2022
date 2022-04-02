@@ -36,8 +36,7 @@ public class CatInteractable : Interactable
         }
         else
         {
-            Player.Instance.GetAuthority(netIdentity);
-            ActionManager.RunWhen(() => netIdentity.hasAuthority, () => CmdStartCooldown());
+            Player.Instance.DoWithAuthority(netIdentity, CmdStartCooldown);
         }
     }
 

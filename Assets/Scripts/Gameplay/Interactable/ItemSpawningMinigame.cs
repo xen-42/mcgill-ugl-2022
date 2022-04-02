@@ -43,9 +43,7 @@ public class ItemSpawningMinigame : Interactable
 
         if (!isServer)
         {
-            // Need authority before we can give commands
-            Player.Instance.GetAuthority(netIdentity);
-            ActionManager.RunWhen(() => netIdentity.hasAuthority, CmdCompleteMinigame);
+            Player.Instance.DoWithAuthority(netIdentity, CmdCompleteMinigame);
         }
         else
         {

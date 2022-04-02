@@ -115,9 +115,7 @@ public abstract class Interactable : NetworkBehaviour
         {
             if (!isServer)
             {
-                // Need authority before we can give commands
-                Player.Instance.GetAuthority(netIdentity);
-                ActionManager.RunWhen(() => netIdentity.hasAuthority, () => CmdSetInteractable(value));
+                Player.Instance.DoWithAuthority(netIdentity, () => CmdSetInteractable(value));
             }
             else
             {
