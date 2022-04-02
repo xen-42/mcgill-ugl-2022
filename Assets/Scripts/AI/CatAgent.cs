@@ -92,7 +92,7 @@ public class CatAgent : NetworkBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        if(isServer)
+        if (isServer)
         {
             m_fsm.TurnOn();
 
@@ -113,7 +113,7 @@ public class CatAgent : NetworkBehaviour
 
         m_manager.SetInteger("Energy", energy);
 
-        if(_sockTimer > 0)
+        if (_sockTimer > 0)
         {
             _sockTimer -= Time.deltaTime;
         }
@@ -122,7 +122,7 @@ public class CatAgent : NetworkBehaviour
     #region On pet
     public void OnUpdatePetStatus()
     {
-        if(isServer)
+        if (isServer)
         {
             ServerUpdatePetStatus(true);
         }
@@ -226,7 +226,7 @@ public class CatAgent : NetworkBehaviour
     #region Spawn sock
     public void SpawnSock()
     {
-        if(isServer)
+        if (isServer)
         {
             ServerSpawnSock();
         }
@@ -322,5 +322,10 @@ public class CatAgent : NetworkBehaviour
     public int GetNumberOfSocks()
     {
         return m_curSpawnNum;
+    }
+
+    public void OnSockReturned()
+    {
+        m_curSpawnNum -= 1;
     }
 }

@@ -3167,9 +3167,41 @@ PrefabInstance:
     m_TransformParent: {fileID: 519424875}
     m_Modifications:
     - target: {fileID: 8006056577381684, guid: 67ab93f508289984bb3befd6ecbcd16f, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8006056577381684, guid: 67ab93f508289984bb3befd6ecbcd16f, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8006056577381684, guid: 67ab93f508289984bb3befd6ecbcd16f, type: 3}
       propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1692160701}
+    - target: {fileID: 8006056577381684, guid: 67ab93f508289984bb3befd6ecbcd16f, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 1571155244}
+    - target: {fileID: 8006056577381684, guid: 67ab93f508289984bb3befd6ecbcd16f, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8006056577381684, guid: 67ab93f508289984bb3befd6ecbcd16f, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: OnSockReturned
+      objectReference: {fileID: 0}
+    - target: {fileID: 8006056577381684, guid: 67ab93f508289984bb3befd6ecbcd16f, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: CatAgent, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8006056577381684, guid: 67ab93f508289984bb3befd6ecbcd16f, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_FloatArgument
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8006056577381684, guid: 67ab93f508289984bb3befd6ecbcd16f, type: 3}
+      propertyPath: OnInteract.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 2571412278434311988, guid: 67ab93f508289984bb3befd6ecbcd16f, type: 3}
       propertyPath: m_Name
       value: Laundry Bin
@@ -3183,8 +3215,12 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2571412278434311991, guid: 67ab93f508289984bb3befd6ecbcd16f, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 2571412278434311991, guid: 67ab93f508289984bb3befd6ecbcd16f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 31.47
+      value: 31.22
       objectReference: {fileID: 0}
     - target: {fileID: 2571412278434311991, guid: 67ab93f508289984bb3befd6ecbcd16f, type: 3}
       propertyPath: m_LocalPosition.y
@@ -3192,7 +3228,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2571412278434311991, guid: 67ab93f508289984bb3befd6ecbcd16f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -14.08
+      value: -14.14
       objectReference: {fileID: 0}
     - target: {fileID: 2571412278434311991, guid: 67ab93f508289984bb3befd6ecbcd16f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -7581,6 +7617,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 179c14c7d094f45438965a4b6e805b7a, type: 3}
+--- !u!114 &1571155244 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4946464366587674598, guid: 179c14c7d094f45438965a4b6e805b7a, type: 3}
+  m_PrefabInstance: {fileID: 1571155243}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9d943d71faf37412b818a707a0f952e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1633924220
 GameObject:
   m_ObjectHideFlags: 0
