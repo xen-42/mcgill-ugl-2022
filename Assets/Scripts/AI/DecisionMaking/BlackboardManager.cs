@@ -61,7 +61,7 @@ public class BlackboardManager : NetworkBehaviour
         }
         else if (m_instance != this)
         {
-            Destroy(gameObject);
+            NetworkServer.Destroy(gameObject);
         }
     }
 

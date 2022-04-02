@@ -23,7 +23,7 @@ public class StatTracker : NetworkBehaviour
     {
         if (_instance != null)
         {
-            GameObject.Destroy(gameObject);
+            NetworkServer.Destroy(gameObject);
         }
         else
         {
