@@ -8,7 +8,6 @@ using UnityEngine.Events;
 
 public class ButtonPrompt : MonoBehaviour
 {
-    [SerializeField] private Image _radialMeterUI = null;
     [SerializeField] private Text _textUI = null;
     [SerializeField] private Image _image = null;
 
@@ -27,12 +26,6 @@ public class ButtonPrompt : MonoBehaviour
     public void Init(PromptInfo info)
     {
         Info = info;
-
-        if (Info.HoldTime == 0f)
-        {
-            // The prompt just needs to be clicked
-            _radialMeterUI.gameObject.SetActive(false);
-        }
 
         Debug.Log(info.Text);
 
@@ -54,15 +47,11 @@ public class ButtonPrompt : MonoBehaviour
     {
         public InputCommand Command { get; set; }
         public string Text { get; set; }
-        public int Priority { get; private set; }
-        public float HoldTime { get; private set; }
 
-        public PromptInfo(InputCommand cmd, string text, int priority, float holdTime)
+        public PromptInfo(InputCommand cmd, string text)
         {
             Command = cmd;
             Text = text;
-            Priority = priority;
-            HoldTime = holdTime;
         }
     }
 }

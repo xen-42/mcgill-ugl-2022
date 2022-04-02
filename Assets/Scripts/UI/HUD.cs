@@ -77,7 +77,6 @@ public class HUD : MonoBehaviour
     {
         // Reorder the remaining ones
         int i = 0;
-        var sortedPrompts = _buttonPromptDict.Values.OrderBy(x => x.Info.Priority);
         foreach (var prompt in _buttonPromptDict.Values.ToArray())
         {
             RectTransform rect = prompt.GetComponent<RectTransform>();
