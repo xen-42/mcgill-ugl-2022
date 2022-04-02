@@ -342,7 +342,7 @@ public class Player : NetworkBehaviour
 
     public void GetAuthority(NetworkIdentity identity)
     {
-        if(NetworkClient.active)
+        if(NetworkClient.active && identity != null && connectionToClient != null)
         {
             CmdGetAuthority(identity);
         }
