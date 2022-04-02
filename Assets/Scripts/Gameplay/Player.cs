@@ -77,7 +77,7 @@ public class Player : NetworkBehaviour
         DontDestroyOnLoad(this);
 
         SceneManager.sceneLoaded += OnSceneLoaded;
-        
+
         rb.freezeRotation = true;
 
         if (hasAuthority)
@@ -93,7 +93,7 @@ public class Player : NetworkBehaviour
             cam.enabled = false;
         }
 
-        if(!isServer)
+        if (!isServer)
         {
             Physics.IgnoreLayerCollision(LayerMask.NameToLayer("RemotePlayer"), LayerMask.NameToLayer("Static"));
             gameObject.layer = LayerMask.NameToLayer("RemotePlayer");
@@ -252,7 +252,7 @@ public class Player : NetworkBehaviour
             moveSpeed = Mathf.Lerp(actualMoveSpeed, actualWalkSpeed, actualAcceleration * Time.deltaTime);
         }
 
-        if(_sprint && isGrounded && _movement != Vector3.zero)
+        if (_sprint && isGrounded && _movement != Vector3.zero)
         {
             cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, fastfov, fovaccel * Time.deltaTime);
         }
@@ -307,7 +307,7 @@ public class Player : NetworkBehaviour
         _sprint = sprint;
         _serverSideStressModifier = stress;
 
-        if(!hasAuthority)
+        if (!hasAuthority)
         {
             cam.transform.localRotation = Quaternion.Euler(xRot, yRot, 0);
             orientation.transform.rotation = Quaternion.Euler(0, yRot, 0);
@@ -342,9 +342,16 @@ public class Player : NetworkBehaviour
 
     public void DoWithAuthority(NetworkIdentity identity, Action action)
     {
+        if (!NetworkClient.active) return;
+
         if (!identity.hasAuthority) CmdGetAuthority(identity);
 
-        ActionManager.RunWhen(() => netIdentity.hasAuthority, action.Invoke);
+        ActionManager.RunWhen(
+            // Run when we get authority or when the server stops
+            () => netIdentity.hasAuthority || !NetworkClient.active,
+            // If the server stopped don't try to call the action
+            () => { if (NetworkClient.active) action.Invoke(); }
+        );
     }
 
     [Command]
