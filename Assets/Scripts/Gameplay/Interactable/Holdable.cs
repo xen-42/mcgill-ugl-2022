@@ -70,6 +70,7 @@ public class Holdable : Interactable
             netID.AssignClientAuthority(grabber.connectionToClient);
         }
         IsInteractable = false;
+
         _collider.enabled = false;
         foreach (var collider in GetComponentsInChildren<Collider>())
         {
@@ -83,17 +84,17 @@ public class Holdable : Interactable
     {
         Debug.Log("Drop item");
 
+        _collider.enabled = true;
+        foreach (var collider in GetComponentsInChildren<Collider>())
+        {
+            _collider.enabled = true;
+        }
+
         _parent = null;
         if (isServer) gameObject.GetComponent<NetworkIdentity>().RemoveClientAuthority();
 
         IsInteractable = true;
         _rb.isKinematic = false;
-        _collider.enabled = true;
-
-        foreach (var collider in GetComponentsInChildren<Collider>())
-        {
-            collider.enabled = true;
-        }
     }
 
     /* Get rid of certain holdable items after using them for a minigame */

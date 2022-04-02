@@ -52,7 +52,7 @@ public class Player : NetworkBehaviour
 
     [Header("Physics Stuff")]
     [SerializeField] Rigidbody rb;
-    [SerializeField] Collider collider;
+    [SerializeField] new public Collider collider;
 
     private GameObject _focusedObject;
     public Holdable heldObject;
@@ -122,7 +122,15 @@ public class Player : NetworkBehaviour
         // Move held items here so they go smoothly (since we disable their collisions its fine that it isnt on server)
         if (heldObject != null)
         {
-            heldObject.transform.position = Vector3.Lerp(heldObject.transform.position, heldItemPosition.position, Time.deltaTime * heldItemTranslationResponsiveness);
+            var targetPosition = heldItemPosition.position;
+            var dir = (heldItemPosition.position - transform.position);
+
+            if (Physics.Raycast(transform.position, dir.normalized, out var hit, dir.magnitude, ~LayerMask.NameToLayer("Player")))
+            {
+                targetPosition = hit.point - dir.normalized * 0.5f;
+            }
+
+            heldObject.transform.position = Vector3.Lerp(heldObject.transform.position, targetPosition, Time.deltaTime * heldItemTranslationResponsiveness);
             heldObject.transform.rotation = Quaternion.Lerp(heldObject.transform.rotation, heldItemPosition.rotation, Time.deltaTime * heldItemRotationResponsiveness);
         }
     }
