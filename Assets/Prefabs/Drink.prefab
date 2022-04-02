@@ -114,9 +114,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  coffee: {fileID: 0}
-  tea: {fileID: 0}
-  energyDrink: {fileID: 0}
+  coffee: {fileID: 8884351570851835309}
+  tea: {fileID: 1895503042057403146}
+  energyDrink: {fileID: 1625592931785223342}
 --- !u!114 &1037535213468921855
 MonoBehaviour:
   m_ObjectHideFlags: 0
