@@ -33,6 +33,8 @@ public abstract class Interactable : NetworkBehaviour
     // If we reset the IsInteractable status back to true when the minigame is done.
     public bool resetAfterUse = false;
 
+    [SerializeField] public string interactionEvent = null;
+
     private void Awake()
     {
         InteractablePrompt = new PromptInfo(InputCommand, _promptText, _promptPriority, _promptHoldTime);
@@ -75,7 +77,7 @@ public abstract class Interactable : NetworkBehaviour
     {
         if (HasFocus) return;
 
-        if(!_isInteractable) 
+        if (!_isInteractable)
         {
             EventManager<PromptInfo>.TriggerEvent("PromptHit", NonInteractablePrompt);
             _lastPrompt = NonInteractablePrompt;
@@ -89,7 +91,7 @@ public abstract class Interactable : NetworkBehaviour
         {
             EventManager<PromptInfo>.TriggerEvent("PromptHit", InteractablePrompt);
             _lastPrompt = InteractablePrompt;
-        }              
+        }
 
         HasFocus = true;
     }
@@ -114,7 +116,7 @@ public abstract class Interactable : NetworkBehaviour
             if (!isServer)
             {
                 // Need authority before we can give commands
-                Player.Instance.CmdGiveAuthority(netIdentity);
+                Player.Instance.GetAuthority(netIdentity);
                 ActionManager.RunWhen(() => netIdentity.hasAuthority, () => CmdSetInteractable(value));
             }
             else
@@ -137,7 +139,7 @@ public abstract class Interactable : NetworkBehaviour
         if (_isInteractable == value) return;
         _isInteractable = value;
 
-        if(HasFocus)
+        if (HasFocus)
         {
             // Remove old prompt
             EventManager<PromptInfo>.TriggerEvent("PromptLost", _lastPrompt);

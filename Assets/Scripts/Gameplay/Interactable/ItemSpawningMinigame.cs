@@ -38,10 +38,13 @@ public class ItemSpawningMinigame : Interactable
             Player.Instance.CmdDrop();
         }
 
+        // Used for tracking stats
+        if(interactionEvent != null) EventManager.TriggerEvent(interactionEvent);
+
         if (!isServer)
         {
             // Need authority before we can give commands
-            Player.Instance.CmdGiveAuthority(netIdentity);
+            Player.Instance.GetAuthority(netIdentity);
             ActionManager.RunWhen(() => netIdentity.hasAuthority, CmdCompleteMinigame);
         }
         else

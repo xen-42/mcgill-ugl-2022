@@ -340,8 +340,16 @@ public class Player : NetworkBehaviour
         heldObject = null;
     }
 
+    public void GetAuthority(NetworkIdentity identity)
+    {
+        if(NetworkClient.active)
+        {
+            CmdGetAuthority(identity);
+        }
+    }
+
     [Command]
-    public void CmdGiveAuthority(NetworkIdentity identity)
+    private void CmdGetAuthority(NetworkIdentity identity)
     {
         try
         {
@@ -355,7 +363,6 @@ public class Player : NetworkBehaviour
         {
             Debug.LogError($"{e.Message}: {e.StackTrace}");
         }
-
     }
     #endregion Commands and RPC
 

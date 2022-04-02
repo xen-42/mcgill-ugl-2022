@@ -645,6 +645,7 @@ GameObject:
   - component: {fileID: 157068083136943006}
   - component: {fileID: 157068083136943000}
   - component: {fileID: 157068083136943001}
+  - component: {fileID: 1427425454683731186}
   m_Layer: 5
   m_Name: PlayerStats
   m_TagString: Untagged
@@ -720,6 +721,26 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &1427425454683731186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 157068083136943007}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4a461df5dad2d8c488240573d314dd11, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  assignmentsWritten: {fileID: 157068081452579084}
+  assignmentsScanned: {fileID: 157068083570866489}
+  assignmentsSubmitted: {fileID: 157068082464599264}
+  assignmentsStolen: {fileID: 157068082544460372}
+  drinksDrank: {fileID: 157068083444044519}
+  catsPet: {fileID: 157068081686507238}
+  plantsWatered: {fileID: 157068081937536399}
+  airConditionersFixed: {fileID: 157068082737335282}
 --- !u!1 &157068083431576636
 GameObject:
   m_ObjectHideFlags: 0

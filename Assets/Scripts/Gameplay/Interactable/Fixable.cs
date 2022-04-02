@@ -101,7 +101,7 @@ public class Fixable : NetworkBehaviour
     {
         if (!isServer)
         {
-            Player.Instance.CmdGiveAuthority(netIdentity);
+            Player.Instance.GetAuthority(netIdentity);
             ActionManager.RunWhen(() => netIdentity.hasAuthority, () => CmdSwapState(stateID));
         }
         else

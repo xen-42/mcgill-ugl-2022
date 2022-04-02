@@ -135,6 +135,8 @@ MonoBehaviour:
   _promptPriority: 0
   _promptHoldTime: 0
   requiredObject: 0
+  resetAfterUse: 0
+  interactionEvent: WriteAssignment
   MinigamePrefab: {fileID: 796745773547017806, guid: 2d835bfe1a0764840b91c5c9a073e735, type: 3}
   HoldableItemPrefab: {fileID: 3873952053484179079, guid: 7f32fa99d866c944bb2668effd5e8bba, type: 3}
   sound: {fileID: 3156009206183599933}
