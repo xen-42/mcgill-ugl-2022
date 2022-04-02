@@ -23,7 +23,7 @@ RenderSettings:
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
-  m_AmbientIntensity: 0.5
+  m_AmbientIntensity: 0.25
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 1, g: 1, b: 1, a: 1}
   m_SkyboxMaterial: {fileID: 2100000, guid: a9347c6258f21c044bd56f4da5555087, type: 2}
@@ -3145,6 +3145,30 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1301529321228816303, guid: 26165a1fb94e7f245807cc5f68c2929f, type: 3}
+      propertyPath: m_Color.b
+      value: 0.3019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 1301529321228816303, guid: 26165a1fb94e7f245807cc5f68c2929f, type: 3}
+      propertyPath: m_Color.g
+      value: 0.16862746
+      objectReference: {fileID: 0}
+    - target: {fileID: 1301529321228816303, guid: 26165a1fb94e7f245807cc5f68c2929f, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1301529322916741946, guid: 26165a1fb94e7f245807cc5f68c2929f, type: 3}
+      propertyPath: m_Color.b
+      value: 0.3019608
+      objectReference: {fileID: 0}
+    - target: {fileID: 1301529322916741946, guid: 26165a1fb94e7f245807cc5f68c2929f, type: 3}
+      propertyPath: m_Color.g
+      value: 0.16862746
+      objectReference: {fileID: 0}
+    - target: {fileID: 1301529322916741946, guid: 26165a1fb94e7f245807cc5f68c2929f, type: 3}
+      propertyPath: m_Color.r
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 2793118798072830954, guid: 26165a1fb94e7f245807cc5f68c2929f, type: 3}
       propertyPath: m_Name
       value: Lights
@@ -3195,6 +3219,16 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 26165a1fb94e7f245807cc5f68c2929f, type: 3}
+--- !u!108 &854791036 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 1301529321228816303, guid: 26165a1fb94e7f245807cc5f68c2929f, type: 3}
+  m_PrefabInstance: {fileID: 854791035}
+  m_PrefabAsset: {fileID: 0}
+--- !u!108 &854791037 stripped
+Light:
+  m_CorrespondingSourceObject: {fileID: 1301529322916741946, guid: 26165a1fb94e7f245807cc5f68c2929f, type: 3}
+  m_PrefabInstance: {fileID: 854791035}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &865236486
 GameObject:
   m_ObjectHideFlags: 0
@@ -7606,7 +7640,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  timeLimit: 180
+  timeLimit: 20
   minTimeBetweenDistractions: 10
   maxTimeBetweenDistractions: 15
   timeUntilFirstDistraction: 10
@@ -7617,16 +7651,16 @@ MonoBehaviour:
   heartbeatSound: {fileID: 1692160703}
   clockSound: {fileID: 1692160704}
   lightreference:
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 854791037}
+  - {fileID: 854791036}
   lightCopy:
-  - {fileID: 0}
-  - {fileID: 0}
-  endColor: {r: 0, g: 0, b: 0, a: 0}
-  startingColor: {r: 0, g: 0, b: 0, a: 0}
-  maxIntensity: 50
+  - {fileID: 854791037}
+  - {fileID: 854791036}
+  endColor: {r: 1, g: 1, b: 1, a: 0}
+  startingColor: {r: 0, g: 0.16862746, b: 0.3019608, a: 0}
+  maxIntensity: 20
   minInensityOne: 2
-  minInensityTwo: 20
+  minInensityTwo: 70
 --- !u!114 &1692160702
 MonoBehaviour:
   m_ObjectHideFlags: 0

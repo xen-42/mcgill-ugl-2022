@@ -179,11 +179,11 @@ public class GameDirector : NetworkBehaviour
 
         //Changing colour of lights
 
-        //for (int i = 0; i < lightreference.Length; i++)
-        //{
-        //  lightreference[i].color = Color.Lerp(startingColor, endColor, _countdown / timeLimit);
-        //}
-        //lightreference[0].intensity = Mathf.Lerp(minInensityTwo, maxIntensity, _countdown / timeLimit);
+        for (int i = 0; i < lightreference.Length; i++)
+     {
+          lightreference[i].color = Color.Lerp(startingColor, endColor, _currentTime / timeLimit);
+        }
+        lightreference[0].intensity = Mathf.Lerp(minInensityTwo, maxIntensity, _currentTime / timeLimit);
 
 
         // Game Over       
