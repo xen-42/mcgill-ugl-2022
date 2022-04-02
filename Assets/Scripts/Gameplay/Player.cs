@@ -96,21 +96,6 @@ public class Player : NetworkBehaviour
             GameObject.Destroy(cam.GetComponent<AudioListener>());
             cam.enabled = false;
         }
-
-        if (!isServer)
-        {
-            // The server handles most player collisions so the remote player doesnt have to
-            gameObject.layer = LayerMask.NameToLayer("RemotePlayer");
-            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("RemotePlayer"), LayerMask.NameToLayer("Static"));
-            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("RemotePlayer"), LayerMask.NameToLayer("NoPlayerCollision"));
-        }
-        else
-        {
-            gameObject.layer = LayerMask.NameToLayer("LocalPlayer");
-            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("RemotePlayer"), LayerMask.NameToLayer("NoPlayerCollision"));
-        }
-
-
     }
 
     private void OnDestroy()

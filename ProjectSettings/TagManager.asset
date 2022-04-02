@@ -14,9 +14,9 @@ TagManager:
   - UI
   - Static
   - Interactable
-  - RemotePlayer
+  - Player
   - NoPlayerCollision
-  - LocalPlayer
+  - 
   - 
   - 
   - 
