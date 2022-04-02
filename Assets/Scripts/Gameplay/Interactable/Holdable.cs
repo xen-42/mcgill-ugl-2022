@@ -55,6 +55,11 @@ public class Holdable : Interactable
         if (InputManager.CurrentInputMode != InputManager.InputMode.Player) return;
 
         var player = Player.Instance;
+        if (InputManager.IsCommandJustPressed(InputCommand))
+        {
+            player.CmdDrop();
+        }
+
         if (InputManager.IsCommandJustPressed(InputCommand.Throw) && player.heldObject == this)
         {
             player.CmdDrop();
@@ -85,6 +90,8 @@ public class Holdable : Interactable
 
     public void Drop()
     {
+        Debug.Log("Drop item");
+
         _parent = null;
         if (isServer) gameObject.GetComponent<NetworkIdentity>().RemoveClientAuthority();
 

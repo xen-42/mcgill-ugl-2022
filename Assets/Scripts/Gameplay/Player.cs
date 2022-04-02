@@ -337,8 +337,11 @@ public class Player : NetworkBehaviour
     [ClientRpc]
     private void RpcDrop()
     {
-        heldObject.Drop();
-        heldObject = null;
+        if (heldObject != null)
+        {
+            heldObject.Drop();
+            heldObject = null;
+        }
     }
 
     public void DoWithAuthority(NetworkIdentity identity, Action action)
