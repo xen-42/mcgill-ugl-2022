@@ -39,7 +39,7 @@ public class CatAgent : NetworkBehaviour
     [SerializeField] private GameObject m_sockPrefab;
     [SerializeField] private SpawnPointsManager m_spawnManager;
     [SerializeField] private float m_spawnRadius = 3f;
-    [SerializeField] [Range(0, 10)] private int m_spawnLimit;
+    [SerializeField] [Range(0, 10)] public int m_spawnLimit;
     [SerializeField] [Range(0, 1)] private float m_spawnProbility = .1f;
     private int m_curSpawnNum = 0;
 
@@ -61,8 +61,12 @@ public class CatAgent : NetworkBehaviour
     private Color m_normalColor;
     private Player m_petter;
 
+    public static CatAgent Instance { get; private set; }
+
     private void Awake()
     {
+        Instance = this;
+
         Debug.Log($"Cat awake {(isServer ? "on server" : "on client")}");
 
         NMAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
@@ -313,5 +317,10 @@ public class CatAgent : NetworkBehaviour
     public void ResetStillState()
     {
         m_renderer.material.color = m_normalColor;
+    }
+
+    public int GetNumberOfSocks()
+    {
+        return m_curSpawnNum;
     }
 }

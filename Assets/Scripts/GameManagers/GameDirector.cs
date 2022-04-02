@@ -34,7 +34,7 @@ public class GameDirector : NetworkBehaviour
     [SyncVar] private float _currentTime;
 
     private float _nextDistraction;
-    private int _numDistractions;
+    private float _numDistractions;
 
     // Stress is out of 100
     private float _stress;
@@ -108,7 +108,7 @@ public class GameDirector : NetworkBehaviour
     private void Update()
     {
         var available = _distractions.Where(x => x.CanBreak).ToList();
-        _numDistractions = _distractions.Where(x => x.IsBroken).Count();
+        _numDistractions = _distractions.Where(x => x.IsBroken).Count() + (CatAgent.Instance.GetNumberOfSocks() / CatAgent.Instance.m_spawnLimit);
 
         if (isServer)
         {
