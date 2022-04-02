@@ -20,7 +20,6 @@ public class LobbyPlayer : NetworkBehaviour
     [SerializeField] private TMP_Text steamLobbyCode = null;
     [SerializeField] private Button copySteamCodeButton = null;
 
-    private Sprite steamAvatarSprite = null;
     [SyncVar] private int Ping = 0;
 
     [SyncVar(hook = nameof(HandleDisplayNameChanged))] public string DisplayName = "Loading...";

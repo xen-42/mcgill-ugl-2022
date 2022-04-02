@@ -17,4 +17,7 @@ MonoBehaviour:
     initValue: 20
   FloatParams: []
   BoolParams: []
-  TriggerParams: []
+  TriggerParams:
+  - name: OnPet
+    initValue:
+      isTriggered: 0

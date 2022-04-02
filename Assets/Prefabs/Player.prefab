@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2194708783220485502}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: HeldItemTransform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -42,7 +42,7 @@ GameObject:
   - component: {fileID: 8210689731909751054}
   - component: {fileID: 3727673437584087922}
   - component: {fileID: 3251498069535597832}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Sphere
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -136,7 +136,7 @@ GameObject:
   - component: {fileID: 4481484669479351751}
   - component: {fileID: 4481484669479351746}
   - component: {fileID: 4481484669479351748}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -191,7 +191,7 @@ GameObject:
   - component: {fileID: 2931020107092680412}
   - component: {fileID: 4377236395824360433}
   - component: {fileID: 4984564119613866671}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: PlayerCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -308,7 +308,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4481484669680942855}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -343,7 +343,7 @@ GameObject:
   - component: {fileID: 205656535896415437}
   - component: {fileID: 6594114755448853076}
   - component: {fileID: 4481484670218387114}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -498,6 +498,7 @@ MonoBehaviour:
   plant: 0
   drink: 0
   poster: 0
+  colour: 0
 --- !u!1 &4481484670693502597
 GameObject:
   m_ObjectHideFlags: 0
@@ -507,7 +508,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4481484670693502594}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Orientation
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -539,7 +540,7 @@ GameObject:
   - component: {fileID: 7126254353176559887}
   - component: {fileID: 3539000613757427111}
   - component: {fileID: 331339455682247967}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Capsule (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -621,7 +622,7 @@ GameObject:
   - component: {fileID: 9048953754747860122}
   - component: {fileID: 4651872368325890148}
   - component: {fileID: 7599127710347339252}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}

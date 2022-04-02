@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using DecisionMaking.StateMachine;
 
-public class Sitting : FSMStateBehaviour
+public class SpawningSocks : FSMStateBehaviour
 {
-    protected CatAgent cat;
+    private CatAgent cat;
 
     protected override void Awake()
     {
@@ -15,18 +15,26 @@ public class Sitting : FSMStateBehaviour
 
     protected override void Enter()
     {
-        print("Entered: Sitting");
-
-        cat.EnterSit();
+        Debug.Log("Sock");
     }
 
     protected override void Execute()
     {
-        cat.Sit();
+        cat.SpawnSock();
     }
 
     protected override void Exit()
     {
-        cat.ExitSit();
+        Debug.Log("Should never reach here as it is a global state.");
+    }
+
+    // Start is called before the first frame update
+    private void Start()
+    {
+    }
+
+    // Update is called once per frame
+    private void Update()
+    {
     }
 }

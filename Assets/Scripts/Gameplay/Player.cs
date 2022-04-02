@@ -65,6 +65,7 @@ public class Player : NetworkBehaviour
     [SyncVar] private float _serverSideStressModifier;
 
     public static Player Instance { get; private set; }
+    public static Player OtherPlayer { get; private set; }
 
     // Customization options
     [SyncVar] public PlayerCustomization.PLANT plant;
@@ -90,14 +91,10 @@ public class Player : NetworkBehaviour
         }
         else
         {
+            // This is the other player (there can only be two)
+            OtherPlayer = this;
             GameObject.Destroy(cam.GetComponent<AudioListener>());
             cam.enabled = false;
-        }
-
-        if (!isServer)
-        {
-            Physics.IgnoreLayerCollision(LayerMask.NameToLayer("RemotePlayer"), LayerMask.NameToLayer("Static"));
-            gameObject.layer = LayerMask.NameToLayer("RemotePlayer");
         }
     }
 
@@ -362,14 +359,21 @@ public class Player : NetworkBehaviour
     {
         if (!NetworkClient.active) return;
 
-        if (!identity.hasAuthority) CmdGetAuthority(identity);
+        if (!identity.hasAuthority)
+        {
+            CmdGetAuthority(identity);
 
-        ActionManager.RunWhen(
-            // Run when we get authority or when the server stops
-            () => netIdentity.hasAuthority || !NetworkClient.active,
-            // If the server stopped don't try to call the action
-            () => { if (NetworkClient.active) action.Invoke(); }
-        );
+            ActionManager.RunWhen(
+                // Run when we get authority or when the server stops
+                () => netIdentity.hasAuthority || !NetworkClient.active,
+                // If the server stopped don't try to call the action
+                () => { if (NetworkClient.active) action.Invoke(); }
+            );
+        }
+        else
+        {
+            action.Invoke();
+        }
     }
 
     [Command]

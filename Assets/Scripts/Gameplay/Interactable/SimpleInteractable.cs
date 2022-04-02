@@ -13,17 +13,18 @@ public class SimpleInteractable : Interactable
 
     void Start()
     {
-        _unityEvent.AddListener(OnInteract.Invoke);
-
-        if (interactionEvent != null)
+        _unityEvent.AddListener(() =>
         {
-            _unityEvent.AddListener(() => EventManager.TriggerEvent(interactionEvent));
-        }
-
-        if (requiredObject != Holdable.Type.NONE)
-        {
-            // Try consuming the required object after use
-            _unityEvent.AddListener(() => Player.Instance.heldObject.Consume());
-        }
+            OnInteract.Invoke();
+            if (interactionEvent != null)
+            {
+                EventManager.TriggerEvent(interactionEvent);
+            }
+            if (requiredObject != Holdable.Type.NONE)
+            {
+                // Try consuming the required object after use
+                Player.Instance.heldObject.Consume();
+            }
+        });
     }
 }

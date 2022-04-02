@@ -19,7 +19,7 @@ public class ComputerInteractable : Interactable
     void Start()
     {
         // This is janky but I don't want to rework stuff
-        NothingScannedPrompt = new PromptInfo(InputCommand.None, _promptTextNothingScanned, 0, 0);
+        NothingScannedPrompt = new PromptInfo(InputCommand.None, _promptTextNothingScanned);
         _handsFullPrompt = WrongItemPrompt;
 
         // When the player interacts with this object it'll start the minigame

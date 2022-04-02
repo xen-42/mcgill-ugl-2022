@@ -1,4 +1,5 @@
 using Mirror;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,9 +12,8 @@ public class CatInteractable : Interactable
     [SerializeField] public int StressReduction = 20;
 
     [SyncVar] private float _cooldown;
-
     protected override InputCommand InputCommand { get => InputCommand.Interact; }
-
+    
     [SerializeField] public AudioSource sound;
 
     void Start()
@@ -29,6 +29,7 @@ public class CatInteractable : Interactable
         }
 
         GameDirector.Instance.LowerStressImmediate(StressReduction);
+
         IsInteractable = false;
 
         if (interactionEvent != null)
