@@ -39,7 +39,7 @@ public class CatAgent : NetworkBehaviour
     [SerializeField] private GameObject m_sockPrefab;
     [SerializeField] private SpawnPointsManager m_spawnManager;
     [SerializeField] private float m_spawnRadius = 3f;
-    [SerializeField] [Range(0, 50)] private int m_spawnLimit;
+    [SerializeField] [Range(0, 10)] private int m_spawnLimit;
     [SerializeField] [Range(0, 1)] private float m_spawnProbility = .1f;
     private int m_curSpawnNum = 0;
 
@@ -92,19 +92,40 @@ public class CatAgent : NetworkBehaviour
         m_normalColor = m_renderer.material.color;
     }
 
+    [Server]
     private void FixedUpdate()
     {
+        if (!isServer) return;
         m_manager.SetInteger("Energy", energy);
     }
 
+    #region On pet
     public void OnUpdatePetStatus()
     {
-        // Only the local player could have ever caused this method to be called.
+        if(isServer)
+        {
+            ServerUpdatePetStatus(true);
+        }
+        else
+        {
+            Player.Instance.DoWithAuthority(netIdentity, CmdUpdatePetStatus);
+        }
+    }
 
-        m_petter = Player.Instance;
+    private void ServerUpdatePetStatus(bool serverPlayer)
+    {
+        m_petter = serverPlayer ? Player.Instance : Player.OtherPlayer;
         m_manager.SetTrigger("OnPet");
         print("OnPet: " + m_manager.GetTrigger("OnPet"));
     }
+
+    [Command]
+    private void CmdUpdatePetStatus()
+    {
+        // This was called from the client
+        ServerUpdatePetStatus(false);
+    }
+    #endregion On pet
 
     // Called when we first enter the 'Walking' state
     public void EnterWalk()
@@ -179,7 +200,27 @@ public class CatAgent : NetworkBehaviour
         NMAgent.destination = hit.position;
     }
 
+    #region Spawn sock
     public void SpawnSock()
+    {
+        if(isServer)
+        {
+            ServerSpawnSock();
+        }
+        else
+        {
+            Player.Instance.DoWithAuthority(netIdentity, ServerSpawnSock);
+        }
+    }
+
+    [Command]
+    private void CmdSpawnSock()
+    {
+        ServerSpawnSock();
+    }
+
+    [Server]
+    private void ServerSpawnSock()
     {
         if (m_curSpawnNum < m_spawnLimit)
         {
@@ -195,6 +236,7 @@ public class CatAgent : NetworkBehaviour
                 NetworkServer.Spawn(Instantiate(m_sockPrefab, spawnPos, m_sockPrefab.transform.rotation));
         }
     }
+    #endregion Spawn sock
 
     public void EnterPet()
     {
