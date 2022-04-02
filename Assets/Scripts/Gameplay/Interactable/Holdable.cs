@@ -24,7 +24,8 @@ public class Holdable : Interactable
     {
         NONE,
         WATERING_CAN,
-        ASSIGNMENT
+        ASSIGNMENT,
+        SOCK
     }
 
     void Start()
@@ -113,38 +114,15 @@ public class Holdable : Interactable
         switch (type)
         {
             case Type.ASSIGNMENT:
+            case Type.SOCK:
                 isConsumable = true;
                 break;
         }
 
         if (isConsumable)
         {
-            NetworkDestroy(gameObject);
+            NetworkServer.Destroy(gameObject);
             Player.Instance.heldObject = null;
         }
-    }
-
-    private void NetworkDestroy(GameObject obj)
-    {
-        if (isServer)
-        {
-            RpcNetworkDestroy(obj);
-        }
-        else
-        {
-            CmdNetworkDestroy(obj);
-        }
-    }
-
-    [Command]
-    private void CmdNetworkDestroy(GameObject obj)
-    {
-        RpcNetworkDestroy(obj);
-    }
-
-    [ClientRpc]
-    private void RpcNetworkDestroy(GameObject obj)
-    {
-        GameObject.Destroy(obj);
     }
 }

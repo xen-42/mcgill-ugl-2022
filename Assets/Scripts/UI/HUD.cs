@@ -12,6 +12,7 @@ public class HUD : MonoBehaviour
     [SerializeField] private GameObject _buttonPrompt;
 
     #region UI Variable Values
+
     [SerializeField] private Text _timer;
     [SerializeField] private Text _stress;
     [SerializeField] private Text _submitted;
@@ -44,6 +45,7 @@ public class HUD : MonoBehaviour
 
     private void OnPromptHit(ButtonPrompt.PromptInfo promptInfo)
     {
+        Debug.Log("HUD: " + promptInfo.Text);
         if (_buttonPromptDict.TryGetValue(promptInfo, out ButtonPrompt buttonPrompt))
         {
             buttonPrompt.gameObject.SetActive(true);
@@ -75,7 +77,6 @@ public class HUD : MonoBehaviour
     {
         // Reorder the remaining ones
         int i = 0;
-        var sortedPrompts = _buttonPromptDict.Values.OrderBy(x => x.Info.Priority);
         foreach (var prompt in _buttonPromptDict.Values.ToArray())
         {
             RectTransform rect = prompt.GetComponent<RectTransform>();

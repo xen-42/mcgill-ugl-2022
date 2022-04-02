@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEditor;
 
 namespace DecisionMaking.StateMachine
 {
@@ -31,6 +32,15 @@ namespace DecisionMaking.StateMachine
         [SerializeField] private FSMStateBehaviour m_globalState;
 
         #endregion Caches
+
+        public float TimeElapsed
+            => mode switch
+            {
+                UpdateMode.FixedUpdate => Time.fixedDeltaTime,
+                UpdateMode.TimeStep => m_executionTimeStep,
+                UpdateMode.Update => Time.deltaTime,
+                _ => throw new System.NotImplementedException(),
+            };
 
         protected bool m_isRunning;
         public bool IsRunning => m_isRunning;

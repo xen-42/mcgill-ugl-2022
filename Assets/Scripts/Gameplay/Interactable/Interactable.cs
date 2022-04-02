@@ -16,8 +16,6 @@ public abstract class Interactable : NetworkBehaviour
     [SerializeField] private string _promptText;
     [SerializeField] private string _promptTextNotInteractable;
     [SerializeField] private string _promptTextWrongItem;
-    [SerializeField] private int _promptPriority;
-    [SerializeField] private float _promptHoldTime;
 
     [SerializeField] public Holdable.Type requiredObject = Holdable.Type.NONE;
 
@@ -37,9 +35,9 @@ public abstract class Interactable : NetworkBehaviour
 
     private void Awake()
     {
-        InteractablePrompt = new PromptInfo(InputCommand, _promptText, _promptPriority, _promptHoldTime);
-        WrongItemPrompt = new PromptInfo(InputCommand.None, _promptTextWrongItem, _promptPriority, _promptHoldTime);
-        NonInteractablePrompt = new PromptInfo(InputCommand.None, _promptTextNotInteractable, _promptPriority, _promptHoldTime);
+        InteractablePrompt = new PromptInfo(InputCommand, _promptText);
+        WrongItemPrompt = new PromptInfo(InputCommand.None, _promptTextWrongItem);
+        NonInteractablePrompt = new PromptInfo(InputCommand.None, _promptTextNotInteractable);
     }
 
     public void Init(bool initialStatus)
