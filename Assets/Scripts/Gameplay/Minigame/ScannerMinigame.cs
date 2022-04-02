@@ -41,6 +41,15 @@ public class ScannerMinigame : DragDropMinigame
 
         _completed = true;
 
+        // The assignment was stolen if its colour doesnt match the player
+        var assignmentColour = Player.Instance.heldObject?.colour;
+        var playerColour = Player.Instance.colour;
+
+        if(assignmentColour != null && assignmentColour != playerColour)
+        {
+            StatTracker.Instance.OnStealAssignment();
+        }
+
         EventManager.TriggerEvent("MinigameComplete");
         OnCompleteMinigame.Invoke();
     }

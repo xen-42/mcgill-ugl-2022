@@ -6,10 +6,14 @@ using UnityEngine.SceneManagement;
 
 public class GameOver : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] StatDisplay leftStats;
+    [SerializeField] StatDisplay rightStats;
+
+    private void Start()
     {
-        
+        Debug.Log("Writing down player stats!");
+        leftStats.SetStats(StatTracker.serverStats);
+        rightStats.SetStats(StatTracker.clientStats);
     }
 
     public void OnContinueButtonPressed()

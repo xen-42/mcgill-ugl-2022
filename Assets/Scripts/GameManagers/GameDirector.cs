@@ -31,7 +31,7 @@ public class GameDirector : NetworkBehaviour
     private List<Fixable> _distractions;
 
     // Host controls the timer
-    [SyncVar] private float _countdown;
+    [SyncVar] private float _currentTime;
 
     private float _nextDistraction;
     private int _numDistractions;
@@ -60,18 +60,14 @@ public class GameDirector : NetworkBehaviour
     [SerializeField] public float minInensityOne = 2f;
     [SerializeField] public float minInensityTwo = 20f;
 
-
     private void Awake()
     {
         Instance = this;
     }
 
     // Start is called before the first frame update
-    private async void Start()
+    private void Start()
     {
-
-
-
         _distractions = FindObjectsOfType<Fixable>().ToList();
         Random.InitState((int)DateTime.Now.Ticks);
 
@@ -82,8 +78,7 @@ public class GameDirector : NetworkBehaviour
         apply_stress = false;
         under30s = false;
 
-
-
+        StatTracker.Instance.RefreshStats();
     }
 
     public void LowerStressImmediate(float change)
@@ -95,6 +90,8 @@ public class GameDirector : NetworkBehaviour
     public void DoAssignment()
     {
         NumAssignmentsDone += 1;
+
+        StatTracker.Instance.OnSubmitAssignment();
     }
 
     public void ScanAssignment()
@@ -104,16 +101,18 @@ public class GameDirector : NetworkBehaviour
             scanSound.Play();
         }
         NumAssignmentsScanned += 1;
+
+        StatTracker.Instance.OnScanAssignment();
     }
 
-    private async void Update()
+    private void Update()
     {
         var available = _distractions.Where(x => x.CanBreak).ToList();
         _numDistractions = _distractions.Where(x => x.IsBroken).Count();
 
         if (isServer)
         {
-            _countdown += Time.deltaTime;
+            _currentTime += Time.deltaTime;
 
             _nextDistraction -= Time.deltaTime;
             if (_nextDistraction < 0)
@@ -134,7 +133,7 @@ public class GameDirector : NetworkBehaviour
         }
 
         _stress = Mathf.Clamp(_stress, 0f, 100f);
-        HUD.Instance.SetGameState(timeLimit - (int)_countdown, _stress, NumAssignmentsDone);
+        HUD.Instance.SetGameState(timeLimit - (int)_currentTime, _stress, NumAssignmentsDone);
 
         // Stress vision -----------------------------------
         // Enable stress vision
@@ -169,7 +168,7 @@ public class GameDirector : NetworkBehaviour
             _postProcessingController.UpdateStressVision(temp_stress);
         }
 
-        if (!under30s && _countdown >= timeLimit - 30f)
+        if (!under30s && _currentTime >= timeLimit - 30f)
         {
             under30s = true;
             clockSound.Play();
@@ -181,20 +180,16 @@ public class GameDirector : NetworkBehaviour
         //Changing colour of lights
 
         //for (int i = 0; i < lightreference.Length; i++)
-      //  {
-    //        lightreference[i].color = Color.Lerp(startingColor, endColor, _countdown / timeLimit);
-  //      }
-//        lightreference[0].intensity = Mathf.Lerp(minInensityTwo, maxIntensity, _countdown / timeLimit);
+        //{
+        //  lightreference[i].color = Color.Lerp(startingColor, endColor, _countdown / timeLimit);
+        //}
+        //lightreference[0].intensity = Mathf.Lerp(minInensityTwo, maxIntensity, _countdown / timeLimit);
 
 
         // Game Over       
-        if (timeLimit <= _countdown)
-        {
-            InputManager.CurrentInputMode = InputManager.InputMode.UI;
-            heartbeatSound.Stop();
-            clockSound.Stop();
+        if (isServer && timeLimit <= _currentTime)
+        {            
             CustomNetworkManager.Instance.Stop();
-            SceneManager.LoadScene(Scenes.GameOver);
         }
     }
 
@@ -202,5 +197,10 @@ public class GameDirector : NetworkBehaviour
     {
         if (list.Count == 0) return default;
         return list[(int)Random.Range(0, list.Count)];
+    }
+
+    public float GetTimeLeft()
+    {
+        return timeLimit - _currentTime;
     }
 }

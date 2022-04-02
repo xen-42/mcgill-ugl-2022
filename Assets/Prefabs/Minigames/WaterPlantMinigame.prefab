@@ -139,6 +139,8 @@ MonoBehaviour:
   _promptHoldTime: 0
   requiredObject: 0
   resetAfterUse: 0
+  interactionEvent: 
+  clickSound: {fileID: 0}
 --- !u!54 &3736945913109127071
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -475,7 +477,7 @@ MonoBehaviour:
   - {fileID: 9205020725948167187}
   uprightWateringCan: {fileID: 796745773510088802}
   pouringWateringCan: {fileID: 8954167826512397547}
-  delayTime: 1
+  delayTime: 0.5
 --- !u!1 &998368180979820568
 GameObject:
   m_ObjectHideFlags: 0

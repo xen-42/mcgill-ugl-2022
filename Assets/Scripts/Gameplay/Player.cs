@@ -70,6 +70,7 @@ public class Player : NetworkBehaviour
     [SyncVar] public PlayerCustomization.PLANT plant;
     [SyncVar] public PlayerCustomization.DRINK drink;
     [SyncVar] public PlayerCustomization.POSTER poster;
+    [SyncVar] public PlayerCustomization.COLOUR colour;
 
     private void Start()
     {
@@ -77,7 +78,7 @@ public class Player : NetworkBehaviour
         DontDestroyOnLoad(this);
 
         SceneManager.sceneLoaded += OnSceneLoaded;
-        
+
         rb.freezeRotation = true;
 
         if (hasAuthority)
@@ -93,7 +94,7 @@ public class Player : NetworkBehaviour
             cam.enabled = false;
         }
 
-        if(!isServer)
+        if (!isServer)
         {
             Physics.IgnoreLayerCollision(LayerMask.NameToLayer("RemotePlayer"), LayerMask.NameToLayer("Static"));
             gameObject.layer = LayerMask.NameToLayer("RemotePlayer");
@@ -135,6 +136,20 @@ public class Player : NetworkBehaviour
         // If we're paused or in a minigame we cant control the player
         if (InputManager.CurrentInputMode != InputManager.InputMode.Player)
         {
+            // Don't move during minigame
+            if(_movement != Vector3.zero)
+            {
+                if (isServer)
+                {
+                    _movement = Vector3.zero;
+                }
+                else
+                {
+                    CmdStopMoving();
+                }
+            }
+
+
             // If we were looking at something make sure its lost focus
             if (_focusedObject != null)
             {
@@ -252,7 +267,7 @@ public class Player : NetworkBehaviour
             moveSpeed = Mathf.Lerp(actualMoveSpeed, actualWalkSpeed, actualAcceleration * Time.deltaTime);
         }
 
-        if(_sprint && isGrounded && _movement != Vector3.zero)
+        if (_sprint && isGrounded && _movement != Vector3.zero)
         {
             cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, fastfov, fovaccel * Time.deltaTime);
         }
@@ -307,7 +322,7 @@ public class Player : NetworkBehaviour
         _sprint = sprint;
         _serverSideStressModifier = stress;
 
-        if(!hasAuthority)
+        if (!hasAuthority)
         {
             cam.transform.localRotation = Quaternion.Euler(xRot, yRot, 0);
             orientation.transform.rotation = Quaternion.Euler(0, yRot, 0);
@@ -336,12 +351,29 @@ public class Player : NetworkBehaviour
     [ClientRpc]
     private void RpcDrop()
     {
-        heldObject.Drop();
-        heldObject = null;
+        if (heldObject != null)
+        {
+            heldObject.Drop();
+            heldObject = null;
+        }
+    }
+
+    public void DoWithAuthority(NetworkIdentity identity, Action action)
+    {
+        if (!NetworkClient.active) return;
+
+        if (!identity.hasAuthority) CmdGetAuthority(identity);
+
+        ActionManager.RunWhen(
+            // Run when we get authority or when the server stops
+            () => netIdentity.hasAuthority || !NetworkClient.active,
+            // If the server stopped don't try to call the action
+            () => { if (NetworkClient.active) action.Invoke(); }
+        );
     }
 
     [Command]
-    public void CmdGiveAuthority(NetworkIdentity identity)
+    private void CmdGetAuthority(NetworkIdentity identity)
     {
         try
         {
@@ -355,7 +387,12 @@ public class Player : NetworkBehaviour
         {
             Debug.LogError($"{e.Message}: {e.StackTrace}");
         }
+    }
 
+    [Command]
+    public void CmdStopMoving()
+    {
+        _movement = Vector3.zero;
     }
     #endregion Commands and RPC
 

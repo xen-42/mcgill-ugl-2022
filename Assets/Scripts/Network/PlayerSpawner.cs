@@ -26,9 +26,11 @@ public class PlayerSpawner : NetworkBehaviour
         CustomNetworkManager.OnServerReadied += SpawnPlayer;
     }
 
-    [ServerCallback]
     private void OnDestroy()
     {
+        // Refresh spawn points list
+        spawnPoints = new List<PlayerSpawnPoint>();
+
         CustomNetworkManager.OnServerReadied -= SpawnPlayer;
     }
 
@@ -49,13 +51,15 @@ public class PlayerSpawner : NetworkBehaviour
         {
             if (player.netId == conn.identity.netId)
             {
+                // Set up all the customization options
                 spawnPoint.posters.SetSelection(player.poster);
                 spawnPoint.plant.SetSelection(player.plant);
                 spawnPoint.drink.SetSelection(player.drink);
+
+                // Record which side of the room the player is from
+                player.colour = spawnPoint.colour;
             }
         }
-
-
 
         nextIndex++;
     }

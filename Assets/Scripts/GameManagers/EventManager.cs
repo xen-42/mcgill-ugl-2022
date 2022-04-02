@@ -38,7 +38,7 @@ public static class EventManager
         {
             if (eventData.isInvoking)
             {
-                Debug.LogError("Infinite recursion in EventManager");
+                Debug.LogError($"Infinite recursion in EventManager on trigger event {pEventName}");
             }
             else
             {

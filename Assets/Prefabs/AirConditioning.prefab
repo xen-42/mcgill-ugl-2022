@@ -275,6 +275,7 @@ MonoBehaviour:
   _promptHoldTime: 0
   requiredObject: 0
   resetAfterUse: 0
+  interactionEvent: FixAirConditioning
   OnInteract:
     m_PersistentCalls:
       m_Calls:

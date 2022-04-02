@@ -7,6 +7,7 @@ public class PlayerSpawnPoint : MonoBehaviour
     [SerializeField] public PlantInteractable plant;
     [SerializeField] public Drink drink;
     [SerializeField] public Posters posters;
+    [SerializeField] public PlayerCustomization.COLOUR colour;
 
     void Awake()
     {
