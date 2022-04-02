@@ -55,6 +55,9 @@ public class CatAgent : NetworkBehaviour
 
     [SerializeField] private float m_petStoppingDistance;
 
+    [SerializeField] public float sockSpawnCooldown = 20f;
+    [SyncVar] private float _sockTimer = 0f;
+
     private Color m_normalColor;
     private Player m_petter;
 
@@ -105,6 +108,11 @@ public class CatAgent : NetworkBehaviour
         if (!isServer) return;
 
         m_manager.SetInteger("Energy", energy);
+
+        if(_sockTimer > 0)
+        {
+            _sockTimer -= Time.deltaTime;
+        }
     }
 
     #region On pet
@@ -235,8 +243,9 @@ public class CatAgent : NetworkBehaviour
     {
         if (m_curSpawnNum < m_spawnLimit)
         {
-            if (Random.Range(0, 1f) > m_spawnProbility)
-                return;
+            if (_sockTimer > 0f) return;
+
+            if (Random.Range(0, 1f) > m_spawnProbility) return;
 
             m_curSpawnNum++;
             //Vector2 spawnOffset = Random.insideUnitCircle * m_spawnRadius;
@@ -244,7 +253,12 @@ public class CatAgent : NetworkBehaviour
 
             Vector3 spawnPos;
             if (m_spawnManager.TryQueryNeighbour(transform.position, out spawnPos))
-                NetworkServer.Spawn(Instantiate(m_sockPrefab, spawnPos, m_sockPrefab.transform.rotation));
+            {
+                var sock = Instantiate(m_sockPrefab, spawnPos, m_sockPrefab.transform.rotation);
+                sock.transform.rotation = Quaternion.AngleAxis(Random.Range(0, 360), Vector3.up);
+                NetworkServer.Spawn(sock);
+                _sockTimer = sockSpawnCooldown;
+            }
         }
     }
     #endregion Spawn sock
