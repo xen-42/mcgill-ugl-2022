@@ -10,7 +10,8 @@ public class OptionsMenu : MonoBehaviour
     public bool GamePaused = false;
     public GameObject pauseMenuUI;
     public GameObject tutorialUI;
-    public AudioMixer audioMixer;
+    public AudioMixer musicAudioMixer;
+    public AudioMixer soundAudioMixer;
     public Dropdown resolutionDropdown;
     private Resolution[] resolutions;
     private int currentResolutionIndex = 0;
@@ -52,11 +53,15 @@ public class OptionsMenu : MonoBehaviour
         //tutorialUI.SetActive(false);
     }
 
-    public void SetVolume(float volume)
+    public void SetSoundVolume(float volume) => SetVolume(volume, soundAudioMixer);
+
+    public void SetMusicVolume(float volume) => SetVolume(volume, musicAudioMixer);
+
+    private void SetVolume(float volume, AudioMixer tgtMixer)
     {
         //Sets the game volume
         //Used in the slider
-        if (audioMixer.SetFloat("volume", volume))
+        if (tgtMixer.SetFloat("volume", volume))
             print("test");
     }
 

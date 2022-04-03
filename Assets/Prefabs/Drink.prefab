@@ -134,8 +134,6 @@ MonoBehaviour:
   _promptText: Drink
   _promptTextNotInteractable: It's empty
   _promptTextWrongItem: Your hands are full
-  _promptPriority: 0
-  _promptHoldTime: 0
   requiredObject: 0
   resetAfterUse: 0
   interactionEvent: Drink
@@ -164,7 +162,7 @@ AudioSource:
   m_GameObject: {fileID: 1625592933038146962}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: cad0b75abfa58a241b57a0c39856b5ae, type: 2}
   m_audioClip: {fileID: 8300000, guid: 2a7b1265af96c46af9c485bc3f1b553b, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.5
@@ -276,13 +274,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1895503042057403146}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 1, w: 0}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 20, y: 20, z: 20}
   m_Children: []
   m_Father: {fileID: 1625592933038146963}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 180}
 --- !u!33 &2786081927843524117
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -310,7 +308,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 883dece92e5d2404f8307b6ae0af08c8, type: 2}
+  - {fileID: 2100000, guid: 59f214b4c90a644588a8ffbab6a64be9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -447,7 +445,7 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 8cf6c45b449dae5469a6edc173bf9fd5, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: 883dece92e5d2404f8307b6ae0af08c8, type: 2}
+      objectReference: {fileID: 2100000, guid: 59f214b4c90a644588a8ffbab6a64be9, type: 2}
     - target: {fileID: 919132149155446097, guid: 8cf6c45b449dae5469a6edc173bf9fd5, type: 3}
       propertyPath: m_Name
       value: coffimachine
@@ -525,11 +523,11 @@ PrefabInstance:
     - target: {fileID: -7511558181221131132, guid: 91f1a6eefeb70034aa5d2c6a03362fb3, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 883dece92e5d2404f8307b6ae0af08c8, type: 2}
+      objectReference: {fileID: 2100000, guid: 59f214b4c90a644588a8ffbab6a64be9, type: 2}
     - target: {fileID: -7511558181221131132, guid: 91f1a6eefeb70034aa5d2c6a03362fb3, type: 3}
       propertyPath: m_Materials.Array.data[1]
       value: 
-      objectReference: {fileID: 2100000, guid: 883dece92e5d2404f8307b6ae0af08c8, type: 2}
+      objectReference: {fileID: 2100000, guid: 59f214b4c90a644588a8ffbab6a64be9, type: 2}
     - target: {fileID: 919132149155446097, guid: 91f1a6eefeb70034aa5d2c6a03362fb3, type: 3}
       propertyPath: m_Name
       value: energydrink
