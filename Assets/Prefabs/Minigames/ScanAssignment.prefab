@@ -52,8 +52,6 @@ MonoBehaviour:
   _promptText: Pick up
   _promptTextNotInteractable: 
   _promptTextWrongItem: 
-  _promptPriority: 0
-  _promptHoldTime: 0
   requiredObject: 0
   resetAfterUse: 0
   interactionEvent: 
@@ -383,7 +381,7 @@ MonoBehaviour:
   dropCollider: {fileID: 693483833433175540}
   openScanner: {fileID: 796745773534569236}
   closedScanner: {fileID: 4739912433008446000}
-  delayTime: 0.5
+  delayTime: 0.2
 --- !u!1 &4739912433008446000
 GameObject:
   m_ObjectHideFlags: 0

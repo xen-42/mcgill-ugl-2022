@@ -161,11 +161,11 @@ MonoBehaviour:
   _promptText: Submit Assignment
   _promptTextNotInteractable: This is in use!
   _promptTextWrongItem: 
-  _promptPriority: 0
-  _promptHoldTime: 0
   requiredObject: 0
   resetAfterUse: 0
+  interactionEvent: 
   MinigamePrefab: {fileID: 796745773547017806, guid: 862c3368c3a09a8419c7ccc571bd3ee1, type: 3}
+  _promptTextNothingScanned: 
   sound: {fileID: 5331493839739224206}
 --- !u!114 &5331493839739224211
 MonoBehaviour:
@@ -254,6 +254,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: b5acb9bff05d2104bac477f0f805eb28, type: 3}
       propertyPath: m_Name
       value: pc
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: b5acb9bff05d2104bac477f0f805eb28, type: 3}
+      propertyPath: m_Layer
+      value: 11
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b5acb9bff05d2104bac477f0f805eb28, type: 3}

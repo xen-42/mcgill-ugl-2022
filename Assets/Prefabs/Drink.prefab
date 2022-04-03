@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1625592931785223343}
   - component: {fileID: 1625592931785223339}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: EnergyDrink
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -59,7 +59,7 @@ GameObject:
   - component: {fileID: 1037535213468921855}
   - component: {fileID: 8641644119981715644}
   - component: {fileID: 1713028120375684669}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: Drink
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -134,8 +134,6 @@ MonoBehaviour:
   _promptText: Drink
   _promptTextNotInteractable: It's empty
   _promptTextWrongItem: Your hands are full
-  _promptPriority: 0
-  _promptHoldTime: 0
   requiredObject: 0
   resetAfterUse: 0
   interactionEvent: Drink
@@ -262,7 +260,7 @@ GameObject:
   - component: {fileID: 1226665018501669296}
   - component: {fileID: 2786081927843524117}
   - component: {fileID: 94243030209354463}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: Tea
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -342,7 +340,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8070553895652226839}
   - component: {fileID: 8613951771550589161}
-  m_Layer: 6
+  m_Layer: 10
   m_Name: Coffee
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -452,6 +450,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: coffimachine
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 8cf6c45b449dae5469a6edc173bf9fd5, type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8cf6c45b449dae5469a6edc173bf9fd5, type: 3}
 --- !u!4 &898729215636037644 stripped
@@ -533,6 +535,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 91f1a6eefeb70034aa5d2c6a03362fb3, type: 3}
       propertyPath: m_Name
       value: energydrink
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 91f1a6eefeb70034aa5d2c6a03362fb3, type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 91f1a6eefeb70034aa5d2c6a03362fb3, type: 3}
