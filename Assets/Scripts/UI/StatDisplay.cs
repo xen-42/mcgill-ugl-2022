@@ -1,3 +1,4 @@
+using Steamworks;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -21,11 +22,23 @@ public class StatDisplay : MonoBehaviour
     [SerializeField] Text catsPet;
     [SerializeField] Text plantsWatered;
     [SerializeField] Text airConditionersFixed;
+    [SerializeField] Text socksPickedUp;
 
     private string[] grades = new string[] { "F", "C-", "C", "C+", "B-", "B", "B+", "A-", "A", "A+"};
 
-    public void SetStats(StatTracker.PlayerStats stats)
+    protected Callback<AvatarImageLoaded_t> _avatarImageLoaded;
+
+    private ulong _steamID;
+
+    public void Awake()
     {
+        _avatarImageLoaded = Callback<AvatarImageLoaded_t>.Create(OnAvatarImageLoaded);
+    }
+
+    public void SetStats(StatTracker.PlayerStats stats, string username, ulong steamID)
+    {
+        _steamID = steamID;
+
         // TODO: write username and display avatar
         usernameText.text = stats.username;
 
@@ -46,5 +59,20 @@ public class StatDisplay : MonoBehaviour
         catsPet.text = $"Cat pets: {stats.CatsPet}";
         plantsWatered.text = $"Plants watered: {stats.PlantsWatered}";
         airConditionersFixed.text = $"Air conditioners fixed: {stats.AirConditionersFixed}";
+        socksPickedUp.text = $"Socks picked up: {stats.SocksPickedUp}";
+
+        usernameText.text = username;
+
+        UpdateAvatar();
+    }
+
+    private void UpdateAvatar()
+    {
+        avatar.sprite = Utils.LoadAvatar(SteamFriends.GetLargeFriendAvatar(new CSteamID(_steamID)));
+    }
+
+    private void OnAvatarImageLoaded(AvatarImageLoaded_t callback)
+    {
+        UpdateAvatar();
     }
 }

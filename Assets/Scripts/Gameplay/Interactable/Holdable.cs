@@ -14,7 +14,7 @@ public class Holdable : Interactable
 
     [SerializeField] public float throwForce = 1000f;
 
-    [SerializeField] public PlayerCustomization.COLOUR colour;
+    [SerializeField] [SyncVar] public PlayerCustomization.COLOUR colour;
 
     protected override InputCommand InputCommand { get => InputCommand.PickUp; }
 

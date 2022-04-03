@@ -158,10 +158,14 @@ public class LobbyPlayer : NetworkBehaviour
 
                 if (player.isLeader)
                 {
+                    StatTracker.serverUserName = displayName;
+                    StatTracker.serverSteamID = player.SteamID;
                     playerNameTexts[i].text = $"{displayName}\n";
                 }
                 else
                 {
+                    StatTracker.clientUserName = displayName;
+                    StatTracker.clientSteamID = player.SteamID;
                     playerNameTexts[i].text = $"{displayName}\n{player.Ping}ms";
                 }
             }
@@ -196,7 +200,7 @@ public class LobbyPlayer : NetworkBehaviour
                 playerNameTexts[i].text = $"{player.DisplayName}";
                 playerReadyTexts[i].text = player.IsReady ? "<color=green>Ready</color>" : "<color=red>Not Ready</color>";
 
-                var sprite = LoadAvatar(SteamFriends.GetLargeFriendAvatar(new CSteamID(player.SteamID)));
+                var sprite = Utils.LoadAvatar(SteamFriends.GetLargeFriendAvatar(new CSteamID(player.SteamID)));
 
                 if (sprite != null)
                 {
@@ -280,33 +284,6 @@ public class LobbyPlayer : NetworkBehaviour
     private void OnAvatarImageLoaded(AvatarImageLoaded_t callback)
     {
         UpdateDisplay();
-    }
-
-    private Sprite LoadAvatar(int imageID)
-    {
-        Debug.Log($"Loading [{imageID}] for [{DisplayName}]");
-
-        if (imageID != -1)
-        {
-            if (SteamUtils.GetImageSize(imageID, out uint width, out uint height))
-            {
-                var size = width * height * 4;
-                byte[] image = new byte[size];
-                if (SteamUtils.GetImageRGBA(imageID, image, (int)size))
-                {
-                    var texture = new Texture2D((int)width, (int)height, TextureFormat.RGBA32, false, true);
-                    texture.LoadRawTextureData(image);
-                    texture.Apply();
-                    return Sprite.Create(
-                        texture,
-                        new Rect(0, 0, texture.width, texture.height),
-                        new Vector2(texture.width / 2f, texture.height / 2f)
-                        );
-                }
-            }
-        }
-
-        return null;
     }
 
     private void SetPing(int ping)

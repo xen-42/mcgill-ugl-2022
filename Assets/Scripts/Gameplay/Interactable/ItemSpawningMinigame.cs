@@ -71,7 +71,17 @@ public class ItemSpawningMinigame : Interactable
 
         // Lets us track who owns it
         var holdable = newObj.GetComponent<Holdable>();
-        if (holdable != null) holdable.colour = colour;
+        if (holdable != null)
+        {
+            if (isServer)
+            {
+                holdable.colour = colour;
+            }
+            else
+            {
+                Player.Instance.DoWithAuthority(holdable.netIdentity, () => holdable.colour = colour);
+            }
+        }
 
         NetworkServer.Spawn(newObj);
     }
