@@ -14,29 +14,30 @@ public class Player : NetworkBehaviour
     [SerializeField] public float moveSpeed = 6f;
 
     [Header("Drag")]
-    float rbDrag = 6f;
-    float airDrag = 2f;
-    float movementMultiplier = 10f;
-    [SerializeField] float airMultiplier = 0.4f;
-    float playerHeight = 2f;
+    private float rbDrag = 6f;
+    private float airDrag = 2f;
+    private float movementMultiplier = 10f;
+    [SerializeField] private float airMultiplier = 0.4f;
+    private float playerHeight = 2f;
 
     [Header("Ground Detection")]
-    [SerializeField] Transform groundCheck;
-    float groundDistance = 0.4f;
-    bool isGrounded;
+    [SerializeField] private Transform groundCheck;
+    private float groundDistance = 0.4f;
+    private bool isGrounded;
 
     [Header("Jumping")]
     public float jumpForce = 5f;
 
-    RaycastHit slopeHit;
+    private RaycastHit slopeHit;
+
     [Header("Camera Adjusts")]
     [SerializeField] public Camera cam;
     [SerializeField] private float fastfov;
     [SerializeField] private float fov;
     [SerializeField] private float fovaccel;
-    [SerializeField] public float sensX;
-    [SerializeField] public float sensY;
-    float multiplier = 0.01f;
+    public static float sensX;
+    public static float sensY;
+    private float multiplier = 0.01f;
     public float xRotation;
     public float yRotation;
 
@@ -46,13 +47,13 @@ public class Player : NetworkBehaviour
     [SerializeField] public float acceleration = 10f;
 
     [Header("Interacting")]
-    [SerializeField] Transform heldItemPosition;
-    [SerializeField] float heldItemTranslationResponsiveness = 20f;
-    [SerializeField] float heldItemRotationResponsiveness = 10f;
+    [SerializeField] private Transform heldItemPosition;
+    [SerializeField] private float heldItemTranslationResponsiveness = 20f;
+    [SerializeField] private float heldItemRotationResponsiveness = 10f;
 
     [Header("Physics Stuff")]
-    [SerializeField] Rigidbody rb;
-    [SerializeField] new public Collider collider;
+    [SerializeField] private Rigidbody rb;
+    [SerializeField] public new Collider collider;
 
     private GameObject _focusedObject;
     public Holdable heldObject;
@@ -157,7 +158,6 @@ public class Player : NetworkBehaviour
                 }
             }
 
-
             // If we were looking at something make sure its lost focus
             if (_focusedObject != null)
             {
@@ -188,7 +188,7 @@ public class Player : NetworkBehaviour
 
         CmdSendInputs(movement, jump, sprint, xRotation, yRotation, stressModifier);
 
-        // The client can set the rotations immediately 
+        // The client can set the rotations immediately
         cam.transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0);
         orientation.transform.rotation = Quaternion.Euler(0, yRotation, 0);
 
@@ -226,11 +226,11 @@ public class Player : NetworkBehaviour
             Screen.fullScreen = !Screen.fullScreen;
         }
 
-        if(_focusedObject != null && InputManager.IsCommandJustPressed(InputCommand.Interact))
+        if (_focusedObject != null && InputManager.IsCommandJustPressed(InputCommand.Interact))
         {
             foreach (var interactable in _focusedObject.GetComponents<Interactable>())
             {
-                if(interactable.Interact()) _interactedThisTick = true;
+                if (interactable.Interact()) _interactedThisTick = true;
             }
         }
 
@@ -297,7 +297,6 @@ public class Player : NetworkBehaviour
         else if (isGrounded && OnSlope())
         {
             rb.AddForce(slopeMoveDirection.normalized * actualMoveSpeed * movementMultiplier, ForceMode.Acceleration);
-
         }
         else if (!isGrounded)
         {
@@ -305,7 +304,7 @@ public class Player : NetworkBehaviour
         }
     }
 
-    void ControlSpeed()
+    private void ControlSpeed()
     {
         var actualMoveSpeed = Mathf.Lerp(moveSpeed, 1, _serverSideStressModifier * _serverSideStressModifier);
         var actualWalkSpeed = Mathf.Lerp(walkSpeed, 1, _serverSideStressModifier * _serverSideStressModifier);
@@ -347,7 +346,7 @@ public class Player : NetworkBehaviour
         return false;
     }
 
-    void PlayerDrag()
+    private void PlayerDrag()
     {
         if (isGrounded)
         {
@@ -360,6 +359,7 @@ public class Player : NetworkBehaviour
     }
 
     #region Commands and RPC
+
     [Command]
     public void CmdSendInputs(Vector3 movement, bool jump, bool sprint, float xRot, float yRot, float stress)
     {
@@ -455,6 +455,7 @@ public class Player : NetworkBehaviour
     {
         _movement = Vector3.zero;
     }
+
     #endregion Commands and RPC
 
     #region Override

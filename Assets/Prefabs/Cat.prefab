@@ -242,9 +242,8 @@ MonoBehaviour:
   m_sockPrefab: {fileID: 3873952053484179079, guid: a810a4fe580364b46b0f341680ba9ca1, type: 3}
   m_spawnManager: {fileID: 0}
   m_spawnRadius: 3
-  m_spawnProbility: 0.08
   m_spawnLimit: 5
-  m_curSpawnNum: 0
+  m_spawnProbility: 0.08
   m_petColor: {r: 0.9433962, g: 0.07475963, b: 0.6006729, a: 0}
   m_petAngularSpeed: 60
   m_petLinearSpeed: 0.5
@@ -355,7 +354,7 @@ AudioSource:
   m_GameObject: {fileID: 4946464366587674599}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: cad0b75abfa58a241b57a0c39856b5ae, type: 2}
   m_audioClip: {fileID: 8300000, guid: aeebdaacac7914eda8d370c66f118c7b, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.5
