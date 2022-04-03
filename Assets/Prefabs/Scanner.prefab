@@ -65,10 +65,9 @@ MonoBehaviour:
   _promptText: Scan assignment
   _promptTextNotInteractable: Scanner is in use!
   _promptTextWrongItem: You need an assignment to scan
-  _promptPriority: 0
-  _promptHoldTime: 0
   requiredObject: 2
   resetAfterUse: 1
+  interactionEvent: 
   MinigamePrefab: {fileID: 796745773547017806, guid: 6cdf3a0e4bf57ac44bf6e9341c591e1a, type: 3}
   OnCompleteMinigame:
     m_PersistentCalls:
@@ -111,7 +110,7 @@ AudioSource:
   m_GameObject: {fileID: 2571412278434311988}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: cad0b75abfa58a241b57a0c39856b5ae, type: 2}
   m_audioClip: {fileID: 8300000, guid: 86bdba4e039194928a54abfa8a0c5fda, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.5

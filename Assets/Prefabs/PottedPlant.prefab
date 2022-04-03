@@ -138,10 +138,9 @@ MonoBehaviour:
   _promptText: Water plant
   _promptTextNotInteractable: The plant is fine!
   _promptTextWrongItem: You need a watering can!
-  _promptPriority: 0
-  _promptHoldTime: 0
   requiredObject: 1
   resetAfterUse: 0
+  interactionEvent: 
   MinigamePrefab: {fileID: 796745773547017806, guid: 7d5d4b7cee72a6f4b8d1d5c1d85ed314, type: 3}
   OnCompleteMinigame:
     m_PersistentCalls:
@@ -158,7 +157,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-  plantSelection: 0
+  colour: 0
+  plant: 0
 --- !u!65 &3121370866660294351
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -208,8 +208,9 @@ MonoBehaviour:
   brokenStateSound: {fileID: 3121370866252402730}
   fixedStateSound: {fileID: 3121370866252402731}
   ambientNoise: {fileID: 0}
-  brokenCooldown: 30
-  stressReduction: 20
+  brokenCooldown: 15
+  stressReduction: 10
+  _particleSystemBroken: {fileID: 0}
 --- !u!208 &3121370866252402729
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -235,7 +236,7 @@ AudioSource:
   m_GameObject: {fileID: 3121370866660294339}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: cad0b75abfa58a241b57a0c39856b5ae, type: 2}
   m_audioClip: {fileID: 8300000, guid: 8357b61082e004ec8b5fa154e6745bab, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.5
