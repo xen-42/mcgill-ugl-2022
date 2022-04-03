@@ -12,16 +12,15 @@ public class OptionsMenu : MonoBehaviour
     public GameObject tutorialUI;
     public AudioMixer audioMixer;
     public Dropdown resolutionDropdown;
-    Resolution[] resolutions;
-    int currentResolutionIndex = 0;
+    private Resolution[] resolutions;
+    private int currentResolutionIndex = 0;
     public GameObject playercharacter;
     public Slider sensSlider;
     private InputManager.InputMode _lastInputMode = InputManager.InputMode.Player;
 
-    void Start()
+    private void Start()
     {
         // QualitySettings.SetQualityLevel(3);
-
 
         //Get array of resolutions
         if (resolutionDropdown != null)
@@ -52,12 +51,15 @@ public class OptionsMenu : MonoBehaviour
         //pauseMenuUI.SetActive(false);
         //tutorialUI.SetActive(false);
     }
+
     public void SetVolume(float volume)
     {
         //Sets the game volume
         //Used in the slider
-        audioMixer.SetFloat("volume", volume);
+        if (audioMixer.SetFloat("volume", volume))
+            print("test");
     }
+
     public void SetMouseSensitiity(float sens)
     {
         Player.Instance.sensX = sens;
@@ -81,7 +83,7 @@ public class OptionsMenu : MonoBehaviour
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
     }
 
-    void Update()
+    private void Update()
     {
         // Checks if the game is paused or not
         // In minigames we leave the minigame dont go to the menu
@@ -106,7 +108,7 @@ public class OptionsMenu : MonoBehaviour
         GamePaused = false;
     }
 
-    void Pause()
+    private void Pause()
     {
         pauseMenuUI.SetActive(true);
         _lastInputMode = InputManager.CurrentInputMode;
@@ -116,7 +118,6 @@ public class OptionsMenu : MonoBehaviour
 
     public void LoadMenu()
     {
-
     }
 
     public void ReturnToMainMenu()
