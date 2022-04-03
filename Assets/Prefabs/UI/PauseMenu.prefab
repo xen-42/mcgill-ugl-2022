@@ -4516,9 +4516,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 378899682394653573}
-        m_TargetAssemblyTypeName: OptionsMenu, Assembly-CSharp
-        m_MethodName: Tutorial
+      - m_Target: {fileID: 4663699552529490897}
+        m_TargetAssemblyTypeName: Tutorial, Assembly-CSharp
+        m_MethodName: GoToTutorial
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -5279,13 +5279,29 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 378899682150959663}
     m_Modifications:
+    - target: {fileID: 1660792822337327483, guid: a3fc4af005579499e993bb3292e0e7ea, type: 3}
+      propertyPath: backPageCanvas
+      value: 
+      objectReference: {fileID: 378899680632062141}
     - target: {fileID: 6319843634272771779, guid: a3fc4af005579499e993bb3292e0e7ea, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 378899682394653573}
+      objectReference: {fileID: 4663699552529490897}
+    - target: {fileID: 6319843634272771779, guid: a3fc4af005579499e993bb3292e0e7ea, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: GoToPrevCanvas
+      objectReference: {fileID: 0}
+    - target: {fileID: 6319843634272771779, guid: a3fc4af005579499e993bb3292e0e7ea, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Tutorial, Assembly-CSharp
+      objectReference: {fileID: 0}
     - target: {fileID: 6319843634503323590, guid: a3fc4af005579499e993bb3292e0e7ea, type: 3}
       propertyPath: m_Name
       value: TutorialPage
+      objectReference: {fileID: 0}
+    - target: {fileID: 6319843634503323590, guid: a3fc4af005579499e993bb3292e0e7ea, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6319843634503323591, guid: a3fc4af005579499e993bb3292e0e7ea, type: 3}
       propertyPath: m_RootOrder
@@ -5331,6 +5347,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6319843634792733129, guid: a3fc4af005579499e993bb3292e0e7ea, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a3fc4af005579499e993bb3292e0e7ea, type: 3}
 --- !u!1 &1708260716 stripped
@@ -5343,3 +5363,14 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 6319843634503323591, guid: a3fc4af005579499e993bb3292e0e7ea, type: 3}
   m_PrefabInstance: {fileID: 6319843634984546986}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &4663699552529490897 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1660792822337327483, guid: a3fc4af005579499e993bb3292e0e7ea, type: 3}
+  m_PrefabInstance: {fileID: 6319843634984546986}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1708260716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7d6bc458aa89a416c8de798650cf93d7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
