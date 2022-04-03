@@ -12,8 +12,8 @@ public class GameOver : MonoBehaviour
     private void Start()
     {
         Debug.Log("Writing down player stats!");
-        leftStats.SetStats(StatTracker.serverStats);
-        rightStats.SetStats(StatTracker.clientStats);
+        leftStats.SetStats(StatTracker.serverStats, StatTracker.serverUserName, StatTracker.serverSteamID);
+        rightStats.SetStats(StatTracker.clientStats, StatTracker.clientUserName, StatTracker.clientSteamID);
     }
 
     public void OnContinueButtonPressed()
