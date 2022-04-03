@@ -6,14 +6,16 @@ using UnityEngine.SceneManagement;
 
 public class Tutorial : MonoBehaviour
 {
-    public GameObject tutorialUI;
+    public GameObject tutorialCanvas;
+    public GameObject backPageCanvas;
 
-    public void BacktoMainMenu(){
-        SceneManager.LoadScene(Scenes.Lobby);
+    public void GoToTutorial(){
+        tutorialCanvas.SetActive(true);
+        backPageCanvas.SetActive(false);
     }
 
-    public void BacktoGame(){
-        tutorialUI.SetActive(false);
-        InputManager.CurrentInputMode = InputManager.InputMode.Player;
+    public void GoToPrevCanvas(){
+        tutorialCanvas.SetActive(false);
+        backPageCanvas.SetActive(true);
     }
 }
