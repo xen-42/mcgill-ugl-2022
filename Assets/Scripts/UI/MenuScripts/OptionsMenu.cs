@@ -7,20 +7,59 @@ using UnityEngine.SceneManagement;
 
 public class OptionsMenu : MonoBehaviour
 {
-    public bool GamePaused = false;
+    [Header("User Settings Asset")]
+    public OptionSettings userSettings;
+
+    [HideInInspector] public bool GamePaused = false;
+
+    [Header("UI Elements")]
     public GameObject pauseMenuUI;
     public GameObject tutorialUI;
-    public AudioMixer musicAudioMixer;
-    public AudioMixer soundAudioMixer;
+
+    //public AudioMixer musicAudioMixer;
+    //public AudioMixer soundAudioMixer;
     public Dropdown resolutionDropdown;
     private Resolution[] resolutions;
     private int currentResolutionIndex = 0;
-    public GameObject playercharacter;
+    //public GameObject playercharacter;
+
+    [Header("Sliders")]
     public Slider sensSlider;
+    public Slider masterSlider;
+    public Slider musicSlider;
+    public Slider soundSlider;
+
     private InputManager.InputMode _lastInputMode = InputManager.InputMode.Player;
 
-    private void Start()
+    private void Awake()
     {
+        //Sync with user settings
+        if (sensSlider)
+        {
+            userSettings.CameraSensitivity = userSettings.CameraSensitivity;
+            sensSlider.value = userSettings.CameraSensitivity;
+        }
+        if (masterSlider)
+            masterSlider.value = userSettings.MasterVolume;
+        if (musicSlider)
+            musicSlider.value = userSettings.MusicVolume;
+        if (soundSlider)
+            soundSlider.value = userSettings.SoundVolume;
+    }
+
+    private void Start()
+    {  //Sync with user settings
+        //if (sensSlider)
+        //{
+        //    userSettings.CameraSensitivity = userSettings.CameraSensitivity;
+        //    sensSlider.value = userSettings.CameraSensitivity;
+        //}
+        //if (masterSlider)
+        //    masterSlider.value = userSettings.MasterVolume;
+        //if (musicSlider)
+        //    musicSlider.value = userSettings.MusicVolume;
+        //if (soundSlider)
+        //    soundSlider.value = userSettings.SoundVolume;
         // QualitySettings.SetQualityLevel(3);
 
         //Get array of resolutions
@@ -53,23 +92,26 @@ public class OptionsMenu : MonoBehaviour
         //tutorialUI.SetActive(false);
     }
 
-    public void SetSoundVolume(float volume) => SetVolume(volume, soundAudioMixer);
+    #region Slider Callbacks
 
-    public void SetMusicVolume(float volume) => SetVolume(volume, musicAudioMixer);
+    public void OnMasterSliderChanged(float value) => userSettings.MasterVolume = value;
 
-    private void SetVolume(float volume, AudioMixer tgtMixer)
-    {
-        //Sets the game volume
-        //Used in the slider
-        if (tgtMixer.SetFloat("volume", volume))
-            print("test");
-    }
+    public void OnMusicSliderChanged(float value) => userSettings.MusicVolume = value;
 
-    public void SetMouseSensitiity(float sens)
-    {
-        Player.Instance.sensX = sens;
-        Player.Instance.sensY = sens;
-    }
+    public void OnSoundSliderChanged(float value) => userSettings.SoundVolume = value;
+
+    public void OnCameraSensitivitySliderChanged(float value) => userSettings.CameraSensitivity = value;
+
+    #endregion Slider Callbacks
+
+    public void OnQualityChanged(int value)
+    { }
+
+    public void OnResolutionChanged(int value)
+    { }
+
+    public void OnFullScreenToggled(bool value)
+    { }
 
     public void SetQuality(int qualityIndex)
     {
