@@ -14,7 +14,7 @@ public class OptionSettings : ScriptableObject
     public float CameraSensitivity
     {
         get => m_cameraSensitivity;
-        set => Player.Instance.sensX = Player.Instance.sensY = m_cameraSensitivity = value;
+        set => Player.sensX = Player.sensY = m_cameraSensitivity = value;
     }
 
     #endregion Gameplay Settings
@@ -48,6 +48,6 @@ public class OptionSettings : ScriptableObject
         MasterVolume = m_masterAudioVolume;
         MusicVolume = m_musicAudioVolume;
         SoundVolume = m_soundAudioVolume;
-        //CameraSensitivity = m_cameraSensitivity;
+        CameraSensitivity = m_cameraSensitivity;
     }
 }

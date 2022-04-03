@@ -36,7 +36,7 @@ public class OptionsMenu : MonoBehaviour
         //Sync with user settings
         if (sensSlider)
         {
-            userSettings.CameraSensitivity = userSettings.CameraSensitivity;
+            //userSettings.CameraSensitivity = userSettings.CameraSensitivity;
             sensSlider.value = userSettings.CameraSensitivity;
         }
         if (masterSlider)
@@ -82,10 +82,10 @@ public class OptionsMenu : MonoBehaviour
             resolutionDropdown.value = currentResolutionIndex;
             resolutionDropdown.RefreshShownValue();
 
-            if (sensSlider != null)
-            {
-                sensSlider.value = (float)(Player.Instance.sensX);
-            }
+            //if (sensSlider != null)
+            //{
+            //    sensSlider.value = (float)(Player.Instance.sensX);
+            //}
         }
 
         //pauseMenuUI.SetActive(false);
