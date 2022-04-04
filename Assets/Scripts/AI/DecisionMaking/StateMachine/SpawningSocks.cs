@@ -5,12 +5,11 @@ using DecisionMaking.StateMachine;
 
 public class SpawningSocks : FSMStateBehaviour
 {
-    private CatAgent cat;
+    [SerializeField] private CatAgent cat;
 
     protected override void Awake()
     {
         base.Awake();
-        cat = GetComponent<CatAgent>();
     }
 
     protected override void Enter()
