@@ -15,17 +15,10 @@ public class OptionsMenu : MonoBehaviour
     [Header("UI Elements")]
     public GameObject pauseMenuUI;
     public GameObject tutorialUI;
-
-    //public AudioMixer musicAudioMixer;
-    //public AudioMixer soundAudioMixer;
-    public Dropdown resolutionDropdown;
-    private Resolution[] resolutions;
-    private int currentResolutionIndex = 0;
-    //public GameObject playercharacter;
+    public GameObject tutorialButton;
 
     [Header("Sliders")]
     public Slider sensSlider;
-    public Slider masterSlider;
     public Slider musicSlider;
     public Slider soundSlider;
 
@@ -36,65 +29,24 @@ public class OptionsMenu : MonoBehaviour
         //Sync with user settings
         if (sensSlider)
         {
-            //userSettings.CameraSensitivity = userSettings.CameraSensitivity;
             sensSlider.value = userSettings.CameraSensitivity;
         }
-        if (masterSlider)
-            masterSlider.value = userSettings.MasterVolume;
         if (musicSlider)
+        {
             musicSlider.value = userSettings.MusicVolume;
+        }
         if (soundSlider)
+        {
             soundSlider.value = userSettings.SoundVolume;
+        }
     }
 
     private void Start()
-    {  //Sync with user settings
-        //if (sensSlider)
-        //{
-        //    userSettings.CameraSensitivity = userSettings.CameraSensitivity;
-        //    sensSlider.value = userSettings.CameraSensitivity;
-        //}
-        //if (masterSlider)
-        //    masterSlider.value = userSettings.MasterVolume;
-        //if (musicSlider)
-        //    musicSlider.value = userSettings.MusicVolume;
-        //if (soundSlider)
-        //    soundSlider.value = userSettings.SoundVolume;
-        // QualitySettings.SetQualityLevel(3);
-
-        //Get array of resolutions
-        if (resolutionDropdown != null)
-        {
-            resolutions = Screen.resolutions;
-            resolutionDropdown.ClearOptions();
-            List<string> options = new List<string>();
-            for (int i = 0; i < resolutions.Length; i++)
-            {
-                string option = resolutions[i].width + " x " + resolutions[i].height;
-                options.Add(option);
-
-                if (resolutions[i].width == Screen.currentResolution.width && resolutions[i].height == Screen.currentResolution.height)
-                {
-                    currentResolutionIndex = i;
-                }
-            }
-            resolutionDropdown.AddOptions(options);
-            resolutionDropdown.value = currentResolutionIndex;
-            resolutionDropdown.RefreshShownValue();
-
-            //if (sensSlider != null)
-            //{
-            //    sensSlider.value = (float)(Player.Instance.sensX);
-            //}
-        }
-
-        //pauseMenuUI.SetActive(false);
-        //tutorialUI.SetActive(false);
+    {
+        tutorialButton.SetActive(SceneManager.GetActiveScene().buildIndex == Scenes.GameScene);
     }
 
     #region Slider Callbacks
-
-    public void OnMasterSliderChanged(float value) => userSettings.MasterVolume = value;
 
     public void OnMusicSliderChanged(float value) => userSettings.MusicVolume = value;
 
@@ -104,34 +56,19 @@ public class OptionsMenu : MonoBehaviour
 
     #endregion Slider Callbacks
 
-    public void OnQualityChanged(int value)
-    { }
-
-    public void OnResolutionChanged(int value)
-    { }
-
     public void OnFullScreenToggled(bool value)
     { }
-
-    public void SetQuality(int qualityIndex)
-    {
-        //Pass in int that corresponds to a qualtiy level in Unity
-        QualitySettings.SetQualityLevel(qualityIndex);
-    }
 
     public void SetFullscreen(bool isFullscreen)
     {
         Screen.fullScreen = isFullscreen;
     }
 
-    public void SetResolution(int resolutionIndex)
-    {
-        Resolution resolution = resolutions[resolutionIndex];
-        Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
-    }
-
     private void Update()
     {
+        // Only do this in the game scene
+        if (SceneManager.GetActiveScene().buildIndex != Scenes.GameScene) return;
+
         // Checks if the game is paused or not
         // In minigames we leave the minigame dont go to the menu
         if (Input.GetKeyDown(KeyCode.Escape) && InputManager.CurrentInputMode != InputManager.InputMode.Minigame)
@@ -150,6 +87,9 @@ public class OptionsMenu : MonoBehaviour
     public void Resume()
     {
         pauseMenuUI.SetActive(false);
+
+        if (SceneManager.GetActiveScene().buildIndex != Scenes.GameScene) return;
+
         if (tutorialUI != null) tutorialUI.SetActive(false);
         InputManager.CurrentInputMode = _lastInputMode;
         GamePaused = false;
@@ -158,6 +98,9 @@ public class OptionsMenu : MonoBehaviour
     private void Pause()
     {
         pauseMenuUI.SetActive(true);
+
+        if (SceneManager.GetActiveScene().buildIndex != Scenes.GameScene) return;
+
         _lastInputMode = InputManager.CurrentInputMode;
         InputManager.CurrentInputMode = InputManager.InputMode.UI;
         GamePaused = true;
