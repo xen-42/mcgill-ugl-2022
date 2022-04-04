@@ -74,6 +74,12 @@ public class PlayerSpawner : NetworkBehaviour
                 Debug.Log($"Set spawn position for [{id}]");
                 player.transform.position = pos;
                 player.yRotation = rot.eulerAngles.y;
+
+                // If it's the local player we can fade the screen in
+                if(Player.Instance == player)
+                {
+                    EventManager.TriggerEvent("FadeIn");
+                }
             }
         }
     }
