@@ -87,7 +87,7 @@ public class Holdable : Interactable
         _collider.enabled = true;
         foreach (var collider in GetComponentsInChildren<Collider>())
         {
-            _collider.enabled = true;
+            collider.enabled = true;
         }
 
         _parent = null;
