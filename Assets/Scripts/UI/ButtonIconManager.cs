@@ -46,7 +46,7 @@ public static class ButtonIconManager
 
         if (texture == null)
         {
-            Debug.LogError($"Couldn't get sprite for {command}");
+            Debug.LogWarning($"Couldn't get sprite for {command}");
             return null;
         }
 

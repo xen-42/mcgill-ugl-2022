@@ -14,7 +14,7 @@ public class Holdable : Interactable
 
     [SerializeField] public float throwForce = 1000f;
 
-    [SerializeField] public PlayerCustomization.COLOUR colour;
+    [SerializeField] [SyncVar] public PlayerCustomization.COLOUR colour;
 
     protected override InputCommand InputCommand { get => InputCommand.PickUp; }
 
@@ -46,27 +46,17 @@ public class Holdable : Interactable
         if (canPickUp) Player.Instance.CmdGrab(this);
     }
 
-    // Update is called once per frame
-    new void Update()
+    [Command]
+    public void CmdToss(Vector3 direction)
     {
-        base.Update();
+        Toss(direction);
+    }
 
-        // Input
-        if (InputManager.CurrentInputMode != InputManager.InputMode.Player) return;
-
-        var player = Player.Instance;
-
-        if (InputManager.IsCommandJustPressed(InputCommand) && player.heldObject == this)
-        {
-            player.CmdDrop();
-        }
-
-        if (InputManager.IsCommandJustPressed(InputCommand.Throw) && player.heldObject == this)
-        {
-            player.CmdDrop();
-            _rb.isKinematic = false;
-            _rb.AddForce(player.cam.transform.forward.normalized * throwForce);
-        }
+    [Server]
+    public void Toss(Vector3 direction)
+    {
+        _rb.isKinematic = false;
+        _rb.AddForce(direction * throwForce);
     }
 
     public void Grab(NetworkBehaviour grabber)
@@ -80,6 +70,7 @@ public class Holdable : Interactable
             netID.AssignClientAuthority(grabber.connectionToClient);
         }
         IsInteractable = false;
+
         _collider.enabled = false;
         foreach (var collider in GetComponentsInChildren<Collider>())
         {
@@ -93,17 +84,17 @@ public class Holdable : Interactable
     {
         Debug.Log("Drop item");
 
+        _collider.enabled = true;
+        foreach (var collider in GetComponentsInChildren<Collider>())
+        {
+            collider.enabled = true;
+        }
+
         _parent = null;
         if (isServer) gameObject.GetComponent<NetworkIdentity>().RemoveClientAuthority();
 
         IsInteractable = true;
         _rb.isKinematic = false;
-        _collider.enabled = true;
-
-        foreach (var collider in GetComponentsInChildren<Collider>())
-        {
-            collider.enabled = true;
-        }
     }
 
     /* Get rid of certain holdable items after using them for a minigame */
@@ -121,8 +112,35 @@ public class Holdable : Interactable
 
         if (isConsumable)
         {
-            NetworkServer.Destroy(gameObject);
-            Player.Instance.heldObject = null;
+            if (isConsumable)
+            {
+                NetworkDestroy(gameObject);
+                Player.Instance.heldObject = null;
+            }
         }
+    }
+
+    private void NetworkDestroy(GameObject obj)
+    {
+        if (isServer)
+        {
+            RpcNetworkDestroy(obj);
+        }
+        else
+        {
+            CmdNetworkDestroy(obj);
+        }
+    }
+
+    [Command]
+    private void CmdNetworkDestroy(GameObject obj)
+    {
+        RpcNetworkDestroy(obj);
+    }
+
+    [ClientRpc]
+    private void RpcNetworkDestroy(GameObject obj)
+    {
+        GameObject.Destroy(obj);
     }
 }

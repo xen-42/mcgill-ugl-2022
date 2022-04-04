@@ -7,21 +7,60 @@ using UnityEngine.SceneManagement;
 
 public class OptionsMenu : MonoBehaviour
 {
-    public bool GamePaused = false;
+    [Header("User Settings Asset")]
+    public OptionSettings userSettings;
+
+    [HideInInspector] public bool GamePaused = false;
+
+    [Header("UI Elements")]
     public GameObject pauseMenuUI;
     public GameObject tutorialUI;
-    public AudioMixer audioMixer;
+
+    //public AudioMixer musicAudioMixer;
+    //public AudioMixer soundAudioMixer;
     public Dropdown resolutionDropdown;
-    Resolution[] resolutions;
-    int currentResolutionIndex = 0;
-    public GameObject playercharacter;
+    private Resolution[] resolutions;
+    private int currentResolutionIndex = 0;
+    //public GameObject playercharacter;
+
+    [Header("Sliders")]
     public Slider sensSlider;
+    public Slider masterSlider;
+    public Slider musicSlider;
+    public Slider soundSlider;
+
     private InputManager.InputMode _lastInputMode = InputManager.InputMode.Player;
 
-    void Start()
+    private void Awake()
     {
-        // QualitySettings.SetQualityLevel(3);
+        //Sync with user settings
+        if (sensSlider)
+        {
+            //userSettings.CameraSensitivity = userSettings.CameraSensitivity;
+            sensSlider.value = userSettings.CameraSensitivity;
+        }
+        if (masterSlider)
+            masterSlider.value = userSettings.MasterVolume;
+        if (musicSlider)
+            musicSlider.value = userSettings.MusicVolume;
+        if (soundSlider)
+            soundSlider.value = userSettings.SoundVolume;
+    }
 
+    private void Start()
+    {  //Sync with user settings
+        //if (sensSlider)
+        //{
+        //    userSettings.CameraSensitivity = userSettings.CameraSensitivity;
+        //    sensSlider.value = userSettings.CameraSensitivity;
+        //}
+        //if (masterSlider)
+        //    masterSlider.value = userSettings.MasterVolume;
+        //if (musicSlider)
+        //    musicSlider.value = userSettings.MusicVolume;
+        //if (soundSlider)
+        //    soundSlider.value = userSettings.SoundVolume;
+        // QualitySettings.SetQualityLevel(3);
 
         //Get array of resolutions
         if (resolutionDropdown != null)
@@ -43,26 +82,36 @@ public class OptionsMenu : MonoBehaviour
             resolutionDropdown.value = currentResolutionIndex;
             resolutionDropdown.RefreshShownValue();
 
-            if (sensSlider != null)
-            {
-                sensSlider.value = (float)(Player.Instance.sensX);
-            }
+            //if (sensSlider != null)
+            //{
+            //    sensSlider.value = (float)(Player.Instance.sensX);
+            //}
         }
 
         //pauseMenuUI.SetActive(false);
         //tutorialUI.SetActive(false);
     }
-    public void SetVolume(float volume)
-    {
-        //Sets the game volume
-        //Used in the slider
-        audioMixer.SetFloat("volume", volume);
-    }
-    public void SetMouseSensitiity(float sens)
-    {
-        Player.Instance.sensX = sens;
-        Player.Instance.sensY = sens;
-    }
+
+    #region Slider Callbacks
+
+    public void OnMasterSliderChanged(float value) => userSettings.MasterVolume = value;
+
+    public void OnMusicSliderChanged(float value) => userSettings.MusicVolume = value;
+
+    public void OnSoundSliderChanged(float value) => userSettings.SoundVolume = value;
+
+    public void OnCameraSensitivitySliderChanged(float value) => userSettings.CameraSensitivity = value;
+
+    #endregion Slider Callbacks
+
+    public void OnQualityChanged(int value)
+    { }
+
+    public void OnResolutionChanged(int value)
+    { }
+
+    public void OnFullScreenToggled(bool value)
+    { }
 
     public void SetQuality(int qualityIndex)
     {
@@ -81,15 +130,15 @@ public class OptionsMenu : MonoBehaviour
         Screen.SetResolution(resolution.width, resolution.height, Screen.fullScreen);
     }
 
-    void Update()
+    private void Update()
     {
-        //Checks if the game is paused or not
-        if (Input.GetKeyDown(KeyCode.Escape))
+        // Checks if the game is paused or not
+        // In minigames we leave the minigame dont go to the menu
+        if (Input.GetKeyDown(KeyCode.Escape) && InputManager.CurrentInputMode != InputManager.InputMode.Minigame)
         {
             if (GamePaused)
             {
                 Resume();
-
             }
             else
             {
@@ -101,12 +150,12 @@ public class OptionsMenu : MonoBehaviour
     public void Resume()
     {
         pauseMenuUI.SetActive(false);
-        if(tutorialUI != null) tutorialUI.SetActive(false);
+        if (tutorialUI != null) tutorialUI.SetActive(false);
         InputManager.CurrentInputMode = _lastInputMode;
         GamePaused = false;
     }
 
-    void Pause()
+    private void Pause()
     {
         pauseMenuUI.SetActive(true);
         _lastInputMode = InputManager.CurrentInputMode;
@@ -116,7 +165,6 @@ public class OptionsMenu : MonoBehaviour
 
     public void LoadMenu()
     {
-
     }
 
     public void ReturnToMainMenu()
@@ -125,12 +173,14 @@ public class OptionsMenu : MonoBehaviour
         SceneManager.LoadScene(Scenes.MainMenu);
     }
 
-    public void Tutorial(){
+    public void Tutorial()
+    {
         pauseMenuUI.SetActive(false);
         tutorialUI.SetActive(true);
     }
 
-    public void QuitTutorial(){
+    public void QuitTutorial()
+    {
         tutorialUI.SetActive(false);
         pauseMenuUI.SetActive(true);
     }

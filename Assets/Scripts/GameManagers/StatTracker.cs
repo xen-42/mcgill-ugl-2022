@@ -1,4 +1,5 @@
 using Mirror;
+using Steamworks;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,12 @@ public class StatTracker : NetworkBehaviour
         }
     }
     private static StatTracker _instance = null;
+
+    public static string serverUserName;
+    public static string clientUserName;
+
+    public static ulong serverSteamID;
+    public static ulong clientSteamID;
 
     public static PlayerStats clientStats = new PlayerStats { stats = new int[8] };
     public static PlayerStats serverStats = new PlayerStats { stats = new int[8] };
@@ -35,6 +42,7 @@ public class StatTracker : NetworkBehaviour
             EventManager.AddListener("Drink", OnDrink);
             EventManager.AddListener("PetCat", OnPetCat);
             EventManager.AddListener("FixAirConditioning", OnFixAirConditioning);
+            EventManager.AddListener("PickUpSock", OnPickUpSock);
 
             RefreshStats();
         }
@@ -48,6 +56,7 @@ public class StatTracker : NetworkBehaviour
         EventManager.RemoveListener("Drink", OnDrink);
         EventManager.RemoveListener("PetCat", OnPetCat);
         EventManager.RemoveListener("FixAirConditioning", OnFixAirConditioning);
+        EventManager.RemoveListener("PickUpSock", OnPickUpSock);
 
         _instance = null;
     }
@@ -56,8 +65,8 @@ public class StatTracker : NetworkBehaviour
     {
         Debug.Log("Refreshing stats");
 
-        clientStats = new PlayerStats { stats = new int[8] };
-        serverStats = new PlayerStats { stats = new int[8] };
+        clientStats = new PlayerStats { stats = new int[9] };
+        serverStats = new PlayerStats { stats = new int[9] };
     }
 
     private void IncrementStat(string name)
@@ -134,6 +143,11 @@ public class StatTracker : NetworkBehaviour
         IncrementStat("AirConditionersFixed");
     }
 
+    public void OnPickUpSock()
+    {
+        IncrementStat("SocksPickedUp");
+    }
+
     // This is jank but its so it can be a SyncVar
     public struct PlayerStats
     {
@@ -150,6 +164,7 @@ public class StatTracker : NetworkBehaviour
         public int CatsPet { get => stats[5]; }
         public int PlantsWatered { get => stats[6]; }
         public int AirConditionersFixed { get => stats[7]; }
+        public int SocksPickedUp { get => stats[8]; }
     }
 
     private int NameToInt(string name)
@@ -162,6 +177,7 @@ public class StatTracker : NetworkBehaviour
         if (name == "CatsPet") return 5;
         if (name == "PlantsWatered") return 6;
         if (name == "AirConditionersFixed") return 7;
+        if (name == "SocksPickedUp") return 8;
 
         return -1;
     }

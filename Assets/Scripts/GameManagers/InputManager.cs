@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Users;
+using UnityEngine.UI;
 
 public static class InputManager
 {
@@ -25,16 +26,16 @@ public static class InputManager
 
     private static Dictionary<InputCommand, Key> _keyboardMappings = new Dictionary<InputCommand, Key>()
     {
-        { InputCommand.Interact, Key.E },
         { InputCommand.Jump, Key.Space },
         { InputCommand.Sprint, Key.LeftShift },
-        { InputCommand.Back, Key.Tab }
+        { InputCommand.Back, Key.Escape }
     };
 
     private static Dictionary<InputCommand, MouseButton> _mouseMappings = new Dictionary<InputCommand, MouseButton>()
     {
-        {InputCommand.PickUp, MouseButton.Left },
-        {InputCommand.Throw, MouseButton.Right}
+        { InputCommand.Interact, MouseButton.Left },
+        { InputCommand.PickUp, MouseButton.Left },
+        { InputCommand.Throw, MouseButton.Right }
     };
 
     public static Dictionary<InputCommand, Key> KeyboardMappings
@@ -67,11 +68,17 @@ public static class InputManager
             if (_currentInputMode == InputMode.Player)
             {
                 Cursor.lockState = CursorLockMode.Locked;
+
+                var hudCursor = GameObject.Find("HUD/Cursor")?.GetComponent<Image>();
+                if(hudCursor != null) hudCursor.enabled = true;
             }
             else
             {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
+
+                var hudCursor = GameObject.Find("HUD/Cursor")?.GetComponent<Image>();
+                if (hudCursor != null) hudCursor.enabled = false;
             }
         }
     }

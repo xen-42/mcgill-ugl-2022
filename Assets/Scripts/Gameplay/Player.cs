@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using static InputManager;
 
 public class Player : NetworkBehaviour
 {
@@ -13,29 +14,30 @@ public class Player : NetworkBehaviour
     [SerializeField] public float moveSpeed = 6f;
 
     [Header("Drag")]
-    float rbDrag = 6f;
-    float airDrag = 2f;
-    float movementMultiplier = 10f;
-    [SerializeField] float airMultiplier = 0.4f;
-    float playerHeight = 2f;
+    private float rbDrag = 6f;
+    private float airDrag = 2f;
+    private float movementMultiplier = 10f;
+    [SerializeField] private float airMultiplier = 0.4f;
+    private float playerHeight = 2f;
 
     [Header("Ground Detection")]
-    [SerializeField] Transform groundCheck;
-    float groundDistance = 0.4f;
-    bool isGrounded;
+    [SerializeField] private Transform groundCheck;
+    private float groundDistance = 0.4f;
+    private bool isGrounded;
 
     [Header("Jumping")]
     public float jumpForce = 5f;
 
-    RaycastHit slopeHit;
+    private RaycastHit slopeHit;
+
     [Header("Camera Adjusts")]
     [SerializeField] public Camera cam;
     [SerializeField] private float fastfov;
     [SerializeField] private float fov;
     [SerializeField] private float fovaccel;
-    [SerializeField] public float sensX;
-    [SerializeField] public float sensY;
-    float multiplier = 0.01f;
+    public static float sensX;
+    public static float sensY;
+    private float multiplier = 0.01f;
     public float xRotation;
     public float yRotation;
 
@@ -45,13 +47,13 @@ public class Player : NetworkBehaviour
     [SerializeField] public float acceleration = 10f;
 
     [Header("Interacting")]
-    [SerializeField] Transform heldItemPosition;
-    [SerializeField] float heldItemTranslationResponsiveness = 20f;
-    [SerializeField] float heldItemRotationResponsiveness = 10f;
+    [SerializeField] private Transform heldItemPosition;
+    [SerializeField] private float heldItemTranslationResponsiveness = 20f;
+    [SerializeField] private float heldItemRotationResponsiveness = 10f;
 
     [Header("Physics Stuff")]
-    [SerializeField] Rigidbody rb;
-    [SerializeField] Collider collider;
+    [SerializeField] private Rigidbody rb;
+    [SerializeField] public new Collider collider;
 
     private GameObject _focusedObject;
     public Holdable heldObject;
@@ -72,6 +74,8 @@ public class Player : NetworkBehaviour
     [SyncVar] public PlayerCustomization.DRINK drink;
     [SyncVar] public PlayerCustomization.POSTER poster;
     [SyncVar] public PlayerCustomization.COLOUR colour;
+
+    private bool _interactedThisTick = false;
 
     private void Start()
     {
@@ -119,7 +123,15 @@ public class Player : NetworkBehaviour
         // Move held items here so they go smoothly (since we disable their collisions its fine that it isnt on server)
         if (heldObject != null)
         {
-            heldObject.transform.position = Vector3.Lerp(heldObject.transform.position, heldItemPosition.position, Time.deltaTime * heldItemTranslationResponsiveness);
+            var targetPosition = heldItemPosition.position;
+            var dir = (heldItemPosition.position - transform.position);
+
+            if (Physics.Raycast(transform.position, dir.normalized, out var hit, dir.magnitude, ~LayerMask.NameToLayer("Player")))
+            {
+                targetPosition = hit.point - dir.normalized * 0.5f;
+            }
+
+            heldObject.transform.position = Vector3.Lerp(heldObject.transform.position, targetPosition, Time.deltaTime * heldItemTranslationResponsiveness);
             heldObject.transform.rotation = Quaternion.Lerp(heldObject.transform.rotation, heldItemPosition.rotation, Time.deltaTime * heldItemRotationResponsiveness);
         }
     }
@@ -134,7 +146,7 @@ public class Player : NetworkBehaviour
         if (InputManager.CurrentInputMode != InputManager.InputMode.Player)
         {
             // Don't move during minigame
-            if(_movement != Vector3.zero)
+            if (_movement != Vector3.zero)
             {
                 if (isServer)
                 {
@@ -145,7 +157,6 @@ public class Player : NetworkBehaviour
                     CmdStopMoving();
                 }
             }
-
 
             // If we were looking at something make sure its lost focus
             if (_focusedObject != null)
@@ -177,7 +188,7 @@ public class Player : NetworkBehaviour
 
         CmdSendInputs(movement, jump, sprint, xRotation, yRotation, stressModifier);
 
-        // The client can set the rotations immediately 
+        // The client can set the rotations immediately
         cam.transform.localRotation = Quaternion.Euler(xRotation, yRotation, 0);
         orientation.transform.rotation = Quaternion.Euler(0, yRotation, 0);
 
@@ -214,6 +225,52 @@ public class Player : NetworkBehaviour
         {
             Screen.fullScreen = !Screen.fullScreen;
         }
+
+        if (_focusedObject != null && InputManager.IsCommandJustPressed(InputCommand.Interact))
+        {
+            foreach (var interactable in _focusedObject.GetComponents<Interactable>())
+            {
+                if (interactable.Interact()) _interactedThisTick = true;
+            }
+        }
+
+        // Held item
+        if (heldObject != null && !_interactedThisTick)
+        {
+            if (InputManager.IsCommandJustPressed(InputCommand.PickUp))
+            {
+                if (isServer)
+                {
+                    RpcDrop();
+                }
+                else
+                {
+                    Player.Instance.DoWithAuthority(heldObject.netIdentity, CmdDrop);
+                }
+            }
+
+            if (InputManager.IsCommandJustPressed(InputCommand.Throw))
+            {
+                if (isServer)
+                {
+                    // Dropping removes our reference to the object but we need that
+                    var obj = heldObject;
+                    RpcDrop();
+                    obj.Toss(cam.transform.forward.normalized);
+                }
+                else
+                {
+                    var obj = heldObject;
+                    CmdDrop();
+                    Player.Instance.DoWithAuthority(netIdentity, () =>
+                    {
+                        obj.CmdToss(cam.transform.forward.normalized);
+                    });
+                }
+            }
+        }
+
+        _interactedThisTick = false;
     }
 
     private void FixedUpdate()
@@ -240,7 +297,6 @@ public class Player : NetworkBehaviour
         else if (isGrounded && OnSlope())
         {
             rb.AddForce(slopeMoveDirection.normalized * actualMoveSpeed * movementMultiplier, ForceMode.Acceleration);
-
         }
         else if (!isGrounded)
         {
@@ -248,7 +304,7 @@ public class Player : NetworkBehaviour
         }
     }
 
-    void ControlSpeed()
+    private void ControlSpeed()
     {
         var actualMoveSpeed = Mathf.Lerp(moveSpeed, 1, _serverSideStressModifier * _serverSideStressModifier);
         var actualWalkSpeed = Mathf.Lerp(walkSpeed, 1, _serverSideStressModifier * _serverSideStressModifier);
@@ -290,7 +346,7 @@ public class Player : NetworkBehaviour
         return false;
     }
 
-    void PlayerDrag()
+    private void PlayerDrag()
     {
         if (isGrounded)
         {
@@ -303,6 +359,7 @@ public class Player : NetworkBehaviour
     }
 
     #region Commands and RPC
+
     [Command]
     public void CmdSendInputs(Vector3 movement, bool jump, bool sprint, float xRot, float yRot, float stress)
     {
@@ -346,7 +403,7 @@ public class Player : NetworkBehaviour
     }
 
     [ClientRpc]
-    private void RpcDrop()
+    public void RpcDrop()
     {
         if (heldObject != null)
         {
@@ -359,7 +416,7 @@ public class Player : NetworkBehaviour
     {
         if (!NetworkClient.active) return;
 
-        if (!identity.hasAuthority)
+        if (identity != null && !identity.hasAuthority)
         {
             CmdGetAuthority(identity);
 
@@ -381,7 +438,7 @@ public class Player : NetworkBehaviour
     {
         try
         {
-            if (!identity.hasAuthority)
+            if (identity != null && !identity.hasAuthority)
             {
                 identity.RemoveClientAuthority();
                 identity.AssignClientAuthority(connectionToClient);
@@ -398,6 +455,7 @@ public class Player : NetworkBehaviour
     {
         _movement = Vector3.zero;
     }
+
     #endregion Commands and RPC
 
     #region Override

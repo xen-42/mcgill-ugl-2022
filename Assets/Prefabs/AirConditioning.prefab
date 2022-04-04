@@ -271,8 +271,6 @@ MonoBehaviour:
   _promptText: Fix A/C
   _promptTextNotInteractable: The A/C is on!
   _promptTextWrongItem: Your hands are full
-  _promptPriority: 0
-  _promptHoldTime: 0
   requiredObject: 0
   resetAfterUse: 0
   interactionEvent: FixAirConditioning
@@ -300,7 +298,7 @@ AudioSource:
   m_GameObject: {fileID: 4481151090819568741}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: cad0b75abfa58a241b57a0c39856b5ae, type: 2}
   m_audioClip: {fileID: 8300000, guid: 9b0b8d0fcf838411bbd85c575dd3a728, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.5
@@ -396,7 +394,7 @@ AudioSource:
   m_GameObject: {fileID: 4481151090819568741}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: cad0b75abfa58a241b57a0c39856b5ae, type: 2}
   m_audioClip: {fileID: 8300000, guid: c10a8e4320704457486fe229b57b195e, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
@@ -492,7 +490,7 @@ AudioSource:
   m_GameObject: {fileID: 4481151090819568741}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
+  OutputAudioMixerGroup: {fileID: 24300002, guid: cad0b75abfa58a241b57a0c39856b5ae, type: 2}
   m_audioClip: {fileID: 8300000, guid: d09f72de4f5c148ddbe358e536ef4a9d, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 0.5
