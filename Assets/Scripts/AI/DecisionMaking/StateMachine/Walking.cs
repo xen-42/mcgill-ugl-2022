@@ -5,11 +5,10 @@ using DecisionMaking.StateMachine;
 
 public class Walking : FSMStateBehaviour
 {
-    private CatAgent cat;
+    [SerializeField] private CatAgent cat;
+
     protected override void Enter()
     {
-        print("Entered: Walking");
-        cat = GameObject.Find("Cat").GetComponent<CatAgent>();
         cat.EnterWalk();
     }
 

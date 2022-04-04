@@ -78,7 +78,7 @@ public class CatAgent : NetworkBehaviour
             m_spawnManager = GameObject.Find("Waypoints").GetComponent<SpawnPointsManager>();
         destination = this.transform.position;
 
-        m_renderer = GetComponent<MeshRenderer>();
+        m_renderer = GetComponentInChildren<MeshRenderer>();
         EventManager.AddListener("PetCat", OnUpdatePetStatus);
 
         NetworkClient.RegisterPrefab(m_sockPrefab);
@@ -98,9 +98,7 @@ public class CatAgent : NetworkBehaviour
 
             energy = 5;
 
-            //path = new UnityEngine.AI.NavMeshPath();
             destination = new Vector3(10f, 1.77f, -4f);
-            //elapsed = 0.0f;
         }
 
         m_normalColor = m_renderer.material.color;
@@ -152,28 +150,16 @@ public class CatAgent : NetworkBehaviour
     // Called when we first enter the 'Walking' state
     public void EnterWalk()
     {
-        //transform.position += new Vector3(0,0,0.5f) * Time.deltaTime * speed;
-
         NMAgent.enabled = true;
         m_reachedMaxSpeed = false;
         m_arrivedCurrentPath = false;
 
-        //NMAgent.speed = 2;
-
         PickRandomPos();
-
-        /*
-        elapsed += Time.deltaTime;
-        if (elapsed > 1.0f)
-        {
-            elapsed -= 1.0f;
-            UnityEngine.AI.NavMesh.CalculatePath(transform.position, destination, UnityEngine.AI.NavMesh.AllAreas, path);
-        }*/
     }
 
     public void EnterSit()
     {
-        //NMAgent.enabled = false;
+
     }
 
     public void Walk()
@@ -250,8 +236,6 @@ public class CatAgent : NetworkBehaviour
             if (Random.Range(0, 1f) > m_spawnProbility) return;
 
             m_curSpawnNum++;
-            //Vector2 spawnOffset = Random.insideUnitCircle * m_spawnRadius;
-            //Vector3 spawnPos = transform.position + new Vector3(spawnOffset.x, 0, spawnOffset.y);
 
             Vector3 spawnPos;
             if (m_spawnManager.TryQueryNeighbour(transform.position, out spawnPos))
@@ -268,7 +252,6 @@ public class CatAgent : NetworkBehaviour
     public void EnterPet()
     {
         m_arrivedCurrentPath = false;
-        //NMAgent.stoppingDistance = m_petStoppingDistance;
     }
 
     public void Pet()
@@ -284,10 +267,6 @@ public class CatAgent : NetworkBehaviour
                 StartCoroutine(nameof(FacePlayer));
             }
         }
-        //else
-        //{
-        //    transform.forward = Vector3.Slerp(transform.forward, m_petter.transform.position - transform.position, .1f);
-        //}
     }
 
     public void ExitPet()
