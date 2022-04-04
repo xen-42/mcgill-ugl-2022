@@ -135,8 +135,6 @@ MonoBehaviour:
   _promptText: Grab watering can
   _promptTextNotInteractable: 
   _promptTextWrongItem: 
-  _promptPriority: 0
-  _promptHoldTime: 0
   requiredObject: 0
   resetAfterUse: 0
   interactionEvent: 
@@ -477,7 +475,7 @@ MonoBehaviour:
   - {fileID: 9205020725948167187}
   uprightWateringCan: {fileID: 796745773510088802}
   pouringWateringCan: {fileID: 8954167826512397547}
-  delayTime: 0.5
+  delayTime: 0.2
 --- !u!1 &998368180979820568
 GameObject:
   m_ObjectHideFlags: 0
