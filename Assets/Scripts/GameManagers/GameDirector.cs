@@ -133,7 +133,7 @@ public class GameDirector : NetworkBehaviour
         }
 
         _stress = Mathf.Clamp(_stress, 0f, 100f);
-        HUD.Instance.SetGameState(timeLimit - (int)_currentTime, _stress, NumAssignmentsDone);
+        HUD.Instance.SetGameState(timeLimit - (int)_currentTime, _stress, NumAssignmentsDone, NumAssignmentsScanned);
 
         // Stress vision -----------------------------------
         // Enable stress vision

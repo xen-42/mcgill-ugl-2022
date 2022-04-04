@@ -15,6 +15,7 @@ public class HUD : MonoBehaviour
     [SerializeField] private Text _timer;
     [SerializeField] private Text _stress;
     [SerializeField] private Text _submitted;
+    [SerializeField] private Text _scanned;
     [SerializeField] private Image _stressBarFillImage;
 
     public static HUD Instance;
@@ -52,7 +53,7 @@ public class HUD : MonoBehaviour
         }
     }
 
-    public void SetGameState(int time, float stress, int submitted)
+    public void SetGameState(int time, float stress, int submitted, int scanned)
     {
         var minutes = (int)Math.Floor(time / 60f);
         var seconds = (int)(time % 60);
@@ -62,9 +63,10 @@ public class HUD : MonoBehaviour
         // If there are minutes on the clock we want the seconds to be like 0x if x < 10.
         var secondsString = (minutes > 0 && seconds < 10) ? $"0{seconds}" : $"{seconds}";
 
-        _timer.text = $"Time: {minutesString}{secondsString}";
+        _timer.text = $"{minutesString}{secondsString}";
         SetStressValue(stress);
-        _submitted.text = $"Assignments submitted: {submitted}";
+        _submitted.text = $"Submitted: {submitted}";
+        _scanned.text = $"Scanned: {scanned}";
     }
 
     public void SetStressValue(float stress)
