@@ -91,7 +91,7 @@ GameObject:
   - component: {fileID: 609008892281486657}
   - component: {fileID: 2208655525550479128}
   m_Layer: 5
-  m_Name: Timer
+  m_Name: Timer_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -692,7 +692,7 @@ GameObject:
   - component: {fileID: 6524773912424669435}
   - component: {fileID: 9004229747723404097}
   m_Layer: 5
-  m_Name: TimerIcon
+  m_Name: Timer_Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -767,7 +767,7 @@ GameObject:
   - component: {fileID: 8678364665367000669}
   - component: {fileID: 5728227913384486005}
   m_Layer: 5
-  m_Name: ScannerIcon
+  m_Name: Scanner_Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1713,6 +1713,7 @@ MonoBehaviour:
   _timer: {fileID: 2208655525550479128}
   _stress: {fileID: 5334185034736831223}
   _submitted: {fileID: 7334449127538603039}
+  _scanned: {fileID: 1143007625031035633}
   _stressBarFillImage: {fileID: 1403725823261349505}
 --- !u!1 &7405807202500453653
 GameObject:
@@ -1726,7 +1727,7 @@ GameObject:
   - component: {fileID: 2069965233592588774}
   - component: {fileID: 5914228489394351666}
   m_Layer: 5
-  m_Name: SubmittedIcon
+  m_Name: Submitted_Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2239,7 +2240,7 @@ GameObject:
   - component: {fileID: 3819679655494060420}
   - component: {fileID: 7334449127538603039}
   m_Layer: 5
-  m_Name: Submitted
+  m_Name: Submitted_Text
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
