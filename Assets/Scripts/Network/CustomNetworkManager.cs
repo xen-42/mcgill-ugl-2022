@@ -300,6 +300,8 @@ public class CustomNetworkManager : NetworkManager
                 player.drink = lobbyPlayer.drink;
                 player.poster = lobbyPlayer.poster;
 
+                player.displayName = lobbyPlayer.DisplayName;
+
                 Debug.Log($"Copied over customization options: {player.plant}, {player.drink}, {player.poster}");
 
                 NetworkServer.Destroy(conn.identity.gameObject);

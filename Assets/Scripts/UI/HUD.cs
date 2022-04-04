@@ -17,9 +17,15 @@ public class HUD : MonoBehaviour
     [SerializeField] private Text _submitted;
     [SerializeField] private Text _scanned;
     [SerializeField] private Image _stressBarFillImage;
+    [SerializeField] private Text _notificationText;
 
     public static HUD Instance;
     private static GameDirector _director;
+
+    [SerializeField] private Fixable warmPlant;
+    [SerializeField] private Fixable coolPlant;
+    [SerializeField] private Fixable airConditioning;
+    [SerializeField] private CatAgent cat;
 
     private void Start()
     {
@@ -67,6 +73,59 @@ public class HUD : MonoBehaviour
         SetStressValue(stress);
         _submitted.text = $"Submitted: {submitted}";
         _scanned.text = $"Scanned: {scanned}";
+
+        // Notifications
+        var notification = "";
+        if(stress > 50)
+        {
+            notification += "Find a way to calm down!\n";
+        }
+        
+        // Tell them what main task to do next
+        if(scanned > submitted)
+        {
+            if (scanned - 1 > submitted) notification += "Upload your assignments!\n";
+            else notification += "Upload your assignment!\n";
+        }
+        else if(scanned == submitted)
+        {
+            notification += "Write and scan something!\n";
+        }
+
+        // Tell them what is causing stress
+        var socks = cat.GetNumberOfSocks();
+        if(socks != 0)
+        {
+            notification += $"Put away {socks} sock{(socks == 1 ? "" : "s")}\n";
+        }
+        if(airConditioning.IsBroken)
+        {
+            notification += "The air conditioning broke!\n";
+        }
+        if(warmPlant.IsBroken)
+        {
+            if(Player.Instance.colour == PlayerCustomization.COLOUR.WARM)
+            {
+                notification += "Your plant needs water!\n";
+            }
+            else
+            {
+                notification += $"{Player.OtherPlayer?.displayName}'s plant needs water!\n";
+            }
+        }
+        if (coolPlant.IsBroken)
+        {
+            if (Player.Instance.colour == PlayerCustomization.COLOUR.COOL)
+            {
+                notification += "Your plant needs water!\n";
+            }
+            else
+            {
+                notification += $"{Player.OtherPlayer?.displayName}'s plant needs water!\n";
+            }
+        }
+
+        _notificationText.text = notification;
     }
 
     public void SetStressValue(float stress)

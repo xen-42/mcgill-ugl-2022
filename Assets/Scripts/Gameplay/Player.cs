@@ -77,6 +77,8 @@ public class Player : NetworkBehaviour
 
     private bool _interactedThisTick = false;
 
+    public string displayName;
+
     private void Start()
     {
         // We do this because we create the player in the lobby scene then put them in the play scene

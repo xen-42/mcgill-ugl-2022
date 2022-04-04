@@ -65,9 +65,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  _promptText: Drop Socks!
+  _promptText: Put away sock
   _promptTextNotInteractable: 
-  _promptTextWrongItem: You need socks
+  _promptTextWrongItem: Put dirty socks here
   requiredObject: 3
   resetAfterUse: 0
   interactionEvent: PickUpSock
