@@ -150,7 +150,6 @@ public class OptionsMenu : MonoBehaviour
     public void Resume()
     {
         pauseMenuUI.SetActive(false);
-        GameObject.Find("HUD/Cursor").GetComponent<Image>().enabled = true;
         if (tutorialUI != null) tutorialUI.SetActive(false);
         InputManager.CurrentInputMode = _lastInputMode;
         GamePaused = false;
@@ -159,7 +158,6 @@ public class OptionsMenu : MonoBehaviour
     private void Pause()
     {
         pauseMenuUI.SetActive(true);
-        GameObject.Find("HUD/Cursor").GetComponent<Image>().enabled = false;
         _lastInputMode = InputManager.CurrentInputMode;
         InputManager.CurrentInputMode = InputManager.InputMode.UI;
         GamePaused = true;

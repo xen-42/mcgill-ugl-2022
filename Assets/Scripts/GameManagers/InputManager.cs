@@ -7,6 +7,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.Controls;
 using UnityEngine.InputSystem.LowLevel;
 using UnityEngine.InputSystem.Users;
+using UnityEngine.UI;
 
 public static class InputManager
 {
@@ -67,11 +68,17 @@ public static class InputManager
             if (_currentInputMode == InputMode.Player)
             {
                 Cursor.lockState = CursorLockMode.Locked;
+
+                var hudCursor = GameObject.Find("HUD/Cursor")?.GetComponent<Image>();
+                if(hudCursor != null) hudCursor.enabled = true;
             }
             else
             {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
+
+                var hudCursor = GameObject.Find("HUD/Cursor")?.GetComponent<Image>();
+                if (hudCursor != null) hudCursor.enabled = false;
             }
         }
     }
