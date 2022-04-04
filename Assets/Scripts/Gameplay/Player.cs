@@ -416,7 +416,7 @@ public class Player : NetworkBehaviour
     {
         if (!NetworkClient.active) return;
 
-        if (!identity.hasAuthority)
+        if (identity != null && !identity.hasAuthority)
         {
             CmdGetAuthority(identity);
 
@@ -438,7 +438,7 @@ public class Player : NetworkBehaviour
     {
         try
         {
-            if (!identity.hasAuthority)
+            if (identity != null && !identity.hasAuthority)
             {
                 identity.RemoveClientAuthority();
                 identity.AssignClientAuthority(connectionToClient);
