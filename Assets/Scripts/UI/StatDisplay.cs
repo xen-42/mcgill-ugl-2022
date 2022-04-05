@@ -70,6 +70,22 @@ public class StatDisplay : MonoBehaviour
 
         UpdateAvatar();
 
+        if (goodGradeSound != null && okGradeSound != null && badGradeSound != null){
+            PlayEndSound(letterIndex);
+        }
+    }
+
+    private void UpdateAvatar()
+    {
+        avatar.sprite = Utils.LoadAvatar(SteamFriends.GetLargeFriendAvatar(new CSteamID(_steamID)));
+    }
+
+    private void OnAvatarImageLoaded(AvatarImageLoaded_t callback)
+    {
+        UpdateAvatar();
+    }
+
+    private void PlayEndSound(int letterIndex){
         // Good grade
         if (letterIndex >= 7){
             goodGradeSound.Play();
@@ -82,15 +98,5 @@ public class StatDisplay : MonoBehaviour
         else{
             badGradeSound.Play();
         }
-    }
-
-    private void UpdateAvatar()
-    {
-        avatar.sprite = Utils.LoadAvatar(SteamFriends.GetLargeFriendAvatar(new CSteamID(_steamID)));
-    }
-
-    private void OnAvatarImageLoaded(AvatarImageLoaded_t callback)
-    {
-        UpdateAvatar();
     }
 }
