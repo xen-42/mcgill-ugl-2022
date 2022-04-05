@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8440954996a10c84aa0eca2a5833a9ee, type: 3}
   m_Name: PlayerOptionsSettings
   m_EditorClassIdentifier: 
-  m_cameraSensitivity: 50
+  m_cameraSensitivity: 12.944019
   m_masterAudioMixer: {fileID: 24100000, guid: 13ac910e23ce19f4aaeffd2a5dfec9cd, type: 2}
   m_musicAudioMixer: {fileID: 24100000, guid: 856e5d17e210af24283ff12712f44f61, type: 2}
   m_soundAudioMixer: {fileID: 24100000, guid: cad0b75abfa58a241b57a0c39856b5ae, type: 2}
-  m_masterAudioVolume: 1
-  m_musicAudioVolume: 1
-  m_soundAudioVolume: 1
+  m_masterAudioVolume: 0.652
+  m_musicAudioVolume: 0.04833974
+  m_soundAudioVolume: 0.72907275
