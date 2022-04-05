@@ -1,8 +1,20 @@
 fileFormatVersion: 2
-guid: 041d3b08dbff3c04bbe672a2c0014642
+guid: aa957b0157c9e8d4888edd645d2c50af
 ModelImporter:
   serializedVersion: 20200
-  internalIDToNameTable: []
+  internalIDToNameTable:
+  - first:
+      74: -1487393602343688650
+    second: rig|chillin
+  - first:
+      74: 1599155768152908184
+    second: rig|idle
+  - first:
+      74: 8792363992049388215
+    second: rig|walking
+  - first:
+      74: -8945531919868221991
+    second: rig|walking.001
   externalObjects: {}
   materials:
     materialImportMode: 2
