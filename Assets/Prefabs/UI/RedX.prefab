@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1939229534151509016}
   - component: {fileID: 1978301268418166310}
   - component: {fileID: 5166019958992191655}
+  - component: {fileID: 317561649617396032}
   m_Layer: 0
   m_Name: RedX
   m_TagString: Untagged
@@ -97,3 +98,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interactable: {fileID: 0}
   showIfInteractable: 0
+--- !u!95 &317561649617396032
+Animator:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3685680085742359405}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: c5640b7622316294bbdaeebfec4fbbb6, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 1
+  m_LinearVelocityBlending: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorControllerStateOnDisable: 0
