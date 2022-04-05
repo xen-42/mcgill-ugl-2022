@@ -60,6 +60,7 @@ public class CatAgent : NetworkBehaviour
 
     private Color m_normalColor;
     private Player m_petter;
+    [SerializeField] public AudioSource sockSound;
 
     public static CatAgent Instance { get; private set; }
 
@@ -311,6 +312,9 @@ public class CatAgent : NetworkBehaviour
         else
         {
             Player.Instance.DoWithAuthority(netIdentity, CmdOnSockReturned);
+        }
+        if (sockSound != null){
+            sockSound.Play();
         }
     }
 
