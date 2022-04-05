@@ -76,6 +76,8 @@ public class CustomNetworkManager : NetworkManager
 
     public override void OnStartServer()
     {
+        RegisterPrefabs();
+
         Debug.Log("Starting server");
         base.OnStartServer();
     }
@@ -346,13 +348,8 @@ public class CustomNetworkManager : NetworkManager
         OnServerReadied?.Invoke(conn);
     }
 
-    private bool _hasRegisteredPrefabs = false;
     private void RegisterPrefabs()
     {
-        if (_hasRegisteredPrefabs) return;
-
-        _hasRegisteredPrefabs = true;
-
         NetworkClient.RegisterPrefab(lobbyPlayerPrefab.gameObject);
         NetworkClient.RegisterPrefab(gamePlayerPrefab.gameObject);
         NetworkClient.RegisterPrefab(playerSpawnerPrefab.gameObject);
