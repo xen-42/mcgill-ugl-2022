@@ -20,7 +20,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &793789633046933203
 RectTransform:
   m_ObjectHideFlags: 0
@@ -156,7 +156,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &793789633336342746
 Transform:
   m_ObjectHideFlags: 0
@@ -573,6 +573,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1028514202469945240}
     m_Modifications:
+    - target: {fileID: 2372370743251844, guid: 71002eab88c1dfe4b87fa32dfdc1c607, type: 3}
+      propertyPath: m_Value
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2372371642440880, guid: 71002eab88c1dfe4b87fa32dfdc1c607, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
@@ -692,7 +696,7 @@ PrefabInstance:
     - target: {fileID: 381243459402611014, guid: 71002eab88c1dfe4b87fa32dfdc1c607, type: 3}
       propertyPath: tutorialUI
       value: 
-      objectReference: {fileID: 793789633336342747}
+      objectReference: {fileID: 793789633046933204}
     - target: {fileID: 381243459402611014, guid: 71002eab88c1dfe4b87fa32dfdc1c607, type: 3}
       propertyPath: tutorialButton
       value: 
@@ -724,6 +728,10 @@ PrefabInstance:
     - target: {fileID: 381243460633853610, guid: 71002eab88c1dfe4b87fa32dfdc1c607, type: 3}
       propertyPath: m_AnchorMin.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 381243460749064493, guid: 71002eab88c1dfe4b87fa32dfdc1c607, type: 3}
+      propertyPath: m_Value
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 381243460993509620, guid: 71002eab88c1dfe4b87fa32dfdc1c607, type: 3}
       propertyPath: m_AnchorMax.x
