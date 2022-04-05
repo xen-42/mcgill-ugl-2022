@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class OptionsMenu : MonoBehaviour
 {
@@ -16,6 +17,7 @@ public class OptionsMenu : MonoBehaviour
     public GameObject pauseMenuUI;
     public GameObject tutorialUI;
     public GameObject tutorialButton;
+    public TMP_Text backButtonText;
 
     [Header("Sliders")]
     public Slider sensSlider;
@@ -38,6 +40,11 @@ public class OptionsMenu : MonoBehaviour
         if (soundSlider)
         {
             soundSlider.value = userSettings.SoundVolume;
+        }
+
+        if(SceneManager.GetActiveScene().buildIndex == Scenes.GameScene)
+        {
+            backButtonText.text = "QUIT";
         }
     }
 
@@ -75,7 +82,7 @@ public class OptionsMenu : MonoBehaviour
         {
             if (GamePaused)
             {
-                Resume();
+                Unpause();
             }
             else
             {
@@ -85,6 +92,16 @@ public class OptionsMenu : MonoBehaviour
     }
 
     public void Resume()
+    {
+        pauseMenuUI.SetActive(false);
+
+        if(SceneManager.GetActiveScene().buildIndex == Scenes.GameScene)
+        {
+            SceneManager.LoadScene(Scenes.Lobby);
+        }
+    }
+
+    public void Unpause()
     {
         pauseMenuUI.SetActive(false);
 
