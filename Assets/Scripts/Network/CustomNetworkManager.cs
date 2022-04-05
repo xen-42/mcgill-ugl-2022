@@ -299,6 +299,7 @@ public class CustomNetworkManager : NetworkManager
                 player.plant = lobbyPlayer.plant;
                 player.drink = lobbyPlayer.drink;
                 player.poster = lobbyPlayer.poster;
+                player.colour = lobbyPlayer.colour;
 
                 player.displayName = lobbyPlayer.DisplayName;
 

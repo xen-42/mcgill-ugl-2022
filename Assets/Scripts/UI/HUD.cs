@@ -38,8 +38,11 @@ public class HUD : MonoBehaviour
         EventManager<ButtonPrompt.PromptInfo>.AddListener("PromptLost", OnPromptLost);
 
         ButtonIconManager.Init();
+    }
 
-        foreach(var icon in stressLevelIcons)
+    public void RefreshPlayerIcons()
+    {
+        foreach (var icon in stressLevelIcons)
         {
             icon.transform.Find("Warm").gameObject.SetActive(Player.Instance.colour == PlayerCustomization.COLOUR.WARM);
             icon.transform.Find("Cool").gameObject.SetActive(Player.Instance.colour == PlayerCustomization.COLOUR.COOL);
