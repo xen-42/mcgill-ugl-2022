@@ -798,6 +798,7 @@ MonoBehaviour:
   pauseMenuUI: {fileID: 381243460861246078}
   tutorialUI: {fileID: 0}
   tutorialButton: {fileID: 36697567862937431}
+  backButtonText: {fileID: 381243460460191037}
   sensSlider: {fileID: 381243461324404512}
   musicSlider: {fileID: 381243460749064493}
   soundSlider: {fileID: 2372370743251844}

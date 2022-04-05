@@ -697,6 +697,10 @@ PrefabInstance:
       propertyPath: tutorialButton
       value: 
       objectReference: {fileID: 832628139286243363}
+    - target: {fileID: 381243460046834990, guid: 71002eab88c1dfe4b87fa32dfdc1c607, type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_BoolArgument
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 381243460388347380, guid: 71002eab88c1dfe4b87fa32dfdc1c607, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
