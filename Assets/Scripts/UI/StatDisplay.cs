@@ -23,6 +23,7 @@ public class StatDisplay : MonoBehaviour
     [SerializeField] Text plantsWatered;
     [SerializeField] Text airConditionersFixed;
     [SerializeField] Text socksPickedUp;
+    public int letterGradeIndex;
 
     private string[] grades = new string[] { "F", "C-", "C", "C+", "B-", "B", "B+", "A-", "A", "A+"};
 
@@ -50,6 +51,7 @@ public class StatDisplay : MonoBehaviour
         // Calculate letter grade
         var letterGrade = Mathf.Clamp01((stats.AssignmentsSubmitted - passingGrade) / (float)(highestGrade - passingGrade));
         int letterIndex = Mathf.FloorToInt(letterGrade * (grades.Length-1));
+        letterGradeIndex = letterIndex;
 
         Debug.Log($"Letter index: {letterGrade} -> {letterIndex} -> {grades[letterIndex]}");
 
