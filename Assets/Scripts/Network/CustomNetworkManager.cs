@@ -234,7 +234,8 @@ public class CustomNetworkManager : NetworkManager
             StopClient();
         }
 
-        transport.Shutdown();
+        NetworkClient.Disconnect();
+        NetworkClient.Shutdown();
     }
 
     private new void OnDestroy()
