@@ -30,6 +30,11 @@ public class StatDisplay : MonoBehaviour
 
     private ulong _steamID;
 
+    // Sounds
+    [SerializeField] public AudioSource goodGradeSound;
+    [SerializeField] public AudioSource okGradeSound;
+    [SerializeField] public AudioSource badGradeSound;
+
     public void Awake()
     {
         _avatarImageLoaded = Callback<AvatarImageLoaded_t>.Create(OnAvatarImageLoaded);
@@ -64,6 +69,19 @@ public class StatDisplay : MonoBehaviour
         usernameText.text = username;
 
         UpdateAvatar();
+
+        // Good grade
+        if (letterIndex >= 7){
+            goodGradeSound.Play();
+        }
+        // Ok grade
+        else if (letterIndex >= 1 && letterIndex < 7){
+            okGradeSound.Play();
+        }
+        // Bad grade
+        else{
+            badGradeSound.Play();
+        }
     }
 
     private void UpdateAvatar()
