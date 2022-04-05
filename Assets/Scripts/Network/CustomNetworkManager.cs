@@ -222,8 +222,9 @@ public class CustomNetworkManager : NetworkManager
 
     public void Stop()
     {
-        // Kick everyone back to the main menu
+        Debug.Log("STOPPING NETWORKING");
 
+        // Kick everyone back to the main menu
         if (NetworkClient.isHostClient)
         {
             StopHost();
@@ -232,6 +233,7 @@ public class CustomNetworkManager : NetworkManager
         {
             StopClient();
         }
+
         transport.Shutdown();
     }
 
