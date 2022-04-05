@@ -33,7 +33,6 @@ public class FadeIn : MonoBehaviour
         if(_isFading)
         {
             _timer -= Time.deltaTime;
-            Debug.Log($"Fade: {_timer}");
             if(_timer <= 0f)
             {
                 _timer = 0f;
