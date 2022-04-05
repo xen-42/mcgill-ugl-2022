@@ -30,16 +30,16 @@ public class OptionSettings : ScriptableObject
     [SerializeField] private AudioMixer m_masterAudioMixer;
     [SerializeField] private AudioMixer m_musicAudioMixer;
     [SerializeField] private AudioMixer m_soundAudioMixer;
-    [SerializeField] [Range(-80f, 20f)] private float m_masterAudioVolume = 0f;
-    [SerializeField] [Range(-80f, 20f)] private float m_musicAudioVolume = 0f;
-    [SerializeField] [Range(-80f, 20f)] private float m_soundAudioVolume = 0f;
+    [SerializeField] [Range(.0001f, 1f)] private float m_masterAudioVolume = 1f;
+    [SerializeField] [Range(.0001f, 1f)] private float m_musicAudioVolume = 1f;
+    [SerializeField] [Range(.0001f, 1f)] private float m_soundAudioVolume = 1f;
 
     public AudioMixer MasterAudioMixer => m_masterAudioMixer;
     public AudioMixer MusicAudioMixer => m_musicAudioMixer;
     public AudioMixer SoundAudioMixer => m_soundAudioMixer;
-    public float MasterVolume { get => m_masterAudioVolume; set => m_masterAudioMixer.SetFloat("volume", (m_masterAudioVolume = value)); }
-    public float MusicVolume { get => m_musicAudioVolume; set => m_musicAudioMixer.SetFloat("volume", m_musicAudioVolume = value); }
-    public float SoundVolume { get => m_soundAudioVolume; set => m_soundAudioMixer.SetFloat("volume", m_soundAudioVolume = value); }
+    public float MasterVolume { get => m_masterAudioVolume; set => m_masterAudioMixer.SetFloat("volume", 20 * Mathf.Log10(m_masterAudioVolume = value)); }
+    public float MusicVolume { get => m_musicAudioVolume; set => m_musicAudioMixer.SetFloat("volume", 20 * Mathf.Log10(m_musicAudioVolume = value)); }
+    public float SoundVolume { get => m_soundAudioVolume; set => m_soundAudioMixer.SetFloat("volume", 20 * Mathf.Log10(m_soundAudioVolume = value)); }
 
     #endregion Sound Settings
 

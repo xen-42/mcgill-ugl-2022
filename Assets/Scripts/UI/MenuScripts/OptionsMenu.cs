@@ -29,20 +29,20 @@ public class OptionsMenu : MonoBehaviour
     private void Awake()
     {
         //Sync with user settings
-        if (sensSlider)
-        {
-            sensSlider.value = userSettings.CameraSensitivity;
-        }
-        if (musicSlider)
-        {
-            musicSlider.value = userSettings.MusicVolume;
-        }
-        if (soundSlider)
-        {
-            soundSlider.value = userSettings.SoundVolume;
-        }
+        //if (sensSlider)
+        //{
+        //    sensSlider.value = userSettings.CameraSensitivity;
+        //}
+        //if (musicSlider)
+        //{
+        //    musicSlider.value = userSettings.MusicVolume;
+        //}
+        //if (soundSlider)
+        //{
+        //    soundSlider.value = userSettings.SoundVolume;
+        //}
 
-        if(SceneManager.GetActiveScene().buildIndex == Scenes.GameScene)
+        if (SceneManager.GetActiveScene().buildIndex == Scenes.GameScene)
         {
             backButtonText.text = "QUIT";
         }
@@ -50,16 +50,39 @@ public class OptionsMenu : MonoBehaviour
 
     private void Start()
     {
+        //Sync using PlayerPref
+        sensSlider.value = PlayerPrefs.GetFloat("PlayerSensitivity", 10f);
+        musicSlider.value = PlayerPrefs.GetFloat("MusicVolume", 1f);
+        soundSlider.value = PlayerPrefs.GetFloat("SoundVolume", 1f);
+        OnMusicSliderChanged(musicSlider.value);
+        OnSoundSliderChanged(soundSlider.value);
+        OnCameraSensitivitySliderChanged(sensSlider.value);
+
         tutorialButton.SetActive(SceneManager.GetActiveScene().buildIndex == Scenes.GameScene);
     }
 
     #region Slider Callbacks
 
-    public void OnMusicSliderChanged(float value) => userSettings.MusicVolume = value;
+    public void OnMusicSliderChanged(float value)
+    { //userSettings.MusicVolume = value;
+        PlayerPrefs.SetFloat("MusicVolume", value);
+        userSettings.MusicAudioMixer.SetFloat("volume", 20f * Mathf.Log10(value));
+        PlayerPrefs.Save();
+    }
 
-    public void OnSoundSliderChanged(float value) => userSettings.SoundVolume = value;
+    public void OnSoundSliderChanged(float value)
+    { //userSettings.MusicVolume = value;
+        PlayerPrefs.SetFloat("SoundVolume", value);
+        userSettings.SoundAudioMixer.SetFloat("volume", 20f * Mathf.Log10(value));
+        PlayerPrefs.Save();
+    }
 
-    public void OnCameraSensitivitySliderChanged(float value) => userSettings.CameraSensitivity = value;
+    public void OnCameraSensitivitySliderChanged(float value)
+    { //userSettings.MusicVolume = value;
+        PlayerPrefs.SetFloat("PlayerSensitivity", value);
+        Player.sensX = Player.sensY = value;
+        PlayerPrefs.Save();
+    }
 
     #endregion Slider Callbacks
 
@@ -95,7 +118,7 @@ public class OptionsMenu : MonoBehaviour
     {
         pauseMenuUI.SetActive(false);
 
-        if(SceneManager.GetActiveScene().buildIndex == Scenes.GameScene)
+        if (SceneManager.GetActiveScene().buildIndex == Scenes.GameScene)
         {
             SceneManager.LoadScene(Scenes.Lobby);
         }
