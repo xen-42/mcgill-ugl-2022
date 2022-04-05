@@ -20,9 +20,11 @@ public class Fixable : NetworkBehaviour
 
     private Interactable _interactable;
 
+    // Sounds
     [SerializeField] public AudioSource brokenStateSound;
     [SerializeField] public AudioSource fixedStateSound;
     [SerializeField] public AudioSource ambientNoise;
+    [SerializeField] public AudioSource brokenAmbientNoise;
 
     // Cooldown to prevent breaking right after fixing it
     [SerializeField] public float brokenCooldown = 30f;
@@ -72,6 +74,9 @@ public class Fixable : NetworkBehaviour
         {
             ambientNoise.Stop();
         }
+        if (brokenAmbientNoise != null){
+            brokenAmbientNoise.Play();
+        }
 
         SwitchState(brokenState.name);
     }
@@ -86,6 +91,9 @@ public class Fixable : NetworkBehaviour
         if (ambientNoise != null)
         {
             ambientNoise.Play();
+        }
+        if (brokenAmbientNoise != null){
+            brokenAmbientNoise.Stop();
         }
         if (_particleSystemBroken != null)
         {
