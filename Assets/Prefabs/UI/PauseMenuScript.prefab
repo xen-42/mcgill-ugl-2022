@@ -802,6 +802,7 @@ MonoBehaviour:
   sensSlider: {fileID: 381243461324404512}
   musicSlider: {fileID: 381243460749064493}
   soundSlider: {fileID: 2372370743251844}
+  fullscreenToggle: {fileID: 381243460046834990}
 --- !u!1 &381243459465471534
 GameObject:
   m_ObjectHideFlags: 0
@@ -1354,8 +1355,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 381243459402611014}
         m_TargetAssemblyTypeName: OptionsMenu, Assembly-CSharp
-        m_MethodName: SetFullscreen
-        m_Mode: 6
+        m_MethodName: ToggleFullscreen
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

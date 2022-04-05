@@ -222,8 +222,9 @@ public class CustomNetworkManager : NetworkManager
 
     public void Stop()
     {
-        // Kick everyone back to the main menu
+        Debug.Log("STOPPING NETWORKING");
 
+        // Kick everyone back to the main menu
         if (NetworkClient.isHostClient)
         {
             StopHost();
@@ -232,7 +233,9 @@ public class CustomNetworkManager : NetworkManager
         {
             StopClient();
         }
-        transport.Shutdown();
+
+        NetworkClient.Disconnect();
+        NetworkClient.Shutdown();
     }
 
     private new void OnDestroy()
@@ -299,6 +302,7 @@ public class CustomNetworkManager : NetworkManager
                 player.plant = lobbyPlayer.plant;
                 player.drink = lobbyPlayer.drink;
                 player.poster = lobbyPlayer.poster;
+                player.colour = lobbyPlayer.colour;
 
                 player.displayName = lobbyPlayer.DisplayName;
 

@@ -30,6 +30,11 @@ namespace Assets.Scripts.UI.MenuScripts
         [SerializeField] private Button joinLocalButton = null;
         [SerializeField] private Button hostLocalButton = null;
 
+        private void Awake()
+        {
+            joinSteamButton.interactable = !string.IsNullOrEmpty(steamLobbyInputField.text);
+        }
+
         private void OnEnable()
         {
             CustomNetworkManager.OnClientConnected += HandleClientConnected;
@@ -122,7 +127,7 @@ namespace Assets.Scripts.UI.MenuScripts
         {
             // This is so that if they quit out back to the lobby these buttons are re-enabled
             joinLocalButton.interactable = true;
-            joinSteamButton.interactable = true;
+            joinSteamButton.interactable = !string.IsNullOrEmpty(steamLobbyInputField.text);
             hostLocalButton.interactable = true;
             hostSteamButton.interactable = true;
 
@@ -143,7 +148,7 @@ namespace Assets.Scripts.UI.MenuScripts
 
             // Just making sure it re-enables the UI
             joinLocalButton.interactable = true;
-            joinSteamButton.interactable = true;
+            joinSteamButton.interactable = !string.IsNullOrEmpty(steamLobbyInputField.text);
             hostLocalButton.interactable = true;
             hostSteamButton.interactable = true;
 

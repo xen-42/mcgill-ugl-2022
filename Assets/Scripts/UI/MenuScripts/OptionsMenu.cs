@@ -23,24 +23,16 @@ public class OptionsMenu : MonoBehaviour
     public Slider sensSlider;
     public Slider musicSlider;
     public Slider soundSlider;
+    public Toggle fullscreenToggle;
 
     private InputManager.InputMode _lastInputMode = InputManager.InputMode.Player;
 
     private void Awake()
     {
-        //Sync with user settings
-        //if (sensSlider)
-        //{
-        //    sensSlider.value = userSettings.CameraSensitivity;
-        //}
-        //if (musicSlider)
-        //{
-        //    musicSlider.value = userSettings.MusicVolume;
-        //}
-        //if (soundSlider)
-        //{
-        //    soundSlider.value = userSettings.SoundVolume;
-        //}
+        if(fullscreenToggle)
+        {
+            fullscreenToggle.isOn = Screen.fullScreen;
+		}
 
         if (SceneManager.GetActiveScene().buildIndex == Scenes.GameScene)
         {
@@ -89,9 +81,9 @@ public class OptionsMenu : MonoBehaviour
     public void OnFullScreenToggled(bool value)
     { }
 
-    public void SetFullscreen(bool isFullscreen)
+    public void ToggleFullscreen()
     {
-        Screen.fullScreen = isFullscreen;
+        Screen.fullScreen = !Screen.fullScreen;
     }
 
     private void Update()

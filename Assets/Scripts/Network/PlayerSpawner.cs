@@ -8,8 +8,6 @@ public class PlayerSpawner : NetworkBehaviour
 {
     private static List<PlayerSpawnPoint> spawnPoints = new List<PlayerSpawnPoint>();
 
-    private int nextIndex = 0;
-
     public static void AddSpawnPoint(PlayerSpawnPoint spawnPoint)
     {
         spawnPoints.Add(spawnPoint);
@@ -37,20 +35,22 @@ public class PlayerSpawner : NetworkBehaviour
     [Server]
     public void SpawnPlayer(NetworkConnection conn)
     {
-        PlayerSpawnPoint spawnPoint = spawnPoints.ElementAtOrDefault(nextIndex);
-
-        if(spawnPoint == null)
-        {
-            Debug.LogError($"Missing spawn point for player at index {nextIndex}");
-            return;
-        }
-
-        RpcSpawnPlayer(conn.identity.netId, spawnPoint.transform.position, spawnPoint.transform.rotation);
+        PlayerSpawnPoint spawnPoint = null;
 
         foreach (var player in CustomNetworkManager.Instance.players)
         {
             if (player.netId == conn.identity.netId)
             {
+                spawnPoint = spawnPoints.Where((x) => x.colour == player.colour).FirstOrDefault();
+
+                if (spawnPoint == null)
+                {
+                    Debug.LogError($"Missing spawn point for player {player.colour}");
+                    spawnPoint = spawnPoints.FirstOrDefault();
+                }
+
+                spawnPoints.Remove(spawnPoint);
+
                 // Set up all the customization options
                 spawnPoint.posters.SetSelection(player.poster);
                 spawnPoint.plant.SetSelection(player.plant);
@@ -58,10 +58,12 @@ public class PlayerSpawner : NetworkBehaviour
 
                 // Record which side of the room the player is from
                 player.colour = spawnPoint.colour;
+
+                if(HUD.Instance != null) HUD.Instance.RefreshPlayerIcons();
             }
         }
 
-        nextIndex++;
+        RpcSpawnPlayer(conn.identity.netId, spawnPoint.transform.position, spawnPoint.transform.rotation);
     }
 
     [ClientRpc]

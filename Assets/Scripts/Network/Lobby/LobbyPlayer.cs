@@ -34,6 +34,11 @@ public class LobbyPlayer : NetworkBehaviour
     [SyncVar] public PlayerCustomization.PLANT plant;
     [SyncVar] public PlayerCustomization.DRINK drink;
     [SyncVar] public PlayerCustomization.POSTER poster;
+    [SyncVar] public PlayerCustomization.COLOUR colour;
+    public bool hasChosenCharacter = false;
+
+    [SerializeField] GameObject warmCharacterButton;
+    [SerializeField] GameObject coolCharacterButton;
 
     protected Callback<AvatarImageLoaded_t> _avatarImageLoaded;
 
@@ -92,6 +97,80 @@ public class LobbyPlayer : NetworkBehaviour
     public void CopySteamCode()
     {
         GUIUtility.systemCopyBuffer = steamLobbyCode.text;
+    }
+
+    public void SelectCharacter(bool cool)
+    {
+        if(isServer)
+        {
+            ServerSelectCharacter(cool, netId);
+        }
+        else
+        {
+            CmdSelectCharacter(cool, netId);
+        }
+    }
+
+    [Command]
+    public void CmdSelectCharacter(bool cool, uint id)
+    {
+        ServerSelectCharacter(cool, id);
+    }
+
+    [Server]
+    public void ServerSelectCharacter(bool cool, uint id)
+    {
+        var chosenColour = cool ? PlayerCustomization.COLOUR.COOL : PlayerCustomization.COLOUR.WARM;
+        LobbyPlayer activePlayer = null;
+        LobbyPlayer otherPlayer = null;
+        
+        // Can they be this character
+        var flag = true;
+        foreach(var player in CustomNetworkManager.Instance.lobbyPlayers)
+        {
+            if (player.netId == id)
+            {
+                activePlayer = player;
+            }
+            else if(player.hasChosenCharacter && player.colour == chosenColour)
+            {
+                flag = false;
+                otherPlayer = player;
+            }
+        }
+
+        if(flag)
+        {
+            // Will automatically be synced
+            activePlayer.colour = chosenColour;
+
+            activePlayer.RpcSelectCharacter(cool, id);
+
+            if (otherPlayer)
+            {
+                otherPlayer.colour = !cool ? PlayerCustomization.COLOUR.COOL : PlayerCustomization.COLOUR.WARM;
+                otherPlayer.RpcSelectCharacter(cool, id);
+            }
+        }
+    }
+
+    [ClientRpc]
+    public void RpcSelectCharacter(bool cool, uint id)
+    {
+        if (netId == id)
+        {
+            coolCharacterButton.transform.Find("Check").GetComponent<Image>().enabled = cool;
+            warmCharacterButton.transform.Find("Check").GetComponent<Image>().enabled = !cool;
+        }
+        else
+        {
+            // Have to stop the other person
+            coolCharacterButton.GetComponent<Button>().enabled = !cool;
+            warmCharacterButton.GetComponent<Button>().enabled = cool;
+
+            coolCharacterButton.transform.Find("Cross").GetComponent<Image>().enabled = cool;
+            warmCharacterButton.transform.Find("Cross").GetComponent<Image>().enabled = !cool;
+        }
     }
 
     public override void OnStartAuthority()

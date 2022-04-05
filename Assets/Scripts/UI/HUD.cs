@@ -27,6 +27,9 @@ public class HUD : MonoBehaviour
     [SerializeField] private Fixable airConditioning;
     [SerializeField] private CatAgent cat;
 
+    [SerializeField] private GameObject[] stressLevelIcons;
+    private int _currentStressLevel = 0;
+
     private void Start()
     {
         Instance = this;
@@ -35,6 +38,17 @@ public class HUD : MonoBehaviour
         EventManager<ButtonPrompt.PromptInfo>.AddListener("PromptLost", OnPromptLost);
 
         ButtonIconManager.Init();
+    }
+
+    public void RefreshPlayerIcons()
+    {
+        foreach (var icon in stressLevelIcons)
+        {
+            icon.transform.Find("Warm").gameObject.SetActive(Player.Instance.colour == PlayerCustomization.COLOUR.WARM);
+            icon.transform.Find("Cool").gameObject.SetActive(Player.Instance.colour == PlayerCustomization.COLOUR.COOL);
+            icon.SetActive(false);
+        }
+        stressLevelIcons[_currentStressLevel].SetActive(true);
     }
 
     private void OnDestroy()
@@ -126,6 +140,15 @@ public class HUD : MonoBehaviour
         }
 
         _notificationText.text = notification;
+
+        // Stress icon
+        var expectedStressLevel = Mathf.RoundToInt((stressLevelIcons.Length-1) * stress / 100f);
+        if (expectedStressLevel >= stressLevelIcons.Length) expectedStressLevel = stressLevelIcons.Length - 1;
+        if (expectedStressLevel < 0) expectedStressLevel = 0;
+        if (expectedStressLevel != _currentStressLevel)
+        {
+            ChangeStressLevel(expectedStressLevel);
+        }
     }
 
     public void SetStressValue(float stress)
@@ -134,5 +157,13 @@ public class HUD : MonoBehaviour
         float pct = stress / 100f;
         _stressBarFillImage.fillAmount = pct;
         _stressBarFillImage.color = Color.Lerp(Color.green, Color.red, pct);
+    }
+
+    public void ChangeStressLevel(int newLevel)
+    {
+        stressLevelIcons[_currentStressLevel].SetActive(false);
+        _currentStressLevel = newLevel;
+
+        stressLevelIcons[_currentStressLevel].SetActive(true);
     }
 }
