@@ -27,6 +27,9 @@ public class HUD : MonoBehaviour
     [SerializeField] private Fixable airConditioning;
     [SerializeField] private CatAgent cat;
 
+    [SerializeField] private GameObject[] stressLevelIcons;
+    private int _currentStressIcon = 0;
+
     private void Start()
     {
         Instance = this;
@@ -35,6 +38,14 @@ public class HUD : MonoBehaviour
         EventManager<ButtonPrompt.PromptInfo>.AddListener("PromptLost", OnPromptLost);
 
         ButtonIconManager.Init();
+
+        foreach(var icon in stressLevelIcons)
+        {
+            icon.transform.Find("Warm").gameObject.SetActive(Player.Instance.colour == PlayerCustomization.COLOUR.WARM);
+            icon.transform.Find("Cool").gameObject.SetActive(Player.Instance.colour == PlayerCustomization.COLOUR.COOL);
+            icon.SetActive(false);
+        }
+        stressLevelIcons[_currentStressIcon].SetActive(true);
     }
 
     private void OnDestroy()
