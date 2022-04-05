@@ -21,6 +21,7 @@ public class OptionsMenu : MonoBehaviour
     public Slider sensSlider;
     public Slider musicSlider;
     public Slider soundSlider;
+    public Toggle fullscreenToggle;
 
     private InputManager.InputMode _lastInputMode = InputManager.InputMode.Player;
 
@@ -38,6 +39,10 @@ public class OptionsMenu : MonoBehaviour
         if (soundSlider)
         {
             soundSlider.value = userSettings.SoundVolume;
+        }
+        if(fullscreenToggle)
+        {
+            fullscreenToggle.isOn = Screen.fullScreen;
         }
     }
 
@@ -59,9 +64,9 @@ public class OptionsMenu : MonoBehaviour
     public void OnFullScreenToggled(bool value)
     { }
 
-    public void SetFullscreen(bool isFullscreen)
+    public void ToggleFullscreen()
     {
-        Screen.fullScreen = isFullscreen;
+        Screen.fullScreen = !Screen.fullScreen;
     }
 
     private void Update()
