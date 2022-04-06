@@ -46,12 +46,5 @@ public class DialogueManager : MonoBehaviour
             dialogueText.text += letter;
             yield return new WaitForSeconds(.06f);
         }
-        if (sentences.Count == 0)
-        {
-            SceneManager.LoadScene(Scenes.MainMenu);
-
-        }
-        yield return new WaitForSeconds(3f);
-        DisplayNextSentence();
     }
 }
