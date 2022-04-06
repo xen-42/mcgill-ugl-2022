@@ -683,7 +683,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
   m_AnchoredPosition: {x: 220, y: 0}
-  m_SizeDelta: {x: 360, y: 400}
+  m_SizeDelta: {x: 360, y: 440}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &157068083136943000
 CanvasRenderer:
@@ -1148,7 +1148,7 @@ GameObject:
   - component: {fileID: 8525735157417141262}
   - component: {fileID: 5625165556986830937}
   m_Layer: 5
-  m_Name: AC_Image
+  m_Name: Sock_Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1201,7 +1201,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 2800000, guid: f9c4b44bc7271be4685c936c1a18e2f5, type: 3}
+  m_Texture: {fileID: 2800000, guid: 6d77395c25417486ba39a73c73fd330e, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0
