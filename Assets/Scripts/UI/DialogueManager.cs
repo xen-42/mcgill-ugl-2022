@@ -8,6 +8,7 @@ public class DialogueManager : MonoBehaviour
 {
     public TextMeshProUGUI dialogueText;
     private Queue<string> sentences;
+    [SerializeField] AudioSource typewriterSound;
 
     void Start()
     {
@@ -29,6 +30,7 @@ public class DialogueManager : MonoBehaviour
     {
         if (sentences.Count == 0)
         {
+            typewriterSound.Stop();
             SceneManager.LoadScene(Scenes.MainMenu);
             return;
         }
@@ -40,11 +42,13 @@ public class DialogueManager : MonoBehaviour
 
     IEnumerator TypeSentence(string sent)
     {
+        typewriterSound.Play();
         dialogueText.text = "";
         foreach (char letter in sent.ToCharArray())
         {
             dialogueText.text += letter;
             yield return new WaitForSeconds(.06f);
         }
+        typewriterSound.Stop();
     }
 }
