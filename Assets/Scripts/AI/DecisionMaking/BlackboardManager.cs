@@ -11,18 +11,14 @@ using Mirror;
 /// Blackboard Managger.
 /// Blackboard stores the global game state, where entities can read and write back
 /// </summary>
-public class BlackboardManager : NetworkBehaviour
+public class BlackboardManager : MonoBehaviour
 {
     [SerializeField] private Blackboard blackboardInfo;
-
-    #region Dictionaries Caches
 
     private static Dictionary<string, int> m_intParameters;
     private static Dictionary<string, float> m_floatParameters;
     private static Dictionary<string, bool> m_boolParameters;
     private static Dictionary<string, Trigger> m_triggerParameters;
-
-    #endregion Dictionaries Caches
 
     /// <summary>
     /// Singleton
@@ -36,7 +32,7 @@ public class BlackboardManager : NetworkBehaviour
         {
             if (!m_instance)
             {
-                m_instance = FindObjectOfType<BlackboardManager>();
+                m_instance = GameObject.FindObjectOfType<BlackboardManager>();
 
                 if (!m_instance)
                 {
@@ -61,7 +57,7 @@ public class BlackboardManager : NetworkBehaviour
         }
         else if (m_instance != this)
         {
-            NetworkServer.Destroy(gameObject);
+            GameObject.Destroy(gameObject);
         }
     }
 

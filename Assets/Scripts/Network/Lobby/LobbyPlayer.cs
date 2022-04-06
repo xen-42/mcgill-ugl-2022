@@ -267,8 +267,6 @@ public class LobbyPlayer : NetworkBehaviour
             return;
         }
 
-        Debug.Log("Updating Display");
-
         var playerCount = CustomNetworkManager.Instance.lobbyPlayers.Count;
 
         for (int i = 0; i < playerNameTexts.Length; i++)
@@ -312,14 +310,7 @@ public class LobbyPlayer : NetworkBehaviour
 
     public void OnBackButtonPressed()
     {
-        if (isLeader)
-        {
-            CustomNetworkManager.Instance.StopHost();
-        }
-        else
-        {
-            CustomNetworkManager.Instance.StopClient();
-        }
+        CustomNetworkManager.Instance.Stop();
         EventManager<string>.TriggerEvent("ConnectionFailed", "Disconnected");
         Destroy(gameObject);
     }

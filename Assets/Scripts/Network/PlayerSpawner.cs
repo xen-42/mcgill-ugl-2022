@@ -45,8 +45,9 @@ public class PlayerSpawner : NetworkBehaviour
 
                 if (spawnPoint == null)
                 {
-                    Debug.LogError($"Missing spawn point for player {player.colour}");
+                    Debug.LogWarning($"Missing spawn point for player {player.colour}");
                     spawnPoint = spawnPoints.FirstOrDefault();
+                    player.colour = spawnPoint.colour;
                 }
 
                 spawnPoints.Remove(spawnPoint);
@@ -55,9 +56,6 @@ public class PlayerSpawner : NetworkBehaviour
                 spawnPoint.posters.SetSelection(player.poster);
                 spawnPoint.plant.ServerSetSelection(player.plant);
                 spawnPoint.drink.SetSelection(player.drink);
-
-                // Record which side of the room the player is from
-                player.colour = spawnPoint.colour;
 
                 HUD.Instance.RefreshPlayerIcons();
             }
