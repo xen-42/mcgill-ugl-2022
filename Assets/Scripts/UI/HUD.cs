@@ -21,7 +21,6 @@ public class HUD : MonoBehaviour
     [SerializeField] private Text _notificationText;
 
     public static HUD Instance;
-    private static GameDirector _director;
 
     [SerializeField] private Fixable warmPlant;
     [SerializeField] private Fixable coolPlant;
@@ -37,14 +36,12 @@ public class HUD : MonoBehaviour
     private void Start()
     {
         Instance = this;
-        _director = GameDirector.Instance;
         EventManager<ButtonPrompt.PromptInfo>.AddListener("PromptHit", OnPromptHit);
         EventManager<ButtonPrompt.PromptInfo>.AddListener("PromptLost", OnPromptLost);
 
         ButtonIconManager.Init();
 
-        _stressBarStartColour = Player.Instance.colour == PlayerCustomization.COLOUR.WARM ? new Color(1, 0.9f, 0f) : Color.cyan;
-        _stressBarEndColour = Player.Instance.colour == PlayerCustomization.COLOUR.WARM ? Color.red : new Color(1f, 0f, 1f);
+        RefreshPlayerIcons();
     }
 
     public void RefreshPlayerIcons()
@@ -59,6 +56,9 @@ public class HUD : MonoBehaviour
             icon.SetActive(false);
         }
         stressLevelIcons[_currentStressLevel].SetActive(true);
+
+        _stressBarStartColour = Player.Instance.colour == PlayerCustomization.COLOUR.WARM ? new Color(1, 0.9f, 0f) : Color.cyan;
+        _stressBarEndColour = Player.Instance.colour == PlayerCustomization.COLOUR.WARM ? Color.red : new Color(1f, 0f, 1f);
     }
 
     private void OnDestroy()
