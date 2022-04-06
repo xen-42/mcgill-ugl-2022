@@ -30,6 +30,9 @@ public class HUD : MonoBehaviour
     [SerializeField] private GameObject[] stressLevelIcons;
     private int _currentStressLevel = 0;
 
+    private Color _stressBarStartColour;
+    private Color _stressBarEndColour;
+
     private void Start()
     {
         Instance = this;
@@ -38,6 +41,9 @@ public class HUD : MonoBehaviour
         EventManager<ButtonPrompt.PromptInfo>.AddListener("PromptLost", OnPromptLost);
 
         ButtonIconManager.Init();
+
+        _stressBarStartColour = Player.Instance.colour == PlayerCustomization.COLOUR.WARM ? new Color(1, 0.9f, 0f) : Color.cyan;
+        _stressBarEndColour = Player.Instance.colour == PlayerCustomization.COLOUR.WARM ? Color.red : new Color(1f, 0f, 1f);
     }
 
     public void RefreshPlayerIcons()
@@ -156,7 +162,7 @@ public class HUD : MonoBehaviour
         _stress.text = $"Stress: {(int)stress}";
         float pct = stress / 100f;
         _stressBarFillImage.fillAmount = pct;
-        _stressBarFillImage.color = Color.Lerp(Color.green, Color.red, pct);
+        _stressBarFillImage.color = Color.Lerp(_stressBarStartColour, _stressBarEndColour, pct);
     }
 
     public void ChangeStressLevel(int newLevel)
