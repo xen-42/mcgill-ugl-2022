@@ -53,7 +53,7 @@ public class PlayerSpawner : NetworkBehaviour
 
                 // Set up all the customization options
                 spawnPoint.posters.SetSelection(player.poster);
-                spawnPoint.plant.SetSelection(player.plant);
+                spawnPoint.plant.ServerSetSelection(player.plant);
                 spawnPoint.drink.SetSelection(player.drink);
 
                 // Record which side of the room the player is from

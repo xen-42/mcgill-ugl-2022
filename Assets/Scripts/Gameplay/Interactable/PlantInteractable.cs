@@ -8,6 +8,10 @@ public class PlantInteractable : MinigameInteractable
     [SyncVar] [SerializeField] public PlayerCustomization.COLOUR colour;
     [SyncVar] [SerializeField] public PlayerCustomization.PLANT plant;
 
+    [SerializeField] public GameObject[] cactusObjects;
+    [SerializeField] public GameObject[] leafObjects;
+    [SerializeField] public GameObject[] flowerObjects;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -32,11 +36,35 @@ public class PlantInteractable : MinigameInteractable
                 }
             }
         });
+
+        SetSelection(plant);
     }
 
     [Server]
-    public void SetSelection(PlayerCustomization.PLANT selection)
+    public void ServerSetSelection(PlayerCustomization.PLANT selection)
     {
         plant = selection;
+    }
+
+    [ClientRpc]
+    public void RpcSetSelection(PlayerCustomization.PLANT selection)
+    {
+        SetSelection(selection);
+    }
+
+    private void SetSelection(PlayerCustomization.PLANT selection)
+    {
+        foreach (var cactus in cactusObjects)
+        {
+            cactus.SetActive(selection == PlayerCustomization.PLANT.CACTUS);
+        }
+        foreach (var leaf in leafObjects)
+        {
+            leaf.SetActive(selection == PlayerCustomization.PLANT.LEAF);
+        }
+        foreach (var flower in flowerObjects)
+        {
+            flower.SetActive(selection == PlayerCustomization.PLANT.FLOWER);
+        }
     }
 }
