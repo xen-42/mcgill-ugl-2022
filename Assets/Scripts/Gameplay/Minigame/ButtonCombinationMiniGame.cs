@@ -18,7 +18,7 @@ public class ButtonCombinationMiniGame : MonoBehaviour
 
     public void RestartGame(){
         count = 0;
-        shuffleButtons=Buttons.OrderBy(a => Random.RandomRange(0,100)).ToList(); //Randomly orders the buttons and saves to shuffled buttons
+        shuffleButtons=Buttons.OrderBy(a => Random.Range(0,100)).ToList(); //Randomly orders the buttons and saves to shuffled buttons
         //Run the loop for the number of buttons in the minigame so in our case 10 loops
         for (int i=1; i<11;i++){
             shuffleButtons[i-1].GetComponentInChildren<Text>().text = i.ToString(); //set text on buttons to their corresponding number
