@@ -23,12 +23,18 @@ public class StatDisplay : MonoBehaviour
     [SerializeField] Text plantsWatered;
     [SerializeField] Text airConditionersFixed;
     [SerializeField] Text socksPickedUp;
+    public int letterGradeIndex;
 
-    private string[] grades = new string[] { "F", "C-", "C", "C+", "B-", "B", "B+", "A-", "A", "A+"};
+    private string[] grades = new string[] { "F", "C-", "C", "C+", "B-", "B", "B+", "A-", "A", "A+" };
 
     protected Callback<AvatarImageLoaded_t> _avatarImageLoaded;
 
     private ulong _steamID;
+
+    // Sounds
+    [SerializeField] public AudioSource goodGradeSound;
+    [SerializeField] public AudioSource okGradeSound;
+    [SerializeField] public AudioSource badGradeSound;
 
     public void Awake()
     {
@@ -44,7 +50,8 @@ public class StatDisplay : MonoBehaviour
 
         // Calculate letter grade
         var letterGrade = Mathf.Clamp01((stats.AssignmentsSubmitted - passingGrade) / (float)(highestGrade - passingGrade));
-        int letterIndex = Mathf.FloorToInt(letterGrade * (grades.Length-1));
+        int letterIndex = Mathf.FloorToInt(letterGrade * (grades.Length - 1));
+        letterGradeIndex = letterIndex;
 
         Debug.Log($"Letter index: {letterGrade} -> {letterIndex} -> {grades[letterIndex]}");
 
@@ -64,6 +71,11 @@ public class StatDisplay : MonoBehaviour
         usernameText.text = username;
 
         UpdateAvatar();
+
+        if (goodGradeSound != null && okGradeSound != null && badGradeSound != null)
+        {
+            PlayEndSound(letterIndex);
+        }
     }
 
     private void UpdateAvatar()
@@ -74,5 +86,24 @@ public class StatDisplay : MonoBehaviour
     private void OnAvatarImageLoaded(AvatarImageLoaded_t callback)
     {
         UpdateAvatar();
+    }
+
+    private void PlayEndSound(int letterIndex)
+    {
+        // Good grade
+        if (letterIndex >= 7)
+        {
+            goodGradeSound.Play();
+        }
+        // Ok grade
+        else if (letterIndex >= 1 && letterIndex < 7)
+        {
+            okGradeSound.Play();
+        }
+        // Bad grade
+        else
+        {
+            badGradeSound.Play();
+        }
     }
 }
