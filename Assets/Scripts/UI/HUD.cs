@@ -16,6 +16,7 @@ public class HUD : MonoBehaviour
     [SerializeField] private Text _stress;
     [SerializeField] private Text _submitted;
     [SerializeField] private Text _scanned;
+    [SerializeField] private Text _written;
     [SerializeField] private Image _stressBarFillImage;
     [SerializeField] private Text _notificationText;
 
@@ -48,8 +49,11 @@ public class HUD : MonoBehaviour
 
     public void RefreshPlayerIcons()
     {
+        // Using Find here is probably okay bc it only gets called once
         foreach (var icon in stressLevelIcons)
         {
+            // Set true first to be sure that Find works
+            icon.SetActive(true);
             icon.transform.Find("Warm").gameObject.SetActive(Player.Instance.colour == PlayerCustomization.COLOUR.WARM);
             icon.transform.Find("Cool").gameObject.SetActive(Player.Instance.colour == PlayerCustomization.COLOUR.COOL);
             icon.SetActive(false);
@@ -79,7 +83,7 @@ public class HUD : MonoBehaviour
         }
     }
 
-    public void SetGameState(int time, float stress, int submitted, int scanned)
+    public void SetGameState(int time, float stress, int submitted, int scanned, int written)
     {
         var minutes = (int)Math.Floor(time / 60f);
         var seconds = (int)(time % 60);
@@ -92,7 +96,8 @@ public class HUD : MonoBehaviour
         _timer.text = $"{minutesString}{secondsString}";
         SetStressValue(stress);
         _submitted.text = $"Submitted: {submitted}";
-        _scanned.text = $"Scanned: {scanned - submitted}";
+        _scanned.text = $"Scanned: {scanned}";
+        _written.text = $"Written: {written}";
 
         // Notifications
         var notification = "";
@@ -122,26 +127,34 @@ public class HUD : MonoBehaviour
         {
             notification += "The air conditioning broke!\n";
         }
-        if(warmPlant.IsBroken)
+
+        if(warmPlant.IsBroken && coolPlant.IsBroken)
         {
-            if(Player.Instance.colour == PlayerCustomization.COLOUR.WARM)
-            {
-                notification += "Your plant needs water!\n";
-            }
-            else
-            {
-                notification += $"{Player.OtherPlayer?.displayName}'s plant needs water!\n";
-            }
+            notification += "Both plants need water!\n";
         }
-        if (coolPlant.IsBroken)
+        else
         {
-            if (Player.Instance.colour == PlayerCustomization.COLOUR.COOL)
+            if (warmPlant.IsBroken)
             {
-                notification += "Your plant needs water!\n";
+                if (Player.Instance.colour == PlayerCustomization.COLOUR.WARM)
+                {
+                    notification += "Your plant needs water!\n";
+                }
+                else
+                {
+                    notification += $"{Player.OtherPlayer?.displayName}'s plant needs water!\n";
+                }
             }
-            else
+            if (coolPlant.IsBroken)
             {
-                notification += $"{Player.OtherPlayer?.displayName}'s plant needs water!\n";
+                if (Player.Instance.colour == PlayerCustomization.COLOUR.COOL)
+                {
+                    notification += "Your plant needs water!\n";
+                }
+                else
+                {
+                    notification += $"{Player.OtherPlayer?.displayName ?? "???"}'s plant needs water!\n";
+                }
             }
         }
 

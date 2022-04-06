@@ -44,6 +44,7 @@ public class GameDirector : NetworkBehaviour
 
     public int NumAssignmentsDone { get; private set; }
     public int NumAssignmentsScanned { get; private set; }
+    public int NumAssignmentsWritten { get; private set; }
 
     [SerializeField] public AudioSource scanSound;
     [SerializeField] public AudioSource heartbeatSound;
@@ -63,6 +64,8 @@ public class GameDirector : NetworkBehaviour
     private void Awake()
     {
         Instance = this;
+
+        EventManager.AddListener("WriteAssignment", WriteAssignment);
     }
 
     // Start is called before the first frame update
@@ -79,6 +82,11 @@ public class GameDirector : NetworkBehaviour
         under30s = false;
 
         StatTracker.Instance.RefreshStats();
+    }
+
+    public void OnDestroy()
+    {
+        EventManager.RemoveListener("WriteAssignment", WriteAssignment);
     }
 
     public void LowerStressImmediate(float change)
@@ -103,6 +111,11 @@ public class GameDirector : NetworkBehaviour
         NumAssignmentsScanned += 1;
 
         StatTracker.Instance.OnScanAssignment();
+    }
+
+    public void WriteAssignment()
+    {
+        NumAssignmentsWritten += 1;
     }
 
     private void Update()
@@ -133,7 +146,7 @@ public class GameDirector : NetworkBehaviour
         }
 
         _stress = Mathf.Clamp(_stress, 0f, 100f);
-        HUD.Instance.SetGameState(timeLimit - (int)_currentTime, _stress, NumAssignmentsDone, NumAssignmentsScanned);
+        HUD.Instance.SetGameState(timeLimit - (int)_currentTime, _stress, NumAssignmentsDone, NumAssignmentsScanned, NumAssignmentsWritten);
 
         // Stress vision -----------------------------------
         // Enable stress vision

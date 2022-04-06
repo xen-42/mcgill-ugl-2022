@@ -59,7 +59,7 @@ public class PlayerSpawner : NetworkBehaviour
                 // Record which side of the room the player is from
                 player.colour = spawnPoint.colour;
 
-                if(HUD.Instance != null) HUD.Instance.RefreshPlayerIcons();
+                HUD.Instance.RefreshPlayerIcons();
             }
         }
 
