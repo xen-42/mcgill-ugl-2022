@@ -118,6 +118,14 @@ public class GameDirector : NetworkBehaviour
         NumAssignmentsWritten += 1;
     }
 
+    public void OnAssignmentConsumed(PlayerCustomization.COLOUR colour)
+    {
+        if(colour == Player.Instance.colour)
+        {
+            NumAssignmentsWritten -= 1;
+        }
+    }
+
     private void Update()
     {
         var available = _distractions.Where(x => x.CanBreak).ToList();

@@ -96,7 +96,7 @@ public class HUD : MonoBehaviour
         _timer.text = $"{minutesString}{secondsString}";
         SetStressValue(stress);
         _submitted.text = $"Submitted: {submitted}";
-        _scanned.text = $"Scanned: {scanned}";
+        _scanned.text = $"Scanned: {scanned - submitted}";
         _written.text = $"Written: {written}";
 
         // Notifications

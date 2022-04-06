@@ -147,6 +147,10 @@ public class Holdable : Interactable
     [ClientRpc]
     private void RpcNetworkDestroy(GameObject obj)
     {
+        if(type == Holdable.Type.ASSIGNMENT)
+        {
+            GameDirector.Instance.OnAssignmentConsumed(colour);
+        }
         GameObject.Destroy(obj);
     }
 }
