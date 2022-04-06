@@ -8,25 +8,28 @@ public class DialogueManager : MonoBehaviour
 {
     public TextMeshProUGUI dialogueText;
     private Queue<string> sentences;
-    
+
     void Start()
     {
         sentences = new Queue<string>();
     }
 
-    public void StartDialogue (Dialogue dialogue){
-        
+    public void StartDialogue(Dialogue dialogue)
+    {
         sentences.Clear();
-        foreach (string sentence in dialogue.sentences){
+        foreach (string sentence in dialogue.sentences)
+        {
             sentences.Enqueue(sentence);
         }
 
         DisplayNextSentence();
     }
 
-    public void DisplayNextSentence(){
-        if (sentences.Count == 0){
-             SceneManager.LoadScene(Scenes.MainMenu);
+    public void DisplayNextSentence()
+    {
+        if (sentences.Count == 0)
+        {
+            SceneManager.LoadScene(Scenes.MainMenu);
             return;
         }
 
@@ -35,19 +38,20 @@ public class DialogueManager : MonoBehaviour
         StartCoroutine(TypeSentence(sent));
     }
 
-    IEnumerator TypeSentence (string sent){
+    IEnumerator TypeSentence(string sent)
+    {
         dialogueText.text = "";
-        foreach (char letter in sent.ToCharArray()){
+        foreach (char letter in sent.ToCharArray())
+        {
             dialogueText.text += letter;
             yield return new WaitForSeconds(.06f);
         }
-           if (sentences.Count == 0){
-             SceneManager.LoadScene(Scenes.MainMenu);
-            
+        if (sentences.Count == 0)
+        {
+            SceneManager.LoadScene(Scenes.MainMenu);
+
         }
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(3f);
         DisplayNextSentence();
     }
-
-  
 }

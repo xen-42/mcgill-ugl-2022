@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class DialogueStart : MonoBehaviour
 {
-   public Dialogue dialogue;
+    public Dialogue dialogue;
 
-   void Start(){
-       StartCoroutine(waitASec());
-       FindObjectOfType<DialogueManager>().StartDialogue(dialogue);
-   }
+    void Start()
+    {
+        StartCoroutine(waitASec());
+        FindObjectOfType<DialogueManager>().StartDialogue(dialogue);
+    }
 
-   IEnumerator waitASec(){
-       yield return new WaitForSeconds(.05f);
-   }
+    IEnumerator waitASec()
+    {
+        yield return new WaitForSeconds(.05f);
+    }
 }
