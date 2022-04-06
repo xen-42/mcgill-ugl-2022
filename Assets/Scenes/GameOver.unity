@@ -1106,8 +1106,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   leftStats: {fileID: 157068081715941054}
   rightStats: {fileID: 1344797539}
-  leftWinImage: {fileID: 0}
-  rightWinImage: {fileID: 0}
+  leftWinImage: {fileID: 157068081715941055}
+  rightWinImage: {fileID: 1344797540}
 --- !u!1 &1197677256
 GameObject:
   m_ObjectHideFlags: 0
