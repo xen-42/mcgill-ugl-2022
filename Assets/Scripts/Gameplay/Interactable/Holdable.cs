@@ -80,7 +80,7 @@ public class Holdable : Interactable
             collider.enabled = false;
         }
 
-        _navMeshObstacle.enabled = false;
+        if (_navMeshObstacle) _navMeshObstacle.enabled = false;
 
         _rb.isKinematic = true;
     }
@@ -94,7 +94,7 @@ public class Holdable : Interactable
             collider.enabled = true;
         }
 
-        _navMeshObstacle.enabled = true;
+        if(_navMeshObstacle) _navMeshObstacle.enabled = true;
 
         _parent = null;
         if (isServer) gameObject.GetComponent<NetworkIdentity>().RemoveClientAuthority();
