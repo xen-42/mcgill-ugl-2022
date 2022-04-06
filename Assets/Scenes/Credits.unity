@@ -1413,8 +1413,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -180, y: -135.09872}
-  m_SizeDelta: {x: 355.25, y: 93.4574}
+  m_AnchoredPosition: {x: -180, y: -149.32404}
+  m_SizeDelta: {x: 355.25, y: 121.908}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1660993471
 MonoBehaviour:
@@ -1453,7 +1453,9 @@ MonoBehaviour:
 
     Mixkit
 
-    Pixabay'
+    Pixabay
+
+    Epidemic Sound '
 --- !u!222 &1660993472
 CanvasRenderer:
   m_ObjectHideFlags: 0

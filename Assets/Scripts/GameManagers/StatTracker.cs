@@ -24,6 +24,8 @@ public class StatTracker : NetworkBehaviour
     public static PlayerStats clientStats = new PlayerStats { stats = new int[8] };
     public static PlayerStats serverStats = new PlayerStats { stats = new int[8] };
 
+    public static bool isServerLocal;
+
     private bool _initialized;
 
     void Awake()
@@ -67,6 +69,8 @@ public class StatTracker : NetworkBehaviour
 
         clientStats = new PlayerStats { stats = new int[9] };
         serverStats = new PlayerStats { stats = new int[9] };
+
+        isServerLocal = isServer;
     }
 
     private void IncrementStat(string name)
