@@ -23,7 +23,6 @@ public class CatAgent : NetworkBehaviour
     private Vector3 destination;
     private UnityEngine.AI.NavMeshAgent NMAgent;
     private UnityEngine.AI.NavMeshPath path;
-    private float elapsed = 0.0f;
 
     [Header("Cat Moving Speed Params")]
     [SerializeField] private float m_maxSpeed = 2f;
@@ -38,7 +37,6 @@ public class CatAgent : NetworkBehaviour
     [Header("Cat Spawning Socks Params")]
     [SerializeField] private GameObject m_sockPrefab;
     [SerializeField] private SpawnPointsManager m_spawnManager;
-    [SerializeField] private float m_spawnRadius = 3f;
     [SerializeField] [Range(0, 10)] public int m_spawnLimit;
     [SerializeField] [Range(0, 1)] private float m_spawnProbility = .1f;
     [SyncVar] private int m_curSpawnNum = 0;

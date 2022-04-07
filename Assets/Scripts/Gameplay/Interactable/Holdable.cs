@@ -1,7 +1,9 @@
 using Mirror;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using UnityEngine.AI;
 using static InputManager;
 
 public class Holdable : Interactable
@@ -10,7 +12,8 @@ public class Holdable : Interactable
     [SyncVar] private GameObject _offsetPosition;
 
     private Rigidbody _rb;
-    private Collider _collider;
+    private Collider[] _colliders;
+    private NavMeshObstacle _navMeshObstacle;
 
     [SerializeField] public float throwForce = 1000f;
 
@@ -31,7 +34,8 @@ public class Holdable : Interactable
     void Start()
     {
         _rb = GetComponent<Rigidbody>();
-        _collider = GetComponent<Collider>();
+        _colliders = GetComponents<Collider>().Concat(GetComponentsInChildren<Collider>()).ToArray();
+        _navMeshObstacle = GetComponent<NavMeshObstacle>();
 
         // When a holdable item is interacting with, pick it up
         _unityEvent.AddListener(OnInteract);
@@ -71,11 +75,12 @@ public class Holdable : Interactable
         }
         IsInteractable = false;
 
-        _collider.enabled = false;
-        foreach (var collider in GetComponentsInChildren<Collider>())
+        foreach (var collider in _colliders)
         {
             collider.enabled = false;
         }
+
+        if (_navMeshObstacle) _navMeshObstacle.enabled = false;
 
         _rb.isKinematic = true;
     }
@@ -84,11 +89,12 @@ public class Holdable : Interactable
     {
         Debug.Log("Drop item");
 
-        _collider.enabled = true;
-        foreach (var collider in GetComponentsInChildren<Collider>())
+        foreach (var collider in _colliders)
         {
             collider.enabled = true;
         }
+
+        if(_navMeshObstacle) _navMeshObstacle.enabled = true;
 
         _parent = null;
         if (isServer) gameObject.GetComponent<NetworkIdentity>().RemoveClientAuthority();
@@ -141,6 +147,10 @@ public class Holdable : Interactable
     [ClientRpc]
     private void RpcNetworkDestroy(GameObject obj)
     {
+        if(type == Holdable.Type.ASSIGNMENT)
+        {
+            GameDirector.Instance.OnAssignmentConsumed(colour);
+        }
         GameObject.Destroy(obj);
     }
 }

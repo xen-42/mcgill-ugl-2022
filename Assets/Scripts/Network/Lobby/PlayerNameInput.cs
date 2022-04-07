@@ -56,8 +56,4 @@ public class PlayerNameInput : MonoBehaviour
     {
         SceneManager.LoadScene(Scenes.MainMenu);
     }
-
-    public void OnTutorialButtonPressed(){
-        SceneManager.LoadScene(Scenes.Tutorial);
-    }
 }
