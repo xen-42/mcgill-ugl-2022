@@ -158,5 +158,18 @@ public class Fixable : NetworkBehaviour
 
             _particleSystemBroken.loop = _isBroken;
         }
+
+        if (brokenAmbientNoise != null)
+        {
+            if (_isBroken)
+            {
+                brokenAmbientNoise.Play();
+            }
+            else
+            {
+                brokenAmbientNoise.Stop();
+            }
+            brokenAmbientNoise.loop = _isBroken;
+        }
     }
 }

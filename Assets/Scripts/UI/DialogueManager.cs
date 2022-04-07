@@ -7,14 +7,24 @@ using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
-    [SerializeField] public Button _button;
+    [SerializeField] private Button _button;
+    [SerializeField] private GameObject _root;
 
     public TextMeshProUGUI dialogueText;
     private Queue<string> sentences;
+    [SerializeField] AudioSource typewriterSound;
+
+    public Dialogue dialogue;
+
+    void Awake()
+    {
+        sentences = new Queue<string>();
+    }
 
     void Start()
     {
-        sentences = new Queue<string>();
+        StartCoroutine(waitASec());
+        FindObjectOfType<DialogueManager>().StartDialogue(dialogue);
     }
 
     public void StartDialogue(Dialogue dialogue)
@@ -34,8 +44,9 @@ public class DialogueManager : MonoBehaviour
         {
             // To prevent spam clicking
             _button.enabled = false;
-
-            SceneManager.LoadScene(Scenes.MainMenu);
+            _root.SetActive(false);
+            typewriterSound.Stop();
+			
             return;
         }
 
@@ -46,11 +57,18 @@ public class DialogueManager : MonoBehaviour
 
     IEnumerator TypeSentence(string sent)
     {
+        typewriterSound.Play();
         dialogueText.text = "";
         foreach (char letter in sent.ToCharArray())
         {
             dialogueText.text += letter;
             yield return new WaitForSeconds(.06f);
         }
+        typewriterSound.Stop();
+    }
+
+    IEnumerator waitASec()
+    {
+        yield return new WaitForSeconds(.05f);
     }
 }
