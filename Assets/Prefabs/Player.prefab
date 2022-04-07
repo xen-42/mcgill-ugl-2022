@@ -33975,6 +33975,11 @@ MonoBehaviour:
   _head: {fileID: 6285061861872217653}
   _eyebrows: {fileID: 3692108735343313492}
   _teeth: {fileID: 2113980880994426917}
+  _makeInvisible:
+  - {fileID: 6285061861872217653}
+  - {fileID: 6567355724873740224}
+  - {fileID: 3692108735343313492}
+  - {fileID: 2113980880994426917}
   _animator: {fileID: 703044939081843804}
   _colour: 1
 --- !u!1 &3416159896407415567
@@ -56418,6 +56423,10 @@ MonoBehaviour:
   _head: {fileID: 1763840153552800803}
   _eyebrows: {fileID: 8970726692027572290}
   _teeth: {fileID: 5914690146263466547}
+  _makeInvisible:
+  - {fileID: 1763840153552800803}
+  - {fileID: 8970726692027572290}
+  - {fileID: 5914690146263466547}
   _animator: {fileID: 3854530932570992223}
   _colour: 0
 --- !u!1 &5613682890767055646

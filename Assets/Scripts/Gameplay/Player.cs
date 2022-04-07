@@ -77,7 +77,7 @@ public class Player : NetworkBehaviour
 
     private bool _interactedThisTick = false;
 
-    public string displayName;
+    [SyncVar] public string displayName;
 
     private void Start()
     {

@@ -66,39 +66,13 @@ public class Fixable : NetworkBehaviour
 
     public void Break()
     {
-        if (brokenStateSound != null)
-        {
-            brokenStateSound.Play();
-        }
-        if (ambientNoise != null)
-        {
-            ambientNoise.Stop();
-        }
-        if (brokenAmbientNoise != null){
-            brokenAmbientNoise.Play();
-        }
-
         SwitchState(brokenState.name);
     }
 
     public void Fix()
     {
         GameDirector.Instance.LowerStressImmediate(stressReduction);
-        if (fixedStateSound != null)
-        {
-            fixedStateSound.Play();
-        }
-        if (ambientNoise != null)
-        {
-            ambientNoise.Play();
-        }
-        if (brokenAmbientNoise != null){
-            brokenAmbientNoise.Stop();
-        }
-        if (_particleSystemBroken != null)
-        {
-            _particleSystemBroken.Stop();
-        }
+
         SwitchState(fixedState.name);
     }
 
@@ -170,6 +144,44 @@ public class Fixable : NetworkBehaviour
                 brokenAmbientNoise.Stop();
             }
             brokenAmbientNoise.loop = _isBroken;
+        }
+
+        if (!_isBroken)
+        {
+            if (fixedStateSound != null)
+            {
+                fixedStateSound.Play();
+            }
+
+            if (ambientNoise != null)
+            {
+                ambientNoise.Play();
+            }
+
+            if (brokenAmbientNoise != null)
+            {
+                brokenAmbientNoise.Stop();
+            }
+
+            if (_particleSystemBroken != null)
+            {
+                _particleSystemBroken.Stop();
+            }
+        }
+        else
+        {
+            if (brokenStateSound != null)
+            {
+                brokenStateSound.Play();
+            }
+            if (ambientNoise != null)
+            {
+                ambientNoise.Stop();
+            }
+            if (brokenAmbientNoise != null)
+            {
+                brokenAmbientNoise.Play();
+            }
         }
     }
 }

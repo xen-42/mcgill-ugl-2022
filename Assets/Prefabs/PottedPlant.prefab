@@ -616,7 +616,7 @@ MonoBehaviour:
   ambientNoise: {fileID: 0}
   brokenAmbientNoise: {fileID: 0}
   brokenCooldown: 15
-  stressReduction: 10
+  stressReduction: 20
   _particleSystemBroken: {fileID: 0}
 --- !u!82 &3121370866252402730
 AudioSource:

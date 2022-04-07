@@ -131,7 +131,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  _promptText: Pick sock
+  _promptText: Pick up sock
   _promptTextNotInteractable: 
   _promptTextWrongItem: 
   requiredObject: 0

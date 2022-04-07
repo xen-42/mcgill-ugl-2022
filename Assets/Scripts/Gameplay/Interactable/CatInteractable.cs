@@ -13,7 +13,7 @@ public class CatInteractable : Interactable
 
     [SyncVar] private float _cooldown;
     protected override InputCommand InputCommand { get => InputCommand.Interact; }
-    
+
     [SerializeField] public AudioSource sound;
 
     void Start()
@@ -23,11 +23,6 @@ public class CatInteractable : Interactable
 
     public void OnPet()
     {
-        if (sound != null)
-        {
-            sound.Play();
-        }
-
         GameDirector.Instance.LowerStressImmediate(StressReduction);
 
         IsInteractable = false;
@@ -40,10 +35,27 @@ public class CatInteractable : Interactable
         if (isServer)
         {
             _cooldown = Cooldown;
+            RpcOnPet();
         }
         else
         {
-            Player.Instance.DoWithAuthority(netIdentity, CmdStartCooldown);
+            Player.Instance.DoWithAuthority(netIdentity, CmdOnPet);
+        }
+    }
+
+    [Command]
+    private void CmdOnPet()
+    {
+        RpcOnPet();
+        _cooldown = Cooldown;
+    }
+
+    [ClientRpc]
+    private void RpcOnPet()
+    {
+        if (sound != null)
+        {
+            sound.Play();
         }
     }
 
@@ -62,11 +74,5 @@ public class CatInteractable : Interactable
                 IsInteractable = true;
             }
         }
-    }
-
-    [Command]
-    private void CmdStartCooldown()
-    {
-        _cooldown = Cooldown;
     }
 }

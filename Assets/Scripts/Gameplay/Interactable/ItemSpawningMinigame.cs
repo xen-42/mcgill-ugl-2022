@@ -62,10 +62,9 @@ public class ItemSpawningMinigame : Interactable
     [Server]
     private void Spawn(PlayerCustomization.COLOUR colour)
     {
-        if (sound != null)
-        {
-            sound.Play();
-        }
+
+        RpcPlaySound();
+
         var position = transform.position + Vector3.up * 0.2f;
         var newObj = Instantiate(HoldableItemPrefab, position, HoldableItemPrefab.transform.rotation);
 
@@ -84,5 +83,14 @@ public class ItemSpawningMinigame : Interactable
         }
 
         NetworkServer.Spawn(newObj);
+    }
+
+    [ClientRpc]
+    public void RpcPlaySound()
+    {
+        if (sound != null)
+        {
+            sound.Play();
+        }
     }
 }
