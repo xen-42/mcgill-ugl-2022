@@ -23,10 +23,7 @@ public class CatInteractable : Interactable
 
     public void OnPet()
     {
-        if (sound != null)
-        {
-            sound.Play();
-        }
+        CmdOnPet();
 
         GameDirector.Instance.LowerStressImmediate(StressReduction);
 
@@ -44,6 +41,21 @@ public class CatInteractable : Interactable
         else
         {
             Player.Instance.DoWithAuthority(netIdentity, CmdStartCooldown);
+        }
+    }
+
+    [Command]
+    private void CmdOnPet()
+    {
+        RpcOnPet();
+    }
+
+    [ClientRpc]
+    private void RpcOnPet()
+    {
+        if (sound != null)
+        {
+            sound.Play();
         }
     }
 
