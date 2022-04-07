@@ -30,10 +30,10 @@ public class OptionsMenu : MonoBehaviour
 
     private void Awake()
     {
-        if(fullscreenToggle)
+        if (fullscreenToggle)
         {
             fullscreenToggle.isOn = Screen.fullScreen;
-		}
+        }
 
         if (SceneManager.GetActiveScene().buildIndex == Scenes.GameScene)
         {
@@ -79,13 +79,7 @@ public class OptionsMenu : MonoBehaviour
 
     #endregion Slider Callbacks
 
-    public void OnFullScreenToggled(bool value)
-    { }
-
-    public void ToggleFullscreen()
-    {
-        Screen.fullScreen = !Screen.fullScreen;
-    }
+    public void OnFullScreenToggled(bool value) => Screen.fullScreen = value;
 
     private void Update()
     {
@@ -128,7 +122,7 @@ public class OptionsMenu : MonoBehaviour
             tutorialUI.SetActive(false);
 
             // Disable all the pages
-            foreach(Transform child in tutorialUI.transform)
+            foreach (Transform child in tutorialUI.transform)
             {
                 child.gameObject.SetActive(false);
             }

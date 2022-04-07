@@ -797,6 +797,7 @@ MonoBehaviour:
   GamePaused: 0
   pauseMenuUI: {fileID: 381243460861246078}
   tutorialUI: {fileID: 0}
+  tutorialPage1: {fileID: 0}
   tutorialButton: {fileID: 36697567862937431}
   backButtonText: {fileID: 381243460460191037}
   sensSlider: {fileID: 381243461324404512}
@@ -1355,8 +1356,8 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 381243459402611014}
         m_TargetAssemblyTypeName: OptionsMenu, Assembly-CSharp
-        m_MethodName: ToggleFullscreen
-        m_Mode: 1
+        m_MethodName: OnFullScreenToggled
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
