@@ -24,7 +24,7 @@ public class DialogueManager : MonoBehaviour
     void Start()
     {
         StartCoroutine(waitASec());
-        FindObjectOfType<DialogueManager>().StartDialogue(dialogue);
+        StartDialogue(dialogue);
     }
 
     public void StartDialogue(Dialogue dialogue)
