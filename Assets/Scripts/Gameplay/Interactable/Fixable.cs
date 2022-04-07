@@ -66,18 +66,6 @@ public class Fixable : NetworkBehaviour
 
     public void Break()
     {
-        if (brokenStateSound != null)
-        {
-            brokenStateSound.Play();
-        }
-        if (ambientNoise != null)
-        {
-            ambientNoise.Stop();
-        }
-        if (brokenAmbientNoise != null){
-            brokenAmbientNoise.Play();
-        }
-
         SwitchState(brokenState.name);
     }
 
@@ -158,7 +146,7 @@ public class Fixable : NetworkBehaviour
             brokenAmbientNoise.loop = _isBroken;
         }
 
-        if(!_isBroken)
+        if (!_isBroken)
         {
             if (fixedStateSound != null)
             {
@@ -178,6 +166,21 @@ public class Fixable : NetworkBehaviour
             if (_particleSystemBroken != null)
             {
                 _particleSystemBroken.Stop();
+            }
+        }
+        else
+        {
+            if (brokenStateSound != null)
+            {
+                brokenStateSound.Play();
+            }
+            if (ambientNoise != null)
+            {
+                ambientNoise.Stop();
+            }
+            if (brokenAmbientNoise != null)
+            {
+                brokenAmbientNoise.Play();
             }
         }
     }
