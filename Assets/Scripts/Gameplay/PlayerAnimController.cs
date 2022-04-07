@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerAnimController : MonoBehaviour
@@ -7,9 +8,7 @@ public class PlayerAnimController : MonoBehaviour
     [SerializeField] private Player _player;
 
     [SerializeField] private GameObject _rig;
-    [SerializeField] private GameObject _head;
-    [SerializeField] private GameObject _eyebrows;
-    [SerializeField] private GameObject _teeth;
+    [SerializeField] private GameObject[] _makeInvisible;
 
     [SerializeField] private Animator _animator;
 
@@ -27,11 +26,8 @@ public class PlayerAnimController : MonoBehaviour
         // If local player, remove hair and stuff
         if (_player == Player.Instance)
         {
-            var toHide = new GameObject[] { _head, _eyebrows, _teeth, _rig };
+            var toHide = (new GameObject[] { _rig }).Concat(_makeInvisible);
 
-            _head.SetActive(false);
-            _eyebrows.SetActive(false);
-            _teeth.SetActive(false);
             foreach (var obj in toHide)
             {
                 // Only cast shadows from them
