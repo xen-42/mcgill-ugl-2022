@@ -15,11 +15,12 @@ public class Holdable2D : Hoverable2D
 
     protected override InputCommand InputCommand { get => InputCommand.PickUp; }
 
-    void Start(){
+    void Start()
+    {
         clickSound = GameObject.Find("AudioManager").GetComponent<AudioSource>();
     }
 
-    new void Update()
+    void Update()
     {
         var isHovering = IsCursorHovering();
 

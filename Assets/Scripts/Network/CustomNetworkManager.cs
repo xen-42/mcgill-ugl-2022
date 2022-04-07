@@ -74,6 +74,13 @@ public class CustomNetworkManager : NetworkManager
         transportType = type;
     }
 
+    public override void OnStartHost()
+    {
+        base.OnStartHost();
+
+        Debug.Log($"OnStartHost. NetworkServer active [{NetworkServer.active}] NetworkClient active [{NetworkClient.active}]");
+    }
+
     public override void OnStartServer()
     {
         RegisterPrefabs();
@@ -94,8 +101,9 @@ public class CustomNetworkManager : NetworkManager
     {
         RegisterPrefabs();
 
-        Debug.Log("Starting client");
         base.OnStartClient();
+
+        Debug.Log($"OnStartClient. NetworkServer active [{NetworkServer.active}] NetworkClient active [{NetworkClient.active}]");
     }
 
     public override void OnStopClient()
@@ -117,16 +125,19 @@ public class CustomNetworkManager : NetworkManager
 
     public override void OnServerDisconnect(NetworkConnection conn)
     {
-        if (conn.identity != null)
+        if(SceneManager.GetActiveScene().path == lobbyMenu)
         {
-            var player = conn.identity.GetComponent<LobbyPlayer>();
+            if (conn.identity != null)
+            {
+                var player = conn.identity.GetComponent<LobbyPlayer>();
 
-            lobbyPlayers.Remove(player);
+                lobbyPlayers.Remove(player);
 
-            NotifyPlayersOfReadyState();
+                NotifyPlayersOfReadyState();
+            }
+
+            OnClientDisconnected?.Invoke();
         }
-
-        OnClientDisconnected?.Invoke();
 
         if (SceneManager.GetActiveScene().path == gameScene)
         {
@@ -145,7 +156,7 @@ public class CustomNetworkManager : NetworkManager
         // Back to main menu
         if (GameDirector.Instance.GetTimeLeft() > 10)
         {
-            SceneManager.LoadScene(Scenes.MainMenu);
+            SceneManager.LoadScene(Scenes.Lobby);
         }
         else
         {
@@ -224,20 +235,28 @@ public class CustomNetworkManager : NetworkManager
 
     public void Stop()
     {
-        Debug.Log("STOPPING NETWORKING");
+        Debug.Log($"STOPPING ALL NETWORKING! NetworkServer active [{NetworkServer.active}] NetworkClient active [{NetworkClient.active}]");
 
         // Kick everyone back to the main menu
         if (NetworkClient.isHostClient)
         {
             StopHost();
+
+            // Make sure
+            NetworkClient.Disconnect();
+            NetworkClient.Shutdown();
+            NetworkServer.DisconnectAll();
+            NetworkServer.Shutdown();
         }
         else
         {
             StopClient();
         }
 
-        NetworkClient.Disconnect();
-        NetworkClient.Shutdown();
+
+        transport.Shutdown();
+
+        Debug.Log($"Done stopping network! NetworkServer active [{NetworkServer.active}] NetworkClient active [{NetworkClient.active}]");
     }
 
     private new void OnDestroy()
@@ -338,6 +357,12 @@ public class CustomNetworkManager : NetworkManager
 
             GameObject playerSpawnerInstance = Instantiate(playerSpawnerPrefab);
             NetworkServer.Spawn(playerSpawnerInstance);
+        }
+        
+        if (sceneName == lobbyMenu)
+        {
+            Debug.Log("Server scene changed to lobby");
+            Stop();
         }
     }
 

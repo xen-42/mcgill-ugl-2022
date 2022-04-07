@@ -58,27 +58,28 @@ public static class InputManager
     }
 
     // Should be careful when changing this
+    private static Image _HUDCursor;
     public static InputMode CurrentInputMode
     {
         get { return _currentInputMode; }
         set
         {
+            if (_HUDCursor == null) _HUDCursor = GameObject.Find("HUD/Cursor")?.GetComponent<Image>();
+
             Debug.Log($"Changing InputMode to {value}");
             _currentInputMode = value;
             if (_currentInputMode == InputMode.Player)
             {
                 Cursor.lockState = CursorLockMode.Locked;
 
-                var hudCursor = GameObject.Find("HUD/Cursor")?.GetComponent<Image>();
-                if(hudCursor != null) hudCursor.enabled = true;
+                if(_HUDCursor != null) _HUDCursor.enabled = true;
             }
             else
             {
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
 
-                var hudCursor = GameObject.Find("HUD/Cursor")?.GetComponent<Image>();
-                if (hudCursor != null) hudCursor.enabled = false;
+                if (_HUDCursor != null) _HUDCursor.enabled = false;
             }
         }
     }
