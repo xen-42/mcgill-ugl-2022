@@ -23,6 +23,7 @@ public class MenuMusic : MonoBehaviour
 
             DontDestroyOnLoad(transform.gameObject);
             menuMusicTheme = GetComponent<AudioSource>();
+            Play();
         }
     }
 
@@ -30,9 +31,11 @@ public class MenuMusic : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().buildIndex == Scenes.GameScene)
         {
+            _instance = null;
             Destroy(transform.gameObject);
         }
     }
+
     public void Play()
     {
         if (menuMusicTheme.isPlaying) return;
