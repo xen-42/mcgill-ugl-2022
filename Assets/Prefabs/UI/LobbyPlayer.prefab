@@ -1371,8 +1371,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -260, y: -40}
-  m_SizeDelta: {x: 200, y: 50}
+  m_AnchoredPosition: {x: -260, y: -44}
+  m_SizeDelta: {x: 200, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3222400075158847080
 CanvasRenderer:
@@ -1402,7 +1402,11 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Steam Lobby Code
+  m_text: 'Steam Lobby Code:
+
+    0000000000000000000
+
+    (copy & send to a friend!)'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: ce1793e7d20651648ac80d5a74645e82, type: 2}
   m_sharedMaterial: {fileID: 1592029291389504280, guid: ce1793e7d20651648ac80d5a74645e82, type: 2}

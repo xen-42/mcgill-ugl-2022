@@ -61,7 +61,7 @@ public class LobbyPlayer : NetworkBehaviour
         {
             Debug.Log("Steam transport");
 
-            steamLobbyCode.SetText(CustomNetworkManager.Instance.steamLobby.LobbyID.ToString());
+            steamLobbyCode.SetText("Steam Lobby Code:\n" + CustomNetworkManager.Instance.steamLobby.LobbyID.ToString() + "\n(Copy & send to a friend!)");
             copySteamCodeButton.interactable = true;
 
             steamLobbyCode.gameObject.SetActive(true);
@@ -142,7 +142,7 @@ public class LobbyPlayer : NetworkBehaviour
 
     public void CopySteamCode()
     {
-        GUIUtility.systemCopyBuffer = steamLobbyCode.text;
+        GUIUtility.systemCopyBuffer = CustomNetworkManager.Instance.steamLobby.LobbyID.ToString();
     }
 
     public void OnPlayerDisconnect(bool cool)

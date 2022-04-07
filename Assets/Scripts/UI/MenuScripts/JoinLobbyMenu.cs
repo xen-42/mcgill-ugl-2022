@@ -55,11 +55,17 @@ namespace Assets.Scripts.UI.MenuScripts
 
         public void JoinSteamLobby()
         {
+            if (!SteamManager.Initialized)
+            {
+                OnConnectionFailed("Can't find Steam, did you add the game to your steam library?");
+                return;
+            }
+
             string steamLobbyCode = steamLobbyInputField.text;
 
             CustomNetworkManager.Instance.SetTransport(CustomNetworkManager.TransportType.STEAM);
 
-            if(!CustomNetworkManager.Instance.steamLobby.JoinLobby(steamLobbyCode))
+            if (!CustomNetworkManager.Instance.steamLobby.JoinLobby(steamLobbyCode))
             {
                 HandleClientDisconnected();
                 return;
@@ -80,6 +86,12 @@ namespace Assets.Scripts.UI.MenuScripts
 
         public void JoinLocalLobby()
         {
+            if (!SteamManager.Initialized)
+            {
+                OnConnectionFailed("Can't find Steam, did you add the game to your steam library?");
+                return;
+            }
+
             CustomNetworkManager.Instance.SetTransport(CustomNetworkManager.TransportType.KCP);
 
             CustomNetworkManager.Instance.networkAddress = "localhost";
@@ -95,6 +107,12 @@ namespace Assets.Scripts.UI.MenuScripts
 
         public void HostSteamLobby()
         {
+            if (!SteamManager.Initialized)
+            {
+                OnConnectionFailed("Can't find Steam, did you add the game to your steam library?");
+                return;
+            }
+
             CustomNetworkManager.Instance.SetTransport(CustomNetworkManager.TransportType.STEAM);
 
             CustomNetworkManager.Instance.steamLobby.HostLobby();
@@ -109,6 +127,12 @@ namespace Assets.Scripts.UI.MenuScripts
 
         public void HostLocalLobby()
         {
+            if (!SteamManager.Initialized)
+            {
+                OnConnectionFailed("Can't find Steam, did you add the game to your steam library?");
+                return;
+            }
+
             CustomNetworkManager.Instance.SetTransport(CustomNetworkManager.TransportType.KCP);
 
             CustomNetworkManager.Instance.networkAddress = "localhost";
@@ -162,6 +186,6 @@ namespace Assets.Scripts.UI.MenuScripts
             // Just reload the scene
             SceneManager.LoadScene(Scenes.Lobby);
         }
-        
+
     }
 }
