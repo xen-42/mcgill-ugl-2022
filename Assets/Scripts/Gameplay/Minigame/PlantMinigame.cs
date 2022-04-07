@@ -15,6 +15,9 @@ public class PlantMinigame : DragDropMinigame
     private float _delay = 0f;
     private bool _completed;
 
+    private GameObject _happyPlant;
+    private GameObject _sadPlant;
+
     public void SetPlantSelection(PlayerCustomization.COLOUR colour, PlayerCustomization.PLANT plant)
     {
         switch(plant)
@@ -35,8 +38,11 @@ public class PlantMinigame : DragDropMinigame
             if(i == plantIndex)
             {
                 plants[i].SetActive(true);
-                plants[i].transform.Find("Happy").gameObject.SetActive(false);
-                plants[i].transform.Find("Sad").gameObject.SetActive(true);
+                _happyPlant = plants[i].transform.Find("Happy").gameObject;
+                _sadPlant = plants[i].transform.Find("Sad").gameObject;
+
+                _happyPlant.SetActive(false);
+                _sadPlant.SetActive(true);
             }
             else
             {
@@ -70,8 +76,8 @@ public class PlantMinigame : DragDropMinigame
         uprightWateringCan.SetActive(false);
         pouringWateringCan.SetActive(true);
 
-        plants[plantIndex].transform.Find("Happy").gameObject.SetActive(true);
-        plants[plantIndex].transform.Find("Sad").gameObject.SetActive(false);
+        _happyPlant.SetActive(true);
+        _sadPlant.gameObject.SetActive(false);
 
         _completed = true;
 
