@@ -19,6 +19,8 @@ public class Holdable : Interactable
 
     [SerializeField] [SyncVar] public PlayerCustomization.COLOUR colour;
 
+    private NetworkIdentity _networkIdentity;
+
     protected override InputCommand InputCommand { get => InputCommand.PickUp; }
 
     public Type type;
@@ -39,6 +41,8 @@ public class Holdable : Interactable
 
         // When a holdable item is interacting with, pick it up
         _unityEvent.AddListener(OnInteract);
+
+        _networkIdentity = GetComponent<NetworkIdentity>();
     }
 
     public void OnInteract()
@@ -69,9 +73,8 @@ public class Holdable : Interactable
 
         if (isServer)
         {
-            var netID = gameObject.GetComponent<NetworkIdentity>();
-            netID.RemoveClientAuthority();
-            netID.AssignClientAuthority(grabber.connectionToClient);
+            _networkIdentity.RemoveClientAuthority();
+            _networkIdentity.AssignClientAuthority(grabber.connectionToClient);
         }
         IsInteractable = false;
 

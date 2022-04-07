@@ -44,6 +44,7 @@ public class PlantInteractable : MinigameInteractable
     public void ServerSetSelection(PlayerCustomization.PLANT selection)
     {
         plant = selection;
+        RpcSetSelection(selection);
     }
 
     [ClientRpc]

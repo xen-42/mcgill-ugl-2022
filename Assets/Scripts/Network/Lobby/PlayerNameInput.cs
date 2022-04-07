@@ -35,6 +35,9 @@ public class PlayerNameInput : MonoBehaviour
         else
         {
             defaultName = PlayerPrefs.GetString(PlayerPrefsNameKey);
+
+            // Bugs can make it be empty still
+            if (string.IsNullOrEmpty(defaultName)) defaultName = "Player";
         }
 
         nameInputField.text = defaultName;
