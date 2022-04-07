@@ -12,6 +12,7 @@ public class DialogueManager : MonoBehaviour
 
     public TextMeshProUGUI dialogueText;
     private Queue<string> sentences;
+    [SerializeField] AudioSource typewriterSound;
 
     public Dialogue dialogue;
 
@@ -44,6 +45,8 @@ public class DialogueManager : MonoBehaviour
             // To prevent spam clicking
             _button.enabled = false;
             _root.SetActive(false);
+            typewriterSound.Stop();
+			
             return;
         }
 
@@ -54,12 +57,14 @@ public class DialogueManager : MonoBehaviour
 
     IEnumerator TypeSentence(string sent)
     {
+        typewriterSound.Play();
         dialogueText.text = "";
         foreach (char letter in sent.ToCharArray())
         {
             dialogueText.text += letter;
             yield return new WaitForSeconds(.06f);
         }
+        typewriterSound.Stop();
     }
 
     IEnumerator waitASec()
