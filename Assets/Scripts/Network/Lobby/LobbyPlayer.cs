@@ -280,8 +280,8 @@ public class LobbyPlayer : NetworkBehaviour
                 _coolButton.enabled = !cool;
                 _warmButton.enabled = cool;
 
-                _coolCross.GetComponent<Image>().enabled = cool;
-                _warmCross.GetComponent<Image>().enabled = !cool;
+                _coolCross.enabled = cool;
+                _warmCross.enabled = !cool;
             }
             else
             {

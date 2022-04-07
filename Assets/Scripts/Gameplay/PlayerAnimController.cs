@@ -24,7 +24,7 @@ public class PlayerAnimController : MonoBehaviour
             return;
         }
 
-        // If local player remove hair and shit
+        // If local player, remove hair and stuff
         if (_player == Player.Instance)
         {
             var toHide = new GameObject[] { _head, _eyebrows, _teeth, _rig };
