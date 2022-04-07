@@ -8,7 +8,7 @@ using Mirror;
 public class CatAgent : NetworkBehaviour
 {
     //Caches
-    private Animator m_ac;
+    [SerializeField] private Animator m_ac;
     private FSM m_fsm;
     private BlackboardManager m_manager;
     private CatInteractable m_petInteract;
@@ -68,7 +68,7 @@ public class CatAgent : NetworkBehaviour
     private void Awake()
     {
         Instance = this;
-        m_ac = transform.GetComponentInChildren<Animator>();
+        //m_ac = transform.GetComponentInChildren<Animator>();
         Debug.Log($"Cat awake {(isServer ? "on server" : "on client")}");
 
         NMAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
@@ -333,5 +333,6 @@ public class CatAgent : NetworkBehaviour
     private void UpdateAnimParams()
     {
         m_ac.SetFloat("speed", NMAgent.speed / m_maxSpeed);
+        m_ac.SetBool("onPet", m_petter != null);
     }
 }
