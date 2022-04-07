@@ -359,6 +359,8 @@ public class LobbyPlayer : NetworkBehaviour
             {
                 var player = CustomNetworkManager.Instance.lobbyPlayers[i];
 
+                if (string.IsNullOrEmpty(player.DisplayName)) player.DisplayName = "Player";
+
                 var displayName = player.DisplayName.Length < 12 ? player.DisplayName : player.DisplayName.Substring(0, 11) + "...";
 
                 if (player.isLeader)
