@@ -1,20 +1,8 @@
 fileFormatVersion: 2
-guid: db8c1a15f50cb724098304d5339c338f
+guid: 1ca7cc945df613642a1e0d5674839b2b
 ModelImporter:
   serializedVersion: 20200
-  internalIDToNameTable:
-  - first:
-      74: -887982601649841707
-    second: metarig|metarigAction
-  - first:
-      74: 1599155768152908184
-    second: rig|idle
-  - first:
-      74: -5395354463405799138
-    second: rig|jump
-  - first:
-      74: 8792363992049388215
-    second: rig|walking
+  internalIDToNameTable: []
   externalObjects: {}
   materials:
     materialImportMode: 2
@@ -78,7 +66,7 @@ ModelImporter:
     useFileScale: 1
   tangentSpace:
     normalSmoothAngle: 60
-    normalImportMode: 0
+    normalImportMode: 1
     tangentImportMode: 3
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
