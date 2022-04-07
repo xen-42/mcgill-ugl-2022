@@ -39,12 +39,7 @@ public class CatInteractable : Interactable
         }
         else
         {
-            Player.Instance.DoWithAuthority(netIdentity,
-                () =>
-                {
-                    CmdStartCooldown();
-                    CmdOnPet();
-                });
+            Player.Instance.DoWithAuthority(netIdentity, CmdOnPet);
         }
     }
 
@@ -52,6 +47,7 @@ public class CatInteractable : Interactable
     private void CmdOnPet()
     {
         RpcOnPet();
+        _cooldown = Cooldown;
     }
 
     [ClientRpc]
@@ -78,11 +74,5 @@ public class CatInteractable : Interactable
                 IsInteractable = true;
             }
         }
-    }
-
-    [Command]
-    private void CmdStartCooldown()
-    {
-        _cooldown = Cooldown;
     }
 }
