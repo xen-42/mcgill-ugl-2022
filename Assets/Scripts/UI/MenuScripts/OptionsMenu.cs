@@ -16,6 +16,7 @@ public class OptionsMenu : MonoBehaviour
     [Header("UI Elements")]
     public GameObject pauseMenuUI;
     public GameObject tutorialUI;
+    public GameObject tutorialPage1;
     public GameObject tutorialButton;
     public TMP_Text backButtonText;
 
@@ -122,7 +123,17 @@ public class OptionsMenu : MonoBehaviour
 
         if (SceneManager.GetActiveScene().buildIndex != Scenes.GameScene) return;
 
-        if (tutorialUI != null) tutorialUI.SetActive(false);
+        if (tutorialUI != null)
+        {
+            tutorialUI.SetActive(false);
+
+            // Disable all the pages
+            foreach(Transform child in tutorialUI.transform)
+            {
+                child.gameObject.SetActive(false);
+            }
+        }
+
         InputManager.CurrentInputMode = _lastInputMode;
         GamePaused = false;
     }
@@ -150,13 +161,7 @@ public class OptionsMenu : MonoBehaviour
 
     public void Tutorial()
     {
-        pauseMenuUI.SetActive(false);
         tutorialUI.SetActive(true);
-    }
-
-    public void QuitTutorial()
-    {
-        tutorialUI.SetActive(false);
-        pauseMenuUI.SetActive(true);
+        tutorialPage1.SetActive(true);
     }
 }

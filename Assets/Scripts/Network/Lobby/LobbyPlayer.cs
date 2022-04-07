@@ -35,7 +35,7 @@ public class LobbyPlayer : NetworkBehaviour
     [SyncVar] public PlayerCustomization.DRINK drink;
     [SyncVar] public PlayerCustomization.POSTER poster;
     [SyncVar] public PlayerCustomization.COLOUR colour;
-    public bool hasChosenCharacter = false;
+    [SyncVar] public bool hasChosenCharacter = false;
 
     [SerializeField] GameObject warmCharacterButton;
     [SerializeField] GameObject coolCharacterButton;
@@ -43,6 +43,13 @@ public class LobbyPlayer : NetworkBehaviour
     protected Callback<AvatarImageLoaded_t> _avatarImageLoaded;
 
     private bool _connected = false;
+
+    private Image _coolCheck;
+    private Image _warmCheck;
+    private Image _coolCross;
+    private Image _warmCross;
+    private Button _coolButton;
+    private Button _warmButton;
 
     private void Awake()
     {
@@ -75,6 +82,34 @@ public class LobbyPlayer : NetworkBehaviour
         posterSelection.OnSetSelection.AddListener(OnSetPosterSelection);
 
         startGameButton.gameObject.SetActive(isLeader);
+
+        _coolCheck = coolCharacterButton.transform.Find("Check").GetComponent<Image>();
+        _warmCheck = warmCharacterButton.transform.Find("Check").GetComponent<Image>();
+        _coolCross = coolCharacterButton.transform.Find("Cross").GetComponent<Image>();
+        _warmCross = warmCharacterButton.transform.Find("Cross").GetComponent<Image>();
+        _coolButton = coolCharacterButton.GetComponent<Button>();
+        _warmButton = warmCharacterButton.GetComponent<Button>();
+
+        // check for if the other player has already chosen somebody
+        foreach (var player in CustomNetworkManager.Instance.lobbyPlayers)
+        {
+            if (player.netId != netId)
+            {
+                if(player.hasChosenCharacter)
+                {
+                    if(player.colour == PlayerCustomization.COLOUR.WARM)
+                    {
+                        _warmCross.enabled = true;
+                        _warmButton.enabled = false;
+                    }
+                    else
+                    {
+                        _coolCross.enabled = true;
+                        _coolButton.enabled = false;
+                    }
+                }
+            }
+        }
     }
 
     private void OnDestroy()
@@ -82,6 +117,16 @@ public class LobbyPlayer : NetworkBehaviour
         plantSelection.OnSetSelection.RemoveListener(OnSetPlantSelection);
         drinkSelection.OnSetSelection.RemoveListener(OnSetDrinkSelection);
         posterSelection.OnSetSelection.RemoveListener(OnSetPosterSelection);
+
+        if(hasChosenCharacter)
+        {
+            var cool = colour == PlayerCustomization.COLOUR.COOL;
+            foreach (var player in CustomNetworkManager.Instance.lobbyPlayers)
+            {
+                if (player.netId == netId) continue;
+                player.OnPlayerDisconnect(cool);
+            }
+        }
     }
 
     [SyncVar] private bool isLeader;
@@ -91,6 +136,7 @@ public class LobbyPlayer : NetworkBehaviour
         {
             isLeader = value;
             startGameButton.gameObject.SetActive(value);
+            colour = value ? PlayerCustomization.COLOUR.COOL : PlayerCustomization.COLOUR.WARM;
         }
     }
 
@@ -99,9 +145,44 @@ public class LobbyPlayer : NetworkBehaviour
         GUIUtility.systemCopyBuffer = steamLobbyCode.text;
     }
 
+    public void OnPlayerDisconnect(bool cool)
+    {
+        Debug.Log($"Player disconnected who had chosen {(cool ? "cool" : "warm")}");
+
+        if(isServer)
+        {
+            RpcOnPlayerDisconnect(cool);
+        }
+        else
+        {
+            CmdOnPlayerDisconnect(cool);
+        }
+    }
+
+    [Command]
+    public void CmdOnPlayerDisconnect(bool cool)
+    {
+        RpcOnPlayerDisconnect(cool);
+    }
+
+    [ClientRpc]
+    public void RpcOnPlayerDisconnect(bool cool)
+    {
+        if(cool)
+        {
+            _coolButton.enabled = true;
+            _coolCross.enabled = false;
+        }
+        else
+        {
+            _warmButton.enabled = true;
+            _warmCross.enabled = false;
+        }
+    }
+
     public void SelectCharacter(bool cool)
     {
-        if(isServer)
+        if (isServer)
         {
             ServerSelectCharacter(cool, netId);
         }
@@ -121,55 +202,100 @@ public class LobbyPlayer : NetworkBehaviour
     public void ServerSelectCharacter(bool cool, uint id)
     {
         var chosenColour = cool ? PlayerCustomization.COLOUR.COOL : PlayerCustomization.COLOUR.WARM;
+        var otherColour = !cool ? PlayerCustomization.COLOUR.COOL : PlayerCustomization.COLOUR.WARM;
         LobbyPlayer activePlayer = null;
         LobbyPlayer otherPlayer = null;
-        
-        // Can they be this character
-        var flag = true;
-        foreach(var player in CustomNetworkManager.Instance.lobbyPlayers)
+
+        foreach (var player in CustomNetworkManager.Instance.lobbyPlayers)
         {
             if (player.netId == id)
             {
                 activePlayer = player;
             }
-            else if(player.hasChosenCharacter && player.colour == chosenColour)
+            else
             {
-                flag = false;
                 otherPlayer = player;
             }
         }
 
-        if(flag)
+        // This shouldn't happen but just to be safe
+        if (activePlayer == null) return;
+
+        if (activePlayer.hasChosenCharacter && activePlayer.colour == chosenColour)
         {
-            // Will automatically be synced
-            activePlayer.colour = chosenColour;
-
-            activePlayer.RpcSelectCharacter(cool, id);
-
-            if (otherPlayer)
+            // We're deselecting the current choice
+            activePlayer.hasChosenCharacter = false;
+            activePlayer.RpcSelectCharacter(cool, id, false);
+            if(otherPlayer)
             {
-                otherPlayer.colour = !cool ? PlayerCustomization.COLOUR.COOL : PlayerCustomization.COLOUR.WARM;
-                otherPlayer.RpcSelectCharacter(cool, id);
+                otherPlayer.RpcSelectCharacter(cool, id, false);
+            }
+        }
+        else
+        {
+            // Can they be this character
+            if (otherPlayer == null || !(otherPlayer.colour == chosenColour && otherPlayer.hasChosenCharacter))
+            {
+                // Will automatically be synced
+                activePlayer.colour = chosenColour;
+                activePlayer.hasChosenCharacter = true;
+
+                // Make the other player take the other colour but not lock it in
+                if (otherPlayer) otherPlayer.colour = otherColour;
+
+                activePlayer.RpcSelectCharacter(cool, id, true);
+
+                if (otherPlayer)
+                {
+                    otherPlayer.colour = !cool ? PlayerCustomization.COLOUR.COOL : PlayerCustomization.COLOUR.WARM;
+                    otherPlayer.RpcSelectCharacter(cool, id, true);
+                }
             }
         }
     }
 
     [ClientRpc]
-    public void RpcSelectCharacter(bool cool, uint id)
+    public void RpcSelectCharacter(bool cool, uint id, bool chosen)
     {
+        Debug.Log($"[{id}] {(chosen ? "selected" : "deselected")} [{(cool ? "cool" : "warm")}]");
+
         if (netId == id)
         {
-            coolCharacterButton.transform.Find("Check").GetComponent<Image>().enabled = cool;
-            warmCharacterButton.transform.Find("Check").GetComponent<Image>().enabled = !cool;
+            if (chosen)
+            {
+                _coolCheck.enabled = cool;
+                _warmCheck.enabled = !cool;
+            }
+            else
+            {
+                _coolCheck.enabled = false;
+                _warmCheck.enabled = false;
+            }
         }
         else
         {
-            // Have to stop the other person
-            coolCharacterButton.GetComponent<Button>().enabled = !cool;
-            warmCharacterButton.GetComponent<Button>().enabled = cool;
+            if (chosen)
+            {
+                // Have to stop the other person
+                _coolButton.enabled = !cool;
+                _warmButton.enabled = cool;
 
-            coolCharacterButton.transform.Find("Cross").GetComponent<Image>().enabled = cool;
-            warmCharacterButton.transform.Find("Cross").GetComponent<Image>().enabled = !cool;
+                _coolCross.enabled = cool;
+                _warmCross.enabled = !cool;
+            }
+            else
+            {
+                if (cool)
+                {
+                    _coolCross.enabled = false;
+                    _coolButton.enabled = true;
+                }
+                else
+                {
+                    _warmCross.enabled = false;
+                    _warmButton.enabled = true;
+                }
+            }
         }
     }
 
@@ -267,8 +393,6 @@ public class LobbyPlayer : NetworkBehaviour
             return;
         }
 
-        Debug.Log("Updating Display");
-
         var playerCount = CustomNetworkManager.Instance.lobbyPlayers.Count;
 
         for (int i = 0; i < playerNameTexts.Length; i++)
@@ -312,14 +436,7 @@ public class LobbyPlayer : NetworkBehaviour
 
     public void OnBackButtonPressed()
     {
-        if (isLeader)
-        {
-            CustomNetworkManager.Instance.StopHost();
-        }
-        else
-        {
-            CustomNetworkManager.Instance.StopClient();
-        }
+        CustomNetworkManager.Instance.Stop();
         EventManager<string>.TriggerEvent("ConnectionFailed", "Disconnected");
         Destroy(gameObject);
     }

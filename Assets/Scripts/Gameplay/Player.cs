@@ -52,18 +52,18 @@ public class Player : NetworkBehaviour
     [SerializeField] private float heldItemRotationResponsiveness = 10f;
 
     [Header("Physics Stuff")]
-    [SerializeField] private Rigidbody rb;
+    [SerializeField] public Rigidbody rb;
     [SerializeField] public new Collider collider;
 
-    private GameObject _focusedObject;
+    private Interactable _focusedObject;
     public Holdable heldObject;
 
     public float stressModifier;
 
     // Synced network stuff
-    [SyncVar] private Vector3 _movement;
-    [SyncVar] private bool _jump;
-    [SyncVar] private bool _sprint;
+    [SyncVar] public Vector3 movement;
+    [SyncVar] public bool jump;
+    [SyncVar] public bool sprint;
     [SyncVar] private float _serverSideStressModifier;
 
     public static Player Instance { get; private set; }
@@ -148,11 +148,11 @@ public class Player : NetworkBehaviour
         if (InputManager.CurrentInputMode != InputManager.InputMode.Player)
         {
             // Don't move during minigame
-            if (_movement != Vector3.zero)
+            if (this.movement != Vector3.zero)
             {
                 if (isServer)
                 {
-                    _movement = Vector3.zero;
+                    this.movement = Vector3.zero;
                 }
                 else
                 {
@@ -205,19 +205,18 @@ public class Player : NetworkBehaviour
         // We were looking at an interactable object but now we aren't
         if (_focusedObject != null && hitObject != _focusedObject)
         {
-            foreach (var interactable in _focusedObject.GetComponents<Interactable>())
-            {
-                interactable.LoseFocus();
-            }
+            _focusedObject.LoseFocus();
+
             _focusedObject = null;
         }
 
         // If we just started looking at it
         if (hitObject != null && hitObject != _focusedObject)
         {
-            _focusedObject = hitObject;
-            foreach (var interactable in hitObject.GetComponents<Interactable>())
+            var interactable = hitObject.GetComponent<Interactable>();
+            if (interactable != null)
             {
+                _focusedObject = interactable;
                 interactable.GainFocus();
             }
         }
@@ -230,10 +229,7 @@ public class Player : NetworkBehaviour
 
         if (_focusedObject != null && InputManager.IsCommandJustPressed(InputCommand.Interact))
         {
-            foreach (var interactable in _focusedObject.GetComponents<Interactable>())
-            {
-                if (interactable.Interact()) _interactedThisTick = true;
-            }
+            if (_focusedObject.Interact()) _interactedThisTick = true;
         }
 
         // Held item
@@ -283,18 +279,18 @@ public class Player : NetworkBehaviour
         PlayerDrag();
         ControlSpeed();
 
-        if (_jump && isGrounded)
+        if (jump && isGrounded)
         {
             rb.velocity = new Vector3(rb.velocity.x, 0, rb.velocity.z);
             rb.AddForce(transform.up * jumpForce, ForceMode.Impulse);
-            _jump = false;
+            jump = false;
         }
 
-        var slopeMoveDirection = Vector3.ProjectOnPlane(_movement, slopeHit.normal);
+        var slopeMoveDirection = Vector3.ProjectOnPlane(movement, slopeHit.normal);
 
         if (isGrounded && !OnSlope())
         {
-            rb.AddForce(_movement.normalized * actualMoveSpeed * movementMultiplier, ForceMode.Acceleration);
+            rb.AddForce(movement.normalized * actualMoveSpeed * movementMultiplier, ForceMode.Acceleration);
         }
         else if (isGrounded && OnSlope())
         {
@@ -302,7 +298,7 @@ public class Player : NetworkBehaviour
         }
         else if (!isGrounded)
         {
-            rb.AddForce(_movement.normalized * actualMoveSpeed * movementMultiplier * airMultiplier, ForceMode.Acceleration);
+            rb.AddForce(movement.normalized * actualMoveSpeed * movementMultiplier * airMultiplier, ForceMode.Acceleration);
         }
     }
 
@@ -313,7 +309,7 @@ public class Player : NetworkBehaviour
         var actualRunSpeed = Mathf.Lerp(runSpeed, 1, _serverSideStressModifier * _serverSideStressModifier);
         var actualAcceleration = Mathf.Lerp(acceleration, 1, _serverSideStressModifier * _serverSideStressModifier);
 
-        if (_sprint && isGrounded)
+        if (sprint && isGrounded)
         {
             moveSpeed = Mathf.Lerp(actualMoveSpeed, actualRunSpeed, actualAcceleration * Time.deltaTime);
         }
@@ -322,7 +318,7 @@ public class Player : NetworkBehaviour
             moveSpeed = Mathf.Lerp(actualMoveSpeed, actualWalkSpeed, actualAcceleration * Time.deltaTime);
         }
 
-        if (_sprint && isGrounded && _movement != Vector3.zero)
+        if (sprint && isGrounded && movement != Vector3.zero)
         {
             cam.fieldOfView = Mathf.Lerp(cam.fieldOfView, fastfov, fovaccel * Time.deltaTime);
         }
@@ -373,15 +369,18 @@ public class Player : NetworkBehaviour
     [ClientRpc]
     private void RpcSendInputs(Vector3 movement, bool jump, bool sprint, float xRot, float yRot, float stress)
     {
-        _movement = movement;
-        _jump = jump;
-        _sprint = sprint;
+        this.movement = movement;
+        this.jump = jump;
+        this.sprint = sprint;
         _serverSideStressModifier = stress;
 
         if (!hasAuthority)
         {
+            // We're rotating the other character
             cam.transform.localRotation = Quaternion.Euler(xRot, yRot, 0);
             orientation.transform.rotation = Quaternion.Euler(0, yRot, 0);
+            yRotation = yRot;
+            xRotation = xRot;
         }
     }
 
@@ -455,7 +454,7 @@ public class Player : NetworkBehaviour
     [Command]
     public void CmdStopMoving()
     {
-        _movement = Vector3.zero;
+        movement = Vector3.zero;
     }
 
     #endregion Commands and RPC
