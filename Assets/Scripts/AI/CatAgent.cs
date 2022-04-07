@@ -8,6 +8,7 @@ using Mirror;
 public class CatAgent : NetworkBehaviour
 {
     //Caches
+    [SerializeField] private Animator m_ac;
     private FSM m_fsm;
     private BlackboardManager m_manager;
     private CatInteractable m_petInteract;
@@ -65,7 +66,7 @@ public class CatAgent : NetworkBehaviour
     private void Awake()
     {
         Instance = this;
-
+        //m_ac = transform.GetComponentInChildren<Animator>();
         Debug.Log($"Cat awake {(isServer ? "on server" : "on client")}");
 
         NMAgent = GetComponent<UnityEngine.AI.NavMeshAgent>();
@@ -100,13 +101,14 @@ public class CatAgent : NetworkBehaviour
             destination = new Vector3(10f, 1.77f, -4f);
         }
 
-        m_normalColor = m_renderer.material.color;
+        //   m_normalColor = m_renderer.material.color;
     }
 
     private void FixedUpdate()
     {
         if (!isServer) return;
 
+        UpdateAnimParams();
         m_manager.SetInteger("Energy", energy);
 
         if (_sockTimer > 0)
@@ -116,6 +118,7 @@ public class CatAgent : NetworkBehaviour
     }
 
     #region On pet
+
     public void OnUpdatePetStatus()
     {
         if (isServer)
@@ -144,6 +147,7 @@ public class CatAgent : NetworkBehaviour
         // This was called from the client
         ServerUpdatePetStatus(false);
     }
+
     #endregion On pet
 
     // Called when we first enter the 'Walking' state
@@ -158,7 +162,6 @@ public class CatAgent : NetworkBehaviour
 
     public void EnterSit()
     {
-
     }
 
     public void Walk()
@@ -207,6 +210,7 @@ public class CatAgent : NetworkBehaviour
     }
 
     #region Spawn sock
+
     public void SpawnSock()
     {
         if (isServer)
@@ -246,6 +250,7 @@ public class CatAgent : NetworkBehaviour
             }
         }
     }
+
     #endregion Spawn sock
 
     public void EnterPet()
@@ -287,12 +292,12 @@ public class CatAgent : NetworkBehaviour
 
     public void SetStillState()
     {
-        m_renderer.material.color = m_petColor;
+        //m_renderer.material.color = m_petColor;
     }
 
     public void ResetStillState()
     {
-        m_renderer.material.color = m_normalColor;
+        //m_renderer.material.color = m_normalColor;
     }
 
     public int GetNumberOfSocks()
@@ -311,7 +316,8 @@ public class CatAgent : NetworkBehaviour
         {
             Player.Instance.DoWithAuthority(netIdentity, CmdOnSockReturned);
         }
-        if (sockSound != null){
+        if (sockSound != null)
+        {
             sockSound.Play();
         }
     }
@@ -320,5 +326,11 @@ public class CatAgent : NetworkBehaviour
     public void CmdOnSockReturned()
     {
         m_curSpawnNum -= 1;
+    }
+
+    private void UpdateAnimParams()
+    {
+        m_ac.SetFloat("speed", NMAgent.speed / m_maxSpeed);
+        m_ac.SetBool("onPet", m_petter != null);
     }
 }
