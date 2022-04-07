@@ -109,7 +109,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &4946464366587674618
 Transform:
   m_ObjectHideFlags: 0
@@ -280,7 +280,6 @@ MonoBehaviour:
   m_energyIncreasingAmount: 3
   m_sockPrefab: {fileID: 3873952053484179079, guid: a810a4fe580364b46b0f341680ba9ca1, type: 3}
   m_spawnManager: {fileID: 0}
-  m_spawnRadius: 3
   m_spawnLimit: 5
   m_spawnProbility: 0.08
   m_petColor: {r: 0.9433962, g: 0.07475963, b: 0.6006729, a: 0}
@@ -376,8 +375,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  _promptText: Pet Garfield
-  _promptTextNotInteractable: Garfield doesn't want pets
+  _promptText: Pet Kevin
+  _promptTextNotInteractable: Kevin doesn't want pets
   _promptTextWrongItem: 
   requiredObject: 0
   resetAfterUse: 0
@@ -514,7 +513,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2e90f098d6632d444bef9b0f50315523, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.05
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2e90f098d6632d444bef9b0f50315523, type: 3}
       propertyPath: m_LocalScale.z
@@ -526,7 +525,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2e90f098d6632d444bef9b0f50315523, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -0.636
+      value: -0.496
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 2e90f098d6632d444bef9b0f50315523, type: 3}
       propertyPath: m_LocalPosition.z
