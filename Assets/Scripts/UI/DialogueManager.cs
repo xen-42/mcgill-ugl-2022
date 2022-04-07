@@ -7,14 +7,23 @@ using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
-    [SerializeField] public Button _button;
+    [SerializeField] private Button _button;
+    [SerializeField] private GameObject _root;
 
     public TextMeshProUGUI dialogueText;
     private Queue<string> sentences;
 
-    void Start()
+    public Dialogue dialogue;
+
+    void Awake()
     {
         sentences = new Queue<string>();
+    }
+
+    void Start()
+    {
+        StartCoroutine(waitASec());
+        FindObjectOfType<DialogueManager>().StartDialogue(dialogue);
     }
 
     public void StartDialogue(Dialogue dialogue)
@@ -34,8 +43,7 @@ public class DialogueManager : MonoBehaviour
         {
             // To prevent spam clicking
             _button.enabled = false;
-
-            SceneManager.LoadScene(Scenes.MainMenu);
+            _root.SetActive(false);
             return;
         }
 
@@ -52,5 +60,10 @@ public class DialogueManager : MonoBehaviour
             dialogueText.text += letter;
             yield return new WaitForSeconds(.06f);
         }
+    }
+
+    IEnumerator waitASec()
+    {
+        yield return new WaitForSeconds(.05f);
     }
 }
