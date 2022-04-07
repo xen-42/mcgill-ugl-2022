@@ -277,7 +277,7 @@ public class CustomNetworkManager : NetworkManager
     public bool IsReadyToStart()
     {
         // TODO: in release probably make this 2
-        if (lobbyPlayers.Count < 1)
+        if (lobbyPlayers.Count < 2)
         {
             return false;
         }
