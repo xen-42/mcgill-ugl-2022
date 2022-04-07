@@ -169,6 +169,7 @@ public class Fixable : NetworkBehaviour
             {
                 brokenAmbientNoise.Stop();
             }
+            brokenAmbientNoise.loop = _isBroken;
         }
     }
 }
