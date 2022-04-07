@@ -232,6 +232,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 51510ce6a288cb845b56c0dd9be3b5e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _button: {fileID: 1645388243}
   dialogueText: {fileID: 736141970}
 --- !u!1 &736141968
 GameObject:

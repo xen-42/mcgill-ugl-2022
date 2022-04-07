@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class DialogueManager : MonoBehaviour
 {
+    [SerializeField] public Button _button;
+
     public TextMeshProUGUI dialogueText;
     private Queue<string> sentences;
 
@@ -29,6 +32,9 @@ public class DialogueManager : MonoBehaviour
     {
         if (sentences.Count == 0)
         {
+            // To prevent spam clicking
+            _button.enabled = false;
+
             SceneManager.LoadScene(Scenes.MainMenu);
             return;
         }
