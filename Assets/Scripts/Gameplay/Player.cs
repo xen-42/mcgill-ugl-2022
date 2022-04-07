@@ -55,7 +55,7 @@ public class Player : NetworkBehaviour
     [SerializeField] public Rigidbody rb;
     [SerializeField] public new Collider collider;
 
-    private GameObject _focusedObject;
+    private Interactable _focusedObject;
     public Holdable heldObject;
 
     public float stressModifier;
@@ -205,19 +205,18 @@ public class Player : NetworkBehaviour
         // We were looking at an interactable object but now we aren't
         if (_focusedObject != null && hitObject != _focusedObject)
         {
-            foreach (var interactable in _focusedObject.GetComponents<Interactable>())
-            {
-                interactable.LoseFocus();
-            }
+            _focusedObject.LoseFocus();
+
             _focusedObject = null;
         }
 
         // If we just started looking at it
         if (hitObject != null && hitObject != _focusedObject)
         {
-            _focusedObject = hitObject;
-            foreach (var interactable in hitObject.GetComponents<Interactable>())
+            var interactable = hitObject.GetComponent<Interactable>();
+            if (interactable != null)
             {
+                _focusedObject = interactable;
                 interactable.GainFocus();
             }
         }
@@ -230,10 +229,7 @@ public class Player : NetworkBehaviour
 
         if (_focusedObject != null && InputManager.IsCommandJustPressed(InputCommand.Interact))
         {
-            foreach (var interactable in _focusedObject.GetComponents<Interactable>())
-            {
-                if (interactable.Interact()) _interactedThisTick = true;
-            }
+            if (_focusedObject.Interact()) _interactedThisTick = true;
         }
 
         // Held item
