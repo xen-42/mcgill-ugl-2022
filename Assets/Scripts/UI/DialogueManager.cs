@@ -16,8 +16,17 @@ public class DialogueManager : MonoBehaviour
 
     public Dialogue dialogue;
 
+    private static bool _hasPlayed = false;
+
     void Awake()
     {
+        if(_hasPlayed)
+        {
+            GameObject.Destroy(gameObject);
+            return;
+        }
+
+        _hasPlayed = true;
         sentences = new Queue<string>();
     }
 
